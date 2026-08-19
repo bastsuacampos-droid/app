@@ -12,7 +12,7 @@
     :root{
       --bg:#f7f5f2; --surface:#ffffff; --surface-alt:#efece5; --border:#e3ded2;
       --text:#231f1a; --text-soft:#6b6459; --charcoal:#242220; --charcoal2:#343029;
-      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b;
+      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b; --blue:#3a6ea5;
     }
     *{ box-sizing:border-box; }
     body{ margin:0; font-family:'IBM Plex Sans', system-ui, sans-serif; color:var(--text); }
@@ -84,6 +84,16 @@
     </div>
 
     <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:var(--surface);border:1.5px solid var(--blue);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
+        <div style="width:46px;height:46px;border-radius:10px;background:var(--surface-alt);border:1.5px dashed #c9c2b3;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-soft)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l.9-3.6L16.6 4.7a1.5 1.5 0 0 1 2.1 0l.6.6a1.5 1.5 0 0 1 0 2.1L7.6 19.1 4 20z"/></svg>
+        </div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:600;">Parte N° 119 · Hoy</div>
+          <div style="font-size:11.5px;color:var(--text-soft);">Frente 1 y Frente 2</div>
+        </div>
+        <div style="background:#e9f0ff;color:var(--blue);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">En edición</div>
+      </div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
         <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#cfd6da,#8a9aa3);flex-shrink:0;"></div>
         <div style="flex-grow:1;min-width:0;">
@@ -99,14 +109,6 @@
           <div style="font-size:11.5px;color:var(--text-soft);">Frente 1 · Planta de áridos</div>
         </div>
         <div style="background:#fbeecb;color:#a5760a;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">Pendiente</div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
-        <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#c7d8c9,#6f9873);flex-shrink:0;"></div>
-        <div style="flex-grow:1;min-width:0;">
-          <div style="font-size:13.5px;font-weight:600;">Parte N° 116 · 15 ago</div>
-          <div style="font-size:11.5px;color:var(--text-soft);">Frente 2</div>
-        </div>
-        <div style="background:#e5f2ea;color:var(--green);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">Respaldado</div>
       </div>
     </div>
   </div>
