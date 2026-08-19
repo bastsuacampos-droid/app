@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+    :root{
+      --bg:#f7f5f2; --surface:#ffffff; --surface-alt:#efece5; --border:#e3ded2;
+      --text:#231f1a; --text-soft:#6b6459; --charcoal:#242220; --charcoal2:#343029;
+      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b; --blue:#3a6ea5;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family:'IBM Plex Sans', system-ui, sans-serif; color:var(--text); }
+    a{ color:var(--orange); } a:hover{ color:var(--orange-dark); }
+    .disp{ font-family:'Archivo', system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="width:393px;height:852px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--border);">
+
+  <div style="background:var(--charcoal);color:#fff;padding:20px 20px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+    <div class="disp" style="font-size:17px;font-weight:800;">Configuración</div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:18px 20px 20px;">
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:13px;margin-bottom:20px;">
+      <div style="width:46px;height:46px;border-radius:50%;background:#fdeee3;color:var(--orange-dark);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;">C</div>
+      <div style="flex-grow:1;">
+        <div style="font-size:14.5px;font-weight:700;">Capataz</div>
+        <div style="font-size:11.5px;color:var(--text-soft);">Ruta 5 Sur · Tramo Chillán–Bulnes</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-soft)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Preferencias</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:5px 14px;margin-bottom:20px;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">Tema</span>
+        <div style="display:flex;background:var(--surface-alt);border-radius:10px;padding:3px;">
+          <div style="padding:6px 14px;border-radius:8px;background:var(--orange);color:#fff;font-size:12px;font-weight:700;">Claro</div>
+          <div style="padding:6px 14px;border-radius:8px;color:var(--text-soft);font-size:12px;font-weight:600;">Oscuro</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">Unidades de medida</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;font-weight:600;color:var(--text-soft);">Métrico (m³, m²)</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-soft)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;">
+        <div>
+          <div style="font-size:13px;">Recordatorio diario</div>
+          <div style="font-size:10.5px;color:var(--text-soft);">Aviso a las 18:00 si no has registrado el parte</div>
+        </div>
+        <div style="width:42px;height:24px;border-radius:12px;background:var(--green);position:relative;flex-shrink:0;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;right:3px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Permisos del dispositivo</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:5px 14px;margin-bottom:20px;">
+
+      <div style="display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="width:34px;height:34px;border-radius:9px;background:#eafaf0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
+        </div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:600;">Cámara</div>
+          <div style="font-size:10.5px;color:var(--text-soft);">Fotografiar avances de obra</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;color:var(--green);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-10"/></svg>
+          <span style="font-size:11px;font-weight:700;">Concedido</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="width:34px;height:34px;border-radius:9px;background:#eafaf0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+        </div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:600;">Fotos y archivos</div>
+          <div style="font-size:10.5px;color:var(--text-soft);">Guardar fotos y adjuntar documentos</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;color:var(--green);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-10"/></svg>
+          <span style="font-size:11px;font-weight:700;">Concedido</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="width:34px;height:34px;border-radius:9px;background:#fff8ea;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a5760a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-4 4.5-7 8-7 11.5A7 7 0 0 0 12 21a7 7 0 0 0 7-7.5C19 10 16 6.5 12 2z"/></svg>
+        </div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:600;">Ubicación</div>
+          <div style="font-size:10.5px;color:var(--text-soft);">Registrar la progresiva (Km) automáticamente</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+          <span style="font-size:11px;font-weight:700;color:#a5760a;">Requerido</span>
+          <span style="font-size:10.5px;font-weight:700;color:var(--orange);">Activar</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:11px;padding:12px 0;">
+        <div style="width:34px;height:34px;border-radius:9px;background:#eafaf0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 21a1.7 1.7 0 0 0 3 0"/></svg>
+        </div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:12.5px;font-weight:600;">Notificaciones</div>
+          <div style="font-size:10.5px;color:var(--text-soft);">Avisos de respaldo y recordatorios</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;color:var(--green);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-10"/></svg>
+          <span style="font-size:11px;font-weight:700;">Concedido</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Datos</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <span style="font-size:13px;">Respaldo y exportaciones</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-soft)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+    </div>
+
+    <button style="width:100%;background:var(--surface);border:1.5px solid #f0c9c0;color:var(--red);border-radius:12px;padding:12px;font-size:13px;font-weight:700;font-family:'IBM Plex Sans';margin-bottom:14px;">Cerrar sesión</button>
+    <div style="text-align:center;font-size:10.5px;color:var(--text-soft);">Bitácora Vial · v1.0</div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

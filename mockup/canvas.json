@@ -9,11 +9,14 @@
     { "file": "Historial.dc.html", "x": 0, "y": 932, "w": 393, "h": 852 },
     { "file": "Mas.dc.html", "x": 453, "y": 932, "w": 393, "h": 852 },
     { "file": "HorasExtra.dc.html", "x": 906, "y": 932, "w": 393, "h": 852 },
-    { "file": "Documentos.dc.html", "x": 1359, "y": 932, "w": 393, "h": 852 }
+    { "file": "Documentos.dc.html", "x": 1359, "y": 932, "w": 393, "h": 852 },
+    { "file": "Configuracion.dc.html", "x": 1812, "y": 932, "w": 393, "h": 852 },
+    { "file": "Onboarding.dc.html", "x": 0, "y": 1864, "w": 393, "h": 852 }
   ],
   "annotations": [
     { "id": "flujo-principal", "x": 0, "y": -90, "w": 2658, "text": "Flujo principal: Inicio → Nuevo Parte Diario → Cubicación de tareas → Asistencia → Fotografías → Editor de fotos (dibujo y zonas translúcidas)" },
-    { "id": "nota-fila2", "x": 0, "y": 842, "w": 1752, "text": "Accesibles desde el menú inferior: Historial · Más → Horas Extra (reporte mensual) y Documentos (repositorio de archivos)" }
+    { "id": "nota-fila2", "x": 0, "y": 842, "w": 2205, "text": "Accesibles desde el menú inferior: Historial · Más → Horas Extra, Documentos y Configuración (ícono de engranaje también visible en Inicio)" },
+    { "id": "nota-onboarding", "x": 0, "y": 1774, "w": 393, "text": "Primer arranque (Android): pantalla de bienvenida que explica y solicita los permisos antes de abrir el sistema" }
   ],
   "launch": { "view": "canvas" }
 }
