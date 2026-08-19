@@ -44,7 +44,7 @@ try {
   await page.waitForTimeout(400);
   await shot('06-cubicacion-estados');
 
-  await page.getByRole('button', { name: 'Agregar partida' }).click();
+  await page.getByRole('button', { name: 'Agregar tarea' }).click();
   await page.waitForTimeout(300);
   await shot('07-catalogo-abierto');
   const primerItem = page.locator('button.chip').first();

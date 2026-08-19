@@ -49,9 +49,10 @@ export function CubicacionPage() {
   ) ?? [];
 
   const [showAdd, setShowAdd] = useState(false);
-  const [nuevo, setNuevo] = useState({ nombre: '', unidad: 'm³', cantidadContratada: 0 });
+  const [nuevo, setNuevo] = useState({ nombre: '', unidad: 'm³', cantidadContratada: 0, avanceHoy: 0 });
   const [calcOpenId, setCalcOpenId] = useState<string | null>(null);
   const [catCategoria, setCatCategoria] = useState(CATALOGO_PARTIDAS[0].categoria);
+  const [editContratadoId, setEditContratadoId] = useState<string | null>(null);
 
   async function agregarDesdeFormula(partidaId: string, subtotal: number) {
     if (!parte || subtotal <= 0) return;
@@ -66,16 +67,25 @@ export function CubicacionPage() {
   const avancePct = contratadoTotal > 0 ? Math.round((acumuladoTotal / contratadoTotal) * 100) : 0;
 
   async function guardarPartida() {
-    if (!nuevo.nombre.trim() || !activeFrenteId) return;
+    if (!nuevo.nombre.trim() || !activeFrenteId || !parte) return;
+    const id = newId();
     await db.partidas.add({
-      id: newId(),
+      id,
       frenteId: activeFrenteId,
       nombre: nuevo.nombre.trim(),
       unidad: nuevo.unidad,
       cantidadContratada: nuevo.cantidadContratada,
     });
-    setNuevo({ nombre: '', unidad: 'm³', cantidadContratada: 0 });
+    if (nuevo.avanceHoy > 0) {
+      await upsertCubicacionEntry(parte.id, id, parte.fecha, nuevo.avanceHoy);
+    }
+    setNuevo({ nombre: '', unidad: 'm³', cantidadContratada: 0, avanceHoy: 0 });
     setShowAdd(false);
+  }
+
+  async function guardarCantidadContratada(partidaId: string, valor: number) {
+    await db.partidas.update(partidaId, { cantidadContratada: valor });
+    setEditContratadoId(null);
   }
 
   if (!parte) return null;
@@ -133,16 +143,37 @@ export function CubicacionPage() {
                   <span style={{ fontSize: 13.5, fontWeight: 700 }}>{p.nombre}</span>
                   <span style={{ background: 'var(--surface-alt)', color: 'var(--text-soft)', fontSize: 10.5, fontWeight: 700, padding: '3px 8px', borderRadius: 6 }}>{p.unidad}</span>
                 </div>
-                <div style={{ marginBottom: 9 }}>
+                <div className="flex-row gap-8" style={{ marginBottom: 9, flexWrap: 'wrap' }}>
                   <span style={{ background: estadoInfo.bg, color: estadoInfo.color, fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 20 }}>
                     {estadoInfo.label}
                   </span>
+                  {p.cantidadContratada === 0 && (
+                    <span style={{ background: 'var(--yellow-soft)', color: 'var(--yellow-text)', fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 20 }}>
+                      Sin cubicar aún
+                    </span>
+                  )}
                 </div>
                 <div className="progress-track" style={{ marginBottom: 8 }}>
                   <div className="progress-fill" style={{ width: `${pct}%` }} />
                 </div>
-                <div className="flex-row" style={{ justifyContent: 'space-between', fontSize: 11, color: 'var(--text-soft)', marginBottom: 9 }}>
-                  <span>Contratado: {p.cantidadContratada.toLocaleString('es-CL')} {p.unidad}</span>
+                <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: 'var(--text-soft)', marginBottom: 9 }}>
+                  {editContratadoId === p.id ? (
+                    <ContratadoEditor
+                      unidad={p.unidad}
+                      valorInicial={p.cantidadContratada}
+                      onGuardar={(v) => guardarCantidadContratada(p.id, v)}
+                      onCancelar={() => setEditContratadoId(null)}
+                    />
+                  ) : (
+                    <button
+                      onClick={() => setEditContratadoId(p.id)}
+                      style={{ background: 'none', border: 'none', color: p.cantidadContratada === 0 ? 'var(--orange)' : 'var(--text-soft)', fontSize: 11, fontWeight: p.cantidadContratada === 0 ? 700 : 400, padding: 0 }}
+                    >
+                      {p.cantidadContratada === 0
+                        ? 'Cubicar esta tarea →'
+                        : `Contratado: ${p.cantidadContratada.toLocaleString('es-CL')} ${p.unidad} (editar)`}
+                    </button>
+                  )}
                   <span>Acum: {acumulado.toLocaleString('es-CL')} {p.unidad} · {pct}%</span>
                 </div>
                 <div className="flex-row gap-8">
@@ -177,7 +208,7 @@ export function CubicacionPage() {
 
           {!showAdd && (
             <button className="chip-dashed card" style={{ justifyContent: 'center', width: '100%', background: 'none' }} onClick={() => setShowAdd(true)}>
-              <IconPlus size={15} /> Agregar partida
+              <IconPlus size={15} /> Agregar tarea
             </button>
           )}
 
@@ -223,16 +254,27 @@ export function CubicacionPage() {
                 </select>
                 <input
                   type="number"
-                  placeholder="Cantidad contratada"
+                  placeholder="Cantidad contratada (si no la sabes, déjala en blanco)"
                   value={nuevo.cantidadContratada || ''}
                   onChange={(e) => setNuevo({ ...nuevo, cantidadContratada: Number(e.target.value) || 0 })}
                   className="field-input"
                   style={{ flexGrow: 1 }}
                 />
               </div>
+              <label className="text-soft" style={{ fontSize: 11.5 }}>
+                Avance de hoy en esta tarea (opcional)
+                <input
+                  type="number"
+                  placeholder="0"
+                  value={nuevo.avanceHoy || ''}
+                  onChange={(e) => setNuevo({ ...nuevo, avanceHoy: Number(e.target.value) || 0 })}
+                  className="field-input"
+                  style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
+                />
+              </label>
               <div className="flex-row gap-8">
                 <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setShowAdd(false)}>Cancelar</button>
-                <button className="btn btn-primary" style={{ flex: 1 }} onClick={guardarPartida}>Guardar</button>
+                <button className="btn btn-primary" style={{ flex: 1 }} onClick={guardarPartida}>Guardar tarea</button>
               </div>
             </div>
           )}
@@ -283,6 +325,27 @@ function DimensionCalculator({ unidad, onAgregar }: { unidad: string; onAgregar:
           Agregar al total de hoy
         </button>
       </div>
+    </div>
+  );
+}
+
+/** Inline editor for a task's cantidadContratada — lets you cubicar una tarea que se agregó
+ * sin dato fijo, o corregirlo más adelante, sin tener que recrear la tarea. */
+function ContratadoEditor({ unidad, valorInicial, onGuardar, onCancelar }: { unidad: string; valorInicial: number; onGuardar: (v: number) => void; onCancelar: () => void }) {
+  const [valor, setValor] = useState(valorInicial ? String(valorInicial) : '');
+  return (
+    <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+      <input
+        type="number"
+        autoFocus
+        placeholder={`Cantidad contratada (${unidad})`}
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
+        className="field-input"
+        style={{ width: 120 }}
+      />
+      <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+      <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
     </div>
   );
 }

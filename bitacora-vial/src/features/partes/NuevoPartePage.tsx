@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, nowISO } from '../../lib/db';
-import { attendanceSummaryForParte } from '../../lib/queries';
+import { attendanceSummaryForParte, cumulativeForAllPartidas } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconPlus, IconChevronRight, IconCubicacion, IconAsistencia, IconFotos } from '../../components/Icon';
@@ -11,10 +11,21 @@ export function NuevoPartePage() {
   const navigate = useNavigate();
   const parte = useTodayParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
-  const partidasCount = useLiveQuery(
-    () => (parte ? db.cubicacionEntries.where('parteId').equals(parte.id).count() : 0),
-    [parte?.id],
-  );
+  const tareasHoy = useLiveQuery(async () => {
+    if (!parte) return [];
+    const entries = await db.cubicacionEntries.where('parteId').equals(parte.id).toArray();
+    const totales = await cumulativeForAllPartidas();
+    const partidas = await Promise.all(entries.map((e) => db.partidas.get(e.partidaId)));
+    return entries
+      .map((e, i) => {
+        const p = partidas[i];
+        if (!p) return null;
+        const acumulado = Math.min(totales[p.id] ?? 0, p.cantidadContratada);
+        const pct = p.cantidadContratada > 0 ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
+        return { partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy: e.cantidadEjecutada, pct, cubicada: p.cantidadContratada > 0 };
+      })
+      .filter((x): x is NonNullable<typeof x> => !!x);
+  }, [parte?.id]) ?? [];
   const asistencia = useLiveQuery(
     () => (parte ? attendanceSummaryForParte(parte.id) : undefined),
     [parte?.id],
@@ -134,13 +145,38 @@ export function NuevoPartePage() {
 
         <div className="section-label">Registrar detalle del día</div>
         <div className="stack" style={{ marginBottom: 8 }}>
-          <DetailRow
-            icon={<IconCubicacion color="var(--orange-dark)" />}
-            iconBg="var(--orange-soft)"
-            title="Cubicación de tareas"
-            subtitle={`${partidasCount ?? 0} partida(s) registradas hoy`}
-            onClick={() => navigate('/cubicacion')}
-          />
+          <div className="card">
+            <button onClick={() => navigate('/cubicacion')} className="list-row" style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0 }}>
+              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--orange-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <IconCubicacion color="var(--orange-dark)" />
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ fontSize: 13.5, fontWeight: 600 }}>Cubicación de tareas</div>
+                <div className="text-soft" style={{ fontSize: 11.5 }}>
+                  {tareasHoy.length > 0 ? `${tareasHoy.length} tarea(s) con avance hoy` : 'Sin tareas registradas hoy'}
+                </div>
+              </div>
+              <IconChevronRight color="var(--text-soft)" />
+            </button>
+
+            {tareasHoy.length > 0 && (
+              <div className="stack" style={{ gap: 8, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                {tareasHoy.map((t) => (
+                  <div key={t.partidaId} className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                    <span style={{ fontSize: 12.5, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.nombre}</span>
+                    <span className="text-soft" style={{ fontSize: 11.5, flexShrink: 0 }}>
+                      +{t.avanceHoy.toLocaleString('es-CL')} {t.unidad}
+                      {t.cubicada ? (
+                        <> · <strong style={{ color: 'var(--orange-dark)' }}>{t.pct}%</strong></>
+                      ) : (
+                        <> · <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span></>
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <DetailRow
             icon={<IconAsistencia color="var(--blue)" />}
             iconBg="var(--blue-soft)"

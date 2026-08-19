@@ -122,6 +122,13 @@ src/
   (antes/durante/después/inconveniente) y, opcionalmente, la `partidaId`
   de la tarea que documenta. Se eligen ambas justo antes de tomar la
   foto, desde el panel que abre el botón + en Fotos.
+- **Cuantificación anidada al agregar una tarea**: el formulario "Agregar
+  tarea" de Cubicación pide de una vez el título, la unidad, la cantidad
+  contratada (puede dejarse en blanco si aún no se sabe — queda marcada
+  "Sin cubicar aún" y se define después tocando "Cubicar esta tarea") y el
+  avance de hoy; todo en un solo paso, y el % de avance se recalcula al
+  tiro. `NuevoPartePage` además anida un resumen (título + avance + %) de
+  las tareas tocadas hoy, sin tener que entrar a Cubicación para verlo.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 
