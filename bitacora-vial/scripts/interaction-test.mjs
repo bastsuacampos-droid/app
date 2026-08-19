@@ -24,7 +24,7 @@ try {
   await page.waitForTimeout(300);
 
   // Cubicación: enter a quantity
-  await page.getByText('Cubicación de tareas').click();
+  await page.getByRole('button', { name: 'Agregar tarea' }).click();
   await page.waitForTimeout(300);
   const primerInput = page.locator('input[type="number"]').first();
   await primerInput.fill('85');
@@ -35,7 +35,7 @@ try {
   await page.waitForTimeout(300);
 
   // Asistencia: mark one absent, add overtime + motivo on another
-  await page.getByText('Asistencia de personal').click();
+  await page.getByRole('button', { name: 'Registrar Asistencia' }).click();
   await page.waitForTimeout(300);
   const toggles = page.locator('button[role="switch"]');
   await toggles.nth(3).click(); // mark 4th worker absent

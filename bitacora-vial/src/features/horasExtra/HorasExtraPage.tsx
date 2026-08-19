@@ -16,12 +16,12 @@ export function HorasExtraPage() {
   return (
     <>
       <Header title="Horas Extra" back>
-        <div className="flex-row" style={{ justifyContent: 'space-between', background: 'var(--charcoal-3)', borderRadius: 11, padding: '10px 13px' }}>
+        <div className="flex-row" style={{ justifyContent: 'space-between', background: 'var(--surface-alt)', borderRadius: 11, padding: '10px 13px' }}>
           <input
             type="month"
             value={month}
             onChange={(e) => setMonth(e.target.value)}
-            style={{ background: 'none', border: 'none', color: '#fff', fontSize: 12.5, fontWeight: 600, width: '100%' }}
+            style={{ background: 'none', border: 'none', color: 'var(--text)', fontSize: 12.5, fontWeight: 600, width: '100%' }}
           />
         </div>
       </Header>
@@ -50,21 +50,21 @@ export function HorasExtraPage() {
             {report.map((t) => (
               <div key={t.trabajadorId} className="card">
                 <div className="list-row" style={{ marginBottom: 10 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--orange-soft)', color: 'var(--orange-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
                     {t.nombre.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
                   </div>
                   <div style={{ flexGrow: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</div>
                     <div className="text-soft" style={{ fontSize: 11 }}>{t.cargo} · {t.dias.length} día(s)</div>
                   </div>
-                  <span style={{ background: 'var(--orange-soft)', color: 'var(--orange-dark)', borderRadius: 8, padding: '5px 10px', fontSize: 12.5, fontWeight: 700, whiteSpace: 'nowrap' }}>
+                  <span style={{ background: 'var(--accent-soft)', color: 'var(--accent-dark)', borderRadius: 8, padding: '5px 10px', fontSize: 12.5, fontWeight: 700, whiteSpace: 'nowrap' }}>
                     {t.totalHoras} h
                   </span>
                 </div>
                 <div className="flex-row gap-8" style={{ flexWrap: 'wrap' }}>
                   {t.dias.map((d, i) => (
                     <div key={i} title={d.motivo} style={{ background: 'var(--surface-alt)', borderRadius: 7, padding: '4px 8px', fontSize: 11 }}>
-                      {formatShortDate(d.fecha)} <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>· {d.horas}h</span>
+                      {formatShortDate(d.fecha)} <span style={{ color: 'var(--accent-dark)', fontWeight: 700 }}>· {d.horas}h</span>
                     </div>
                   ))}
                 </div>

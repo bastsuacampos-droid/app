@@ -1,26 +1,36 @@
 :root {
-  --bg: #f7f5f2;
+  --outer-bg: #dde2ea;
+  --bg: #f2f4f7;
   --surface: #ffffff;
-  --surface-alt: #efece5;
-  --border: #e3ded2;
-  --text: #231f1a;
-  --text-soft: #6b6459;
-  --charcoal: #242220;
-  --charcoal-2: #343029;
-  --charcoal-3: #3a362e;
+  --surface-alt: #eef1f5;
+  --border: #e1e5ec;
+  --text: #14171c;
+  --text-soft: #667085;
 
-  --orange: #e8600c;
-  --orange-dark: #c14f08;
-  --orange-soft: #fdeee3;
-  --amber: #f2b705;
-  --green: #3f8f5f;
-  --green-soft: #eafaf0;
-  --red: #c0392b;
-  --red-soft: #f4e0de;
-  --blue: #3a6ea5;
-  --blue-soft: #e9f0ff;
-  --yellow-soft: #fff8ea;
-  --yellow-text: #a5760a;
+  /* Header / bottom nav chrome — light, not the old dark charcoal bar. */
+  --header-bg: #ffffff;
+  --header-border: #e5e8ee;
+  --nav-bg: #ffffff;
+  --nav-inactive: #97a1b0;
+
+  /* A dark "hero" card still reads well against a light page — kept for KPI/summary cards. */
+  --dark-card-bg: #12182b;
+  --dark-card-bg-2: #232a3f;
+
+  /* Primary accent (was orange) */
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --accent-soft: #e8f0fe;
+
+  --blue: #2563eb;
+  --blue-soft: #e8f0fe;
+  --green: #16a34a;
+  --green-soft: #e7f7ed;
+  --red: #dc2626;
+  --red-soft: #fdeaea;
+  --amber: #d97706;
+  --yellow-soft: #fff6e8;
+  --yellow-text: #b45309;
 
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, sans-serif;
@@ -34,11 +44,15 @@
 }
 
 [data-theme='oscuro'] {
-  --bg: #1c1a17;
-  --surface: #262420;
-  --surface-alt: #302d27;
-  --border: #423d34;
-  --text: #f3efe8;
-  --text-soft: #b5ada0;
+  --outer-bg: #05070a;
+  --bg: #12151a;
+  --surface: #1b1f27;
+  --surface-alt: #242933;
+  --border: #333a47;
+  --text: #f2f4f7;
+  --text-soft: #9aa4b5;
+  --header-bg: #1b1f27;
+  --header-border: #2b3140;
+  --nav-bg: #1b1f27;
   color-scheme: dark;
 }

@@ -48,7 +48,7 @@ export function DashboardPage() {
                 <div
                   style={{
                     position: 'absolute', top: -3, right: -3, width: 9, height: 9, borderRadius: '50%',
-                    background: 'var(--amber)', border: '2px solid var(--charcoal)',
+                    background: 'var(--amber)', border: '2px solid var(--header-bg)',
                   }}
                 />
               )}
@@ -73,7 +73,7 @@ export function DashboardPage() {
             <div
               style={{
                 width: 44, height: 44, borderRadius: '50%',
-                background: `conic-gradient(var(--orange) ${avance ?? 0}%, var(--surface-alt) 0)`,
+                background: `conic-gradient(var(--accent) ${avance ?? 0}%, var(--surface-alt) 0)`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
@@ -103,7 +103,7 @@ export function DashboardPage() {
             <div style={{ fontSize: 11, color: 'var(--amber)' }}>Km 10+000 – 22+500</div>
           </div>
           <div className="disp" style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>Ruta 5 Sur — Tramo Chillán–Bulnes</div>
-          <div className="progress-track" style={{ background: '#4a453c', marginBottom: 6 }}>
+          <div className="progress-track" style={{ background: 'var(--dark-card-bg-2)', marginBottom: 6 }}>
             <div className="progress-fill progress-fill--gradient" style={{ width: `${avance ?? 0}%` }} />
           </div>
           <div className="flex-row" style={{ justifyContent: 'space-between', fontSize: 11, color: '#c9c3b8' }}>
@@ -123,7 +123,7 @@ export function DashboardPage() {
           <div className="disp" style={{ fontSize: 14.5, fontWeight: 700 }}>Partes recientes</div>
           <button
             onClick={() => navigate('/historial')}
-            style={{ background: 'none', border: 'none', fontSize: 12, color: 'var(--orange)', fontWeight: 600 }}
+            style={{ background: 'none', border: 'none', fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}
           >
             Ver todos
           </button>

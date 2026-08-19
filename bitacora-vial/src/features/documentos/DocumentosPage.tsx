@@ -12,7 +12,7 @@ const TYPE_BADGE: { test: (mime: string, nombre: string) => boolean; label: stri
   { test: (m) => m.includes('pdf'), label: 'PDF', bg: 'var(--red)' },
   { test: (m, n) => m.includes('word') || /\.docx?$/i.test(n), label: 'DOC', bg: 'var(--blue)' },
   { test: (m, n) => m.includes('sheet') || /\.xlsx?$/i.test(n) || m.includes('csv'), label: 'XLS', bg: 'var(--green)' },
-  { test: (m) => m.startsWith('image/'), label: 'IMG', bg: 'var(--orange)' },
+  { test: (m) => m.startsWith('image/'), label: 'IMG', bg: 'var(--accent)' },
 ];
 
 function badgeFor(doc: Documento) {
@@ -58,7 +58,7 @@ export function DocumentosPage() {
     <>
       <Header title="Documentos" subtitle={`${documentos.length} archivo(s)`} back>
         <div className="search-bar" style={{ marginBottom: 12 }}>
-          <IconSearch color="#c9c3b8" />
+          <IconSearch color="var(--text-soft)" />
           <input placeholder="Buscar documento..." value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
         <div className="flex-row gap-8" style={{ overflowX: 'auto' }}>
@@ -67,8 +67,8 @@ export function DocumentosPage() {
               key={c}
               onClick={() => setCategoria(c)}
               style={{
-                background: categoria === c ? 'var(--orange)' : 'var(--charcoal-3)',
-                color: categoria === c ? '#fff' : '#c9c3b8',
+                background: categoria === c ? 'var(--accent)' : 'var(--surface-alt)',
+                color: categoria === c ? '#fff' : 'var(--text-soft)',
                 border: 'none', borderRadius: 20, padding: '6px 12px', fontSize: 11.5,
                 fontWeight: categoria === c ? 700 : 600, whiteSpace: 'nowrap',
               }}

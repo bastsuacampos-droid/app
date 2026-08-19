@@ -30,7 +30,7 @@ export function ConfiguracionPage() {
 
       <div className="content">
         <div className="card list-row" style={{ marginBottom: 20 }}>
-          <div style={{ width: 46, height: 46, borderRadius: '50%', background: 'var(--orange-soft)', color: 'var(--orange-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
+          <div style={{ width: 46, height: 46, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>
             C
           </div>
           <div style={{ flexGrow: 1 }}>
@@ -80,7 +80,7 @@ export function ConfiguracionPage() {
             title={<>Ubicación <span className="text-soft" style={{ fontWeight: 500 }}>· opcional</span></>}
             subtitle="Registrar la progresiva (Km) automáticamente"
             concedido={settings.permisoUbicacion}
-            action={!settings.permisoUbicacion ? <button onClick={activarUbicacion} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontSize: 10.5, fontWeight: 700 }}>Activar</button> : undefined}
+            action={!settings.permisoUbicacion ? <button onClick={activarUbicacion} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700 }}>Activar</button> : undefined}
             border
           />
           <PermisoRow Icon={IconBell} title="Notificaciones" subtitle="Avisos de respaldo y recordatorios" concedido={notifPermission === 'granted'} />

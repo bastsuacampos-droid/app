@@ -95,15 +95,15 @@ export function CubicacionPage() {
       <Header title="Cubicación de Tareas" back>
         <div
           className="flex-row"
-          style={{ justifyContent: 'space-between', background: 'var(--charcoal-3)', borderRadius: 11, padding: '10px 13px' }}
+          style={{ justifyContent: 'space-between', background: 'var(--surface-alt)', borderRadius: 11, padding: '10px 13px' }}
         >
           <select
             value={activeFrenteId ?? ''}
             onChange={(e) => setFrenteId(e.target.value)}
-            style={{ background: 'none', border: 'none', color: '#fff', fontSize: 12.5, fontWeight: 600, width: '100%' }}
+            style={{ background: 'none', border: 'none', color: 'var(--text)', fontSize: 12.5, fontWeight: 600, width: '100%' }}
           >
             {frentes.map((f) => (
-              <option key={f.id} value={f.id} style={{ color: '#000' }}>
+              <option key={f.id} value={f.id} style={{ color: 'var(--text)' }}>
                 {f.nombre}{f.km ? ` · ${f.km}` : ''}
               </option>
             ))}
@@ -119,7 +119,7 @@ export function CubicacionPage() {
             </span>
             <span className="disp" style={{ fontSize: 20, fontWeight: 800, color: 'var(--amber)' }}>{avancePct}%</span>
           </div>
-          <div className="progress-track" style={{ background: '#4a453c' }}>
+          <div className="progress-track" style={{ background: 'var(--dark-card-bg-2)' }}>
             <div className="progress-fill progress-fill--gradient" style={{ width: `${avancePct}%` }} />
           </div>
         </div>
@@ -167,7 +167,7 @@ export function CubicacionPage() {
                   ) : (
                     <button
                       onClick={() => setEditContratadoId(p.id)}
-                      style={{ background: 'none', border: 'none', color: p.cantidadContratada === 0 ? 'var(--orange)' : 'var(--text-soft)', fontSize: 11, fontWeight: p.cantidadContratada === 0 ? 700 : 400, padding: 0 }}
+                      style={{ background: 'none', border: 'none', color: p.cantidadContratada === 0 ? 'var(--accent)' : 'var(--text-soft)', fontSize: 11, fontWeight: p.cantidadContratada === 0 ? 700 : 400, padding: 0 }}
                     >
                       {p.cantidadContratada === 0
                         ? 'Cubicar esta tarea →'
@@ -192,10 +192,10 @@ export function CubicacionPage() {
                   <>
                     <button
                       onClick={() => setCalcOpenId(calcOpenId === p.id ? null : p.id)}
-                      style={{ background: 'none', border: 'none', color: 'var(--orange)', fontSize: 11.5, fontWeight: 700, padding: '8px 0 0', display: 'flex', alignItems: 'center', gap: 4 }}
+                      style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: '8px 0 0', display: 'flex', alignItems: 'center', gap: 4 }}
                     >
                       Calcular por dimensiones
-                      <IconChevronRight size={12} color="var(--orange)" style={{ transform: calcOpenId === p.id ? 'rotate(90deg)' : undefined }} />
+                      <IconChevronRight size={12} color="var(--accent)" style={{ transform: calcOpenId === p.id ? 'rotate(90deg)' : undefined }} />
                     </button>
                     {calcOpenId === p.id && (
                       <DimensionCalculator unidad={p.unidad} onAgregar={(subtotal) => agregarDesdeFormula(p.id, subtotal)} />
@@ -344,7 +344,7 @@ function ContratadoEditor({ unidad, valorInicial, onGuardar, onCancelar }: { uni
         className="field-input"
         style={{ width: 120 }}
       />
-      <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--orange)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+      <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
       <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
     </div>
   );

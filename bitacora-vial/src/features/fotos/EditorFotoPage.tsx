@@ -256,7 +256,7 @@ export function EditorFotoPage() {
             onClick={() => setTool(id)}
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: tool === id ? '#fff' : '#d8d3c8' }}
           >
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: tool === id ? 'var(--orange)' : 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: tool === id ? 'var(--accent)' : 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Icon color={tool === id ? '#fff' : '#d8d3c8'} />
             </div>
             <span style={{ fontSize: 9 }}>{label}</span>

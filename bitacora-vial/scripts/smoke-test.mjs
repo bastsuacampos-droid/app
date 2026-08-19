@@ -34,19 +34,19 @@ try {
   await page.waitForTimeout(400);
   await shot('03-nuevo-parte');
 
-  await page.getByText('Cubicación de tareas').click();
+  await page.getByRole('button', { name: 'Agregar tarea' }).click();
   await page.waitForTimeout(400);
   await shot('04-cubicacion');
   await page.goBack();
   await page.waitForTimeout(300);
 
-  await page.getByText('Asistencia de personal').click();
+  await page.getByRole('button', { name: 'Registrar Asistencia' }).click();
   await page.waitForTimeout(400);
   await shot('05-asistencia');
   await page.goBack();
   await page.waitForTimeout(300);
 
-  await page.getByText('Fotografías', { exact: true }).click();
+  await page.getByRole('button', { name: /Ver todas/ }).click();
   await page.waitForTimeout(400);
   await shot('06-fotos');
 

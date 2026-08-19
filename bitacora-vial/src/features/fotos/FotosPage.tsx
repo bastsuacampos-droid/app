@@ -66,8 +66,8 @@ export function FotosPage() {
               key={f.id}
               onClick={() => setFiltro(f.id)}
               style={{
-                background: filtro === f.id ? 'var(--orange)' : 'var(--charcoal-3)',
-                color: filtro === f.id ? '#fff' : '#c9c3b8',
+                background: filtro === f.id ? 'var(--accent)' : 'var(--surface-alt)',
+                color: filtro === f.id ? '#fff' : 'var(--text-soft)',
                 border: 'none', borderRadius: 20, padding: '6px 12px', fontSize: 11.5,
                 fontWeight: filtro === f.id ? 700 : 600, whiteSpace: 'nowrap',
               }}
@@ -172,7 +172,7 @@ function PhotoThumb({
           </span>
         )}
         {anotada && (
-          <div style={{ background: 'var(--orange)', color: '#fff', borderRadius: 7, padding: '3px 7px', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ background: 'var(--accent)', color: '#fff', borderRadius: 7, padding: '3px 7px', display: 'flex', alignItems: 'center', gap: 4 }}>
             <IconPencil size={11} color="#fff" />
           </div>
         )}

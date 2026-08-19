@@ -80,7 +80,7 @@ export function AsistenciaPage() {
     <>
       <Header title="Asistencia de Personal" subtitle={new Date(parte.fecha).toLocaleDateString('es-CL')} back>
         <div className="search-bar" style={{ marginBottom: 12 }}>
-          <IconSearch color="#c9c3b8" />
+          <IconSearch color="var(--text-soft)" />
           <input placeholder="Buscar trabajador..." value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
         <div className="flex-row gap-8" style={{ overflowX: 'auto' }}>
@@ -89,8 +89,8 @@ export function AsistenciaPage() {
               key={f.id}
               onClick={() => setFrenteId(f.id)}
               style={{
-                background: activeFrenteId === f.id ? 'var(--orange)' : 'none',
-                color: activeFrenteId === f.id ? '#fff' : '#c9c3b8',
+                background: activeFrenteId === f.id ? 'var(--accent)' : 'none',
+                color: activeFrenteId === f.id ? '#fff' : 'var(--text-soft)',
                 border: 'none', borderRadius: '10px 10px 0 0', padding: '8px 14px',
                 fontSize: 12, fontWeight: activeFrenteId === f.id ? 700 : 600, whiteSpace: 'nowrap',
               }}
@@ -117,8 +117,8 @@ export function AsistenciaPage() {
                 <div className="list-row" style={{ opacity: r.presente ? 1 : 0.72 }}>
                   <div style={{
                     width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                    background: r.presente ? 'var(--orange-soft)' : 'var(--red-soft)',
-                    color: r.presente ? 'var(--orange-dark)' : 'var(--red)',
+                    background: r.presente ? 'var(--accent-soft)' : 'var(--red-soft)',
+                    color: r.presente ? 'var(--accent-dark)' : 'var(--red)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700,
                   }}>
                     {initials}
@@ -142,7 +142,7 @@ export function AsistenciaPage() {
                     </label>
                     <label className="text-soft" style={{ fontSize: 11 }}>
                       Extra
-                      <input type="number" className="field-input" style={{ width: 50, marginLeft: 6, color: r.horasExtra > 0 ? 'var(--orange-dark)' : undefined }}
+                      <input type="number" className="field-input" style={{ width: 50, marginLeft: 6, color: r.horasExtra > 0 ? 'var(--accent-dark)' : undefined }}
                         value={r.horasExtra} onChange={(e) => updateRegistro(r.id, { horasExtra: Number(e.target.value) || 0 })} />
                     </label>
                     {r.horasExtra > 0 && (
@@ -150,7 +150,7 @@ export function AsistenciaPage() {
                         placeholder="Motivo de la hora extra"
                         value={r.motivoExtra ?? ''}
                         onChange={(e) => updateRegistro(r.id, { motivoExtra: e.target.value })}
-                        style={{ flexGrow: 1, border: 'none', background: 'none', fontSize: 10.5, fontStyle: 'italic', color: 'var(--orange-dark)' }}
+                        style={{ flexGrow: 1, border: 'none', background: 'none', fontSize: 10.5, fontStyle: 'italic', color: 'var(--accent-dark)' }}
                       />
                     )}
                   </div>
@@ -242,10 +242,10 @@ export function AsistenciaPage() {
           className="flex-row"
           style={{ justifyContent: 'space-between', width: '100%', background: 'none', border: 'none', paddingBottom: 10, marginBottom: 10, borderBottom: '1px solid var(--border)' }}
         >
-          <span className="flex-row gap-8" style={{ color: 'var(--orange)', fontSize: 12, fontWeight: 700 }}>
-            <IconClockPlus color="var(--orange)" size={15} /> Ver reporte mensual de horas extra
+          <span className="flex-row gap-8" style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 700 }}>
+            <IconClockPlus color="var(--accent)" size={15} /> Ver reporte mensual de horas extra
           </span>
-          <IconChevronRight color="var(--orange)" />
+          <IconChevronRight color="var(--accent)" />
         </button>
         <div className="flex-row" style={{ justifyContent: 'space-between', fontSize: 11.5, color: 'var(--text-soft)', marginBottom: 9 }}>
           <span>Total personal presente hoy</span>

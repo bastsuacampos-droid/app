@@ -5,8 +5,8 @@ import { IconLogo, IconFotos, IconFolder, IconLocation, IconBell } from '../../c
 const PERMISOS = [
   {
     Icon: IconFotos,
-    bg: 'var(--orange-soft)',
-    color: 'var(--orange-dark)',
+    bg: 'var(--accent-soft)',
+    color: 'var(--accent-dark)',
     title: 'Cámara',
     text: 'Para fotografiar el avance de obra y anotar sobre las fotos.',
   },
@@ -76,7 +76,7 @@ export function OnboardingPage() {
   }
 
   return (
-    <div style={{ background: 'var(--charcoal)', height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: 'var(--dark-card-bg)', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div className="content" style={{ paddingTop: 48, color: '#fff' }}>
         <div className="flex-row gap-10" style={{ marginBottom: 28 }}>
           <IconLogo size={30} stroke="var(--amber)" />

@@ -20,12 +20,12 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.error) {
       return (
-        <div style={{ padding: 24, color: '#fff', background: '#242220', height: '100%', fontFamily: 'sans-serif' }}>
-          <h2 style={{ color: '#f2b705' }}>Algo salió mal</h2>
-          <p style={{ fontSize: 13, color: '#c9c3b8' }}>{this.state.error.message || this.state.error.name}</p>
+        <div style={{ padding: 24, color: 'var(--text)', background: 'var(--bg)', height: '100%', fontFamily: 'sans-serif' }}>
+          <h2 style={{ color: 'var(--red)' }}>Algo salió mal</h2>
+          <p style={{ fontSize: 13, color: 'var(--text-soft)' }}>{this.state.error.message || this.state.error.name}</p>
           <button
             onClick={() => this.setState({ error: null })}
-            style={{ marginTop: 16, background: '#e8600c', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700 }}
+            style={{ marginTop: 16, background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700 }}
           >
             Reintentar
           </button>

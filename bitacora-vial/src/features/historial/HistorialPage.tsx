@@ -45,7 +45,7 @@ export function HistorialPage() {
     <>
       <Header title="Historial y Respaldo">
         <div className="search-bar">
-          <IconSearch color="#c9c3b8" />
+          <IconSearch color="var(--text-soft)" />
           <input placeholder="Buscar por número o fecha..." value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
       </Header>
@@ -76,7 +76,7 @@ export function HistorialPage() {
               key={id}
               onClick={() => setFiltro(id)}
               className="chip"
-              style={filtro === id ? { background: 'var(--orange)', borderColor: 'var(--orange)', color: '#fff' } : undefined}
+              style={filtro === id ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
             >
               {label}
             </button>
@@ -121,10 +121,10 @@ export function HistorialPage() {
           className="flex-row"
           style={{ justifyContent: 'space-between', width: '100%', background: 'none', border: 'none', marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}
         >
-          <span className="flex-row gap-8" style={{ color: 'var(--orange)', fontSize: 12, fontWeight: 700 }}>
-            <IconClockPlus size={15} color="var(--orange)" /> Reporte mensual de horas extra
+          <span className="flex-row gap-8" style={{ color: 'var(--accent)', fontSize: 12, fontWeight: 700 }}>
+            <IconClockPlus size={15} color="var(--accent)" /> Reporte mensual de horas extra
           </span>
-          <IconChevronRight color="var(--orange)" />
+          <IconChevronRight color="var(--accent)" />
         </button>
       </div>
     </>

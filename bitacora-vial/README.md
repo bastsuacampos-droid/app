@@ -129,6 +129,21 @@ src/
   avance de hoy; todo en un solo paso, y el % de avance se recalcula al
   tiro. `NuevoPartePage` además anida un resumen (título + avance + %) de
   las tareas tocadas hoy, sin tener que entrar a Cubicación para verlo.
+- **Diseño visual (tokens en `styles/tokens.css`)**: paleta clara con
+  acento azul (`--accent`), tomada como base de una app de referencia de
+  "reportes diarios" de terreno. Todo color vive en variables CSS —
+  nunca hardcodees un hex en un componente; usa `var(--token)` (o agrega
+  uno nuevo a `tokens.css` si hace falta) para que el modo oscuro
+  (`[data-theme='oscuro']`) siga funcionando en toda la app. La única
+  pantalla intencionalmente oscura de punta a punta es el onboarding.
+- **`NuevoPartePage` en 5 secciones numeradas**: siguiendo esa misma
+  referencia, el parte diario es una sola página con scroll, dividida en
+  bloques con el badge circular `.section-number` (1 Ubicación y Fecha,
+  2 Asistencia del día con contador y botón directo, 3 Tareas y Avances
+  con barra de progreso por tarea, 4 Registro Fotográfico con carrete
+  horizontal `.photo-strip` + tomar foto inline, 5 Observaciones). Las
+  pantallas dedicadas (Cubicación, Asistencia, Fotos) siguen existiendo
+  para el detalle completo; esta vista es el resumen operativo del día.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 
@@ -157,6 +172,9 @@ registro personal del capataz.
 
 - [ ] Programar el recordatorio diario real (notificación local).
 - [ ] Subida automática del respaldo a una nube (Google Drive API).
+- [ ] Seguimiento de maquinaria y equipo (no implementado; la app de
+      referencia del rediseño tiene esas secciones en su navegación
+      inferior, pero no forman parte del alcance actual).
 - [ ] Empaquetar como `.apk` con Capacitor cuando haya Android SDK
       disponible, y ahí sí pedir permisos nativos (cámara, ubicación,
       notificaciones) con los diálogos del sistema operativo.

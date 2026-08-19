@@ -8,7 +8,7 @@ html, body, #root {
 
 body {
   margin: 0;
-  background: var(--charcoal);
+  background: var(--outer-bg);
   color: var(--text);
   font-family: var(--font-body);
   -webkit-tap-highlight-color: transparent;
@@ -18,8 +18,8 @@ h1, h2, h3, .disp {
   font-family: var(--font-display);
 }
 
-a { color: var(--orange); text-decoration: none; }
-a:hover { color: var(--orange-dark); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-dark); }
 
 button, input, textarea, select {
   font-family: inherit;
@@ -39,12 +39,14 @@ button { cursor: pointer; }
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 0 0 1px var(--border);
 }
 
 .header {
-  background: var(--charcoal);
-  color: #fff;
-  padding: 20px 20px 16px;
+  background: var(--header-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--header-border);
+  padding: 18px 20px 14px;
   flex-shrink: 0;
 }
 
@@ -59,17 +61,18 @@ button { cursor: pointer; }
   border: none;
   padding: 0;
   display: flex;
-  color: #fff;
+  color: var(--text);
 }
 
 .header-title {
-  font-size: 17px;
+  font-size: 16.5px;
   font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
 .header-subtitle {
   font-size: 11px;
-  color: #c9c3b8;
+  color: var(--text-soft);
   margin-top: 2px;
 }
 
@@ -98,9 +101,10 @@ button { cursor: pointer; }
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--charcoal);
+  background: var(--nav-bg);
+  border-top: 1px solid var(--header-border);
   display: flex;
-  padding: 10px 6px 14px;
+  padding: 9px 6px 14px;
   padding-bottom: max(14px, env(safe-area-inset-bottom));
   flex-shrink: 0;
 }
@@ -111,19 +115,31 @@ button { cursor: pointer; }
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: #8a8478;
+  color: var(--nav-inactive);
   background: none;
   border: none;
   font-family: inherit;
-  padding: 0;
+  padding: 4px 0 0;
+  position: relative;
 }
 
 .nav-item span { font-size: 9.5px; }
 
 .nav-item.active {
-  color: var(--amber);
+  color: var(--accent);
 }
-.nav-item.active span { font-weight: 600; }
+.nav-item.active span { font-weight: 700; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--accent);
+}
 
 /* ---------- Cards & lists ---------- */
 
@@ -135,7 +151,7 @@ button { cursor: pointer; }
 }
 
 .card-dark {
-  background: var(--charcoal-2);
+  background: var(--dark-card-bg);
   color: #fff;
   border-radius: 16px;
   padding: 16px;
@@ -148,6 +164,34 @@ button { cursor: pointer; }
   text-transform: uppercase;
   letter-spacing: 0.07em;
   margin-bottom: 10px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.section-number {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.section-heading-title {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .list-row {
@@ -171,9 +215,9 @@ button { cursor: pointer; }
 }
 
 .btn-primary {
-  background: var(--orange);
+  background: var(--accent);
   color: #fff;
-  box-shadow: 0 6px 14px -6px rgba(232, 96, 12, 0.55);
+  box-shadow: 0 6px 14px -6px rgba(37, 99, 235, 0.45);
 }
 
 .btn-outline {
@@ -184,7 +228,7 @@ button { cursor: pointer; }
 
 .btn-danger-outline {
   background: var(--surface);
-  border: 1.5px solid #f0c9c0;
+  border: 1.5px solid #f3c8c4;
   color: var(--red);
 }
 
@@ -197,11 +241,11 @@ button { cursor: pointer; }
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--orange);
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px -6px rgba(232, 96, 12, 0.6);
+  box-shadow: 0 8px 18px -6px rgba(37, 99, 235, 0.5);
   border: none;
   color: #fff;
 }
@@ -229,12 +273,12 @@ button { cursor: pointer; }
   color: var(--text-soft);
 }
 .chip.selected {
-  background: var(--orange);
-  border-color: var(--orange);
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
 }
 .chip-dashed {
-  border: 1.5px dashed #c9c2b3;
+  border: 1.5px dashed #c7cedb;
   color: var(--text-soft);
   display: inline-flex;
   align-items: center;
@@ -259,7 +303,7 @@ button { cursor: pointer; }
   font-weight: 600;
 }
 .segmented button.active {
-  background: var(--orange);
+  background: var(--accent);
   color: #fff;
   font-weight: 700;
 }
@@ -289,7 +333,8 @@ button { cursor: pointer; }
 .toggle.on .toggle-knob { left: 21px; }
 
 .search-bar {
-  background: var(--charcoal-3);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 11px;
   padding: 9px 12px;
   display: flex;
@@ -300,11 +345,11 @@ button { cursor: pointer; }
   background: none;
   border: none;
   outline: none;
-  color: #fff;
+  color: var(--text);
   font-size: 12.5px;
   flex: 1;
 }
-.search-bar input::placeholder { color: #c9c3b8; }
+.search-bar input::placeholder { color: var(--text-soft); }
 
 .progress-track {
   height: 7px;
@@ -314,10 +359,10 @@ button { cursor: pointer; }
 }
 .progress-fill {
   height: 100%;
-  background: var(--orange);
+  background: var(--accent);
 }
 .progress-fill--gradient {
-  background: linear-gradient(90deg, var(--orange), var(--amber));
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
 }
 
 .field-input {
@@ -327,6 +372,45 @@ button { cursor: pointer; }
   padding: 6px 10px;
   font-size: 13px;
   font-weight: 700;
+}
+
+/* ---------- Photo strip (horizontal scroll) ---------- */
+
+.photo-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.photo-strip-item {
+  flex: 0 0 auto;
+  width: 84px;
+}
+.photo-strip-thumb {
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  position: relative;
+}
+.photo-strip-add {
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  border: 1.5px dashed #c7cedb;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  flex: 0 0 auto;
 }
 
 /* ---------- Misc utility ---------- */
