@@ -6,11 +6,14 @@
     { "file": "Asistencia.dc.html", "x": 1359, "y": 0, "w": 393, "h": 852 },
     { "file": "Fotos.dc.html", "x": 1812, "y": 0, "w": 393, "h": 852 },
     { "file": "EditorFoto.dc.html", "x": 2265, "y": 0, "w": 393, "h": 852 },
-    { "file": "Historial.dc.html", "x": 0, "y": 932, "w": 393, "h": 852 }
+    { "file": "Historial.dc.html", "x": 0, "y": 932, "w": 393, "h": 852 },
+    { "file": "Mas.dc.html", "x": 453, "y": 932, "w": 393, "h": 852 },
+    { "file": "HorasExtra.dc.html", "x": 906, "y": 932, "w": 393, "h": 852 },
+    { "file": "Documentos.dc.html", "x": 1359, "y": 932, "w": 393, "h": 852 }
   ],
   "annotations": [
     { "id": "flujo-principal", "x": 0, "y": -90, "w": 2658, "text": "Flujo principal: Inicio → Nuevo Parte Diario → Cubicación de tareas → Asistencia → Fotografías → Editor de fotos (dibujo y zonas translúcidas)" },
-    { "id": "nota-historial", "x": 0, "y": 842, "w": 393, "text": "Accesible desde el menú inferior en cualquier pantalla" }
+    { "id": "nota-fila2", "x": 0, "y": 842, "w": 1752, "text": "Accesibles desde el menú inferior: Historial · Más → Horas Extra (reporte mensual) y Documentos (repositorio de archivos)" }
   ],
   "launch": { "view": "canvas" }
 }
