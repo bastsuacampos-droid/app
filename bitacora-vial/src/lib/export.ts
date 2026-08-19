@@ -3,7 +3,28 @@ import { db } from './db';
 import type { HorasExtraPorTrabajador } from './queries';
 import { formatShortDate } from './date';
 
-export function downloadBlob(filename: string, blob: Blob) {
+// When this build runs inside a published Claude Artifact preview, a plain <a download>
+// link is inert (the sandbox blocks it) — files must go through window.claude.downloads
+// instead. Outside that preview (the real deployed app) window.claude doesn't exist, so
+// this always falls through to the normal browser download.
+declare global {
+  interface Window {
+    claude?: { downloads?: { save(req: { filename: string; data: Blob }): Promise<unknown> } };
+  }
+}
+
+export async function downloadBlob(filename: string, blob: Blob) {
+  const claudeDownloads = window.claude?.downloads;
+  if (claudeDownloads) {
+    try {
+      await claudeDownloads.save({ filename, data: blob });
+      return;
+    } catch {
+      // Fall through to the normal browser download below (e.g. this extension isn't
+      // enabled for the preview, or the viewer declined) — same as running standalone.
+    }
+  }
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -64,7 +85,9 @@ export function exportOvertimePDF(monthLabel: string, report: HorasExtraPorTraba
     y += 4;
   }
 
-  doc.save(`horas-extra-${monthLabel}.pdf`);
+  // doc.save() would trigger jsPDF's own direct download, bypassing downloadBlob's
+  // capability-aware path — get the bytes instead and route them through downloadBlob.
+  downloadBlob(`horas-extra-${monthLabel}.pdf`, doc.output('blob'));
 }
 
 export async function exportCubicacionCSV() {

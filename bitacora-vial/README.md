@@ -28,6 +28,15 @@ npm run build     # compila a dist/ (tsc + vite build)
 npm run preview   # sirve dist/ para probarlo como en producción
 ```
 
+## Probarla sin instalar nada
+
+`npm run build:preview` genera `dist-preview/index.html`, un único archivo
+autocontenido (usa `vite-plugin-singlefile`, sin el plugin de PWA/service
+worker) pensado para publicarse como Claude Artifact y así poder abrirla y
+recorrerla desde el navegador sin depender del entorno de desarrollo. Los
+datos quedan guardados en el almacenamiento local de esa página — no se
+comparten con la app "de verdad" servida desde `npm run dev`/`build`.
+
 ## Cómo verificar cambios
 
 Hay dos scripts de Playwright en `scripts/` que abren la app en un Chromium
