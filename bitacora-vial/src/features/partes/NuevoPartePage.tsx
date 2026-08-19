@@ -16,6 +16,8 @@ export function NuevoPartePage() {
   const [nuevoFrenteAbierto, setNuevoFrenteAbierto] = useState(false);
   const [nombreFrente, setNombreFrente] = useState('');
   const [kmFrente, setKmFrente] = useState('');
+  const [dropdownFrenteAbierto, setDropdownFrenteAbierto] = useState(false);
+  const dropdownFrenteRef = useRef<HTMLDivElement>(null);
   const tareasHoy = useLiveQuery(async () => {
     if (!parte) return [];
     const entries = await db.cubicacionEntries.where('parteId').equals(parte.id).toArray();
@@ -50,6 +52,16 @@ export function NuevoPartePage() {
     [parte?.id],
   ) ?? [];
 
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (dropdownFrenteRef.current && !dropdownFrenteRef.current.contains(e.target as Node)) {
+        setDropdownFrenteAbierto(false);
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, []);
+
   if (!parte) return null;
 
   async function patch(fields: Partial<typeof parte>) {
@@ -62,14 +74,14 @@ export function NuevoPartePage() {
     patch({ frentesIds: Array.from(set) });
   }
 
-  function onSelectFrente(e: React.ChangeEvent<HTMLSelectElement>) {
-    const val = e.target.value;
-    e.target.value = '';
-    if (val === '__nuevo__') {
-      setNuevoFrenteAbierto(true);
-    } else if (val) {
-      toggleFrente(val);
-    }
+  function seleccionarFrente(id: string) {
+    toggleFrente(id);
+    setDropdownFrenteAbierto(false);
+  }
+
+  function abrirNuevoFrente() {
+    setDropdownFrenteAbierto(false);
+    setNuevoFrenteAbierto(true);
   }
 
   async function crearFrente() {
@@ -176,13 +188,55 @@ export function NuevoPartePage() {
                 </div>
               </div>
             ) : (
-              <select value="" onChange={onSelectFrente} className="field-input" style={{ width: '100%' }}>
-                <option value="" disabled>Seleccionar punto de trabajo…</option>
-                {frentes.filter((f) => !parte.frentesIds.includes(f.id)).map((f) => (
-                  <option key={f.id} value={f.id}>{f.nombre}{f.km ? ` · ${f.km}` : ''}</option>
-                ))}
-                <option value="__nuevo__">+ Agregar punto de trabajo…</option>
-              </select>
+              <div ref={dropdownFrenteRef} style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  onClick={() => setDropdownFrenteAbierto((v) => !v)}
+                  className="field-input"
+                  style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left', color: 'var(--text-soft)' }}
+                >
+                  Seleccionar punto de trabajo…
+                  <span style={{ display: 'flex', transform: dropdownFrenteAbierto ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform .15s' }}>
+                    <IconChevronRight size={14} color="var(--text-soft)" />
+                  </span>
+                </button>
+
+                {dropdownFrenteAbierto && (
+                  <div
+                    className="card"
+                    style={{
+                      position: 'absolute', left: 0, right: 0, top: 'calc(100% + 6px)', zIndex: 20,
+                      padding: 6, maxHeight: 260, overflowY: 'auto',
+                      boxShadow: '0 12px 32px -10px rgba(20,23,28,.28)',
+                    }}
+                  >
+                    {frentes.filter((f) => !parte.frentesIds.includes(f.id)).map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => seleccionarFrente(f.id)}
+                        style={{
+                          display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none',
+                          borderRadius: 8, padding: '10px 10px', fontSize: 13, fontWeight: 600, color: 'var(--text)',
+                        }}
+                      >
+                        {f.nombre}{f.km ? ` · ${f.km}` : ''}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={abrirNuevoFrente}
+                      className="flex-row gap-8"
+                      style={{
+                        width: '100%', background: 'var(--accent-soft)', border: 'none', borderRadius: 8,
+                        padding: '10px 10px', fontSize: 13, fontWeight: 700, color: 'var(--accent-dark)', marginTop: 2,
+                      }}
+                    >
+                      <IconPlus size={13} color="var(--accent-dark)" /> Agregar punto de trabajo…
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
