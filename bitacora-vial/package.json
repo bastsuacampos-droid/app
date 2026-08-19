@@ -11,7 +11,8 @@
     "lint": "tsc --noEmit",
     "test:smoke": "node scripts/smoke-test.mjs",
     "test:interaction": "node scripts/interaction-test.mjs",
-    "test:formula": "node scripts/formula-test.mjs"
+    "test:formula": "node scripts/formula-test.mjs",
+    "test:nuevas-funciones": "node scripts/nuevas-funciones-test.mjs"
   },
   "dependencies": {
     "date-fns": "^3.6.0",

@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../lib/db';
 import { IconPencil, IconArrow, IconText, IconSquare, IconCircle, IconUndo } from '../../components/Icon';
+import { ETAPA_POR_ID } from '../../lib/etapas';
 
 type Tool = 'lapiz' | 'flecha' | 'texto' | 'rect' | 'circulo';
 
@@ -27,6 +28,7 @@ export function EditorFotoPage() {
   const navigate = useNavigate();
   const foto = useLiveQuery(() => (fotoId ? db.fotos.get(fotoId) : undefined), [fotoId]);
   const frente = useLiveQuery(() => (foto ? db.frentes.get(foto.frenteId) : undefined), [foto?.frenteId]);
+  const tarea = useLiveQuery(() => (foto?.partidaId ? db.partidas.get(foto.partidaId) : undefined), [foto?.partidaId]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -201,8 +203,11 @@ export function EditorFotoPage() {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12.5, fontWeight: 700 }}>{frente?.nombre ?? 'Foto'}</div>
-          <div style={{ fontSize: 10, color: '#d8d3c8' }}>{hora}{frente?.km ? ` · ${frente.km}` : ''}</div>
+          <div style={{ fontSize: 12.5, fontWeight: 700 }}>{tarea?.nombre ?? frente?.nombre ?? 'Foto'}</div>
+          <div className="flex-row gap-8" style={{ justifyContent: 'center', fontSize: 10, color: '#d8d3c8' }}>
+            <span style={{ color: ETAPA_POR_ID.get(foto.etapa)?.color, fontWeight: 700 }}>{ETAPA_POR_ID.get(foto.etapa)?.label}</span>
+            <span>{hora}{frente?.km ? ` · ${frente.km}` : ''}</span>
+          </div>
         </div>
         <button onClick={guardar} style={{ background: 'none', border: 'none', color: 'var(--amber)', fontSize: 13.5, fontWeight: 800 }}>
           Guardar

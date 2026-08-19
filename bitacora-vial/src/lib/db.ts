@@ -35,6 +35,21 @@ class BitacoraDB extends Dexie {
       documentos: 'id, categoria, createdAt',
       settings: 'id',
     });
+
+    // v2: photos gained an "etapa" (antes/durante/despues/inconveniente) and an optional
+    // link to the task (partida) they document.
+    this.version(2)
+      .stores({
+        fotos: 'id, parteId, frenteId, partidaId, capturedAt',
+      })
+      .upgrade(async (tx) => {
+        await tx
+          .table('fotos')
+          .toCollection()
+          .modify((foto: Foto) => {
+            if (!foto.etapa) foto.etapa = 'durante';
+          });
+      });
   }
 }
 
@@ -85,6 +100,7 @@ async function seedIfEmptyInner() {
     { id: newId(), nombre: 'Pedro Cárdenas', cargo: 'Obrero', frenteId: 'frente-1', activo: true },
     { id: newId(), nombre: 'Luis Torres', cargo: 'Chofer camión tolva', frenteId: 'frente-1', activo: true },
     { id: newId(), nombre: 'Marcela Fuentes', cargo: 'Obrero', frenteId: 'frente-1', activo: true },
+    { id: newId(), nombre: 'Ana Rojas', cargo: 'Obrero', frenteId: 'frente-2', activo: true },
   ];
   await db.trabajadores.bulkAdd(trabajadores);
 

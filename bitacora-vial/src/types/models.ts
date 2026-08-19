@@ -22,6 +22,9 @@ export interface Trabajador {
   activo: boolean;
 }
 
+/** Derived from acumulado vs. cantidadContratada — never stored, always computed. */
+export type EstadoTarea = 'sin_iniciar' | 'pendiente' | 'en_progreso_hoy' | 'terminada';
+
 /** Catalog of work activities ("partidas") tracked per frente, e.g. "Excavación en corte". */
 export interface Partida {
   id: string;
@@ -53,10 +56,16 @@ export interface RegistroAsistencia {
   motivoExtra?: string;
 }
 
+/** Photo stage: lets a task carry a before/during/after record, plus an issue callout. */
+export type EtapaFoto = 'antes' | 'durante' | 'despues' | 'inconveniente';
+
 export interface Foto {
   id: string;
   parteId: string;
   frenteId: string;
+  /** The task (Partida) this photo documents, when taken from within a task. */
+  partidaId?: string;
+  etapa: EtapaFoto;
   blob: Blob;
   anotada: boolean;
   capturedAt: string; // ISO datetime

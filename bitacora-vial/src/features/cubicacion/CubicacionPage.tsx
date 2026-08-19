@@ -2,13 +2,24 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
-import { cumulativeForAllPartidas, upsertCubicacionEntry } from '../../lib/queries';
+import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
+import { CATALOGO_PARTIDAS } from '../../lib/catalogoPartidas';
 import { Header } from '../../components/Header';
 import { IconPlus, IconChevronRight } from '../../components/Icon';
+import type { EstadoTarea } from '../../types/models';
 
 /** Units where a quantity can be computed from element dimensions rather than typed by hand. */
 const UNIDADES_CON_FORMULA = new Set(['m³', 'm²', 'ml']);
+
+const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: string }> = {
+  pendiente: { label: 'Pendiente de días anteriores', bg: 'var(--yellow-soft)', color: 'var(--yellow-text)' },
+  en_progreso_hoy: { label: 'En progreso hoy', bg: 'var(--blue-soft)', color: 'var(--blue)' },
+  sin_iniciar: { label: 'Nueva', bg: 'var(--surface-alt)', color: 'var(--text-soft)' },
+  terminada: { label: 'Terminada', bg: 'var(--green-soft)', color: 'var(--green)' },
+};
+
+const ORDEN_ESTADO: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
 
 function calcularSubtotal(unidad: string, largo: number, ancho: number, alto: number, cantidad: number): number {
   const n = cantidad > 0 ? cantidad : 1;
@@ -40,6 +51,7 @@ export function CubicacionPage() {
   const [showAdd, setShowAdd] = useState(false);
   const [nuevo, setNuevo] = useState({ nombre: '', unidad: 'm³', cantidadContratada: 0 });
   const [calcOpenId, setCalcOpenId] = useState<string | null>(null);
+  const [catCategoria, setCatCategoria] = useState(CATALOGO_PARTIDAS[0].categoria);
 
   async function agregarDesdeFormula(partidaId: string, subtotal: number) {
     if (!parte || subtotal <= 0) return;
@@ -103,15 +115,28 @@ export function CubicacionPage() {
         </div>
 
         <div className="stack">
-          {partidas.map((p) => {
-            const acumulado = Math.min(totales[p.id] ?? 0, p.cantidadContratada);
+          {partidas
+            .map((p) => {
+              const acumuladoReal = totales[p.id] ?? 0;
+              const acumulado = Math.min(acumuladoReal, p.cantidadContratada);
+              const entry = entriesHoy.find((e) => e.partidaId === p.id);
+              const estado = estadoTarea(acumuladoReal, p.cantidadContratada, !!entry && entry.cantidadEjecutada > 0);
+              return { p, acumulado, entry, estado };
+            })
+            .sort((a, b) => ORDEN_ESTADO[a.estado] - ORDEN_ESTADO[b.estado])
+            .map(({ p, acumulado, entry, estado }) => {
             const pct = p.cantidadContratada > 0 ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
-            const entry = entriesHoy.find((e) => e.partidaId === p.id);
+            const estadoInfo = ESTADO_INFO[estado];
             return (
               <div key={p.id} className="card">
-                <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 9 }}>
+                <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 7 }}>
                   <span style={{ fontSize: 13.5, fontWeight: 700 }}>{p.nombre}</span>
                   <span style={{ background: 'var(--surface-alt)', color: 'var(--text-soft)', fontSize: 10.5, fontWeight: 700, padding: '3px 8px', borderRadius: 6 }}>{p.unidad}</span>
+                </div>
+                <div style={{ marginBottom: 9 }}>
+                  <span style={{ background: estadoInfo.bg, color: estadoInfo.color, fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 20 }}>
+                    {estadoInfo.label}
+                  </span>
                 </div>
                 <div className="progress-track" style={{ marginBottom: 8 }}>
                   <div className="progress-fill" style={{ width: `${pct}%` }} />
@@ -158,6 +183,29 @@ export function CubicacionPage() {
 
           {showAdd && (
             <div className="card stack">
+              <div>
+                <div className="section-label" style={{ marginBottom: 6 }}>Catálogo sugerido</div>
+                <select
+                  value={catCategoria}
+                  onChange={(e) => setCatCategoria(e.target.value)}
+                  className="field-input"
+                  style={{ width: '100%', marginBottom: 8 }}
+                >
+                  {CATALOGO_PARTIDAS.map((c) => <option key={c.categoria} value={c.categoria}>{c.categoria}</option>)}
+                </select>
+                <div className="flex-row gap-8" style={{ flexWrap: 'wrap' }}>
+                  {CATALOGO_PARTIDAS.find((c) => c.categoria === catCategoria)?.items.map((it) => (
+                    <button
+                      key={it.nombre}
+                      className="chip"
+                      onClick={() => setNuevo({ ...nuevo, nombre: it.nombre, unidad: it.unidad })}
+                    >
+                      {it.nombre} · {it.unidad}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <input
                 placeholder="Nombre de la partida"
                 value={nuevo.nombre}

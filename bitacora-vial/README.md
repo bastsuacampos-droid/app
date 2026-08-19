@@ -99,6 +99,30 @@ src/
 5. Agrega la ruta en `src/App.tsx` y, si corresponde, un ítem en
    `components/BottomNav.tsx`.
 
+## Conceptos clave del modelo de datos
+
+- **Préstamo de personal entre frentes**: un `Trabajador` tiene un frente
+  "de origen" (`frenteId`), pero su `RegistroAsistencia` de un día
+  concreto guarda el frente donde **realmente trabajó** ese día. Si
+  difieren, se muestra el badge "Prestado de...". Prestar a alguien
+  (`moveTrabajadorAFrente`) simplemente mueve ese registro de un frente a
+  otro; nunca hay dos registros del mismo trabajador el mismo día.
+- **Estado de una tarea** (`estadoTarea()` en `lib/queries.ts`): nunca se
+  guarda en la base — se calcula siempre a partir de lo acumulado vs. lo
+  contratado y si hoy ya se cargó algo: *Nueva* (sin tocar) → *Pendiente*
+  (algún día anterior avanzó, hoy no) → *En progreso hoy* → *Terminada*.
+  Cubicación ordena las partidas por ese estado para que lo pendiente
+  aparezca primero.
+- **Catálogo sugerido** (`lib/catalogoPartidas.ts`): partidas típicas de
+  obra vial agrupadas por categoría para no escribir todo a mano al crear
+  una tarea nueva. Es un punto de partida general, no una transcripción
+  oficial del Manual de Carreteras — conviene ajustarlo a los ítems reales
+  de cada contrato.
+- **Fotos por etapa** (`lib/etapas.ts`): cada `Foto` lleva una `etapa`
+  (antes/durante/después/inconveniente) y, opcionalmente, la `partidaId`
+  de la tarea que documenta. Se eligen ambas justo antes de tomar la
+  foto, desde el panel que abre el botón + en Fotos.
+
 ## Qué es real y qué es respaldo local (no hay backend)
 
 Todo se guarda **localmente en el dispositivo** (IndexedDB vía Dexie):

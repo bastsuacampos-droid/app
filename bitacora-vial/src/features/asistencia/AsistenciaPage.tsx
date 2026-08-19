@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
-import { ensureAsistenciaForFrente, attendanceSummaryForParte } from '../../lib/queries';
+import { ensureAsistenciaForFrente, attendanceSummaryForParte, moveTrabajadorAFrente, agregarTrabajadorPrestado } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
 import { IconSearch, IconPlus, IconClockPlus, IconChevronRight } from '../../components/Icon';
+import type { Trabajador } from '../../types/models';
 
 export function AsistenciaPage() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ export function AsistenciaPage() {
   const [query, setQuery] = useState('');
   const [showAdd, setShowAdd] = useState(false);
   const [nuevo, setNuevo] = useState({ nombre: '', cargo: '' });
+  const [showPrestamo, setShowPrestamo] = useState(false);
+  const [prestamoRow, setPrestamoRow] = useState<string | null>(null);
 
   useEffect(() => {
     if (parte && activeFrenteId) {
@@ -24,10 +27,10 @@ export function AsistenciaPage() {
     }
   }, [parte?.id, activeFrenteId]);
 
-  const trabajadores = useLiveQuery(
-    () => (activeFrenteId ? db.trabajadores.where('frenteId').equals(activeFrenteId).toArray() : []),
-    [activeFrenteId],
-  ) ?? [];
+  // All workers, regardless of home frente — needed to resolve loaned-in workers and to
+  // list candidates for "traer prestado de otro frente".
+  const todosTrabajadores = useLiveQuery(() => db.trabajadores.toArray(), []) ?? [];
+  const trabajadorPorId = new Map<string, Trabajador>(todosTrabajadores.map((t) => [t.id, t]));
 
   const registros = useLiveQuery(
     () => (parte ? db.asistencias.where('parteId').equals(parte.id).toArray() : []),
@@ -36,9 +39,18 @@ export function AsistenciaPage() {
 
   const totalHoy = useLiveQuery(() => (parte ? attendanceSummaryForParte(parte.id) : undefined), [parte?.id]);
 
-  const filtrados = trabajadores.filter((t) => t.nombre.toLowerCase().includes(query.toLowerCase()));
   const registrosFrente = registros.filter((r) => r.frenteId === activeFrenteId);
   const presentesFrente = registrosFrente.filter((r) => r.presente).length;
+
+  const filas = registrosFrente
+    .map((r) => ({ registro: r, trabajador: trabajadorPorId.get(r.trabajadorId) }))
+    .filter((f): f is { registro: typeof registrosFrente[number]; trabajador: Trabajador } => !!f.trabajador)
+    .filter((f) => f.trabajador.nombre.toLowerCase().includes(query.toLowerCase()));
+
+  const idsYaEnEsteFrente = new Set(registrosFrente.map((r) => r.trabajadorId));
+  const candidatosPrestamo = todosTrabajadores.filter(
+    (t) => t.activo && t.frenteId !== activeFrenteId && !idsYaEnEsteFrente.has(t.id),
+  );
 
   async function updateRegistro(id: string, patch: Partial<(typeof registros)[number]>) {
     await db.asistencias.update(id, patch);
@@ -49,6 +61,17 @@ export function AsistenciaPage() {
     await db.trabajadores.add({ id: newId(), nombre: nuevo.nombre.trim(), cargo: nuevo.cargo.trim() || 'Obrero', frenteId: activeFrenteId, activo: true });
     setNuevo({ nombre: '', cargo: '' });
     setShowAdd(false);
+  }
+
+  async function traerPrestado(trabajadorId: string) {
+    if (!parte || !activeFrenteId) return;
+    await agregarTrabajadorPrestado(parte.id, trabajadorId, activeFrenteId, parte.fecha);
+    setShowPrestamo(false);
+  }
+
+  async function enviarAPrestamo(registroId: string, destinoFrenteId: string) {
+    await moveTrabajadorAFrente(registroId, destinoFrenteId);
+    setPrestamoRow(null);
   }
 
   if (!parte) return null;
@@ -84,10 +107,11 @@ export function AsistenciaPage() {
         </div>
 
         <div className="stack" style={{ gap: 8 }}>
-          {filtrados.map((t) => {
-            const r = registros.find((x) => x.trabajadorId === t.id);
-            if (!r) return null;
+          {filas.map(({ registro: r, trabajador: t }) => {
             const initials = t.nombre.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+            const esPrestado = t.frenteId !== activeFrenteId;
+            const frenteHogar = frentes.find((f) => f.id === t.frenteId);
+            const otrosFrentes = frentes.filter((f) => f.id !== activeFrenteId);
             return (
               <div key={t.id} className="card">
                 <div className="list-row" style={{ opacity: r.presente ? 1 : 0.72 }}>
@@ -100,7 +124,10 @@ export function AsistenciaPage() {
                     {initials}
                   </div>
                   <div style={{ flexGrow: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</div>
+                    <div className="flex-row gap-8">
+                      <span style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</span>
+                      {esPrestado && <span className="badge badge-blue">Prestado{frenteHogar ? ` de ${frenteHogar.nombre}` : ''}</span>}
+                    </div>
                     <div className="text-soft" style={{ fontSize: 11 }}>{t.cargo}</div>
                   </div>
                   <Toggle on={r.presente} onChange={(v) => updateRegistro(r.id, { presente: v })} label={`Presente: ${t.nombre}`} />
@@ -135,15 +162,67 @@ export function AsistenciaPage() {
                     style={{ marginTop: 8, width: '100%', border: 'none', background: 'none', fontSize: 11, color: 'var(--red)', fontWeight: 600 }}
                   />
                 )}
+
+                {otrosFrentes.length > 0 && (
+                  <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border)' }}>
+                    {prestamoRow === t.id ? (
+                      <div className="flex-row gap-8">
+                        <select
+                          className="field-input"
+                          style={{ flexGrow: 1 }}
+                          defaultValue=""
+                          onChange={(e) => e.target.value && enviarAPrestamo(r.id, e.target.value)}
+                        >
+                          <option value="" disabled>¿A qué frente lo prestas?</option>
+                          {otrosFrentes.map((f) => <option key={f.id} value={f.id}>{f.nombre}</option>)}
+                        </select>
+                        <button className="btn btn-outline" style={{ padding: '8px 12px', fontSize: 11.5 }} onClick={() => setPrestamoRow(null)}>Cancelar</button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setPrestamoRow(t.id)}
+                        style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11, fontWeight: 600 }}
+                      >
+                        Prestar a otro frente hoy
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}
 
-          {!showAdd && (
-            <button className="chip-dashed card" style={{ justifyContent: 'center', width: '100%', background: 'none' }} onClick={() => setShowAdd(true)}>
-              <IconPlus size={14} /> Agregar trabajador
-            </button>
+          {!showAdd && !showPrestamo && (
+            <div className="flex-row gap-8">
+              <button className="chip-dashed card" style={{ justifyContent: 'center', flex: 1, background: 'none' }} onClick={() => setShowAdd(true)}>
+                <IconPlus size={14} /> Agregar trabajador
+              </button>
+              {candidatosPrestamo.length > 0 && (
+                <button className="chip-dashed card" style={{ justifyContent: 'center', flex: 1, background: 'none' }} onClick={() => setShowPrestamo(true)}>
+                  <IconPlus size={14} /> Traer prestado
+                </button>
+              )}
+            </div>
           )}
+
+          {showPrestamo && (
+            <div className="card stack">
+              <div className="section-label" style={{ marginBottom: 0 }}>Traer trabajador prestado de otro frente</div>
+              {candidatosPrestamo.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => traerPrestado(t.id)}
+                  className="list-row"
+                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '6px 0' }}
+                >
+                  <span style={{ flexGrow: 1, fontSize: 13 }}>{t.nombre} <span className="text-soft">· {t.cargo}</span></span>
+                  <span className="text-soft" style={{ fontSize: 11 }}>{frentes.find((f) => f.id === t.frenteId)?.nombre}</span>
+                </button>
+              ))}
+              <button className="btn btn-outline" onClick={() => setShowPrestamo(false)}>Cancelar</button>
+            </div>
+          )}
+
           {showAdd && (
             <div className="card stack">
               <input placeholder="Nombre" value={nuevo.nombre} onChange={(e) => setNuevo({ ...nuevo, nombre: e.target.value })} className="field-input" style={{ fontWeight: 500 }} />

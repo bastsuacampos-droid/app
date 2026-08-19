@@ -1,5 +1,5 @@
 import { db, newId, nowISO, todayISO } from './db';
-import type { Parte } from '../types/models';
+import type { EstadoTarea, Parte } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -66,6 +66,20 @@ export async function cumulativeForAllPartidas(): Promise<Record<string, number>
     totals[e.partidaId] = (totals[e.partidaId] ?? 0) + e.cantidadEjecutada;
   }
   return totals;
+}
+
+/**
+ * A task's status is always derived, never stored: "terminada" once the accumulated
+ * quantity reaches the contracted one; "en_progreso_hoy" once today logged something for
+ * it; "pendiente" when earlier days made progress but today hasn't touched it yet
+ * (exactly the "trabajo pendiente de días anteriores" the foreman needs to pick back up);
+ * "sin_iniciar" for a task nobody has logged anything against yet.
+ */
+export function estadoTarea(acumulado: number, contratado: number, tieneEntradaHoy: boolean): EstadoTarea {
+  if (contratado > 0 && acumulado >= contratado) return 'terminada';
+  if (tieneEntradaHoy) return 'en_progreso_hoy';
+  if (acumulado > 0) return 'pendiente';
+  return 'sin_iniciar';
 }
 
 /** Weighted physical-progress % across every partida (weighted by contracted quantity). */
@@ -171,6 +185,39 @@ export async function ensureAsistenciaForFrente(parteId: string, frenteId: strin
       horasExtra: 0,
     })),
   );
+}
+
+/** Sends a worker to another frente for today: their existing attendance row just moves —
+ * they stop appearing under their home frente's list and start appearing under the
+ * destination's, badged there as "prestado". */
+export async function moveTrabajadorAFrente(registroId: string, nuevoFrenteId: string) {
+  await db.asistencias.update(registroId, { frenteId: nuevoFrenteId });
+}
+
+/** Brings a worker from another crew into `frenteDestinoId` for today. Reuses their
+ * existing row for this parte if they already have one (so they only ever have one
+ * attendance row per day, wherever they end up working), otherwise creates it. */
+export async function agregarTrabajadorPrestado(parteId: string, trabajadorId: string, frenteDestinoId: string, fecha: string) {
+  const existente = await db.asistencias
+    .where('parteId').equals(parteId)
+    .filter((r) => r.trabajadorId === trabajadorId)
+    .first();
+
+  if (existente) {
+    await db.asistencias.update(existente.id, { frenteId: frenteDestinoId });
+    return;
+  }
+
+  await db.asistencias.add({
+    id: newId(),
+    parteId,
+    trabajadorId,
+    frenteId: frenteDestinoId,
+    fecha,
+    presente: true,
+    horasNormales: 8,
+    horasExtra: 0,
+  });
 }
 
 export async function attendanceSummaryForParte(parteId: string) {
