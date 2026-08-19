@@ -5,7 +5,7 @@ import { db, newId, nowISO } from '../../lib/db';
 import { attendanceSummaryForParte, cumulativeForAllPartidas } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
-import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos } from '../../components/Icon';
+import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX } from '../../components/Icon';
 import type { Clima, Turno } from '../../types/models';
 
 export function NuevoPartePage() {
@@ -13,6 +13,9 @@ export function NuevoPartePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const parte = useTodayParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
+  const [nuevoFrenteAbierto, setNuevoFrenteAbierto] = useState(false);
+  const [nombreFrente, setNombreFrente] = useState('');
+  const [kmFrente, setKmFrente] = useState('');
   const tareasHoy = useLiveQuery(async () => {
     if (!parte) return [];
     const entries = await db.cubicacionEntries.where('parteId').equals(parte.id).toArray();
@@ -59,6 +62,28 @@ export function NuevoPartePage() {
     patch({ frentesIds: Array.from(set) });
   }
 
+  function onSelectFrente(e: React.ChangeEvent<HTMLSelectElement>) {
+    const val = e.target.value;
+    e.target.value = '';
+    if (val === '__nuevo__') {
+      setNuevoFrenteAbierto(true);
+    } else if (val) {
+      toggleFrente(val);
+    }
+  }
+
+  async function crearFrente() {
+    if (!nombreFrente.trim()) return;
+    const id = newId();
+    await db.frentes.add({ id, nombre: nombreFrente.trim(), km: kmFrente.trim(), activo: true });
+    const set = new Set(parte!.frentesIds);
+    set.add(id);
+    await patch({ frentesIds: Array.from(set) });
+    setNombreFrente('');
+    setKmFrente('');
+    setNuevoFrenteAbierto(false);
+  }
+
   async function onFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = '';
@@ -96,17 +121,69 @@ export function NuevoPartePage() {
 
           <div style={{ paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
             <div className="text-soft" style={{ fontSize: 13, marginBottom: 8 }}>Frentes de trabajo activos hoy</div>
-            <div className="flex-row gap-8" style={{ flexWrap: 'wrap' }}>
-              {frentes.map((f) => (
-                <button
-                  key={f.id}
-                  onClick={() => toggleFrente(f.id)}
-                  className={`chip${parte.frentesIds.includes(f.id) ? ' selected' : ''}`}
-                >
-                  {f.nombre}{f.km ? ` · ${f.km}` : ''}
-                </button>
-              ))}
-            </div>
+
+            {parte.frentesIds.length > 0 && (
+              <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 10 }}>
+                {parte.frentesIds.map((id) => {
+                  const f = frentes.find((x) => x.id === id);
+                  if (!f) return null;
+                  return (
+                    <span
+                      key={id}
+                      className="chip selected"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, paddingRight: 8 }}
+                    >
+                      {f.nombre}{f.km ? ` · ${f.km}` : ''}
+                      <button
+                        onClick={() => toggleFrente(id)}
+                        aria-label={`Quitar ${f.nombre}`}
+                        style={{ background: 'rgba(255,255,255,.25)', border: 'none', borderRadius: '50%', width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', padding: 0, flexShrink: 0 }}
+                      >
+                        <IconX size={9} color="#fff" />
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+
+            {nuevoFrenteAbierto ? (
+              <div style={{ background: 'var(--surface-alt)', borderRadius: 10, padding: 10 }}>
+                <input
+                  value={nombreFrente}
+                  onChange={(e) => setNombreFrente(e.target.value)}
+                  placeholder="Nombre del punto de trabajo"
+                  className="field-input"
+                  style={{ width: '100%', marginBottom: 8 }}
+                  autoFocus
+                />
+                <input
+                  value={kmFrente}
+                  onChange={(e) => setKmFrente(e.target.value)}
+                  placeholder="Km (opcional)"
+                  className="field-input"
+                  style={{ width: '100%', marginBottom: 8 }}
+                />
+                <div className="flex-row gap-8">
+                  <button
+                    className="btn btn-outline"
+                    style={{ flex: 1 }}
+                    onClick={() => { setNuevoFrenteAbierto(false); setNombreFrente(''); setKmFrente(''); }}
+                  >
+                    Cancelar
+                  </button>
+                  <button className="btn btn-primary" style={{ flex: 1 }} onClick={crearFrente}>Guardar</button>
+                </div>
+              </div>
+            ) : (
+              <select value="" onChange={onSelectFrente} className="field-input" style={{ width: '100%' }}>
+                <option value="" disabled>Seleccionar punto de trabajo…</option>
+                {frentes.filter((f) => !parte.frentesIds.includes(f.id)).map((f) => (
+                  <option key={f.id} value={f.id}>{f.nombre}{f.km ? ` · ${f.km}` : ''}</option>
+                ))}
+                <option value="__nuevo__">+ Agregar punto de trabajo…</option>
+              </select>
+            )}
           </div>
 
           <div className="flex-row" style={{ justifyContent: 'space-between', paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>

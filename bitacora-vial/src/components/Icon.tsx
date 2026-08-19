@@ -89,6 +89,10 @@ export const IconCheck = (p: IconProps) => (
   <svg {...base(p.size ?? 16, p)} strokeWidth={2.4}><path d="M5 13l4 4 10-10" /></svg>
 );
 
+export const IconX = (p: IconProps) => (
+  <svg {...base(p.size ?? 14, p)} strokeWidth={2.4}><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+);
+
 export const IconPencil = (p: IconProps) => (
   <svg {...base(p.size ?? 19, p)}>
     <path d="M4 20l.9-3.6L16.6 4.7a1.5 1.5 0 0 1 2.1 0l.6.6a1.5 1.5 0 0 1 0 2.1L7.6 19.1 4 20z" />
