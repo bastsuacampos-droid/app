@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+    :root{
+      --bg:#f7f5f2; --surface:#ffffff; --surface-alt:#efece5; --border:#e3ded2;
+      --text:#231f1a; --text-soft:#6b6459; --charcoal:#242220; --charcoal2:#343029;
+      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family:'IBM Plex Sans', system-ui, sans-serif; color:var(--text); }
+    a{ color:var(--orange); } a:hover{ color:var(--orange-dark); }
+    .disp{ font-family:'Archivo', system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="width:393px;height:852px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--border);">
+
+  <div style="background:var(--charcoal);color:#fff;padding:20px 20px 16px;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+      <div class="disp" style="font-size:17px;font-weight:800;">Cubicación de Tareas</div>
+    </div>
+    <div style="background:#3a362e;border-radius:11px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:12.5px;font-weight:600;">Frente 1 · Km 12+300</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c9c3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:16px 20px 20px;">
+
+    <div style="background:var(--charcoal2);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:16px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:11px;color:#c9c3b8;text-transform:uppercase;letter-spacing:.06em;">Avance contractual acumulado</span>
+        <span class="disp" style="font-size:20px;font-weight:800;color:var(--amber);">62%</span>
+      </div>
+      <div style="height:7px;border-radius:4px;background:#4a453c;overflow:hidden;">
+        <div style="width:62%;height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:11px;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
+          <span style="font-size:13.5px;font-weight:700;">Excavación en corte</span>
+          <span style="background:var(--surface-alt);color:var(--text-soft);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;">m³</span>
+        </div>
+        <div style="height:7px;border-radius:4px;background:var(--surface-alt);overflow:hidden;margin-bottom:8px;">
+          <div style="width:62%;height:100%;background:var(--orange);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-bottom:9px;">
+          <span>Contratado: 4.200 m³</span><span>Acum: 2.604 m³ · 62%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text-soft);flex-grow:1;">Ejecutado hoy</span>
+          <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;width:70px;text-align:right;">85</div>
+          <span style="font-size:12px;color:var(--text-soft);">m³</span>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
+          <span style="font-size:13.5px;font-weight:700;">Relleno estructural</span>
+          <span style="background:var(--surface-alt);color:var(--text-soft);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;">m³</span>
+        </div>
+        <div style="height:7px;border-radius:4px;background:var(--surface-alt);overflow:hidden;margin-bottom:8px;">
+          <div style="width:48%;height:100%;background:var(--orange);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-bottom:9px;">
+          <span>Contratado: 3.100 m³</span><span>Acum: 1.488 m³ · 48%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text-soft);flex-grow:1;">Ejecutado hoy</span>
+          <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;width:70px;text-align:right;">40</div>
+          <span style="font-size:12px;color:var(--text-soft);">m³</span>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
+          <span style="font-size:13.5px;font-weight:700;">Base granular</span>
+          <span style="background:var(--surface-alt);color:var(--text-soft);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;">m³</span>
+        </div>
+        <div style="height:7px;border-radius:4px;background:var(--surface-alt);overflow:hidden;margin-bottom:8px;">
+          <div style="width:74%;height:100%;background:var(--orange);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-bottom:9px;">
+          <span>Contratado: 2.800 m³</span><span>Acum: 2.072 m³ · 74%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text-soft);flex-grow:1;">Ejecutado hoy</span>
+          <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;width:70px;text-align:right;">120</div>
+          <span style="font-size:12px;color:var(--text-soft);">m³</span>
+        </div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;">
+          <span style="font-size:13.5px;font-weight:700;">Imprimación asfáltica</span>
+          <span style="background:var(--surface-alt);color:var(--text-soft);font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;">m²</span>
+        </div>
+        <div style="height:7px;border-radius:4px;background:var(--surface-alt);overflow:hidden;margin-bottom:8px;">
+          <div style="width:31%;height:100%;background:var(--orange);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-bottom:9px;">
+          <span>Contratado: 18.000 m²</span><span>Acum: 5.580 m² · 31%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text-soft);flex-grow:1;">Ejecutado hoy</span>
+          <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;width:70px;text-align:right;">0</div>
+          <span style="font-size:12px;color:var(--text-soft);">m²</span>
+        </div>
+      </div>
+
+      <div style="border:1.5px dashed #c9c2b3;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:center;gap:7px;color:var(--text-soft);font-size:13px;font-weight:600;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-soft)" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        Agregar partida
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-shrink:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 20px 16px;">
+    <button style="width:100%;background:var(--orange);border:none;color:#fff;border-radius:12px;padding:14px;font-size:14px;font-weight:700;font-family:'IBM Plex Sans';">Guardar cubicación del día</button>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

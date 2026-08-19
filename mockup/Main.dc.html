@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+    :root{
+      --bg:#f7f5f2; --surface:#ffffff; --surface-alt:#efece5; --border:#e3ded2;
+      --text:#231f1a; --text-soft:#6b6459; --charcoal:#242220; --charcoal2:#343029;
+      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family:'IBM Plex Sans', system-ui, sans-serif; color:var(--text); }
+    a{ color:var(--orange); } a:hover{ color:var(--orange-dark); }
+    .disp{ font-family:'Archivo', system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="width:393px;height:852px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--border);">
+
+  <div style="background:var(--charcoal);color:#fff;padding:20px 20px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18"/><path d="M6 18l4-11h4l4 11"/><path d="M10 11h4"/></svg>
+    <div style="flex-grow:1;">
+      <div class="disp" style="font-size:18px;font-weight:800;letter-spacing:.2px;">Bitácora Vial</div>
+      <div style="font-size:11.5px;color:#c9c3b8;">Ruta 5 Sur · Tramo Chillán–Bulnes</div>
+    </div>
+    <div style="position:relative;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg>
+      <div style="position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--amber);border:2px solid var(--charcoal);"></div>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:18px 20px 100px;">
+
+    <div style="margin-bottom:16px;">
+      <div class="disp" style="font-size:20px;font-weight:800;">Hola, Capataz</div>
+      <div style="font-size:13px;color:var(--text-soft);">Miércoles 19 de agosto de 2026</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--orange) 62%, var(--surface-alt) 0);display:flex;align-items:center;justify-content:center;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;">62%</div>
+        </div>
+        <div style="font-size:10px;color:var(--text-soft);text-align:center;line-height:1.2;">Avance contrato</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="disp" style="font-size:19px;font-weight:800;color:var(--green);">21/24</div>
+        <div style="font-size:10px;color:var(--text-soft);text-align:center;line-height:1.2;">Personal presente</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div class="disp" style="font-size:19px;font-weight:800;color:var(--amber);">2</div>
+        <div style="font-size:10px;color:var(--text-soft);text-align:center;line-height:1.2;">Partes sin respaldar</div>
+      </div>
+    </div>
+
+    <div style="background:var(--charcoal2);color:#fff;border-radius:16px;padding:16px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:11px;color:#c9c3b8;text-transform:uppercase;letter-spacing:.06em;">Proyecto activo</div>
+        <div style="font-size:11px;color:var(--amber);">Km 10+000 – 22+500</div>
+      </div>
+      <div class="disp" style="font-size:16px;font-weight:700;margin-bottom:10px;">Ruta 5 Sur — Tramo Chillán–Bulnes</div>
+      <div style="height:8px;border-radius:4px;background:#4a453c;overflow:hidden;margin-bottom:6px;">
+        <div style="width:62%;height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#c9c3b8;">
+        <span>62% avance físico</span><span>Contrato: 145 días</span>
+      </div>
+    </div>
+
+    <button style="width:100%;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:15px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;font-family:'IBM Plex Sans';box-shadow:0 6px 14px -6px rgba(232,96,12,.55);margin-bottom:22px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+      Nuevo Parte Diario
+    </button>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div class="disp" style="font-size:14.5px;font-weight:700;">Partes recientes</div>
+      <div style="font-size:12px;color:var(--orange);font-weight:600;">Ver todos</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
+        <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#cfd6da,#8a9aa3);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:600;">Parte N° 118 · 18 ago</div>
+          <div style="font-size:11.5px;color:var(--text-soft);">Frente 1 y Frente 2</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
+        <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#e3c9a5,#a9835a);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:600;">Parte N° 117 · 17 ago</div>
+          <div style="font-size:11.5px;color:var(--text-soft);">Frente 1 · Planta de áridos</div>
+        </div>
+        <div style="background:#fbeecb;color:#a5760a;font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">Pendiente</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;">
+        <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#c7d8c9,#6f9873);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:600;">Parte N° 116 · 15 ago</div>
+          <div style="font-size:11.5px;color:var(--text-soft);">Frente 2</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--charcoal);display:flex;padding:10px 6px 14px;flex-shrink:0;">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--amber);">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span style="font-size:9.5px;font-weight:600;">Inicio</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V14"/><path d="M12 20V8"/><path d="M19 20v-6"/><path d="M3 20h18"/></svg>
+      <span style="font-size:9.5px;">Cubicación</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.5-6.5 5.5-6.5s5.5 2.9 5.5 6.5"/><circle cx="17" cy="9" r="2.6"/><path d="M14.8 13.7c2.6.4 4.7 3 4.7 6.3"/></svg>
+      <span style="font-size:9.5px;">Asistencia</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
+      <span style="font-size:9.5px;">Fotos</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      <span style="font-size:9.5px;">Historial</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

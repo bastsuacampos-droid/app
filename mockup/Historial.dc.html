@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+    :root{
+      --bg:#f7f5f2; --surface:#ffffff; --surface-alt:#efece5; --border:#e3ded2;
+      --text:#231f1a; --text-soft:#6b6459; --charcoal:#242220; --charcoal2:#343029;
+      --orange:#e8600c; --orange-dark:#c14f08; --amber:#f2b705; --green:#3f8f5f; --red:#c0392b;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family:'IBM Plex Sans', system-ui, sans-serif; color:var(--text); }
+    a{ color:var(--orange); } a:hover{ color:var(--orange-dark); }
+    .disp{ font-family:'Archivo', system-ui, sans-serif; }
+  </style>
+</helmet>
+
+<div style="width:393px;height:852px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 0 0 1px var(--border);">
+
+  <div style="background:var(--charcoal);color:#fff;padding:20px 20px 16px;flex-shrink:0;">
+    <div class="disp" style="font-size:17px;font-weight:800;margin-bottom:12px;">Historial y Respaldo</div>
+    <div style="background:#3a362e;border-radius:11px;padding:9px 12px;display:flex;align-items:center;gap:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c9c3b8" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+      <span style="font-size:12.5px;color:#c9c3b8;">Buscar por fecha o frente...</span>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:16px 20px 20px;">
+
+    <div style="background:var(--charcoal2);color:#fff;border-radius:14px;padding:15px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg>
+        <div style="flex-grow:1;">
+          <div style="font-size:13px;font-weight:700;">Respaldo automático</div>
+          <div style="font-size:10.5px;color:#c9c3b8;">Último respaldo: hoy 07:42</div>
+        </div>
+        <div style="width:38px;height:22px;border-radius:11px;background:var(--green);position:relative;">
+          <div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;right:3px;"></div>
+        </div>
+      </div>
+      <button style="width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:10px;padding:10px;font-size:12.5px;font-weight:700;font-family:'IBM Plex Sans';">Respaldar ahora</button>
+    </div>
+
+    <div style="display:flex;gap:7px;margin-bottom:14px;">
+      <div style="background:var(--orange);color:#fff;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:20px;">Todos</div>
+      <div style="background:var(--surface);border:1px solid var(--border);color:var(--text-soft);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;">Esta semana</div>
+      <div style="background:var(--surface);border:1px solid var(--border);color:var(--text-soft);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;">Este mes</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#cfd6da,#8a9aa3);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;">Parte N° 119 · 19 ago</div>
+          <div style="font-size:11px;color:var(--text-soft);">Frente 1, Frente 2</div>
+        </div>
+        <div style="background:#fbeecb;color:#a5760a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">Pendiente</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#e3c9a5,#a9835a);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;">Parte N° 118 · 18 ago</div>
+          <div style="font-size:11px;color:var(--text-soft);">Frente 1, Frente 2</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#c7d8c9,#6f9873);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;">Parte N° 117 · 17 ago</div>
+          <div style="font-size:11px;color:var(--text-soft);">Frente 1 · Planta de áridos</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#a9b6c2,#63707c);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;">Parte N° 116 · 15 ago</div>
+          <div style="font-size:11px;color:var(--text-soft);">Frente 2</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#cbb490,#8a6c4c);flex-shrink:0;"></div>
+        <div style="flex-grow:1;min-width:0;">
+          <div style="font-size:13px;font-weight:600;">Parte N° 115 · 14 ago</div>
+          <div style="font-size:11px;color:var(--text-soft);">Frente 1, Frente 2 · Planta</div>
+        </div>
+        <div style="background:#e5f2ea;color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;">Respaldado</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text-soft);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Exportar</div>
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:7px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 12h6M9 15.5h6M9 8.5h3"/></svg>
+        <span style="font-size:12px;font-weight:700;">Partes en PDF</span>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:7px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg>
+        <span style="font-size:12px;font-weight:700;">Cubicación en Excel</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;background:var(--charcoal);display:flex;padding:10px 6px 14px;flex-shrink:0;">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg>
+      <span style="font-size:9.5px;">Inicio</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V14"/><path d="M12 20V8"/><path d="M19 20v-6"/><path d="M3 20h18"/></svg>
+      <span style="font-size:9.5px;">Cubicación</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.5-6.5 5.5-6.5s5.5 2.9 5.5 6.5"/><circle cx="17" cy="9" r="2.6"/><path d="M14.8 13.7c2.6.4 4.7 3 4.7 6.3"/></svg>
+      <span style="font-size:9.5px;">Asistencia</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#8a8478;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
+      <span style="font-size:9.5px;">Fotos</span>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--amber);">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+      <span style="font-size:9.5px;font-weight:600;">Historial</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
