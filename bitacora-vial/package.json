@@ -10,7 +10,8 @@
     "build:preview": "vite build --config vite.preview.config.ts",
     "lint": "tsc --noEmit",
     "test:smoke": "node scripts/smoke-test.mjs",
-    "test:interaction": "node scripts/interaction-test.mjs"
+    "test:interaction": "node scripts/interaction-test.mjs",
+    "test:formula": "node scripts/formula-test.mjs"
   },
   "dependencies": {
     "date-fns": "^3.6.0",

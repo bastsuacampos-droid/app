@@ -5,7 +5,18 @@ import { db, newId } from '../../lib/db';
 import { cumulativeForAllPartidas, upsertCubicacionEntry } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
-import { IconPlus } from '../../components/Icon';
+import { IconPlus, IconChevronRight } from '../../components/Icon';
+
+/** Units where a quantity can be computed from element dimensions rather than typed by hand. */
+const UNIDADES_CON_FORMULA = new Set(['m³', 'm²', 'ml']);
+
+function calcularSubtotal(unidad: string, largo: number, ancho: number, alto: number, cantidad: number): number {
+  const n = cantidad > 0 ? cantidad : 1;
+  if (unidad === 'm³') return largo * ancho * alto * n;
+  if (unidad === 'm²') return largo * ancho * n;
+  if (unidad === 'ml') return largo * n;
+  return 0;
+}
 
 export function CubicacionPage() {
   const navigate = useNavigate();
@@ -28,6 +39,13 @@ export function CubicacionPage() {
 
   const [showAdd, setShowAdd] = useState(false);
   const [nuevo, setNuevo] = useState({ nombre: '', unidad: 'm³', cantidadContratada: 0 });
+  const [calcOpenId, setCalcOpenId] = useState<string | null>(null);
+
+  async function agregarDesdeFormula(partidaId: string, subtotal: number) {
+    if (!parte || subtotal <= 0) return;
+    const existente = entriesHoy.find((e) => e.partidaId === partidaId)?.cantidadEjecutada ?? 0;
+    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, Number((existente + subtotal).toFixed(3)));
+  }
 
   const activeFrente = frentes.find((f) => f.id === activeFrenteId);
 
@@ -113,6 +131,21 @@ export function CubicacionPage() {
                   />
                   <span className="text-soft" style={{ fontSize: 12 }}>{p.unidad}</span>
                 </div>
+
+                {UNIDADES_CON_FORMULA.has(p.unidad) && (
+                  <>
+                    <button
+                      onClick={() => setCalcOpenId(calcOpenId === p.id ? null : p.id)}
+                      style={{ background: 'none', border: 'none', color: 'var(--orange)', fontSize: 11.5, fontWeight: 700, padding: '8px 0 0', display: 'flex', alignItems: 'center', gap: 4 }}
+                    >
+                      Calcular por dimensiones
+                      <IconChevronRight size={12} color="var(--orange)" style={{ transform: calcOpenId === p.id ? 'rotate(90deg)' : undefined }} />
+                    </button>
+                    {calcOpenId === p.id && (
+                      <DimensionCalculator unidad={p.unidad} onAgregar={(subtotal) => agregarDesdeFormula(p.id, subtotal)} />
+                    )}
+                  </>
+                )}
               </div>
             );
           })}
@@ -162,5 +195,62 @@ export function CubicacionPage() {
         <button className="btn btn-primary btn-block" onClick={() => navigate('/nuevo-parte')}>Volver al parte</button>
       </div>
     </>
+  );
+}
+
+/**
+ * Calcula la cantidad a partir de las dimensiones de un elemento (largo × ancho × alto,
+ * según la unidad) y cuántas veces se repite, para no tener que hacer la multiplicación a
+ * mano cada vez que hay varios elementos iguales (zapatas, tramos de muro, etc.).
+ */
+function DimensionCalculator({ unidad, onAgregar }: { unidad: string; onAgregar: (subtotal: number) => void }) {
+  const [largo, setLargo] = useState('');
+  const [ancho, setAncho] = useState('');
+  const [alto, setAlto] = useState('');
+  const [cantidad, setCantidad] = useState('1');
+
+  const subtotal = calcularSubtotal(unidad, parseFloat(largo) || 0, parseFloat(ancho) || 0, parseFloat(alto) || 0, parseFloat(cantidad) || 1);
+
+  function agregar() {
+    onAgregar(subtotal);
+    setLargo('');
+    setAncho('');
+    setAlto('');
+    setCantidad('1');
+  }
+
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 8 }}>
+        <DimField label="Largo (m)" value={largo} onChange={setLargo} />
+        {unidad !== 'ml' && <DimField label="Ancho (m)" value={ancho} onChange={setAncho} />}
+        {unidad === 'm³' && <DimField label="Alto/Espesor (m)" value={alto} onChange={setAlto} />}
+        <DimField label="Cantidad (veces se repite)" value={cantidad} onChange={setCantidad} />
+      </div>
+      <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 12.5 }}>
+          Subtotal: <strong>{subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {unidad}</strong>
+        </span>
+        <button className="btn btn-primary" style={{ padding: '8px 14px', fontSize: 12 }} onClick={agregar} disabled={subtotal <= 0}>
+          Agregar al total de hoy
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DimField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label style={{ fontSize: 10.5, color: 'var(--text-soft)', display: 'flex', flexDirection: 'column', gap: 3, flex: '1 1 100px' }}>
+      {label}
+      <input
+        type="number"
+        inputMode="decimal"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="field-input"
+        style={{ width: '100%', fontWeight: 500 }}
+      />
+    </label>
   );
 }
