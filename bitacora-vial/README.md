@@ -219,6 +219,20 @@ src/
   implementación sin duplicarla. La página de Cubicación conserva su
   propio campo "Ejecutado hoy" de reemplazo directo, para corregir un
   valor a mano cuando haga falta.
+- **Incremento atómico + cubicar tarea sin salir de Nuevo Parte**
+  (`incrementarCubicacionEntry()` en `queries.ts`): el "+" de "Avance de
+  hoy" ya no calcula el nuevo total a partir del último estado leído por
+  React (`entriesHoy`) — relee el valor vigente directamente desde Dexie
+  dentro de una transacción `rw` y recién ahí suma, así que dos toques
+  seguidos nunca pueden pisarse ni perder un incremento por una carrera
+  entre lectura y escritura (probado con 5 sumas de golpe sin esperar
+  entre ellas: el total queda exacto). Además, una tarea agregada sin
+  cantidad contratada ("sin cubicar aún") ya no se queda atascada —
+  "Total ... · cubicar esta tarea →" abre un campo para fijar la
+  cantidad ahí mismo, sin ir a Cubicación; recién con esa cifra puesta
+  tienen sentido el % de avance y el botón "Terminado", que solo
+  aparece — y solo puede completar la tarea — una vez que existe una
+  cantidad contratada real contra la cual comparar el acumulado.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

@@ -3,7 +3,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import {
-  attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas, upsertCubicacionEntry,
+  attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
+  incrementarCubicacionEntry,
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
@@ -110,22 +111,33 @@ export function NuevoPartePage() {
     patch({ tareasSeleccionadasIds: seleccionadasIds.filter((id) => id !== partidaId) });
   }
 
-  /** The "Hoy" field only ever adds the avance just realizado on top of whatever was already
-   * logged today — it never replaces it, so the foreman never has to do mental math with the
-   * running total to log one more increment. */
+  /** The "Avance de hoy" field only ever adds the work just realizado on top of whatever was
+   * already logged today — it never replaces it. incrementarCubicacionEntry re-reads the
+   * current value straight from Dexie inside one transaction (instead of computing it from
+   * this component's last-rendered `entriesHoy`), so two additions fired close together can
+   * never race and silently drop one of them. */
   async function onAvanceHoyAgregar(partidaId: string, incremento: number) {
-    if (!parte || incremento <= 0) return;
-    const existente = entriesHoy.find((e) => e.partidaId === partidaId)?.cantidadEjecutada ?? 0;
-    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, Number((existente + incremento).toFixed(3)));
+    if (!parte) return;
+    await incrementarCubicacionEntry(parte.id, partidaId, parte.fecha, incremento);
   }
 
   /** "Terminado": tops up today's entry just enough so the accumulated total reaches
    * cantidadContratada exactly (100%) — t.acumulado is already capped at contratado, so the
-   * gap to close is contratado - acumulado, added on top of whatever avanceHoy already is. */
+   * gap to close is contratado - acumulado, added on top of whatever avanceHoy already is.
+   * The task's estado only ever flips to "terminada" once acumulado genuinely reaches
+   * contratado (estadoTarea() in queries.ts) — this button doesn't fake that, it just does
+   * the arithmetic to close the exact remaining gap in one tap. */
   async function onMarcarTerminada(t: TareaDelDiaItem) {
     if (!parte) return;
-    const nuevoAvanceHoy = Number((t.avanceHoy + (t.contratado - t.acumulado)).toFixed(3));
-    await upsertCubicacionEntry(parte.id, t.partidaId, parte.fecha, nuevoAvanceHoy);
+    await incrementarCubicacionEntry(parte.id, t.partidaId, parte.fecha, t.contratado - t.acumulado);
+  }
+
+  /** Sets cantidadContratada for a task that was added without one, right from this page —
+   * without a target quantity there's nothing for acumulado to reach, so "% avance" and
+   * "Terminado" have no meaning yet ("sin cubicar aún"). */
+  async function onCubicarTarea(partidaId: string, valor: number) {
+    if (valor <= 0) return;
+    await db.partidas.update(partidaId, { cantidadContratada: valor });
   }
 
   async function crearFrente() {
@@ -387,6 +399,7 @@ export function NuevoPartePage() {
                           agrupada={g.agrupada}
                           onAgregarAvance={onAvanceHoyAgregar}
                           onMarcarTerminada={onMarcarTerminada}
+                          onCubicar={onCubicarTarea}
                           onQuitar={quitarTareaSeleccionada}
                         />
                       ))}
@@ -541,21 +554,32 @@ function Stat({ label, value, color }: { label: string; value: number; color: st
  * increment just realizado on top of today's existing entry (never replaces it), and
  * "Terminado" tops the task up to 100% in one tap. */
 function TareaActivaRow({
-  t, agrupada, onAgregarAvance, onMarcarTerminada, onQuitar,
+  t, agrupada, onAgregarAvance, onMarcarTerminada, onCubicar, onQuitar,
 }: {
   t: TareaDelDiaItem;
   agrupada: boolean;
   onAgregarAvance: (partidaId: string, incremento: number) => void;
   onMarcarTerminada: (t: TareaDelDiaItem) => void;
+  onCubicar: (partidaId: string, valor: number) => void;
   onQuitar: (partidaId: string) => void;
 }) {
   const [incremento, setIncremento] = useState('');
+  const [cubicarAbierto, setCubicarAbierto] = useState(false);
+  const [contratadaInput, setContratadaInput] = useState('');
 
   function agregar() {
     const valor = Number(incremento) || 0;
     if (valor <= 0) return;
     onAgregarAvance(t.partidaId, valor);
     setIncremento('');
+  }
+
+  function guardarContratada() {
+    const valor = Number(contratadaInput) || 0;
+    if (valor <= 0) return;
+    onCubicar(t.partidaId, valor);
+    setContratadaInput('');
+    setCubicarAbierto(false);
   }
 
   return (
@@ -600,11 +624,18 @@ function TareaActivaRow({
         )}
       </div>
       <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-        <span className="text-soft" style={{ fontSize: 11.5 }}>
-          Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
-          {t.cubicada ? ` (Avance ${t.pct}%)` : ''}
-          {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}> · sin cubicar</span>}
-        </span>
+        {t.cubicada ? (
+          <span className="text-soft" style={{ fontSize: 11.5 }}>
+            Total {t.acumulado.toLocaleString('es-CL')} {t.unidad} (Avance {t.pct}%)
+          </span>
+        ) : (
+          <button
+            onClick={() => setCubicarAbierto((v) => !v)}
+            style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0 }}
+          >
+            Total {t.acumulado.toLocaleString('es-CL')} {t.unidad} · <span style={{ color: 'var(--yellow-text)' }}>cubicar esta tarea →</span>
+          </button>
+        )}
         <div className="flex-row gap-8" style={{ alignItems: 'center', flexShrink: 0 }}>
           {t.cubicada && t.pct < 100 && (
             <button
@@ -624,6 +655,22 @@ function TareaActivaRow({
           </button>
         </div>
       </div>
+      {cubicarAbierto && !t.cubicada && (
+        <div className="flex-row gap-8" style={{ alignItems: 'center', marginTop: 6 }}>
+          <input
+            type="number"
+            autoFocus
+            placeholder={`Cantidad contratada (${t.unidad})`}
+            value={contratadaInput}
+            onChange={(e) => setContratadaInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); guardarContratada(); } }}
+            className="field-input"
+            style={{ width: 140 }}
+          />
+          <button onClick={guardarContratada} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+          <button onClick={() => { setCubicarAbierto(false); setContratadaInput(''); }} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+        </div>
+      )}
       {t.unidad === 'ml' && t.cubicada && (
         <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
           Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar

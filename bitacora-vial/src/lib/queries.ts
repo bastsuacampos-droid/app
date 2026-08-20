@@ -166,6 +166,26 @@ export async function upsertCubicacionEntry(parteId: string, partidaId: string, 
   }
 }
 
+/** Adds `incremento` on top of today's existing entry — reads the current value from Dexie
+ * inside the same read-write transaction (not from whatever the caller's React state last
+ * rendered), so two increments fired close together can never race and clobber one another
+ * or double-count. This is what the "Avance de hoy" +/Enter control in Nuevo Parte uses. */
+export async function incrementarCubicacionEntry(parteId: string, partidaId: string, fecha: string, incremento: number) {
+  if (incremento <= 0) return;
+  await db.transaction('rw', db.cubicacionEntries, async () => {
+    const existing = await db.cubicacionEntries
+      .where('parteId').equals(parteId)
+      .filter((e) => e.partidaId === partidaId)
+      .first();
+    const nuevaCantidad = Number(((existing?.cantidadEjecutada ?? 0) + incremento).toFixed(3));
+    if (existing) {
+      await db.cubicacionEntries.update(existing.id, { cantidadEjecutada: nuevaCantidad });
+    } else {
+      await db.cubicacionEntries.add({ id: newId(), parteId, partidaId, fecha, cantidadEjecutada: nuevaCantidad });
+    }
+  });
+}
+
 export interface TareaDelDiaItem {
   partidaId: string;
   nombre: string;
