@@ -292,6 +292,21 @@ src/
   Fonts, así que ahí el botón siempre va a mostrar el error de conexión;
   funciona normal corriendo la app fuera de ese sandbox (`npm run dev`,
   o donde sea que quede alojada para uso real).
+- **"Retomar pendiente" y "Cubicar nueva tarea" como botones separados,
+  cada uno acotado a un frente** (`frenteActualId` en
+  `NuevoPartePage.tsx`, `TareaCandidata.frenteId` en `queries.ts`): el
+  botón único "Seleccionar tarea" mezclaba en una sola lista las tareas
+  pendientes de **todos** los frentes activos del día sin indicar a
+  cuál pertenecía cada una — con dos frentes usando el mismo catálogo
+  (p. ej. ambos con "Excavación en corte"), era fácil tocar la tarea
+  equivocada y terminar anotando avance en el frente que no era. Ahora
+  son dos botones: "Retomar pendiente" abre el listado de tareas sin
+  terminar (igual que antes) pero acotado a un solo frente a la vez —
+  si el parte tiene más de un frente activo, aparecen chips arriba del
+  listado para elegir cuál, y cambiar de chip cambia el listado
+  completo, nunca mezcla tareas de dos frentes en una misma pantalla;
+  "Cubicar nueva tarea" quedó como botón directo a Cubicación, sin
+  pasar primero por el desplegable.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

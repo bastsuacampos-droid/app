@@ -11,7 +11,7 @@ import { parseNumeroDecimal } from '../../lib/numero';
 import { obtenerClimaPorGPS } from '../../lib/clima';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
-import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation } from '../../components/Icon';
+import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation, IconRefresh } from '../../components/Icon';
 import type { Clima, EstadoTarea, Turno } from '../../types/models';
 
 const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
@@ -28,6 +28,11 @@ export function NuevoPartePage() {
   const dropdownFrenteRef = useRef<HTMLDivElement>(null);
   const [dropdownTareaAbierto, setDropdownTareaAbierto] = useState(false);
   const dropdownTareaRef = useRef<HTMLDivElement>(null);
+  // Which frente's pending tasks "Retomar tarea pendiente" shows, when more than one is active
+  // today — tasks never mix across frentes here, since two frentes can easily share a task
+  // name from the mismo catálogo and picking the wrong one would silently log progress against
+  // the wrong work front.
+  const [frenteFiltroTareaId, setFrenteFiltroTareaId] = useState<string | null>(null);
   const [tabTareas, setTabTareas] = useState<'activas' | 'completadas'>('activas');
   const [climaGpsEstado, setClimaGpsEstado] = useState<'inactivo' | 'cargando' | 'error'>('inactivo');
   const [climaGpsError, setClimaGpsError] = useState('');
@@ -191,6 +196,9 @@ export function NuevoPartePage() {
   }
 
   const ausentes = asistencia ? asistencia.total - asistencia.presentes : 0;
+  const frenteActualId = frenteFiltroTareaId && parte.frentesIds.includes(frenteFiltroTareaId)
+    ? frenteFiltroTareaId
+    : (parte.frentesIds[0] ?? null);
 
   return (
     <>
@@ -447,24 +455,37 @@ export function NuevoPartePage() {
             )}
 
             <div ref={dropdownTareaRef} style={{ position: 'relative' }}>
-              <button
-                type="button"
-                onClick={() => setDropdownTareaAbierto((v) => !v)}
-                className="flex-row"
-                style={{
-                  justifyContent: 'center', gap: 6, width: '100%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
-                  border: 'none', borderRadius: 10, padding: 11, fontSize: 12.5, fontWeight: 700,
-                }}
-              >
-                <IconPlus size={15} color="var(--accent-dark)" /> Seleccionar tarea
-              </button>
+              <div className="flex-row gap-8">
+                <button
+                  type="button"
+                  onClick={() => setDropdownTareaAbierto((v) => !v)}
+                  className="flex-row"
+                  style={{
+                    justifyContent: 'center', gap: 6, flex: 1, background: 'var(--accent-soft)', color: 'var(--accent-dark)',
+                    border: 'none', borderRadius: 10, padding: 11, fontSize: 12, fontWeight: 700,
+                  }}
+                >
+                  <IconRefresh size={14} color="var(--accent-dark)" /> Retomar pendiente
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/cubicacion')}
+                  className="flex-row"
+                  style={{
+                    justifyContent: 'center', gap: 6, flex: 1, background: 'var(--surface-alt)', color: 'var(--accent-dark)',
+                    border: 'none', borderRadius: 10, padding: 11, fontSize: 12, fontWeight: 700,
+                  }}
+                >
+                  <IconPlus size={14} color="var(--accent-dark)" /> Cubicar nueva tarea
+                </button>
+              </div>
 
               {dropdownTareaAbierto && (
                 <div
                   className="card"
                   style={{
                     position: 'absolute', left: 0, right: 0, top: 'calc(100% + 6px)', zIndex: 20,
-                    padding: 6, maxHeight: 280, overflowY: 'auto',
+                    padding: 6, maxHeight: 320, overflowY: 'auto',
                     boxShadow: '0 12px 32px -10px rgba(20,23,28,.28)',
                   }}
                 >
@@ -473,10 +494,46 @@ export function NuevoPartePage() {
                       Primero elige un punto de trabajo en la sección 1.
                     </div>
                   )}
-                  {candidatas
-                    .filter((c) => !seleccionadasIds.includes(c.partidaId))
-                    .sort((a, b) => ORDEN_RECOMENDACION[a.estado] - ORDEN_RECOMENDACION[b.estado])
-                    .map((c) => (
+                  {parte.frentesIds.length > 1 && (
+                    <div className="flex-row gap-6" style={{ flexWrap: 'wrap', padding: '4px 4px 8px' }}>
+                      {parte.frentesIds.map((id) => {
+                        const f = frentes.find((x) => x.id === id);
+                        if (!f) return null;
+                        const activo = frenteActualId === id;
+                        return (
+                          <button
+                            key={id}
+                            type="button"
+                            onClick={() => setFrenteFiltroTareaId(id)}
+                            style={{
+                              background: activo ? 'var(--accent)' : 'var(--surface-alt)',
+                              color: activo ? '#fff' : 'var(--text-soft)',
+                              border: 'none', borderRadius: 20, padding: '5px 10px', fontSize: 10.5, fontWeight: 700,
+                            }}
+                          >
+                            {f.nombre}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {(() => {
+                    // Tasks are scoped to exactly one frente at a time here — mixing frentes in
+                    // one list would let the same-named task from a different work front (both
+                    // usually pull from the same catálogo) get picked by mistake, silently
+                    // logging progress against the wrong place.
+                    const pendientesDelFrente = candidatas
+                      .filter((c) => c.frenteId === frenteActualId)
+                      .filter((c) => !seleccionadasIds.includes(c.partidaId))
+                      .sort((a, b) => ORDEN_RECOMENDACION[a.estado] - ORDEN_RECOMENDACION[b.estado]);
+                    if (parte.frentesIds.length > 0 && pendientesDelFrente.length === 0) {
+                      return (
+                        <div className="text-soft" style={{ fontSize: 11.5, padding: '10px 8px' }}>
+                          No hay tareas pendientes en este frente.
+                        </div>
+                      );
+                    }
+                    return pendientesDelFrente.map((c) => (
                       <button
                         key={c.partidaId}
                         type="button"
@@ -494,18 +551,8 @@ export function NuevoPartePage() {
                           </span>
                         )}
                       </button>
-                    ))}
-                  <button
-                    type="button"
-                    onClick={() => navigate('/cubicacion')}
-                    className="flex-row gap-8"
-                    style={{
-                      width: '100%', background: 'var(--surface-alt)', border: 'none', borderRadius: 8,
-                      padding: '10px 10px', fontSize: 12.5, fontWeight: 700, color: 'var(--accent-dark)', marginTop: 2,
-                    }}
-                  >
-                    <IconPlus size={13} color="var(--accent-dark)" /> Nueva tarea (en Cubicación)
-                  </button>
+                    ));
+                  })()}
                 </div>
               )}
             </div>
