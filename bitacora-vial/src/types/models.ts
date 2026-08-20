@@ -32,6 +32,9 @@ export interface Partida {
   nombre: string;
   unidad: string; // "m³", "m²", "ml", "kg", "un"
   cantidadContratada: number;
+  /** If set, this partida is a sub-tarea cubicated on its own under a parent partida
+   * (which then acts as a pure title/grouping — see CubicacionPage). */
+  partidaPadreId?: string;
 }
 
 /** One day's quantity logged against a partida — the source of the cumulative total. */

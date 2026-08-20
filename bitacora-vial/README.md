@@ -144,6 +144,20 @@ src/
   horizontal `.photo-strip` + tomar foto inline, 5 Observaciones). Las
   pantallas dedicadas (Cubicación, Asistencia, Fotos) siguen existiendo
   para el detalle completo; esta vista es el resumen operativo del día.
+- **Sub-tareas cubicadas por separado** (`Partida.partidaPadreId`, v3 del
+  schema): una partida puede tener sub-partidas propias (p. ej. "Estribo
+  N1" → Excavación, Enfierradura, Hormigón H-30), cada una con su propia
+  unidad, cantidad contratada y avance diario — se agregan con "+ Agregar
+  sub-tarea" dentro de la tarjeta de la tarea padre. En cuanto una tarea
+  tiene sub-tareas, deja de cubicarse directamente (su UI de "Ejecutado
+  hoy" se oculta y la reemplaza la lista de sub-tareas); si ya tenía
+  cantidad acumulada de antes de subdividirla, esa cifra se conserva como
+  nota de solo lectura para no perder el dato, pero deja de sumar al
+  avance del frente — desde ahí en adelante avanzan las sub-tareas. La
+  agrupación es puramente de presentación: `tareasDelDiaAgrupadas()` en
+  `lib/queries.ts` arma los grupos leyendo el padre de cada partida
+  tocada hoy, así que tanto Cubicación como el resumen anidado de
+  `NuevoPartePage` muestran la misma jerarquía sin datos duplicados.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

@@ -50,6 +50,13 @@ class BitacoraDB extends Dexie {
             if (!foto.etapa) foto.etapa = 'durante';
           });
       });
+
+    // v3: a partida can optionally belong to a parent partida (sub-tareas cubicated on
+    // their own, grouped under the parent's title). No data transform needed — existing
+    // partidas simply have no partidaPadreId, which is exactly "top-level".
+    this.version(3).stores({
+      partidas: 'id, frenteId, partidaPadreId',
+    });
   }
 }
 

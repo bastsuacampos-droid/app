@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
-import { attendanceSummaryForParte, cumulativeForAllPartidas } from '../../lib/queries';
+import { attendanceSummaryForParte, tareasDelDiaAgrupadas } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX } from '../../components/Icon';
@@ -18,31 +18,10 @@ export function NuevoPartePage() {
   const [kmFrente, setKmFrente] = useState('');
   const [dropdownFrenteAbierto, setDropdownFrenteAbierto] = useState(false);
   const dropdownFrenteRef = useRef<HTMLDivElement>(null);
-  const tareasHoy = useLiveQuery(async () => {
-    if (!parte) return [];
-    const entries = await db.cubicacionEntries.where('parteId').equals(parte.id).toArray();
-    const totales = await cumulativeForAllPartidas();
-    const partidas = await Promise.all(entries.map((e) => db.partidas.get(e.partidaId)));
-    return entries
-      .map((e, i) => {
-        const p = partidas[i];
-        if (!p) return null;
-        const cubicada = p.cantidadContratada > 0;
-        const acumulado = cubicada ? Math.min(totales[p.id] ?? 0, p.cantidadContratada) : (totales[p.id] ?? 0);
-        const pct = cubicada ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
-        return {
-          partidaId: p.id,
-          nombre: p.nombre,
-          unidad: p.unidad,
-          avanceHoy: e.cantidadEjecutada,
-          acumulado,
-          contratado: p.cantidadContratada,
-          pct,
-          cubicada,
-        };
-      })
-      .filter((x): x is NonNullable<typeof x> => !!x);
-  }, [parte?.id]) ?? [];
+  const gruposHoy = useLiveQuery(
+    () => (parte ? tareasDelDiaAgrupadas(parte.id) : []),
+    [parte?.id],
+  ) ?? [];
   const asistencia = useLiveQuery(
     () => (parte ? attendanceSummaryForParte(parte.id) : undefined),
     [parte?.id],
@@ -309,33 +288,45 @@ export function NuevoPartePage() {
 
         <SectionHeading n={3} title="Tareas y Avances" />
         <div className="card" style={{ marginBottom: 20 }}>
-          {tareasHoy.length === 0 ? (
+          {gruposHoy.length === 0 ? (
             <div className="text-soft" style={{ fontSize: 13, marginBottom: 12 }}>Aún no hay tareas registradas hoy.</div>
           ) : (
-            <div className="stack" style={{ gap: 14, marginBottom: 14 }}>
-              {tareasHoy.map((t, i) => (
-                <div key={t.partidaId}>
-                  <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
-                    <span className="flex-row gap-8" style={{ fontSize: 13, fontWeight: 600 }}>
-                      <span
-                        style={{
-                          width: 18, height: 18, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
-                          fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                        }}
-                      >
-                        {i + 1}
-                      </span>
-                      {t.nombre}
+            <div className="stack" style={{ gap: 18, marginBottom: 14 }}>
+              {gruposHoy.map((g, gi) => (
+                <div key={g.id}>
+                  <div className="flex-row gap-8" style={{ fontSize: 13, fontWeight: 700, marginBottom: g.agrupada ? 10 : 6 }}>
+                    <span
+                      style={{
+                        width: 18, height: 18, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
+                        fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}
+                    >
+                      {gi + 1}
                     </span>
-                    {t.cubicada && <strong style={{ fontSize: 12.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
+                    {g.titulo}
                   </div>
-                  <div className="progress-track" style={{ marginBottom: 6 }}>
-                    <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
-                  </div>
-                  <div className="text-soft" style={{ fontSize: 11.5 }}>
-                    Hoy {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}, Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
-                    {t.cubicada ? ` (Avance ${t.pct}%)` : ' · '}
-                    {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span>}
+                  <div
+                    className="stack"
+                    style={g.agrupada ? { gap: 12, paddingLeft: 26, borderLeft: '2px solid var(--border)', marginLeft: 8 } : { gap: 0 }}
+                  >
+                    {g.items.map((t) => (
+                      <div key={t.partidaId}>
+                        {g.agrupada && (
+                          <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+                            <span style={{ fontSize: 12, fontWeight: 600 }}>{t.nombre}</span>
+                            {t.cubicada && <strong style={{ fontSize: 11.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
+                          </div>
+                        )}
+                        <div className="progress-track" style={{ marginBottom: 6 }}>
+                          <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
+                        </div>
+                        <div className="text-soft" style={{ fontSize: 11.5 }}>
+                          Hoy {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}, Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
+                          {t.cubicada ? ` (Avance ${t.pct}%)` : ' · '}
+                          {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span>}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}

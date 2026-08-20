@@ -1,5 +1,5 @@
 import { db, newId, nowISO, todayISO } from './db';
-import type { EstadoTarea, Parte } from '../types/models';
+import type { EstadoTarea, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -162,6 +162,63 @@ export async function upsertCubicacionEntry(parteId: string, partidaId: string, 
   } else if (cantidad !== 0) {
     await db.cubicacionEntries.add({ id: newId(), parteId, partidaId, fecha, cantidadEjecutada: cantidad });
   }
+}
+
+export interface TareaDelDiaItem {
+  partidaId: string;
+  nombre: string;
+  unidad: string;
+  avanceHoy: number;
+  acumulado: number;
+  contratado: number;
+  pct: number;
+  cubicada: boolean;
+}
+
+export interface TareaDelDiaGrupo {
+  id: string;
+  titulo: string;
+  /** True when this group represents a parent partida with real sub-tareas (as opposed to
+   * a plain single-item legacy partida, where the title is just that item's own name). */
+  agrupada: boolean;
+  items: TareaDelDiaItem[];
+}
+
+/** Today's cubicación entries, grouped by parent partida (sub-tareas nest under their
+ * padre's título) so a task subdivided into sub-tareas shows as one titled group with each
+ * sub-tarea's own progress, while a plain (non-subdivided) partida still renders flat. */
+export async function tareasDelDiaAgrupadas(parteId: string): Promise<TareaDelDiaGrupo[]> {
+  const entries = await db.cubicacionEntries.where('parteId').equals(parteId).toArray();
+  if (entries.length === 0) return [];
+
+  const totales = await cumulativeForAllPartidas();
+  const partidas = await db.partidas.bulkGet(entries.map((e) => e.partidaId));
+  const padreIds = Array.from(
+    new Set(partidas.filter((p): p is Partida => !!p?.partidaPadreId).map((p) => p!.partidaPadreId!)),
+  );
+  const padres = await db.partidas.bulkGet(padreIds);
+  const padreMap = new Map(padres.filter((p): p is Partida => !!p).map((p) => [p.id, p]));
+
+  const grupos = new Map<string, TareaDelDiaGrupo>();
+  entries.forEach((e, i) => {
+    const p = partidas[i];
+    if (!p) return;
+    const cubicada = p.cantidadContratada > 0;
+    const acumuladoReal = totales[p.id] ?? 0;
+    const acumulado = cubicada ? Math.min(acumuladoReal, p.cantidadContratada) : acumuladoReal;
+    const pct = cubicada ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
+    const item: TareaDelDiaItem = {
+      partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy: e.cantidadEjecutada, acumulado, contratado: p.cantidadContratada, pct, cubicada,
+    };
+
+    const padre = p.partidaPadreId ? padreMap.get(p.partidaPadreId) : undefined;
+    const groupId = padre?.id ?? p.id;
+    if (!grupos.has(groupId)) {
+      grupos.set(groupId, { id: groupId, titulo: padre?.nombre ?? p.nombre, agrupada: !!padre, items: [] });
+    }
+    grupos.get(groupId)!.items.push(item);
+  });
+  return Array.from(grupos.values());
 }
 
 /** Makes sure every active trabajador of a frente has an attendance row for this parte (defaults to presente). */
