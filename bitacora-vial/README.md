@@ -360,6 +360,18 @@ src/
   propios archivos en `features/cubicacion/`, y el guardado en sí vive
   en `crearPartida()` (`lib/queries.ts`), que las tres puertas de
   entrada llaman por igual.
+- **`CampoDesplegable` en vez de `<select>` nativo** (`NuevaPartidaForm.tsx`):
+  el selector de "Catálogo sugerido" y el de unidad usaban `<select>`
+  nativo, que en el celular abre el picker propio del sistema operativo
+  (oscuro, con radio buttons) en vez de algo con la cara de la app —
+  se nota especialmente en el catálogo, una lista larga. Ahora ambos
+  usan el mismo patrón de desplegable a medida que ya existía en
+  "Seleccionar punto de trabajo" de Nuevo Parte: un botón con pinta de
+  `field-input` y una flecha que gira, y debajo una tarjeta con las
+  opciones (la elegida resaltada en azul) que se cierra sola al tocar
+  afuera. `CampoDesplegable` es genérico (recibe `opciones: string[]`)
+  así que sirve para cualquier lista corta de texto plano; no reemplaza
+  los `<select>` de otras pantallas, que quedan fuera de este cambio.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 
