@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
@@ -9,6 +9,7 @@ import { formatShortDate } from '../../lib/date';
 import {
   TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, camposDelTipo, calcularSubtotalElemento, formatDatosMedicion,
 } from '../../lib/cubicacionCalculo';
+import { parseNumeroDecimal } from '../../lib/numero';
 import { Header } from '../../components/Header';
 import { IconPlus, IconChevronRight } from '../../components/Icon';
 import type { CubicacionEntry, EstadoTarea, Partida, TipoElementoMedicion } from '../../types/models';
@@ -344,6 +345,21 @@ function TareaBody({
   const estadoInfo = ESTADO_INFO[estado];
   const tieneFormula = !!TIPOS_POR_UNIDAD[p.unidad];
 
+  // "Ejecutado hoy" is a text buffer, not a direct mirror of entry.cantidadEjecutada: that value
+  // comes from Dexie via useLiveQuery and round-trips through onEjecutadoChange's write on every
+  // keystroke. Binding the input straight to it reformats the display mid-typing and erases the
+  // decimal separator before the next digit lands (typing "3,1" collapses to "3"). The buffer
+  // still needs to pick up changes made elsewhere (e.g. the calculadora's "Agregar al total de
+  // hoy"), so it resyncs from the DB value — but only while this field isn't focused, so it
+  // never clobbers what the user is mid-typing.
+  const [textoEjecutado, setTextoEjecutado] = useState(() => entry?.cantidadEjecutada ? String(entry.cantidadEjecutada) : '');
+  const ejecutadoEnfocado = useRef(false);
+  useEffect(() => {
+    if (!ejecutadoEnfocado.current) {
+      setTextoEjecutado(entry?.cantidadEjecutada ? String(entry.cantidadEjecutada) : '');
+    }
+  }, [entry?.cantidadEjecutada]);
+
   return (
     <>
       <div className="flex-row gap-8" style={{ marginBottom: 9, flexWrap: 'wrap' }}>
@@ -383,11 +399,21 @@ function TareaBody({
       <div className="flex-row gap-8">
         <span className="text-soft" style={{ fontSize: 12, flexGrow: 1 }}>Ejecutado hoy</span>
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
+          aria-label="Ejecutado hoy"
           className="field-input"
           style={{ width: 70, textAlign: 'right' }}
-          value={entry?.cantidadEjecutada ?? ''}
-          onChange={(e) => onEjecutadoChange(p.id, Number(e.target.value) || 0)}
+          value={textoEjecutado}
+          onFocus={() => { ejecutadoEnfocado.current = true; }}
+          onBlur={() => {
+            ejecutadoEnfocado.current = false;
+            setTextoEjecutado(entry?.cantidadEjecutada ? String(entry.cantidadEjecutada) : '');
+          }}
+          onChange={(e) => {
+            setTextoEjecutado(e.target.value);
+            onEjecutadoChange(p.id, parseNumeroDecimal(e.target.value));
+          }}
         />
         <span className="text-soft" style={{ fontSize: 12 }}>{p.unidad}</span>
       </div>
@@ -433,7 +459,7 @@ function CalculadoraCubicacion({
 
   const camposActivos = camposDelTipo(tipo, unidad);
   const datos: Record<string, number> = {};
-  camposActivos.forEach((c) => { datos[c.key] = parseFloat(campos[c.key]) || (c.key === 'cantidad' ? 1 : 0); });
+  camposActivos.forEach((c) => { datos[c.key] = parseNumeroDecimal(campos[c.key] ?? '') || (c.key === 'cantidad' ? 1 : 0); });
   const subtotal = calcularSubtotalElemento(tipo, unidad, datos);
 
   function elegirTipo(t: TipoElementoMedicion) {
@@ -548,7 +574,8 @@ function ContratadoEditor({
     <div style={{ width: '100%' }}>
       <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           autoFocus
           placeholder={`Cantidad contratada (${unidad})`}
           value={valor}
@@ -556,7 +583,7 @@ function ContratadoEditor({
           className="field-input"
           style={{ width: 120 }}
         />
-        <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+        <button onClick={() => onGuardar(parseNumeroDecimal(valor))} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
         <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
       </div>
       {tieneFormula && (
@@ -577,7 +604,7 @@ function DimField({ label, value, onChange }: { label: string; value: string; on
     <label style={{ fontSize: 10.5, color: 'var(--text-soft)', display: 'flex', flexDirection: 'column', gap: 3, flex: '1 1 100px' }}>
       {label}
       <input
-        type="number"
+        type="text"
         inputMode="decimal"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -597,29 +624,36 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
   const [catCategoria, setCatCategoria] = useState(CATALOGO_PARTIDAS[0].categoria);
   const [nombre, setNombre] = useState('');
   const [unidad, setUnidad] = useState('m³');
-  const [cantidadContratada, setCantidadContratada] = useState(0);
-  const [avanceHoy, setAvanceHoy] = useState(0);
+  // Text buffers, not numbers: the input's displayed value must echo exactly what the user
+  // typed. Deriving a number and feeding it back into `value` on every keystroke reformats the
+  // field mid-typing and erases the decimal separator before the next digit lands (e.g. typing
+  // "5,5" collapses to "55"). Only the calculadora's programmatic add/subtract needs a number,
+  // so it reads/writes through these same buffers via parseNumeroDecimal.
+  const [cantidadContratadaTexto, setCantidadContratadaTexto] = useState('');
+  const [avanceHoyTexto, setAvanceHoyTexto] = useState('');
   const [mostrarCalc, setMostrarCalc] = useState(false);
   const [mediciones, setMediciones] = useState<MedicionInfo[]>([]);
   const tieneFormula = !!TIPOS_POR_UNIDAD[unidad];
+  const cantidadContratada = parseNumeroDecimal(cantidadContratadaTexto);
+  const avanceHoy = parseNumeroDecimal(avanceHoyTexto);
 
   function cambiarUnidad(u: string) {
     setUnidad(u);
     // Pending measurements were computed for the previous unidad's geometry — they don't
     // carry over cleanly, so start the memoria de cálculo over rather than show stale data.
     setMediciones([]);
-    setCantidadContratada(0);
+    setCantidadContratadaTexto('');
     setMostrarCalc(false);
   }
 
   function agregarMedicion(info: MedicionInfo) {
     setMediciones((m) => [...m, info]);
-    setCantidadContratada((v) => Number((v + info.subtotal).toFixed(3)));
+    setCantidadContratadaTexto((t) => String(Number((parseNumeroDecimal(t) + info.subtotal).toFixed(3))));
   }
 
   function quitarMedicion(idx: number) {
     setMediciones((m) => {
-      setCantidadContratada((v) => Number((v - m[idx].subtotal).toFixed(3)));
+      setCantidadContratadaTexto((t) => String(Number((parseNumeroDecimal(t) - m[idx].subtotal).toFixed(3))));
       return m.filter((_, i) => i !== idx);
     });
   }
@@ -668,10 +702,11 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
           {['m³', 'm²', 'ml', 'kg', 'un'].map((u) => <option key={u} value={u}>{u}</option>)}
         </select>
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           placeholder="Cantidad contratada (si no la sabes, déjala en blanco)"
-          value={cantidadContratada || ''}
-          onChange={(e) => setCantidadContratada(Number(e.target.value) || 0)}
+          value={cantidadContratadaTexto}
+          onChange={(e) => setCantidadContratadaTexto(e.target.value)}
           className="field-input"
           style={{ flexGrow: 1 }}
         />
@@ -701,10 +736,11 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
       <label className="text-soft" style={{ fontSize: 11.5 }}>
         Avance de hoy en esta tarea (opcional)
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           placeholder="0"
-          value={avanceHoy || ''}
-          onChange={(e) => setAvanceHoy(Number(e.target.value) || 0)}
+          value={avanceHoyTexto}
+          onChange={(e) => setAvanceHoyTexto(e.target.value)}
           className="field-input"
           style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
         />

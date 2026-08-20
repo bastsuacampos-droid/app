@@ -34,13 +34,13 @@ try {
   await page.waitForTimeout(200);
   await shot('02-filled'); // expect subtotal = 2*1.5*0.5*4 = 6 m3
 
-  const ejecutadoAntes = await page.locator('input[type="number"]').first().inputValue();
+  const ejecutadoAntes = await page.getByLabel('Ejecutado hoy').first().inputValue();
 
   await page.getByRole('button', { name: 'Agregar al total de hoy' }).click();
   await page.waitForTimeout(400);
   await shot('03-added');
 
-  const ejecutadoDespues = await page.locator('input[type="number"]').first().inputValue();
+  const ejecutadoDespues = await page.getByLabel('Ejecutado hoy').first().inputValue();
 
   console.log('EJECUTADO_ANTES:', ejecutadoAntes || '(vacío)');
   console.log('EJECUTADO_DESPUES:', ejecutadoDespues);
@@ -53,7 +53,7 @@ try {
   await page.getByLabel('Cantidad (veces se repite)').first().fill('2');
   await page.getByRole('button', { name: 'Agregar al total de hoy' }).click();
   await page.waitForTimeout(400);
-  const ejecutadoFinal = await page.locator('input[type="number"]').first().inputValue();
+  const ejecutadoFinal = await page.getByLabel('Ejecutado hoy').first().inputValue();
   console.log('EJECUTADO_FINAL (esperado 8):', ejecutadoFinal);
   await shot('04-second-batch');
 } catch (err) {

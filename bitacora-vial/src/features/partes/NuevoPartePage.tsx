@@ -7,6 +7,7 @@ import {
   incrementarCubicacionEntry,
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
+import { parseNumeroDecimal } from '../../lib/numero';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck } from '../../components/Icon';
@@ -568,19 +569,21 @@ function TareaActivaRow({
   const [contratadaInput, setContratadaInput] = useState('');
 
   function agregar() {
-    const valor = Number(incremento) || 0;
+    const valor = parseNumeroDecimal(incremento);
     if (valor <= 0) return;
     onAgregarAvance(t.partidaId, valor);
     setIncremento('');
   }
 
   function guardarContratada() {
-    const valor = Number(contratadaInput) || 0;
+    const valor = parseNumeroDecimal(contratadaInput);
     if (valor <= 0) return;
     onCubicar(t.partidaId, valor);
     setContratadaInput('');
     setCubicarAbierto(false);
   }
+
+  const incrementoValido = parseNumeroDecimal(incremento) > 0;
 
   return (
     <div>
@@ -596,7 +599,8 @@ function TareaActivaRow({
       <div className="flex-row gap-8" style={{ alignItems: 'center', marginBottom: 3 }}>
         <span className="text-soft" style={{ fontSize: 11.5 }}>Avance de hoy</span>
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           className="field-input"
           placeholder="0"
           style={{ width: 64, textAlign: 'right', padding: '4px 8px', fontSize: 12 }}
@@ -607,12 +611,12 @@ function TareaActivaRow({
         <span className="text-soft" style={{ fontSize: 11.5 }}>{t.unidad}</span>
         <button
           onClick={agregar}
-          disabled={!incremento || Number(incremento) <= 0}
+          disabled={!incrementoValido}
           aria-label="Agregar avance"
           style={{
             background: 'var(--accent-soft)', border: 'none', borderRadius: 6, width: 24, height: 24,
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            opacity: !incremento || Number(incremento) <= 0 ? 0.5 : 1,
+            opacity: incrementoValido ? 1 : 0.5,
           }}
         >
           <IconPlus size={13} color="var(--accent-dark)" />
@@ -658,7 +662,8 @@ function TareaActivaRow({
       {cubicarAbierto && !t.cubicada && (
         <div className="flex-row gap-8" style={{ alignItems: 'center', marginTop: 6 }}>
           <input
-            type="number"
+            type="text"
+            inputMode="decimal"
             autoFocus
             placeholder={`Cantidad contratada (${t.unidad})`}
             value={contratadaInput}

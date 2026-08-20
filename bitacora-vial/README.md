@@ -233,6 +233,26 @@ src/
   tienen sentido el % de avance y el botón "Terminado", que solo
   aparece — y solo puede completar la tarea — una vez que existe una
   cantidad contratada real contra la cual comparar el acumulado.
+- **Decimales con coma en toda cantidad tipeada** (`lib/numero.ts`,
+  `parseNumeroDecimal()`): el causante real de varias rondas de "el avance
+  sigue mal" era `<input type="number">` — ese tipo de input solo acepta
+  "." como separador decimal y descarta en silencio cualquier "," tipeada,
+  así que "12,5" (la notación normal en español) quedaba como "125", diez
+  veces más grande, sin ningún aviso. Todo campo de cantidad de libre
+  tipeo (Ejecutado hoy, Cantidad contratada, Avance de hoy, largo/ancho/alto
+  de la calculadora, etc.) usa `<input type="text" inputMode="decimal">` +
+  `parseNumeroDecimal()`, que acepta "," o "." indistintamente. Un segundo
+  cuidado va con esto: si el `value` de un input así se ata directamente a
+  un estado numérico (o a un valor que viene de Dexie por `useLiveQuery`)
+  que se reformatea en cada `onChange`, el input "se reescribe" a mitad de
+  tipeo y borra la coma antes de que llegue el siguiente dígito — tipear
+  "5,5" queda en "55". Por eso el valor mostrado siempre vive en un buffer
+  de texto local (lo que el usuario tipeó, tal cual) y solo se convierte a
+  número al confirmar o al usarlo en un cálculo; cuando ese buffer además
+  debe reflejar cambios hechos desde otro lado (p. ej. "Ejecutado hoy" en
+  `CubicacionPage.tsx` cuando la calculadora agrega un elemento), se
+  resincroniza desde Dexie solo mientras el campo no está enfocado, para
+  no pisar lo que el usuario está escribiendo en ese momento.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

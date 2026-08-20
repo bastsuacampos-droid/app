@@ -44,7 +44,7 @@ try {
   console.log('BADGE_PENDIENTE_VISIBLE (esperado >=1):', pendienteVisible);
 
   // Add more progress today: +20 more (should accumulate to 50/100 = 50%)
-  const ejecutadoHoy = page.locator('input[type="number"]').first();
+  const ejecutadoHoy = page.getByLabel('Ejecutado hoy').first();
   await ejecutadoHoy.fill('20');
   await page.waitForTimeout(400);
   await shot('04-dia2-avance-agregado');
