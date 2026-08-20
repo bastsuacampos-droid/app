@@ -307,20 +307,28 @@ src/
   completo, nunca mezcla tareas de dos frentes en una misma pantalla;
   "Cubicar nueva tarea" quedó como botón directo a Cubicación, sin
   pasar primero por el desplegable.
-- **"Cubicar nueva tarea" salta directo al formulario, sin la ventana
-  de por medio** (`navState` en `CubicacionPage.tsx`): ese botón
-  llevaba a la pantalla completa de Cubicación — con el listado de
-  tareas del frente, que ya se había visto en "Retomar pendiente" — y
-  recién ahí, tocando "Agregar tarea", aparecía el formulario; una
-  parada de más que solo repetía información. Ahora el botón navega con
-  `state: { autoAbrirForm: true, frenteId: frenteActualId }`:
-  `CubicacionPage` arranca con el formulario ya abierto (en vez de
-  `showAdd` en falso por defecto) y hace scroll automático hasta él, y
-  con el frente correcto preseleccionado — el mismo en el que estaba
-  parado en Nuevo Parte, no el primero de la lista. Entrar a Cubicación
-  por cualquier otro camino (menú, u otro link sin ese `state`) se
-  comporta exactamente igual que antes, con el listado primero y el
-  formulario cerrado.
+- **"Cubicar nueva tarea" abre un modal dedicado, sin pasar por
+  Cubicación** (`NuevaTareaModal.tsx`, `crearPartida()` en
+  `queries.ts`): ese botón llegó a navegar a la pantalla completa de
+  Cubicación con el formulario ya abierto y con scroll automático hasta
+  él, pero seguía cargando de fondo el título "Cubicación de Tareas",
+  el selector de frente, la tarjeta de avance y el listado de tareas
+  existentes — información que "Retomar pendiente" ya mostraba, de más
+  para el único propósito de este botón. Ahora abre un overlay de
+  pantalla completa (`position: fixed`) encima de Nuevo Parte mismo, sin
+  navegar a ninguna parte: solo el encabezado "Nueva tarea" + el nombre
+  del frente + botón cerrar, y debajo el formulario (catálogo sugerido,
+  nombre, unidad, cantidad contratada, calculadora, avance de hoy). Al
+  guardar, la tarea queda creada bajo el frente en el que estaba parado
+  en Nuevo Parte (`frenteActualId`) y se auto-selecciona en "Tareas y
+  Avances" al cerrarse el modal, sin un paso extra. Para que Cubicación,
+  el modal y el "Agregar sub-tarea" de Cubicación compartan exactamente
+  la misma lógica de alta (crear la partida, loguear el avance de hoy si
+  corresponde, guardar las mediciones de la calculadora) sin triplicar
+  código, `NuevaPartidaForm` y `CalculadoraCubicacion` se movieron a sus
+  propios archivos en `features/cubicacion/`, y el guardado en sí vive
+  en `crearPartida()` (`lib/queries.ts`), que las tres puertas de
+  entrada llaman por igual.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

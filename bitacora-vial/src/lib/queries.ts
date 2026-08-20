@@ -1,5 +1,6 @@
 import { db, newId, nowISO, todayISO } from './db';
 import { formatDimensionesCompacto } from './cubicacionCalculo';
+import type { NuevaPartidaDatos } from './cubicacionCalculo';
 import type { EstadoTarea, Frente, MedicionCubicacion, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
@@ -375,6 +376,34 @@ export async function tareasCompletadas(): Promise<TareaCompletada[]> {
  * into cantidadContratada or a day's cantidadEjecutada. */
 export async function registrarMedicion(medicion: Omit<MedicionCubicacion, 'id'>): Promise<void> {
   await db.medicionesCubicacion.add({ id: newId(), ...medicion });
+}
+
+/** Creates a new partida — optionally as a sub-tarea of padreId — logging today's avance and
+ * persisting any mediciones used to build cantidadContratada in one write path. Shared by
+ * Cubicación's inline "Agregar tarea" form and Nuevo Parte's "Cubicar nueva tarea" modal, so
+ * both stay backed by the exact same logic instead of two copies that could drift apart. */
+export async function crearPartida(
+  frenteId: string, parteId: string, fecha: string, datos: NuevaPartidaDatos, padreId?: string,
+): Promise<string> {
+  const id = newId();
+  await db.partidas.add({
+    id,
+    frenteId,
+    nombre: datos.nombre.trim(),
+    unidad: datos.unidad,
+    cantidadContratada: datos.cantidadContratada,
+    ...(padreId ? { partidaPadreId: padreId } : {}),
+  });
+  if (datos.avanceHoy > 0) {
+    await upsertCubicacionEntry(parteId, id, fecha, datos.avanceHoy);
+  }
+  for (const m of datos.mediciones) {
+    await registrarMedicion({
+      partidaId: id, fecha, proposito: 'contratado',
+      tipo: m.tipo, descripcion: m.descripcion || undefined, datos: m.datos, subtotal: m.subtotal, unidad: datos.unidad,
+    });
+  }
+  return id;
 }
 
 /** All measurements recorded for a partida, most recent first. */

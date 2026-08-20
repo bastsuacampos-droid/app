@@ -34,10 +34,17 @@ try {
   await page.waitForTimeout(400);
   await shot('03-nuevo-parte');
 
+  // The button needs a frente selected first (disabled otherwise); it then opens the "Nueva
+  // tarea" modal directly on top of Nuevo Parte, no navigation.
+  await page.getByText(/Seleccionar punto de trabajo/).click();
+  await page.waitForTimeout(200);
+  await page.locator('button').filter({ hasText: 'Frente 1' }).first().click();
+  await page.waitForTimeout(300);
+
   await page.getByRole('button', { name: /Cubicar nueva tarea/ }).click();
   await page.waitForTimeout(400);
   await shot('04-cubicacion');
-  await page.goBack();
+  await page.getByLabel('Cerrar').click();
   await page.waitForTimeout(300);
 
   await page.getByRole('button', { name: 'Registrar Asistencia' }).click();

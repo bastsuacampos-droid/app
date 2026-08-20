@@ -9,6 +9,7 @@ import {
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { obtenerClimaPorGPS } from '../../lib/clima';
+import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation, IconRefresh } from '../../components/Icon';
@@ -33,6 +34,7 @@ export function NuevoPartePage() {
   // name from the mismo catálogo and picking the wrong one would silently log progress against
   // the wrong work front.
   const [frenteFiltroTareaId, setFrenteFiltroTareaId] = useState<string | null>(null);
+  const [nuevaTareaAbierta, setNuevaTareaAbierta] = useState(false);
   const [tabTareas, setTabTareas] = useState<'activas' | 'completadas'>('activas');
   const [climaGpsEstado, setClimaGpsEstado] = useState<'inactivo' | 'cargando' | 'error'>('inactivo');
   const [climaGpsError, setClimaGpsError] = useState('');
@@ -469,11 +471,13 @@ export function NuevoPartePage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigate('/cubicacion', { state: { autoAbrirForm: true, frenteId: frenteActualId ?? undefined } })}
+                  onClick={() => frenteActualId && setNuevaTareaAbierta(true)}
+                  disabled={!frenteActualId}
                   className="flex-row"
                   style={{
                     justifyContent: 'center', gap: 6, flex: 1, background: 'var(--surface-alt)', color: 'var(--accent-dark)',
                     border: 'none', borderRadius: 10, padding: 11, fontSize: 12, fontWeight: 700,
+                    opacity: frenteActualId ? 1 : 0.5,
                   }}
                 >
                   <IconPlus size={14} color="var(--accent-dark)" /> Cubicar nueva tarea
@@ -612,6 +616,17 @@ export function NuevoPartePage() {
         <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => navigate('/')}>Guardar borrador</button>
         <button className="btn btn-primary" style={{ flex: 1.3 }} onClick={finalizar}>Finalizar parte</button>
       </div>
+
+      {nuevaTareaAbierta && frenteActualId && (
+        <NuevaTareaModal
+          frenteId={frenteActualId}
+          frenteNombre={frentes.find((f) => f.id === frenteActualId)?.nombre}
+          parteId={parte.id}
+          fecha={parte.fecha}
+          onGuardado={(id) => { seleccionarTarea(id); setNuevaTareaAbierta(false); }}
+          onCerrar={() => setNuevaTareaAbierta(false)}
+        />
+      )}
     </>
   );
 }

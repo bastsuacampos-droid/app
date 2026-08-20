@@ -1,5 +1,8 @@
 import type { TipoElementoMedicion } from '../types/models';
 
+export interface MedicionInfo { tipo: TipoElementoMedicion; descripcion: string; datos: Record<string, number>; subtotal: number }
+export interface NuevaPartidaDatos { nombre: string; unidad: string; cantidadContratada: number; avanceHoy: number; mediciones: MedicionInfo[] }
+
 export const TIPO_ELEMENTO_LABEL: Record<TipoElementoMedicion, string> = {
   rectangular: 'Rectangular',
   trapezoidal: 'Sección trapezoidal',

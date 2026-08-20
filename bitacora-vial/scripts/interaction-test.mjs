@@ -23,16 +23,21 @@ try {
   await page.getByRole('button', { name: /Nuevo Parte Diario/ }).click();
   await page.waitForTimeout(300);
 
-  // Cubicación: enter a quantity
+  // Nueva tarea: needs a frente selected first (the button is disabled otherwise), then opens
+  // the "Nueva tarea" modal directly on top of Nuevo Parte — no navigation to Cubicación.
+  await page.getByText(/Seleccionar punto de trabajo/).click();
+  await page.waitForTimeout(200);
+  await page.locator('button').filter({ hasText: 'Frente 1' }).first().click();
+  await page.waitForTimeout(300);
+
   await page.getByRole('button', { name: /Cubicar nueva tarea/ }).click();
   await page.waitForTimeout(300);
-  const primerInput = page.getByLabel('Ejecutado hoy').first();
-  await primerInput.fill('85');
-  await primerInput.blur();
-  await page.waitForTimeout(300);
+  await page.getByPlaceholder('Nombre de la partida').fill('Prueba interaction');
+  await page.getByPlaceholder(/Cantidad contratada/).fill('100');
+  await page.getByPlaceholder('0').fill('85');
+  await page.getByRole('button', { name: 'Guardar tarea' }).click();
+  await page.waitForTimeout(400);
   await shot('cubicacion-filled');
-  await page.goBack();
-  await page.waitForTimeout(300);
 
   // Asistencia: mark one absent, add overtime + motivo on another
   await page.getByRole('button', { name: 'Registrar Asistencia' }).click();
