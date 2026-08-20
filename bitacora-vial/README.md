@@ -253,6 +253,21 @@ src/
   `CubicacionPage.tsx` cuando la calculadora agrega un elemento), se
   resincroniza desde Dexie solo mientras el campo no está enfocado, para
   no pisar lo que el usuario está escribiendo en ese momento.
+- **El "." como separador de miles, no solo la "," como decimal**
+  (`parseNumeroDecimal()` en `lib/numero.ts`): arreglar la coma decimal no
+  fue suficiente — la app misma muestra las cantidades con
+  `toLocaleString('es-CL')` (p. ej. "4.200 m³"), así que es natural que
+  alguien escriba "1.000" para anotar mil, con el mismo punto que ve en
+  pantalla. Un reemplazo ingenuo de "," por "." antes de `parseFloat`
+  interpretaba ese punto como decimal: "1.000" quedaba en 1, mil veces
+  menos. Ahora, si el texto no tiene coma, un "." solo se trata como
+  separador de miles (y se elimina) cuando lo que sigue es un grupo de
+  exactamente 3 dígitos con grupos previos válidos (así "1.000" y
+  "4.200" dan 1000 y 4200); si no, se trata como punto decimal normal
+  (así "12.5" sigue dando 12,5). Con coma en el texto, cualquier "."
+  anterior se asume de todos modos como separador de miles y se
+  descarta antes de convertir la coma en el punto decimal (p. ej.
+  "1.234,5" → 1234,5).
 - **Total contratado visible junto al acumulado**: la línea de resumen de
   cada tarea en "Tareas y Avances" (`TareaActivaRow`) pasó de "Total X
   unidad (Avance Y%)" — donde X era el acumulado, no el total real — a "X
