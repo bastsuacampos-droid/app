@@ -1,4 +1,5 @@
 import { db, newId, nowISO, todayISO } from './db';
+import { formatDimensionesCompacto } from './cubicacionCalculo';
 import type { EstadoTarea, Frente, MedicionCubicacion, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
@@ -175,6 +176,12 @@ export interface TareaDelDiaItem {
   pct: number;
   cubicada: boolean;
   estado: EstadoTarea;
+  /** Dimensions of the most recent measurement recorded for this partida — only for
+   * non-linear unidades (m³, m², kg); a plain "ml" task has nothing to show beyond its
+   * quantity, so faltanteLineal is used there instead. */
+  dimensionesTexto?: string;
+  /** Remaining linear meters to reach cantidadContratada — only for unidad === 'ml'. */
+  faltanteLineal?: number;
 }
 
 export interface TareaDelDiaGrupo {
@@ -197,6 +204,25 @@ async function agruparPorPadre(partidas: Partida[], entriesPorPartida: Map<strin
   const padres = await db.partidas.bulkGet(padreIds);
   const padreMap = new Map(padres.filter((p): p is Partida => !!p).map((p) => [p.id, p]));
 
+  // Non-linear tasks show their most recent measurement's dimensions; ml tasks have no
+  // useful "shape" to show, so they get "faltante lineal" instead (computed per item below).
+  const idsNoLineales = partidas.filter((p) => p.unidad !== 'ml').map((p) => p.id);
+  const mediciones = idsNoLineales.length > 0
+    ? await db.medicionesCubicacion.where('partidaId').anyOf(idsNoLineales).toArray()
+    : [];
+  const ultimaMedicionPorPartida = new Map<string, MedicionCubicacion>();
+  for (const m of mediciones) {
+    const actual = ultimaMedicionPorPartida.get(m.partidaId);
+    if (!actual) { ultimaMedicionPorPartida.set(m.partidaId, m); continue; }
+    // Prefer a 'contratado' measurement (describes the physical element) over 'ejecutado'
+    // (a day's progress entry); among ties, the most recently recorded one.
+    const actualEsContratado = actual.proposito === 'contratado';
+    const mEsContratado = m.proposito === 'contratado';
+    if ((mEsContratado && !actualEsContratado) || (mEsContratado === actualEsContratado && m.fecha >= actual.fecha)) {
+      ultimaMedicionPorPartida.set(m.partidaId, m);
+    }
+  }
+
   const grupos = new Map<string, TareaDelDiaGrupo>();
   partidas.forEach((p) => {
     const cubicada = p.cantidadContratada > 0;
@@ -205,8 +231,12 @@ async function agruparPorPadre(partidas: Partida[], entriesPorPartida: Map<strin
     const acumulado = cubicada ? Math.min(acumuladoReal, p.cantidadContratada) : acumuladoReal;
     const pct = cubicada ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
     const estado = estadoTarea(acumuladoReal, p.cantidadContratada, avanceHoy > 0);
+
+    const ultimaMedicion = ultimaMedicionPorPartida.get(p.id);
     const item: TareaDelDiaItem = {
       partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy, acumulado, contratado: p.cantidadContratada, pct, cubicada, estado,
+      dimensionesTexto: p.unidad !== 'ml' && ultimaMedicion ? formatDimensionesCompacto(ultimaMedicion.tipo, ultimaMedicion.datos) : undefined,
+      faltanteLineal: p.unidad === 'ml' && cubicada ? Math.max(0, p.cantidadContratada - acumulado) : undefined,
     };
 
     const padre = p.partidaPadreId ? padreMap.get(p.partidaPadreId) : undefined;

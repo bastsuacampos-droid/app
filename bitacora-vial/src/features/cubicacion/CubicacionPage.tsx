@@ -6,6 +6,9 @@ import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, registrar
 import { useTodayParte } from '../../lib/useTodayParte';
 import { CATALOGO_PARTIDAS } from '../../lib/catalogoPartidas';
 import { formatShortDate } from '../../lib/date';
+import {
+  TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, camposDelTipo, calcularSubtotalElemento, formatDatosMedicion,
+} from '../../lib/cubicacionCalculo';
 import { Header } from '../../components/Header';
 import { IconPlus, IconChevronRight } from '../../components/Icon';
 import type { CubicacionEntry, EstadoTarea, Partida, TipoElementoMedicion } from '../../types/models';
@@ -18,102 +21,6 @@ const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: strin
 };
 
 const ORDEN_ESTADO: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
-
-const TIPO_ELEMENTO_LABEL: Record<TipoElementoMedicion, string> = {
-  rectangular: 'Rectangular',
-  trapezoidal: 'Sección trapezoidal',
-  cilindrico: 'Cilíndrico',
-  muro_vanos: 'Muro con vanos',
-  enfierradura: 'Enfierradura',
-};
-
-/** Which element types make sense to compute for each unidad — a discrete unidad ("un", a
- * count of prefabricated pieces) has no geometry to calculate. */
-const TIPOS_POR_UNIDAD: Partial<Record<string, { value: TipoElementoMedicion; label: string }[]>> = {
-  'm³': [
-    { value: 'rectangular', label: 'Prisma rectangular' },
-    { value: 'trapezoidal', label: 'Sección trapezoidal' },
-    { value: 'cilindrico', label: 'Cilíndrico' },
-  ],
-  'm²': [
-    { value: 'rectangular', label: 'Rectangular' },
-    { value: 'muro_vanos', label: 'Muro (descuenta vanos)' },
-  ],
-  ml: [{ value: 'rectangular', label: 'Longitud simple' }],
-  kg: [{ value: 'enfierradura', label: 'Enfierradura por diámetro' }],
-};
-
-function camposDelTipo(tipo: TipoElementoMedicion, unidad: string): { key: string; label: string }[] {
-  switch (tipo) {
-    case 'rectangular': {
-      const campos = [{ key: 'largo', label: 'Largo (m)' }];
-      if (unidad !== 'ml') campos.push({ key: 'ancho', label: 'Ancho (m)' });
-      if (unidad === 'm³') campos.push({ key: 'alto', label: 'Alto/Espesor (m)' });
-      campos.push({ key: 'cantidad', label: 'Cantidad (veces se repite)' });
-      return campos;
-    }
-    case 'trapezoidal':
-      return [
-        { key: 'baseMayor', label: 'Base mayor (m)' },
-        { key: 'baseMenor', label: 'Base menor (m)' },
-        { key: 'alto', label: 'Alto/Profundidad (m)' },
-        { key: 'largo', label: 'Largo (m)' },
-        { key: 'cantidad', label: 'Cantidad (veces se repite)' },
-      ];
-    case 'cilindrico':
-      return [
-        { key: 'diametro', label: 'Diámetro (m)' },
-        { key: 'alto', label: 'Alto/Largo (m)' },
-        { key: 'cantidad', label: 'Cantidad (veces se repite)' },
-      ];
-    case 'muro_vanos':
-      return [
-        { key: 'largo', label: 'Largo (m)' },
-        { key: 'alto', label: 'Alto (m)' },
-        { key: 'cantidad', label: 'Cantidad de paños' },
-        { key: 'vanos', label: 'Área de vanos a descontar (m²)' },
-      ];
-    case 'enfierradura':
-      return [
-        { key: 'diametro', label: 'Diámetro (mm)' },
-        { key: 'longitud', label: 'Longitud por barra (m)' },
-        { key: 'cantidad', label: 'Cantidad de barras' },
-      ];
-    default:
-      return [];
-  }
-}
-
-/** General geometric quantification for common site elements — NOT a transcription of
- * NCh 353 Of.2000 (mediciones y cubicaciones en construcción); verify the measurement
- * criteria that apply to your contract. The rebar formula (kg/m ≈ d²/162, d en mm) is the
- * standard steel-density calculation, not specific to any one norm. */
-function calcularSubtotalElemento(tipo: TipoElementoMedicion, unidad: string, d: Record<string, number>): number {
-  const n = d.cantidad > 0 ? d.cantidad : 1;
-  switch (tipo) {
-    case 'rectangular':
-      if (unidad === 'm³') return d.largo * d.ancho * d.alto * n;
-      if (unidad === 'm²') return d.largo * d.ancho * n;
-      if (unidad === 'ml') return d.largo * n;
-      return 0;
-    case 'trapezoidal':
-      return ((d.baseMayor + d.baseMenor) / 2) * d.alto * d.largo * n;
-    case 'cilindrico':
-      return Math.PI * (d.diametro / 2) ** 2 * d.alto * n;
-    case 'muro_vanos':
-      return Math.max(0, d.largo * d.alto * n - (d.vanos || 0));
-    case 'enfierradura':
-      return ((d.diametro * d.diametro) / 162) * d.longitud * n;
-    default:
-      return 0;
-  }
-}
-
-function formatDatosMedicion(tipo: TipoElementoMedicion, datos: Record<string, number>, unidad: string): string {
-  return camposDelTipo(tipo, unidad)
-    .map((c) => `${c.label.replace(/\s*\(.*\)/, '')}: ${datos[c.key]?.toLocaleString('es-CL') ?? 0}`)
-    .join(' · ');
-}
 
 interface MedicionInfo { tipo: TipoElementoMedicion; descripcion: string; datos: Record<string, number>; subtotal: number }
 interface NuevaPartidaDatos { nombre: string; unidad: string; cantidadContratada: number; avanceHoy: number; mediciones: MedicionInfo[] }

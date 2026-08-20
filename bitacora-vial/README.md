@@ -193,6 +193,21 @@ src/
   tareas que ya llegaron a su cantidad contratada — qué se hizo, en qué
   frente y en qué fecha se completaron —, así una tarea terminada deja
   el registro diario pero queda igual de consultable.
+- **Avance editable en el mismo lugar + dimensiones o metros faltantes**
+  (`lib/cubicacionCalculo.ts`, `TareaDelDiaItem.dimensionesTexto` /
+  `.faltanteLineal` en `queries.ts`): cada tarea activa en "Tareas y
+  Avances" trae ahora su propio campo "Hoy" editable — anotar el avance
+  del día ya no obliga a entrar a Cubicación, escribe el número ahí
+  mismo y `upsertCubicacionEntry` lo guarda al vuelo. Debajo de cada
+  tarea, según su unidad: si **no es lineal** (m³, m², kg) se muestra un
+  resumen compacto de las dimensiones de su última medición registrada
+  con la calculadora (p. ej. "Dimensiones: 3,2 × 1,8 × 0,8 m ×4"); si
+  **es lineal** (ml) se muestra en cambio "Faltan N ml por completar"
+  (`contratado − acumulado`), que es el dato que de verdad importa para
+  una partida medida en metros lineales. `formatDimensionesCompacto()` y
+  el resto de la lógica de tipos de elemento se movieron de
+  `CubicacionPage.tsx` a `lib/cubicacionCalculo.ts` para que ambas
+  pantallas compartan la misma implementación sin duplicarla.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

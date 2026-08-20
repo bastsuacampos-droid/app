@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import {
-  attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
+  attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas, upsertCubicacionEntry,
 } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
@@ -107,6 +107,11 @@ export function NuevoPartePage() {
 
   function quitarTareaSeleccionada(partidaId: string) {
     patch({ tareasSeleccionadasIds: seleccionadasIds.filter((id) => id !== partidaId) });
+  }
+
+  async function onAvanceHoyChange(partidaId: string, valor: number) {
+    if (!parte) return;
+    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, valor);
   }
 
   async function crearFrente() {
@@ -372,11 +377,22 @@ export function NuevoPartePage() {
                           <div className="progress-track" style={{ marginBottom: 6 }}>
                             <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
                           </div>
+                          <div className="flex-row gap-8" style={{ alignItems: 'center', marginBottom: 3 }}>
+                            <span className="text-soft" style={{ fontSize: 11.5 }}>Hoy</span>
+                            <input
+                              type="number"
+                              className="field-input"
+                              style={{ width: 64, textAlign: 'right', padding: '4px 8px', fontSize: 12 }}
+                              value={t.avanceHoy || ''}
+                              onChange={(e) => onAvanceHoyChange(t.partidaId, Number(e.target.value) || 0)}
+                            />
+                            <span className="text-soft" style={{ fontSize: 11.5 }}>{t.unidad}</span>
+                          </div>
                           <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                             <span className="text-soft" style={{ fontSize: 11.5 }}>
-                              Hoy {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}, Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
-                              {t.cubicada ? ` (Avance ${t.pct}%)` : ' · '}
-                              {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span>}
+                              Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
+                              {t.cubicada ? ` (Avance ${t.pct}%)` : ''}
+                              {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}> · sin cubicar</span>}
                             </span>
                             <button
                               onClick={() => quitarTareaSeleccionada(t.partidaId)}
@@ -386,6 +402,16 @@ export function NuevoPartePage() {
                               <IconX size={11} color="var(--text-soft)" />
                             </button>
                           </div>
+                          {t.unidad === 'ml' && t.cubicada && (
+                            <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
+                              Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar
+                            </div>
+                          )}
+                          {t.unidad !== 'ml' && t.dimensionesTexto && (
+                            <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
+                              Dimensiones: {t.dimensionesTexto}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
