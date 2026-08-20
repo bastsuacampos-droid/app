@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
 import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, registrarMedicion, medicionesDePartida } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
@@ -43,9 +43,15 @@ function estadoDeGrupo(hijos: Partida[], totales: Record<string, number>, entrie
 
 export function CubicacionPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  // "Cubicar nueva tarea" (Nuevo Parte) links here asking to skip straight to the add-tarea
+  // form — landing on the full listado first (which just repeats what "Retomar pendiente"
+  // already showed) would be a redundant extra stop. frenteId travels along too, so the new
+  // tarea lands under the frente the foreman was actually on, not whichever frente sorts first.
+  const navState = location.state as { autoAbrirForm?: boolean; frenteId?: string } | null;
   const parte = useTodayParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
-  const [frenteId, setFrenteId] = useState<string | null>(null);
+  const [frenteId, setFrenteId] = useState<string | null>(navState?.frenteId ?? null);
   const activeFrenteId = frenteId ?? frentes[0]?.id;
 
   const todasPartidas = useLiveQuery(
@@ -60,10 +66,18 @@ export function CubicacionPage() {
     [parte?.id],
   ) ?? [];
 
-  const [showAdd, setShowAdd] = useState(false);
+  const [showAdd, setShowAdd] = useState(!!navState?.autoAbrirForm);
   const [subAddParentId, setSubAddParentId] = useState<string | null>(null);
   const [calcOpenId, setCalcOpenId] = useState<string | null>(null);
   const [editContratadoId, setEditContratadoId] = useState<string | null>(null);
+  const addFormRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (navState?.autoAbrirForm) {
+      addFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const partidasTop = todasPartidas.filter((p) => !p.partidaPadreId);
   const hijosPorPadre = new Map<string, Partida[]>();
@@ -300,17 +314,19 @@ export function CubicacionPage() {
               </div>
             ))}
 
-          {!showAdd && (
-            <button className="chip-dashed card" style={{ justifyContent: 'center', width: '100%', background: 'none' }} onClick={() => setShowAdd(true)}>
-              <IconPlus size={15} /> Agregar tarea
-            </button>
-          )}
+          <div ref={addFormRef}>
+            {!showAdd && (
+              <button className="chip-dashed card" style={{ justifyContent: 'center', width: '100%', background: 'none' }} onClick={() => setShowAdd(true)}>
+                <IconPlus size={15} /> Agregar tarea
+              </button>
+            )}
 
-          {showAdd && (
-            <div className="card">
-              <NuevaPartidaForm onGuardar={guardarPartida} onCancelar={() => setShowAdd(false)} conCatalogo />
-            </div>
-          )}
+            {showAdd && (
+              <div className="card">
+                <NuevaPartidaForm onGuardar={guardarPartida} onCancelar={() => setShowAdd(false)} conCatalogo />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

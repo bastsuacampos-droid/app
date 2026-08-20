@@ -469,7 +469,7 @@ export function NuevoPartePage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigate('/cubicacion')}
+                  onClick={() => navigate('/cubicacion', { state: { autoAbrirForm: true, frenteId: frenteActualId ?? undefined } })}
                   className="flex-row"
                   style={{
                     justifyContent: 'center', gap: 6, flex: 1, background: 'var(--surface-alt)', color: 'var(--accent-dark)',

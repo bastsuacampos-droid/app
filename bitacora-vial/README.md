@@ -307,6 +307,20 @@ src/
   completo, nunca mezcla tareas de dos frentes en una misma pantalla;
   "Cubicar nueva tarea" quedó como botón directo a Cubicación, sin
   pasar primero por el desplegable.
+- **"Cubicar nueva tarea" salta directo al formulario, sin la ventana
+  de por medio** (`navState` en `CubicacionPage.tsx`): ese botón
+  llevaba a la pantalla completa de Cubicación — con el listado de
+  tareas del frente, que ya se había visto en "Retomar pendiente" — y
+  recién ahí, tocando "Agregar tarea", aparecía el formulario; una
+  parada de más que solo repetía información. Ahora el botón navega con
+  `state: { autoAbrirForm: true, frenteId: frenteActualId }`:
+  `CubicacionPage` arranca con el formulario ya abierto (en vez de
+  `showAdd` en falso por defecto) y hace scroll automático hasta él, y
+  con el frente correcto preseleccionado — el mismo en el que estaba
+  parado en Nuevo Parte, no el primero de la lista. Entrar a Cubicación
+  por cualquier otro camino (menú, u otro link sin ese `state`) se
+  comporta exactamente igual que antes, con el listado primero y el
+  formulario cerrado.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 
