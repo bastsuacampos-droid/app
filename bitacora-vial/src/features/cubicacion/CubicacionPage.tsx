@@ -5,7 +5,7 @@ import { db } from '../../lib/db';
 import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, crearPartida, registrarMedicion, medicionesDePartida } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { formatShortDate } from '../../lib/date';
-import { TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, formatDatosMedicion } from '../../lib/cubicacionCalculo';
+import { TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, formatDatosMedicion, camposDesdeDatos } from '../../lib/cubicacionCalculo';
 import type { MedicionInfo, NuevaPartidaDatos } from '../../lib/cubicacionCalculo';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { Header } from '../../components/Header';
@@ -13,6 +13,7 @@ import { IconPlus, IconChevronRight } from '../../components/Icon';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { CalculadoraCubicacion } from './CalculadoraCubicacion';
 import { NuevaPartidaForm } from './NuevaPartidaForm';
+import { FiguraMedidas } from './FiguraMedidas';
 import type { CubicacionEntry, EstadoTarea, Partida } from '../../types/models';
 
 const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: string }> = {
@@ -399,6 +400,7 @@ function TareaBody({
 function MemoriaCalculo({ partidaId }: { partidaId: string }) {
   const mediciones = useLiveQuery(() => medicionesDePartida(partidaId), [partidaId]) ?? [];
   const [abierto, setAbierto] = useState(false);
+  const [dibujoAbiertoId, setDibujoAbiertoId] = useState<string | null>(null);
 
   if (mediciones.length === 0) return null;
 
@@ -421,9 +423,23 @@ function MemoriaCalculo({ partidaId }: { partidaId: string }) {
                   {m.proposito === 'contratado' ? 'Contratado' : 'Ejecutado'} · {formatShortDate(m.fecha)}
                 </span>
               </div>
-              <div className="text-soft" style={{ fontSize: 10.5 }}>
+              <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 4 }}>
                 {formatDatosMedicion(m.tipo, m.datos, m.unidad)} = <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {m.unidad}</strong>
               </div>
+              <button
+                type="button"
+                onClick={() => setDibujoAbiertoId((id) => (id === m.id ? null : m.id))}
+                className="flex-row"
+                style={{ gap: 3, alignItems: 'center', background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10, fontWeight: 700, padding: 0 }}
+              >
+                {dibujoAbiertoId === m.id ? 'Ocultar dibujo' : 'Ver dibujo'}
+                <IconChevronRight size={10} color="var(--accent)" style={{ transform: dibujoAbiertoId === m.id ? 'rotate(90deg)' : undefined }} />
+              </button>
+              {dibujoAbiertoId === m.id && (
+                <div style={{ marginTop: 6 }}>
+                  <FiguraMedidas tipo={m.tipo} unidad={m.unidad} campos={camposDesdeDatos(m.datos)} />
+                </div>
+              )}
             </div>
           ))}
         </div>

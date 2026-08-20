@@ -207,6 +207,19 @@ src/
   igual que cualquier plano de construcción real identifica cada
   detalle. El objetivo es que se lea de inmediato como un dibujo
   técnico del rubro, no como un ícono genérico.
+- **"Ver dibujo" en la memoria de cálculo** (`camposDesdeDatos()` en
+  `lib/cubicacionCalculo.ts`): la lista colapsable "Ver mediciones" de
+  cada tarea (`MemoriaCalculo` en `CubicacionPage.tsx`) solo mostraba el
+  resumen en texto de cada medición pasada ("Largo: 3,2 · Ancho: 1,8 ·
+  Alto: 0,8"), sin la figura. Ahora cada medición trae su propio botón
+  "Ver dibujo" que despliega justo debajo la misma `FiguraMedidas` con
+  cotas de la calculadora, reconstruida a partir de lo que esa medición
+  guardó (`MedicionCubicacion.tipo` / `.datos` / `.unidad`) — así se
+  puede volver a revisar de qué forma salió una cifra semanas después,
+  no solo el número. `camposDesdeDatos()` convierte los `datos:
+  Record<string, number>` guardados de vuelta al `campos: Record<string,
+  string>` que `FiguraMedidas` espera, formateando cada valor con
+  `toLocaleString('es-CL')`.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y

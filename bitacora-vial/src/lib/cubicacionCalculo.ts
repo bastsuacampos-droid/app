@@ -99,6 +99,13 @@ export function formatDatosMedicion(tipo: TipoElementoMedicion, datos: Record<st
     .join(' · ');
 }
 
+/** Turns a saved medición's parsed dimensions back into the string-keyed "campos" shape
+ * FiguraMedidas expects, so a past measurement's cota drawing can be redrawn from exactly
+ * what was saved, not just its text summary. */
+export function camposDesdeDatos(datos: Record<string, number>): Record<string, string> {
+  return Object.fromEntries(Object.entries(datos).map(([k, v]) => [k, v.toLocaleString('es-CL')]));
+}
+
 /** Compact one-line rendering of a measurement's dimensions, for contexts (like Nuevo
  * Parte's Tareas y Avances) that only have room to show the element's shape at a glance
  * rather than the full labeled breakdown from formatDatosMedicion. */
