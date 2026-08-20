@@ -34,7 +34,9 @@ try {
   await page.waitForTimeout(400);
   await shot('03-nuevo-parte');
 
-  await page.getByRole('button', { name: 'Agregar tarea' }).click();
+  await page.getByRole('button', { name: 'Seleccionar tarea' }).click();
+  await page.waitForTimeout(300);
+  await page.getByRole('button', { name: /Nueva tarea \(en Cubicación\)/ }).click();
   await page.waitForTimeout(400);
   await shot('04-cubicacion');
   await page.goBack();

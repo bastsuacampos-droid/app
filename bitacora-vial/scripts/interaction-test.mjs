@@ -24,7 +24,9 @@ try {
   await page.waitForTimeout(300);
 
   // Cubicación: enter a quantity
-  await page.getByRole('button', { name: 'Agregar tarea' }).click();
+  await page.getByRole('button', { name: 'Seleccionar tarea' }).click();
+  await page.waitForTimeout(200);
+  await page.getByRole('button', { name: /Nueva tarea \(en Cubicación\)/ }).click();
   await page.waitForTimeout(300);
   const primerInput = page.locator('input[type="number"]').first();
   await primerInput.fill('85');

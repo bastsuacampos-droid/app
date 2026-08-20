@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
-import { attendanceSummaryForParte, tareasDelDiaAgrupadas } from '../../lib/queries';
+import {
+  attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
+} from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX } from '../../components/Icon';
-import type { Clima, Turno } from '../../types/models';
+import type { Clima, EstadoTarea, Turno } from '../../types/models';
+
+const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
 
 export function NuevoPartePage() {
   const navigate = useNavigate();
@@ -18,9 +22,26 @@ export function NuevoPartePage() {
   const [kmFrente, setKmFrente] = useState('');
   const [dropdownFrenteAbierto, setDropdownFrenteAbierto] = useState(false);
   const dropdownFrenteRef = useRef<HTMLDivElement>(null);
-  const gruposHoy = useLiveQuery(
-    () => (parte ? tareasDelDiaAgrupadas(parte.id) : []),
+  const [dropdownTareaAbierto, setDropdownTareaAbierto] = useState(false);
+  const dropdownTareaRef = useRef<HTMLDivElement>(null);
+  const [tabTareas, setTabTareas] = useState<'activas' | 'completadas'>('activas');
+
+  const entriesHoy = useLiveQuery(
+    () => (parte ? db.cubicacionEntries.where('parteId').equals(parte.id).toArray() : []),
     [parte?.id],
+  ) ?? [];
+  const seleccionadasIds = parte?.tareasSeleccionadasIds ?? [];
+  const gruposActivos = useLiveQuery(
+    () => (parte ? tareasActivasAgrupadas(parte.id, seleccionadasIds) : []),
+    [parte?.id, seleccionadasIds.join(',')],
+  ) ?? [];
+  const candidatas = useLiveQuery(
+    () => (parte ? tareasDisponiblesParaFrentes(parte.frentesIds, parte.id) : []),
+    [parte?.id, parte?.frentesIds.join(',')],
+  ) ?? [];
+  const completadas = useLiveQuery(
+    () => (tabTareas === 'completadas' ? tareasCompletadas() : Promise.resolve([])),
+    [tabTareas],
   ) ?? [];
   const asistencia = useLiveQuery(
     () => (parte ? attendanceSummaryForParte(parte.id) : undefined),
@@ -36,10 +57,26 @@ export function NuevoPartePage() {
       if (dropdownFrenteRef.current && !dropdownFrenteRef.current.contains(e.target as Node)) {
         setDropdownFrenteAbierto(false);
       }
+      if (dropdownTareaRef.current && !dropdownTareaRef.current.contains(e.target as Node)) {
+        setDropdownTareaAbierto(false);
+      }
     }
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
+
+  // Anything that already has a cubicación entry today (e.g. logged directly from
+  // Cubicación) counts as "selected" too, so it never silently disappears from the report
+  // just because nobody picked it from this page's selector.
+  useEffect(() => {
+    if (!parte) return;
+    const actuales = parte.tareasSeleccionadasIds ?? [];
+    const faltantes = entriesHoy.map((e) => e.partidaId).filter((id) => !actuales.includes(id));
+    if (faltantes.length > 0) {
+      db.partes.update(parte.id, { tareasSeleccionadasIds: Array.from(new Set([...actuales, ...faltantes])), updatedAt: nowISO() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parte?.id, entriesHoy.map((e) => e.partidaId).join(',')]);
 
   if (!parte) return null;
 
@@ -61,6 +98,15 @@ export function NuevoPartePage() {
   function abrirNuevoFrente() {
     setDropdownFrenteAbierto(false);
     setNuevoFrenteAbierto(true);
+  }
+
+  function seleccionarTarea(partidaId: string) {
+    patch({ tareasSeleccionadasIds: Array.from(new Set([...seleccionadasIds, partidaId])) });
+    setDropdownTareaAbierto(false);
+  }
+
+  function quitarTareaSeleccionada(partidaId: string) {
+    patch({ tareasSeleccionadasIds: seleccionadasIds.filter((id) => id !== partidaId) });
   }
 
   async function crearFrente() {
@@ -287,62 +333,152 @@ export function NuevoPartePage() {
         </div>
 
         <SectionHeading n={3} title="Tareas y Avances" />
-        <div className="card" style={{ marginBottom: 20 }}>
-          {gruposHoy.length === 0 ? (
-            <div className="text-soft" style={{ fontSize: 13, marginBottom: 12 }}>Aún no hay tareas registradas hoy.</div>
-          ) : (
-            <div className="stack" style={{ gap: 18, marginBottom: 14 }}>
-              {gruposHoy.map((g, gi) => (
-                <div key={g.id}>
-                  <div className="flex-row gap-8" style={{ fontSize: 13, fontWeight: 700, marginBottom: g.agrupada ? 10 : 6 }}>
-                    <span
-                      style={{
-                        width: 18, height: 18, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
-                        fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                      }}
-                    >
-                      {gi + 1}
-                    </span>
-                    {g.titulo}
-                  </div>
-                  <div
-                    className="stack"
-                    style={g.agrupada ? { gap: 12, paddingLeft: 26, borderLeft: '2px solid var(--border)', marginLeft: 8 } : { gap: 0 }}
-                  >
-                    {g.items.map((t) => (
-                      <div key={t.partidaId}>
-                        {g.agrupada && (
-                          <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
-                            <span style={{ fontSize: 12, fontWeight: 600 }}>{t.nombre}</span>
-                            {t.cubicada && <strong style={{ fontSize: 11.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
-                          </div>
-                        )}
-                        <div className="progress-track" style={{ marginBottom: 6 }}>
-                          <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
-                        </div>
-                        <div className="text-soft" style={{ fontSize: 11.5 }}>
-                          Hoy {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}, Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
-                          {t.cubicada ? ` (Avance ${t.pct}%)` : ' · '}
-                          {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          <button
-            onClick={() => navigate('/cubicacion')}
-            className="flex-row"
-            style={{
-              justifyContent: 'center', gap: 6, width: '100%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
-              border: 'none', borderRadius: 10, padding: 11, fontSize: 12.5, fontWeight: 700,
-            }}
-          >
-            <IconPlus size={15} color="var(--accent-dark)" /> Agregar tarea
-          </button>
+        <div className="segmented" style={{ marginBottom: 12 }}>
+          <button className={tabTareas === 'activas' ? 'active' : ''} style={{ flex: 1 }} onClick={() => setTabTareas('activas')}>Activas</button>
+          <button className={tabTareas === 'completadas' ? 'active' : ''} style={{ flex: 1 }} onClick={() => setTabTareas('completadas')}>Completadas</button>
         </div>
+
+        {tabTareas === 'activas' ? (
+          <div className="card" style={{ marginBottom: 20 }}>
+            {gruposActivos.length === 0 ? (
+              <div className="text-soft" style={{ fontSize: 13, marginBottom: 12 }}>Aún no has seleccionado tareas para hoy.</div>
+            ) : (
+              <div className="stack" style={{ gap: 18, marginBottom: 14 }}>
+                {gruposActivos.map((g, gi) => (
+                  <div key={g.id}>
+                    <div className="flex-row gap-8" style={{ fontSize: 13, fontWeight: 700, marginBottom: g.agrupada ? 10 : 6 }}>
+                      <span
+                        style={{
+                          width: 18, height: 18, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
+                          fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                        }}
+                      >
+                        {gi + 1}
+                      </span>
+                      {g.titulo}
+                    </div>
+                    <div
+                      className="stack"
+                      style={g.agrupada ? { gap: 12, paddingLeft: 26, borderLeft: '2px solid var(--border)', marginLeft: 8 } : { gap: 8 }}
+                    >
+                      {g.items.map((t) => (
+                        <div key={t.partidaId}>
+                          {g.agrupada && (
+                            <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+                              <span style={{ fontSize: 12, fontWeight: 600 }}>{t.nombre}</span>
+                              {t.cubicada && <strong style={{ fontSize: 11.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
+                            </div>
+                          )}
+                          <div className="progress-track" style={{ marginBottom: 6 }}>
+                            <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
+                          </div>
+                          <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                            <span className="text-soft" style={{ fontSize: 11.5 }}>
+                              Hoy {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}, Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
+                              {t.cubicada ? ` (Avance ${t.pct}%)` : ' · '}
+                              {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}>sin cubicar</span>}
+                            </span>
+                            <button
+                              onClick={() => quitarTareaSeleccionada(t.partidaId)}
+                              aria-label={`Quitar ${t.nombre}`}
+                              style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex', flexShrink: 0 }}
+                            >
+                              <IconX size={11} color="var(--text-soft)" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div ref={dropdownTareaRef} style={{ position: 'relative' }}>
+              <button
+                type="button"
+                onClick={() => setDropdownTareaAbierto((v) => !v)}
+                className="flex-row"
+                style={{
+                  justifyContent: 'center', gap: 6, width: '100%', background: 'var(--accent-soft)', color: 'var(--accent-dark)',
+                  border: 'none', borderRadius: 10, padding: 11, fontSize: 12.5, fontWeight: 700,
+                }}
+              >
+                <IconPlus size={15} color="var(--accent-dark)" /> Seleccionar tarea
+              </button>
+
+              {dropdownTareaAbierto && (
+                <div
+                  className="card"
+                  style={{
+                    position: 'absolute', left: 0, right: 0, top: 'calc(100% + 6px)', zIndex: 20,
+                    padding: 6, maxHeight: 280, overflowY: 'auto',
+                    boxShadow: '0 12px 32px -10px rgba(20,23,28,.28)',
+                  }}
+                >
+                  {parte.frentesIds.length === 0 && (
+                    <div className="text-soft" style={{ fontSize: 11.5, padding: '10px 8px' }}>
+                      Primero elige un punto de trabajo en la sección 1.
+                    </div>
+                  )}
+                  {candidatas
+                    .filter((c) => !seleccionadasIds.includes(c.partidaId))
+                    .sort((a, b) => ORDEN_RECOMENDACION[a.estado] - ORDEN_RECOMENDACION[b.estado])
+                    .map((c) => (
+                      <button
+                        key={c.partidaId}
+                        type="button"
+                        onClick={() => seleccionarTarea(c.partidaId)}
+                        className="flex-row"
+                        style={{
+                          justifyContent: 'space-between', alignItems: 'center', width: '100%', textAlign: 'left',
+                          background: 'none', border: 'none', borderRadius: 8, padding: '10px 10px', fontSize: 12.5, fontWeight: 600, color: 'var(--text)',
+                        }}
+                      >
+                        <span>{c.nombre}{c.padreNombre ? ` · ${c.padreNombre}` : ''}</span>
+                        {(c.estado === 'pendiente' || c.estado === 'en_progreso_hoy') && (
+                          <span style={{ background: 'var(--yellow-soft)', color: 'var(--yellow-text)', fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 20, flexShrink: 0, marginLeft: 8 }}>
+                            {c.estado === 'pendiente' ? 'Recomendada' : 'En progreso'}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  <button
+                    type="button"
+                    onClick={() => navigate('/cubicacion')}
+                    className="flex-row gap-8"
+                    style={{
+                      width: '100%', background: 'var(--surface-alt)', border: 'none', borderRadius: 8,
+                      padding: '10px 10px', fontSize: 12.5, fontWeight: 700, color: 'var(--accent-dark)', marginTop: 2,
+                    }}
+                  >
+                    <IconPlus size={13} color="var(--accent-dark)" /> Nueva tarea (en Cubicación)
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="card" style={{ marginBottom: 20 }}>
+            {completadas.length === 0 ? (
+              <div className="text-soft" style={{ fontSize: 13 }}>Aún no hay tareas completadas.</div>
+            ) : (
+              <div className="stack" style={{ gap: 10 }}>
+                {completadas.map((t) => (
+                  <div key={t.partidaId} style={{ background: 'var(--green-soft)', borderRadius: 10, padding: '10px 12px' }}>
+                    <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: 3, gap: 8 }}>
+                      <strong style={{ fontSize: 12.5 }}>{t.nombre}</strong>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--green)', whiteSpace: 'nowrap' }}>{t.cantidad.toLocaleString('es-CL')} {t.unidad}</span>
+                    </div>
+                    <div className="text-soft" style={{ fontSize: 11 }}>
+                      {t.frenteNombre} · Terminada el {t.fechaCompletada ? new Date(t.fechaCompletada).toLocaleDateString('es-CL') : '—'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <SectionHeading n={4} title="Registro Fotográfico" style={{ marginBottom: 0 }} />

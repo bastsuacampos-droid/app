@@ -1,5 +1,5 @@
 import { db, newId, nowISO, todayISO } from './db';
-import type { EstadoTarea, MedicionCubicacion, Parte, Partida } from '../types/models';
+import type { EstadoTarea, Frente, MedicionCubicacion, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -30,6 +30,7 @@ export function ensureTodayParteExists(fecha: string): Promise<void> {
         temperaturaC: undefined,
         atrasoClimaMin: 0,
         frentesIds: [],
+        tareasSeleccionadasIds: [],
         observaciones: '',
         estado: 'en_edicion',
         createdAt: nowISO(),
@@ -173,6 +174,7 @@ export interface TareaDelDiaItem {
   contratado: number;
   pct: number;
   cubicada: boolean;
+  estado: EstadoTarea;
 }
 
 export interface TareaDelDiaGrupo {
@@ -184,31 +186,27 @@ export interface TareaDelDiaGrupo {
   items: TareaDelDiaItem[];
 }
 
-/** Today's cubicación entries, grouped by parent partida (sub-tareas nest under their
- * padre's título) so a task subdivided into sub-tareas shows as one titled group with each
+/** Groups a set of leaf partidas by parent partida (sub-tareas nest under their padre's
+ * título) so a task subdivided into sub-tareas shows as one titled group with each
  * sub-tarea's own progress, while a plain (non-subdivided) partida still renders flat. */
-export async function tareasDelDiaAgrupadas(parteId: string): Promise<TareaDelDiaGrupo[]> {
-  const entries = await db.cubicacionEntries.where('parteId').equals(parteId).toArray();
-  if (entries.length === 0) return [];
+async function agruparPorPadre(partidas: Partida[], entriesPorPartida: Map<string, number>): Promise<TareaDelDiaGrupo[]> {
+  if (partidas.length === 0) return [];
 
   const totales = await cumulativeForAllPartidas();
-  const partidas = await db.partidas.bulkGet(entries.map((e) => e.partidaId));
-  const padreIds = Array.from(
-    new Set(partidas.filter((p): p is Partida => !!p?.partidaPadreId).map((p) => p!.partidaPadreId!)),
-  );
+  const padreIds = Array.from(new Set(partidas.filter((p) => p.partidaPadreId).map((p) => p.partidaPadreId!)));
   const padres = await db.partidas.bulkGet(padreIds);
   const padreMap = new Map(padres.filter((p): p is Partida => !!p).map((p) => [p.id, p]));
 
   const grupos = new Map<string, TareaDelDiaGrupo>();
-  entries.forEach((e, i) => {
-    const p = partidas[i];
-    if (!p) return;
+  partidas.forEach((p) => {
     const cubicada = p.cantidadContratada > 0;
     const acumuladoReal = totales[p.id] ?? 0;
+    const avanceHoy = entriesPorPartida.get(p.id) ?? 0;
     const acumulado = cubicada ? Math.min(acumuladoReal, p.cantidadContratada) : acumuladoReal;
     const pct = cubicada ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
+    const estado = estadoTarea(acumuladoReal, p.cantidadContratada, avanceHoy > 0);
     const item: TareaDelDiaItem = {
-      partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy: e.cantidadEjecutada, acumulado, contratado: p.cantidadContratada, pct, cubicada,
+      partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy, acumulado, contratado: p.cantidadContratada, pct, cubicada, estado,
     };
 
     const padre = p.partidaPadreId ? padreMap.get(p.partidaPadreId) : undefined;
@@ -219,6 +217,107 @@ export async function tareasDelDiaAgrupadas(parteId: string): Promise<TareaDelDi
     grupos.get(groupId)!.items.push(item);
   });
   return Array.from(grupos.values());
+}
+
+/** Tasks explicitly picked for today's report (Parte.tareasSeleccionadasIds), grouped by
+ * parent partida. Terminada tasks are excluded — once a task is fully done it moves to
+ * tareasCompletadas()'s "Completadas" view instead of staying in the daily log. */
+export async function tareasActivasAgrupadas(parteId: string, seleccionadasIds: string[]): Promise<TareaDelDiaGrupo[]> {
+  if (seleccionadasIds.length === 0) return [];
+  const partidas = (await db.partidas.bulkGet(seleccionadasIds)).filter((p): p is Partida => !!p);
+  const entries = await db.cubicacionEntries.where('parteId').equals(parteId).toArray();
+  const entriesPorPartida = new Map(entries.map((e) => [e.partidaId, e.cantidadEjecutada]));
+
+  const grupos = await agruparPorPadre(partidas, entriesPorPartida);
+  return grupos
+    .map((g) => ({ ...g, items: g.items.filter((i) => i.estado !== 'terminada') }))
+    .filter((g) => g.items.length > 0);
+}
+
+export interface TareaCandidata {
+  partidaId: string;
+  nombre: string;
+  unidad: string;
+  frenteId: string;
+  padreNombre?: string;
+  estado: EstadoTarea;
+}
+
+/** Leaf partidas (no sub-tareas of their own) belonging to the given frentes, for the
+ * "Seleccionar tarea" picker on Nuevo Parte — terminadas excluded, since those live in the
+ * Completadas tab instead. */
+export async function tareasDisponiblesParaFrentes(frentesIds: string[], parteId: string): Promise<TareaCandidata[]> {
+  if (frentesIds.length === 0) return [];
+  const partidas = await db.partidas.where('frenteId').anyOf(frentesIds).toArray();
+  const hijosPadreIds = new Set(partidas.filter((p) => p.partidaPadreId).map((p) => p.partidaPadreId!));
+  const leaves = partidas.filter((p) => !hijosPadreIds.has(p.id));
+
+  const padreIds = Array.from(new Set(leaves.filter((p) => p.partidaPadreId).map((p) => p.partidaPadreId!)));
+  const padres = await db.partidas.bulkGet(padreIds);
+  const padreMap = new Map(padres.filter((p): p is Partida => !!p).map((p) => [p.id, p]));
+
+  const totales = await cumulativeForAllPartidas();
+  const entries = await db.cubicacionEntries.where('parteId').equals(parteId).toArray();
+  const entriesPorPartida = new Map(entries.map((e) => [e.partidaId, e.cantidadEjecutada]));
+
+  return leaves
+    .map((p) => {
+      const acumulado = totales[p.id] ?? 0;
+      const avanceHoy = entriesPorPartida.get(p.id) ?? 0;
+      const estado = estadoTarea(acumulado, p.cantidadContratada, avanceHoy > 0);
+      return {
+        partidaId: p.id, nombre: p.nombre, unidad: p.unidad, frenteId: p.frenteId,
+        padreNombre: p.partidaPadreId ? padreMap.get(p.partidaPadreId)?.nombre : undefined,
+        estado,
+      };
+    })
+    .filter((t) => t.estado !== 'terminada');
+}
+
+export interface TareaCompletada {
+  partidaId: string;
+  nombre: string;
+  unidad: string;
+  frenteId: string;
+  frenteNombre: string;
+  cantidad: number;
+  /** The day the accumulated total first reached cantidadContratada. */
+  fechaCompletada: string;
+}
+
+/** Every leaf partida that reached its cantidadContratada, with dónde (frente) and cuándo
+ * (the day its running total first got there) — the "Completadas" tab of Tareas y Avances. */
+export async function tareasCompletadas(): Promise<TareaCompletada[]> {
+  const partidas = await db.partidas.toArray();
+  const hijosPadreIds = new Set(partidas.filter((p) => p.partidaPadreId).map((p) => p.partidaPadreId!));
+  const leaves = partidas.filter((p) => !hijosPadreIds.has(p.id) && p.cantidadContratada > 0);
+  const totales = await cumulativeForAllPartidas();
+  const completadas = leaves.filter((p) => (totales[p.id] ?? 0) >= p.cantidadContratada);
+  if (completadas.length === 0) return [];
+
+  const frentes = await db.frentes.bulkGet(Array.from(new Set(completadas.map((p) => p.frenteId))));
+  const frenteMap = new Map(frentes.filter((f): f is Frente => !!f).map((f) => [f.id, f]));
+
+  const resultados: TareaCompletada[] = [];
+  for (const p of completadas) {
+    const entries = (await db.cubicacionEntries.where('partidaId').equals(p.id).toArray())
+      .sort((a, b) => a.fecha.localeCompare(b.fecha));
+    let acumulado = 0;
+    let fechaCompletada = '';
+    for (const e of entries) {
+      acumulado += e.cantidadEjecutada;
+      if (acumulado >= p.cantidadContratada) {
+        fechaCompletada = e.fecha;
+        break;
+      }
+    }
+    if (!fechaCompletada && entries.length > 0) fechaCompletada = entries[entries.length - 1].fecha;
+    resultados.push({
+      partidaId: p.id, nombre: p.nombre, unidad: p.unidad, frenteId: p.frenteId,
+      frenteNombre: frenteMap.get(p.frenteId)?.nombre ?? '', cantidad: p.cantidadContratada, fechaCompletada,
+    });
+  }
+  return resultados.sort((a, b) => b.fechaCompletada.localeCompare(a.fechaCompletada));
 }
 
 /** Records one dimension-calculator measurement (memoria de cálculo) for a partida, keeping

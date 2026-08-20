@@ -117,6 +117,11 @@ export interface Parte {
   temperaturaC?: number;
   atrasoClimaMin: number;
   frentesIds: string[];
+  /** Partidas explicitly picked to show in "Tareas y Avances" today — set via the selector
+   * on Nuevo Parte, not implied just by having a cubicación entry (that gets folded in too,
+   * so nothing already logged silently disappears). Absent on partes created before this
+   * field existed; treat as an empty list when reading. */
+  tareasSeleccionadasIds?: string[];
   observaciones: string;
   estado: EstadoParte;
   createdAt: string;

@@ -176,6 +176,23 @@ src/
   (tipo, descripción opcional, dimensiones y subtotal) — visible después
   al abrir "Ver mediciones" en la tarjeta de la tarea, para poder
   revisar de dónde salió cada cifra.
+- **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
+  `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
+  `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y
+  Avances" de Nuevo Parte ya no se llena solo automáticamente con lo que
+  tenga una entrada de cubicación hoy — el botón "Seleccionar tarea" abre
+  un desplegable (mismo patrón visual que "Seleccionar punto de trabajo")
+  con las tareas del frente elegido, recomendando primero las
+  *pendientes* (avanzaron un día anterior pero no hoy) y las *en
+  progreso hoy*, con badge "Recomendada" / "En progreso"; las
+  *terminadas* no aparecen ahí. Cualquier tarea que ya tenga cubicación
+  hoy se suma sola a la selección (para no perder de vista algo cargado
+  directamente desde Cubicación), y cada tarea seleccionada se puede
+  quitar del reporte de hoy con su botón "×" sin borrar sus datos. Un
+  segundo tab, "Completadas", junto al de "Activas", lista todas las
+  tareas que ya llegaron a su cantidad contratada — qué se hizo, en qué
+  frente y en qué fecha se completaron —, así una tarea terminada deja
+  el registro diario pero queda igual de consultable.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 
