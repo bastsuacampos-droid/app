@@ -200,6 +200,13 @@ src/
   Sigue siendo SVG vectorial puro (nada de imágenes rasterizadas), así
   que el peso agregado al bundle es mínimo (~7 KB comprimido) frente a
   lo que costaría incrustar fotos de referencia.
+  Cada figura además vive dentro de un **marco de hoja de plano**, con
+  una franja de "cajetín" abajo (nombre de la vista a la izquierda —
+  "Corte transversal", "Vista isométrica — Prisma rectangular", etc. —
+  y "S/ESC." a la derecha, la abreviatura estándar de "sin escala"),
+  igual que cualquier plano de construcción real identifica cada
+  detalle. El objetivo es que se lea de inmediato como un dibujo
+  técnico del rubro, no como un ícono genérico.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y

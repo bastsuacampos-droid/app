@@ -12,8 +12,8 @@ function DefsFigura() {
       <marker id={ARROW_ID} viewBox="0 0 9 3" refX="8" refY="1.5" markerWidth="9" markerHeight="3" orient="auto-start-reverse">
         <path d="M0,0 L9,1.5 L0,3 Z" fill="var(--accent)" />
       </marker>
-      <pattern id={HATCH_ID} width={6} height={6} patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-        <line x1={0} y1={0} x2={0} y2={6} stroke="var(--border)" strokeWidth={1} />
+      <pattern id={HATCH_ID} width={5} height={5} patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1={0} y1={0} x2={0} y2={5} stroke="var(--border)" strokeWidth={1} />
       </pattern>
     </defs>
   );
@@ -87,7 +87,22 @@ function BadgeCantidad({ n }: { n: number }) {
   );
 }
 
-const SVG_PROPS = { viewBox: '-16 0 296 180', width: '100%', style: { maxWidth: 320, display: 'block', margin: '0 auto' } as const };
+/** Drawing-sheet frame + a mini "cajetín" strip along the bottom (view name on the left,
+ * "S/ESC." — sin escala, standard shorthand for "not to scale" — on the right), the way an
+ * actual plano de construcción identifies each detail view. */
+function Marco({ titulo }: { titulo: string }) {
+  return (
+    <g>
+      <rect x={-15} y={1} width={294} height={198} fill="none" stroke="var(--border)" strokeWidth={1} />
+      <line x1={-15} y1={168} x2={279} y2={168} stroke="var(--border)" strokeWidth={1} />
+      <line x1={132} y1={168} x2={132} y2={199} stroke="var(--border)" strokeWidth={1} />
+      <text x={-9} y={187} fontSize={8.5} fontWeight={700} letterSpacing={0.4} fill="var(--text-soft)">{titulo.toUpperCase()}</text>
+      <text x={273} y={187} textAnchor="end" fontSize={8.5} fontWeight={700} letterSpacing={0.4} fill="var(--text-soft)">S/ESC.</text>
+    </g>
+  );
+}
+
+const SVG_PROPS = { viewBox: '-16 0 296 200', width: '100%', style: { maxWidth: 320, display: 'block', margin: '0 auto' } as const };
 const TRAZO = { stroke: 'var(--text)', strokeWidth: 1.6, fill: 'none' } as const;
 const TRAZO_ACHURADO = { stroke: 'var(--text)', strokeWidth: 1.6, fill: `url(#${HATCH_ID})` } as const;
 const TRAZO_OCULTO = { stroke: 'var(--text-soft)', strokeWidth: 1.2, fill: 'none', strokeDasharray: '3 3' } as const;
@@ -108,6 +123,7 @@ function FiguraPrisma({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Vista isométrica — Prisma rectangular" />
       {/* back-hidden edges, from the corner behind the box */}
       <path d="M55,140 L110,105 M110,105 L220,105 M110,105 L110,25" {...TRAZO_OCULTO} />
       {/* front face achurada (material lleno), top and right faces sin achurar */}
@@ -126,6 +142,7 @@ function FiguraRectangulo({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Vista en planta" />
       <rect x={60} y={50} width={160} height={90} {...TRAZO_ACHURADO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
       <CotaH x1={60} x2={220} y={158} desde={140} label={textoCota(campos, 'largo', 'm')} />
@@ -138,6 +155,7 @@ function FiguraLinea({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Vista en planta — Trazado lineal" />
       <line x1={40} y1={90} x2={240} y2={90} stroke="var(--text)" strokeWidth={5} strokeLinecap="round" />
       <line x1={40} y1={78} x2={40} y2={102} stroke="var(--text)" strokeWidth={1.6} />
       <line x1={240} y1={78} x2={240} y2={102} stroke="var(--text)" strokeWidth={1.6} />
@@ -151,6 +169,7 @@ function FiguraTrapecio({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Corte transversal" />
       <path d="M50,140 L105,105 M105,105 L225,105 M105,105 L140,35" {...TRAZO_OCULTO} />
       <path d="M50,140 L170,140 L135,70 L85,70 Z" {...TRAZO_ACHURADO} />
       <path d="M85,70 L140,35 L190,35 L135,70" {...TRAZO} />
@@ -168,6 +187,7 @@ function FiguraCilindro({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Vista isométrica — Elemento cilíndrico" />
       <line x1={80} y1={55} x2={80} y2={140} {...TRAZO} />
       <line x1={200} y1={55} x2={200} y2={140} {...TRAZO} />
       <path d="M80,140 A60,18 0 0 0 200,140" {...TRAZO} />
@@ -183,6 +203,7 @@ function FiguraMuroVanos({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Elevación — Muro con vano" />
       <path d="M50,50 L220,50 L220,140 L50,140 Z M110,72 L160,72 L160,118 L110,118 Z" fillRule="evenodd" {...TRAZO_ACHURADO} />
       <rect x={110} y={72} width={50} height={46} stroke="var(--text)" strokeWidth={1.2} fill="none" />
       <line x1={160} y1={95} x2={200} y2={95} stroke="var(--text-soft)" strokeWidth={1} strokeDasharray="2 2" />
@@ -198,6 +219,7 @@ function FiguraBarra({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
+      <Marco titulo="Detalle de enfierradura" />
       <line x1={30} y1={90} x2={195} y2={90} stroke="var(--text)" strokeWidth={7} strokeLinecap="round" />
       <circle cx={232} cy={90} r={17} {...TRAZO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
