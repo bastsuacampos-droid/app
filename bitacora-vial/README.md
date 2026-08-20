@@ -193,21 +193,32 @@ src/
   tareas que ya llegaron a su cantidad contratada — qué se hizo, en qué
   frente y en qué fecha se completaron —, así una tarea terminada deja
   el registro diario pero queda igual de consultable.
-- **Avance editable en el mismo lugar + dimensiones o metros faltantes**
-  (`lib/cubicacionCalculo.ts`, `TareaDelDiaItem.dimensionesTexto` /
+- **Avance de hoy aditivo + botón Terminado + dimensiones o metros
+  faltantes** (`TareaActivaRow` en `NuevoPartePage.tsx`,
+  `lib/cubicacionCalculo.ts`, `TareaDelDiaItem.dimensionesTexto` /
   `.faltanteLineal` en `queries.ts`): cada tarea activa en "Tareas y
-  Avances" trae ahora su propio campo "Hoy" editable — anotar el avance
-  del día ya no obliga a entrar a Cubicación, escribe el número ahí
-  mismo y `upsertCubicacionEntry` lo guarda al vuelo. Debajo de cada
-  tarea, según su unidad: si **no es lineal** (m³, m², kg) se muestra un
-  resumen compacto de las dimensiones de su última medición registrada
-  con la calculadora (p. ej. "Dimensiones: 3,2 × 1,8 × 0,8 m ×4"); si
-  **es lineal** (ml) se muestra en cambio "Faltan N ml por completar"
-  (`contratado − acumulado`), que es el dato que de verdad importa para
-  una partida medida en metros lineales. `formatDimensionesCompacto()` y
-  el resto de la lógica de tipos de elemento se movieron de
-  `CubicacionPage.tsx` a `lib/cubicacionCalculo.ts` para que ambas
-  pantallas compartan la misma implementación sin duplicarla.
+  Avances" trae su propio campo "Avance de hoy" — anotar el avance ya no
+  obliga a entrar a Cubicación. El campo es **puramente aditivo**: se
+  escribe lo recién realizado (no el total del día) y el botón "+" (o
+  Enter) lo suma sobre lo que ya llevabas registrado hoy, nunca lo
+  reemplaza — así no hay que hacer el cálculo mental de "cuánto llevaba
+  más cuánto hice ahora". Un texto discreto ("hoy llevas X unidad")
+  muestra lo acumulado del día una vez que hay algo cargado. El botón
+  "Terminado" (visible cuando la tarea está cubicada y bajo 100%) suma
+  de una vez lo que falta para llegar exactamente a la cantidad
+  contratada, con lo que la tarea pasa a "Completadas" al toque
+  siguiente. Debajo de cada tarea, según su unidad: si **no es lineal**
+  (m³, m², kg) se muestra un resumen compacto de las dimensiones de su
+  última medición registrada con la calculadora (p. ej. "Dimensiones:
+  3,2 × 1,8 × 0,8 m ×4"); si **es lineal** (ml) se muestra en cambio
+  "Faltan N ml por completar" (`contratado − acumulado`), que es el dato
+  que de verdad importa para una partida medida en metros lineales.
+  `formatDimensionesCompacto()` y el resto de la lógica de tipos de
+  elemento se movieron de `CubicacionPage.tsx` a
+  `lib/cubicacionCalculo.ts` para que ambas pantallas compartan la misma
+  implementación sin duplicarla. La página de Cubicación conserva su
+  propio campo "Ejecutado hoy" de reemplazo directo, para corregir un
+  valor a mano cuando haga falta.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

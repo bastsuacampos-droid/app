@@ -5,9 +5,10 @@ import { db, newId, nowISO } from '../../lib/db';
 import {
   attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas, upsertCubicacionEntry,
 } from '../../lib/queries';
+import type { TareaDelDiaItem } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
-import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX } from '../../components/Icon';
+import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck } from '../../components/Icon';
 import type { Clima, EstadoTarea, Turno } from '../../types/models';
 
 const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
@@ -109,9 +110,22 @@ export function NuevoPartePage() {
     patch({ tareasSeleccionadasIds: seleccionadasIds.filter((id) => id !== partidaId) });
   }
 
-  async function onAvanceHoyChange(partidaId: string, valor: number) {
+  /** The "Hoy" field only ever adds the avance just realizado on top of whatever was already
+   * logged today — it never replaces it, so the foreman never has to do mental math with the
+   * running total to log one more increment. */
+  async function onAvanceHoyAgregar(partidaId: string, incremento: number) {
+    if (!parte || incremento <= 0) return;
+    const existente = entriesHoy.find((e) => e.partidaId === partidaId)?.cantidadEjecutada ?? 0;
+    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, Number((existente + incremento).toFixed(3)));
+  }
+
+  /** "Terminado": tops up today's entry just enough so the accumulated total reaches
+   * cantidadContratada exactly (100%) — t.acumulado is already capped at contratado, so the
+   * gap to close is contratado - acumulado, added on top of whatever avanceHoy already is. */
+  async function onMarcarTerminada(t: TareaDelDiaItem) {
     if (!parte) return;
-    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, valor);
+    const nuevoAvanceHoy = Number((t.avanceHoy + (t.contratado - t.acumulado)).toFixed(3));
+    await upsertCubicacionEntry(parte.id, t.partidaId, parte.fecha, nuevoAvanceHoy);
   }
 
   async function crearFrente() {
@@ -367,52 +381,14 @@ export function NuevoPartePage() {
                       style={g.agrupada ? { gap: 12, paddingLeft: 26, borderLeft: '2px solid var(--border)', marginLeft: 8 } : { gap: 8 }}
                     >
                       {g.items.map((t) => (
-                        <div key={t.partidaId}>
-                          {g.agrupada && (
-                            <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
-                              <span style={{ fontSize: 12, fontWeight: 600 }}>{t.nombre}</span>
-                              {t.cubicada && <strong style={{ fontSize: 11.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
-                            </div>
-                          )}
-                          <div className="progress-track" style={{ marginBottom: 6 }}>
-                            <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
-                          </div>
-                          <div className="flex-row gap-8" style={{ alignItems: 'center', marginBottom: 3 }}>
-                            <span className="text-soft" style={{ fontSize: 11.5 }}>Hoy</span>
-                            <input
-                              type="number"
-                              className="field-input"
-                              style={{ width: 64, textAlign: 'right', padding: '4px 8px', fontSize: 12 }}
-                              value={t.avanceHoy || ''}
-                              onChange={(e) => onAvanceHoyChange(t.partidaId, Number(e.target.value) || 0)}
-                            />
-                            <span className="text-soft" style={{ fontSize: 11.5 }}>{t.unidad}</span>
-                          </div>
-                          <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-                            <span className="text-soft" style={{ fontSize: 11.5 }}>
-                              Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
-                              {t.cubicada ? ` (Avance ${t.pct}%)` : ''}
-                              {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}> · sin cubicar</span>}
-                            </span>
-                            <button
-                              onClick={() => quitarTareaSeleccionada(t.partidaId)}
-                              aria-label={`Quitar ${t.nombre}`}
-                              style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex', flexShrink: 0 }}
-                            >
-                              <IconX size={11} color="var(--text-soft)" />
-                            </button>
-                          </div>
-                          {t.unidad === 'ml' && t.cubicada && (
-                            <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
-                              Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar
-                            </div>
-                          )}
-                          {t.unidad !== 'ml' && t.dimensionesTexto && (
-                            <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
-                              Dimensiones: {t.dimensionesTexto}
-                            </div>
-                          )}
-                        </div>
+                        <TareaActivaRow
+                          key={t.partidaId}
+                          t={t}
+                          agrupada={g.agrupada}
+                          onAgregarAvance={onAvanceHoyAgregar}
+                          onMarcarTerminada={onMarcarTerminada}
+                          onQuitar={quitarTareaSeleccionada}
+                        />
                       ))}
                     </div>
                   </div>
@@ -557,6 +533,107 @@ function Stat({ label, value, color }: { label: string; value: number; color: st
     <div style={{ textAlign: 'center' }}>
       <div className="disp" style={{ fontSize: 20, fontWeight: 800, color }}>{value}</div>
       <div className="text-soft" style={{ fontSize: 10.5 }}>{label}</div>
+    </div>
+  );
+}
+
+/** One tarea row in "Tareas y Avances" — the "Avance de hoy" field only ever adds the
+ * increment just realizado on top of today's existing entry (never replaces it), and
+ * "Terminado" tops the task up to 100% in one tap. */
+function TareaActivaRow({
+  t, agrupada, onAgregarAvance, onMarcarTerminada, onQuitar,
+}: {
+  t: TareaDelDiaItem;
+  agrupada: boolean;
+  onAgregarAvance: (partidaId: string, incremento: number) => void;
+  onMarcarTerminada: (t: TareaDelDiaItem) => void;
+  onQuitar: (partidaId: string) => void;
+}) {
+  const [incremento, setIncremento] = useState('');
+
+  function agregar() {
+    const valor = Number(incremento) || 0;
+    if (valor <= 0) return;
+    onAgregarAvance(t.partidaId, valor);
+    setIncremento('');
+  }
+
+  return (
+    <div>
+      {agrupada && (
+        <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>{t.nombre}</span>
+          {t.cubicada && <strong style={{ fontSize: 11.5, color: 'var(--accent-dark)' }}>{t.pct}%</strong>}
+        </div>
+      )}
+      <div className="progress-track" style={{ marginBottom: 6 }}>
+        <div className="progress-fill" style={{ width: `${t.cubicada ? t.pct : 0}%` }} />
+      </div>
+      <div className="flex-row gap-8" style={{ alignItems: 'center', marginBottom: 3 }}>
+        <span className="text-soft" style={{ fontSize: 11.5 }}>Avance de hoy</span>
+        <input
+          type="number"
+          className="field-input"
+          placeholder="0"
+          style={{ width: 64, textAlign: 'right', padding: '4px 8px', fontSize: 12 }}
+          value={incremento}
+          onChange={(e) => setIncremento(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); agregar(); } }}
+        />
+        <span className="text-soft" style={{ fontSize: 11.5 }}>{t.unidad}</span>
+        <button
+          onClick={agregar}
+          disabled={!incremento || Number(incremento) <= 0}
+          aria-label="Agregar avance"
+          style={{
+            background: 'var(--accent-soft)', border: 'none', borderRadius: 6, width: 24, height: 24,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            opacity: !incremento || Number(incremento) <= 0 ? 0.5 : 1,
+          }}
+        >
+          <IconPlus size={13} color="var(--accent-dark)" />
+        </button>
+        {t.avanceHoy > 0 && (
+          <span className="text-soft" style={{ fontSize: 10.5, flexGrow: 1, textAlign: 'right' }}>
+            hoy llevas {t.avanceHoy.toLocaleString('es-CL')} {t.unidad}
+          </span>
+        )}
+      </div>
+      <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+        <span className="text-soft" style={{ fontSize: 11.5 }}>
+          Total {t.acumulado.toLocaleString('es-CL')} {t.unidad}
+          {t.cubicada ? ` (Avance ${t.pct}%)` : ''}
+          {!t.cubicada && <span style={{ color: 'var(--yellow-text)' }}> · sin cubicar</span>}
+        </span>
+        <div className="flex-row gap-8" style={{ alignItems: 'center', flexShrink: 0 }}>
+          {t.cubicada && t.pct < 100 && (
+            <button
+              onClick={() => onMarcarTerminada(t)}
+              className="flex-row"
+              style={{ gap: 3, alignItems: 'center', background: 'none', border: 'none', color: 'var(--green)', fontSize: 10.5, fontWeight: 700, padding: 0 }}
+            >
+              <IconCheck size={11} color="var(--green)" /> Terminado
+            </button>
+          )}
+          <button
+            onClick={() => onQuitar(t.partidaId)}
+            aria-label={`Quitar ${t.nombre}`}
+            style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex' }}
+          >
+            <IconX size={11} color="var(--text-soft)" />
+          </button>
+        </div>
+      </div>
+      {t.unidad === 'ml' && t.cubicada && (
+        <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
+          Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar
+        </div>
+      )}
+      {t.unidad !== 'ml' && t.dimensionesTexto && (
+        <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
+          Dimensiones: {t.dimensionesTexto}
+        </div>
+      )}
     </div>
   );
 }
