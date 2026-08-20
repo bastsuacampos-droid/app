@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useSettings, updateSettings } from '../../lib/useSettings';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import {
   IconChevronRight, IconFotos, IconFolder, IconLocation, IconBell, IconCheck, IconRefresh,
 } from '../../components/Icon';
 import type { Tema } from '../../types/models';
 
 const APP_VERSION: string = '1.0';
-const LATEST_VERSION: string = '1.1';
 
 export function ConfiguracionPage() {
   const navigate = useNavigate();
@@ -53,14 +53,16 @@ export function ConfiguracionPage() {
           </Row>
           <Row border>
             <span style={{ fontSize: 13 }}>Unidades de medida</span>
-            <select
-              value={settings.unidades}
-              onChange={(e) => updateSettings({ unidades: e.target.value as typeof settings.unidades })}
-              style={{ border: 'none', background: 'none', fontSize: 13, fontWeight: 600, color: 'var(--text-soft)' }}
-            >
-              <option value="metrico">Métrico (m³, m²)</option>
-              <option value="imperial">Imperial (yd³, ft²)</option>
-            </select>
+            <CampoDesplegable
+              valor={settings.unidades}
+              opciones={[
+                { value: 'metrico', label: 'Métrico (m³, m²)' },
+                { value: 'imperial', label: 'Imperial (yd³, ft²)' },
+              ]}
+              onSeleccionar={(v) => updateSettings({ unidades: v as typeof settings.unidades })}
+              claseBoton=""
+              estiloBoton={{ fontSize: 13, fontWeight: 600, color: 'var(--text-soft)' }}
+            />
           </Row>
           <Row>
             <div>
@@ -78,7 +80,7 @@ export function ConfiguracionPage() {
           <PermisoRow
             Icon={IconLocation}
             title={<>Ubicación <span className="text-soft" style={{ fontWeight: 500 }}>· opcional</span></>}
-            subtitle="Registrar la progresiva (Km) automáticamente"
+            subtitle="Completar clima y temperatura del parte con un toque"
             concedido={settings.permisoUbicacion}
             action={!settings.permisoUbicacion ? <button onClick={activarUbicacion} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700 }}>Activar</button> : undefined}
             border
@@ -93,22 +95,10 @@ export function ConfiguracionPage() {
               <IconRefresh color="var(--blue)" />
             </div>
             <div style={{ flexGrow: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 700 }}>
-                {APP_VERSION === LATEST_VERSION ? 'Estás al día' : 'Nueva versión disponible'}
-              </div>
-              <div className="text-soft" style={{ fontSize: 11 }}>
-                {APP_VERSION === LATEST_VERSION ? `v${APP_VERSION}` : `v${LATEST_VERSION} · Tienes instalada v${APP_VERSION}`}
-              </div>
+              <div style={{ fontSize: 13, fontWeight: 700 }}>Estás al día</div>
+              <div className="text-soft" style={{ fontSize: 11 }}>{`v${APP_VERSION}`}</div>
             </div>
           </div>
-          {APP_VERSION !== LATEST_VERSION && (
-            <>
-              <div className="text-soft" style={{ fontSize: 11.5, lineHeight: 1.5, marginBottom: 12 }}>
-                Novedades: reporte de horas extra con detalle diario, sección de Documentos y Configuración, y mejoras de estabilidad.
-              </div>
-              <button className="btn btn-primary btn-block" onClick={() => window.location.reload()}>Actualizar ahora</button>
-            </>
-          )}
         </div>
         <div className="card list-row" style={{ marginBottom: 20 }}>
           <div>

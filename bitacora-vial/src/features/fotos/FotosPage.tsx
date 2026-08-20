@@ -5,6 +5,7 @@ import { db, newId, nowISO } from '../../lib/db';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconPencil, IconFotos } from '../../components/Icon';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { ETAPAS, ETAPA_POR_ID } from '../../lib/etapas';
 import type { EtapaFoto } from '../../types/models';
 
@@ -107,10 +108,18 @@ export function FotosPage() {
       {showCapture && (
         <div style={{ position: 'absolute', left: 20, right: 20, bottom: 90, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 16, boxShadow: '0 10px 30px -8px rgba(0,0,0,.35)' }}>
           <div className="section-label" style={{ marginBottom: 8 }}>Tarea que documenta esta foto</div>
-          <select value={tareaSel} onChange={(e) => setTareaSel(e.target.value)} className="field-input" style={{ width: '100%', marginBottom: 14, fontWeight: 500 }}>
-            <option value="">General (sin tarea asociada)</option>
-            {partidasHoy.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
-          </select>
+          <div style={{ marginBottom: 14 }}>
+            <CampoDesplegable
+              valor={tareaSel}
+              opciones={[
+                { value: '', label: 'General (sin tarea asociada)' },
+                ...partidasHoy.map((p) => ({ value: p.id, label: p.nombre })),
+              ]}
+              onSeleccionar={setTareaSel}
+              ancho="100%"
+              estiloBoton={{ fontWeight: 500 }}
+            />
+          </div>
 
           <div className="section-label" style={{ marginBottom: 8 }}>Etapa</div>
           <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 14 }}>

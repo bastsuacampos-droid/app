@@ -21,7 +21,7 @@ export function ensureTodayParteExists(fecha: string): Promise<void> {
       if (existing) return;
 
       const last = await db.partes.orderBy('numero').last();
-      const numero = (last?.numero ?? 118) + 1;
+      const numero = (last?.numero ?? 0) + 1;
 
       const parte: Parte = {
         id: newId(),

@@ -1,71 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { CATALOGO_PARTIDAS } from '../../lib/catalogoPartidas';
 import { TIPOS_POR_UNIDAD, TIPO_ELEMENTO_LABEL } from '../../lib/cubicacionCalculo';
 import type { MedicionInfo, NuevaPartidaDatos } from '../../lib/cubicacionCalculo';
 import { IconChevronRight } from '../../components/Icon';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { CalculadoraCubicacion } from './CalculadoraCubicacion';
 
 export type { NuevaPartidaDatos };
-
-/** Custom dropdown matching the app's own light/blue design instead of a native <select> —
- * on mobile a native select opens the OS's own picker (dark, system-styled), which clashes
- * hard with the rest of the screen. Same open/close + click-outside pattern used for
- * "Seleccionar punto de trabajo" in Nuevo Parte. */
-function CampoDesplegable({ valor, opciones, onSeleccionar, ancho }: { valor: string; opciones: string[]; onSeleccionar: (v: string) => void; ancho?: number | string }) {
-  const [abierto, setAbierto] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function onClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setAbierto(false);
-    }
-    document.addEventListener('mousedown', onClickOutside);
-    return () => document.removeEventListener('mousedown', onClickOutside);
-  }, []);
-
-  return (
-    <div ref={ref} style={{ position: 'relative', width: ancho }}>
-      <button
-        type="button"
-        onClick={() => setAbierto((v) => !v)}
-        className="field-input"
-        style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6, textAlign: 'left' }}
-      >
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{valor}</span>
-        <span style={{ display: 'flex', flexShrink: 0, transform: abierto ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform .15s' }}>
-          <IconChevronRight size={12} color="var(--text-soft)" />
-        </span>
-      </button>
-      {abierto && (
-        <div
-          className="card"
-          style={{
-            position: 'absolute', left: 0, top: 'calc(100% + 6px)', zIndex: 20, minWidth: '100%',
-            padding: 6, maxHeight: 260, overflowY: 'auto', boxShadow: '0 12px 32px -10px rgba(20,23,28,.28)',
-          }}
-        >
-          {opciones.map((o) => (
-            <button
-              key={o}
-              type="button"
-              onClick={() => { onSeleccionar(o); setAbierto(false); }}
-              style={{
-                display: 'block', width: '100%', textAlign: 'left', whiteSpace: 'nowrap', border: 'none', borderRadius: 8,
-                padding: '9px 10px', fontSize: 13,
-                background: o === valor ? 'var(--accent-soft)' : 'none',
-                fontWeight: o === valor ? 700 : 600,
-                color: o === valor ? 'var(--accent-dark)' : 'var(--text)',
-              }}
-            >
-              {o}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /** Form to create a new partida — used both for a top-level tarea (with the suggested
  * catálogo) and, more compactly, for a sub-tarea under an existing one. Cantidad contratada
@@ -122,7 +64,7 @@ export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGua
           <div style={{ marginBottom: 8 }}>
             <CampoDesplegable
               valor={catCategoria}
-              opciones={CATALOGO_PARTIDAS.map((c) => c.categoria)}
+              opciones={CATALOGO_PARTIDAS.map((c) => ({ value: c.categoria, label: c.categoria }))}
               onSeleccionar={setCatCategoria}
               ancho="100%"
             />
@@ -150,7 +92,7 @@ export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGua
         autoFocus={!conCatalogo}
       />
       <div className="flex-row gap-8">
-        <CampoDesplegable valor={unidad} opciones={['m³', 'm²', 'ml', 'kg', 'un']} onSeleccionar={cambiarUnidad} ancho={76} />
+        <CampoDesplegable valor={unidad} opciones={['m³', 'm²', 'ml', 'kg', 'un'].map((u) => ({ value: u, label: u }))} onSeleccionar={cambiarUnidad} ancho={76} />
         <input
           type="text"
           inputMode="decimal"

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { monthlyOvertimeReport, monthlyOvertimeTotals } from '../../lib/queries';
-import { currentMonthISO, formatMonthLabel, formatShortDate } from '../../lib/date';
+import { currentMonthISO, formatMonthLabel, formatShortDate, shiftMonthISO } from '../../lib/date';
 import { exportOvertimeCSV, exportOvertimePDF } from '../../lib/export';
 import { Header } from '../../components/Header';
-import { IconDoc, IconClockRain } from '../../components/Icon';
+import { IconDoc, IconClockRain, IconChevronLeft, IconChevronRight } from '../../components/Icon';
 
 export function HorasExtraPage() {
   const [month, setMonth] = useState(currentMonthISO());
@@ -16,13 +16,18 @@ export function HorasExtraPage() {
   return (
     <>
       <Header title="Horas Extra" back>
-        <div className="flex-row" style={{ justifyContent: 'space-between', background: 'var(--surface-alt)', borderRadius: 11, padding: '10px 13px' }}>
-          <input
-            type="month"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            style={{ background: 'none', border: 'none', color: 'var(--text)', fontSize: 12.5, fontWeight: 600, width: '100%' }}
-          />
+        {/* A native <input type="month"> renders its label in the browser/OS's own language,
+         * ignoring the page's lang="es" — on an English-locale device it shows "August 2026"
+         * in an otherwise all-Spanish app. Prev/next arrows around a date-fns-formatted
+         * Spanish label sidesteps that entirely. */}
+        <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-alt)', borderRadius: 11, padding: '10px 13px' }}>
+          <button type="button" onClick={() => setMonth((m) => shiftMonthISO(m, -1))} aria-label="Mes anterior" style={{ background: 'none', border: 'none', padding: 4, display: 'flex' }}>
+            <IconChevronLeft size={16} color="var(--text-soft)" />
+          </button>
+          <span style={{ color: 'var(--text)', fontSize: 12.5, fontWeight: 600 }}>{monthLabel}</span>
+          <button type="button" onClick={() => setMonth((m) => shiftMonthISO(m, 1))} aria-label="Mes siguiente" style={{ background: 'none', border: 'none', padding: 4, display: 'flex' }}>
+            <IconChevronRight size={16} color="var(--text-soft)" />
+          </button>
         </div>
       </Header>
 

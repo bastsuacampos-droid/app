@@ -22,7 +22,7 @@ const PERMISOS = [
     bg: 'var(--yellow-soft)',
     color: 'var(--yellow-text)',
     title: 'Ubicación · opcional',
-    text: 'Registra automáticamente la progresiva (Km) del frente donde estás.',
+    text: 'Para completar el clima y la temperatura del parte con un toque, según dónde estés.',
   },
   {
     Icon: IconBell,

@@ -369,9 +369,63 @@ src/
   "Seleccionar punto de trabajo" de Nuevo Parte: un botón con pinta de
   `field-input` y una flecha que gira, y debajo una tarjeta con las
   opciones (la elegida resaltada en azul) que se cierra sola al tocar
-  afuera. `CampoDesplegable` es genérico (recibe `opciones: string[]`)
-  así que sirve para cualquier lista corta de texto plano; no reemplaza
-  los `<select>` de otras pantallas, que quedan fuera de este cambio.
+  afuera. `CampoDesplegable` (`components/CampoDesplegable.tsx`) se
+  movió después a un archivo compartido, con soporte para
+  `{value, label}` (no solo texto plano) y estilo de botón
+  personalizable, para poder reemplazar también el resto de los
+  `<select>` nativos de la app — ver el punto siguiente.
+- **Ronda de prueba como usuario nuevo — 4 errores reales encontrados y
+  corregidos**: con IndexedDB limpia (perfil de navegador nuevo,
+  onboarding desde cero) se recorrió toda la app de punta a punta
+  (Playwright) buscando fallos que un capataz real se encontraría el
+  primer día.
+  - **Los partes empezaban en N° 119, no en N° 1** (`queries.ts`,
+    `ensureTodayParteExists()`): el cálculo del siguiente número
+    (`last?.numero ?? 118) + 1`) tenía un `118` de relleno, sembrado
+    para que el mockup de diseño se viera con historial — pero quedó
+    también en el código real, así que hasta la primera instalación de
+    un usuario nuevo, sin partes previos, arrancaba en "N° 119". Ahora
+    el valor de respaldo es `0`, así que el primer parte de cualquier
+    instalación nueva es "N° 1".
+  - **El selector de mes en Horas Extra mostraba el idioma del
+    dispositivo, no español** (`HorasExtraPage.tsx`): un
+    `<input type="month">` nativo rotula su propio picker según el
+    idioma del navegador/SO, ignorando el `lang="es"` de la página —
+    en un dispositivo en inglés se leía "August 2026" en medio de una
+    app 100% en español. Se reemplazó por flechas
+    anterior/siguiente + una etiqueta formateada con date-fns
+    (`formatMonthLabel()`, que ya existía en el código pero no se
+    usaba en ningún lado) — siempre en español, sin depender del
+    idioma del dispositivo. Se agregó `shiftMonthISO()` a `lib/date.ts`
+    para mover el mes ±1.
+  - **"Nueva versión disponible" en Configuración era permanente y
+    falsa** (`ConfiguracionPage.tsx`): `APP_VERSION` y `LATEST_VERSION`
+    eran dos constantes hardcodeadas y distintas (`'1.0'` / `'1.1'`)
+    que nunca podían converger, así que el aviso de actualización
+    nunca se podía resolver — y encima anunciaba como "novedades" el
+    reporte de horas extra, Documentos y Configuración, funciones que
+    ya estaban corriendo en la versión que el usuario tenía abierta en
+    ese momento. Tocar "Actualizar ahora" solo hacía
+    `window.location.reload()`, que no cambiaba nada y mostraba el
+    mismo aviso falso de nuevo. Se sacó la comparación de versiones —
+    sin backend no hay contra qué comparar — y ahora muestra siempre
+    "Estás al día · v1.0", honesto con lo que la app puede saber de sí
+    misma.
+  - **El onboarding y Configuración prometían "registrar la progresiva
+    (Km) automáticamente" con el permiso de ubicación** — función que
+    nunca se implementó (ni existe una forma realista de mapear GPS a
+    kilometraje de una ruta sin datos de la geometría del camino). Se
+    corrigió el texto en ambas pantallas para describir lo que el
+    permiso de ubicación sí hace hoy: completar clima y temperatura
+    del parte con el botón "Usar clima por GPS".
+  - Aprovechando que ya estaba extendido, `CampoDesplegable` reemplazó
+    también los `<select>` nativos restantes de mayor uso: el selector
+    de frente en el header de Cubicación, "Nuevo archivo se guarda
+    como" en Documentos, "Unidades de medida" en Configuración, y el
+    selector de tarea al subir una foto en Fotos. El selector de "¿A
+    qué frente lo prestas?" en Asistencia (préstamo de personal) queda
+    nativo por ahora — es una acción secundaria de menor uso, no
+    encontrada en este recorrido.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

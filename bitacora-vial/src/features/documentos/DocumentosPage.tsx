@@ -4,6 +4,7 @@ import { db, newId, nowISO } from '../../lib/db';
 import { downloadBlob } from '../../lib/export';
 import { Header } from '../../components/Header';
 import { IconSearch, IconUpload, IconDownload } from '../../components/Icon';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import type { Documento, DocumentoCategoria } from '../../types/models';
 
 const CATEGORIAS: DocumentoCategoria[] = ['Planos', 'Permisos', 'Contratos', 'Fichas técnicas', 'Otros'];
@@ -82,9 +83,12 @@ export function DocumentosPage() {
       <div className="content" style={{ paddingBottom: 90 }}>
         <div className="flex-row gap-8" style={{ marginBottom: 14 }}>
           <span className="text-soft" style={{ fontSize: 11.5 }}>Nuevo archivo se guarda como</span>
-          <select value={pendingCategoria} onChange={(e) => setPendingCategoria(e.target.value as DocumentoCategoria)} className="field-input" style={{ fontSize: 11.5, padding: '4px 8px' }}>
-            {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+          <CampoDesplegable
+            valor={pendingCategoria}
+            opciones={CATEGORIAS.map((c) => ({ value: c, label: c }))}
+            onSeleccionar={(v) => setPendingCategoria(v as DocumentoCategoria)}
+            estiloBoton={{ fontSize: 11.5, padding: '4px 8px' }}
+          />
         </div>
 
         {filtrados.length === 0 ? (

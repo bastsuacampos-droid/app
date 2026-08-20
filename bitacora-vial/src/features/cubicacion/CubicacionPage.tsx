@@ -10,6 +10,7 @@ import type { MedicionInfo, NuevaPartidaDatos } from '../../lib/cubicacionCalcul
 import { parseNumeroDecimal } from '../../lib/numero';
 import { Header } from '../../components/Header';
 import { IconPlus, IconChevronRight } from '../../components/Icon';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { CalculadoraCubicacion } from './CalculadoraCubicacion';
 import { NuevaPartidaForm } from './NuevaPartidaForm';
 import type { CubicacionEntry, EstadoTarea, Partida } from '../../types/models';
@@ -131,22 +132,13 @@ export function CubicacionPage() {
   return (
     <>
       <Header title="Cubicación de Tareas" back>
-        <div
-          className="flex-row"
-          style={{ justifyContent: 'space-between', background: 'var(--surface-alt)', borderRadius: 11, padding: '10px 13px' }}
-        >
-          <select
-            value={activeFrenteId ?? ''}
-            onChange={(e) => setFrenteId(e.target.value)}
-            style={{ background: 'none', border: 'none', color: 'var(--text)', fontSize: 12.5, fontWeight: 600, width: '100%' }}
-          >
-            {frentes.map((f) => (
-              <option key={f.id} value={f.id} style={{ color: 'var(--text)' }}>
-                {f.nombre}{f.km ? ` · ${f.km}` : ''}
-              </option>
-            ))}
-          </select>
-        </div>
+        <CampoDesplegable
+          valor={activeFrenteId ?? ''}
+          opciones={frentes.map((f) => ({ value: f.id, label: `${f.nombre}${f.km ? ` · ${f.km}` : ''}` }))}
+          onSeleccionar={setFrenteId}
+          claseBoton=""
+          estiloBoton={{ background: 'var(--surface-alt)', border: 'none', borderRadius: 11, padding: '10px 13px', color: 'var(--text)', fontSize: 12.5, fontWeight: 600 }}
+        />
       </Header>
 
       <div className="content">

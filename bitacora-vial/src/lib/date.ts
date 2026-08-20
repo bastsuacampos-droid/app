@@ -26,3 +26,9 @@ export function monthRangeISO(monthISO: string): { start: string; end: string } 
 export function currentMonthISO(): string {
   return new Date().toISOString().slice(0, 7);
 }
+
+export function shiftMonthISO(monthISO: string, delta: number): string {
+  const [y, m] = monthISO.split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
