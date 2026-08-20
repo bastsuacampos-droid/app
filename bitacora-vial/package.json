@@ -13,9 +13,14 @@
     "test:interaction": "node scripts/interaction-test.mjs",
     "test:formula": "node scripts/formula-test.mjs",
     "test:nuevas-funciones": "node scripts/nuevas-funciones-test.mjs",
-    "test:retomar-pendiente": "node scripts/retomar-pendiente-test.mjs"
+    "test:retomar-pendiente": "node scripts/retomar-pendiente-test.mjs",
+    "cap:sync": "npm run build && npx cap sync android",
+    "android:assembleDebug": "npm run cap:sync && cd android && ./gradlew assembleDebug",
+    "android:openStudio": "npm run cap:sync && npx cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
     "date-fns": "^3.6.0",
     "dexie": "^4.0.10",
     "dexie-react-hooks": "^1.1.7",
@@ -25,6 +30,8 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

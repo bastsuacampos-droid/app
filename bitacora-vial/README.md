@@ -37,6 +37,56 @@ recorrerla desde el navegador sin depender del entorno de desarrollo. Los
 datos quedan guardados en el almacenamiento local de esa página — no se
 comparten con la app "de verdad" servida desde `npm run dev`/`build`.
 
+## Compilar como app Android (Capacitor)
+
+El proyecto ya trae [Capacitor](https://capacitorjs.com/) instalado y
+configurado (`capacitor.config.ts`, `appId: cl.bitacoravial.app`) con la
+carpeta nativa `android/` generada por `npx cap add android`, incluyendo:
+
+- **Íconos y splash screen** ya generados a partir de
+  `public/icons/icon-512.png` (con `@capacitor/assets`, ver `assets/icon.png`)
+  para todas las densidades (`mipmap-ldpi` … `mipmap-xxxhdpi`), en modo claro
+  y oscuro.
+- **Permisos** agregados a mano en `android/app/src/main/AndroidManifest.xml`
+  para lo que la app realmente usa dentro del WebView: `CAMERA` (fotografiar
+  avances, `<input type="file" capture>`) y `ACCESS_FINE_LOCATION` /
+  `ACCESS_COARSE_LOCATION` (clima por GPS, ver `ConfiguracionPage` /
+  `permisoUbicacion`) — Capacitor no los agrega solo porque la app no usa los
+  plugins nativos `@capacitor/camera` ni `@capacitor/geolocation`, solo las
+  APIs web estándar que su WebView bridge ya sabe intermediar cuando el
+  manifiesto declara el permiso.
+
+**Nota sobre este entorno:** compilar el `.apk` requiere el Android SDK
+(plataforma + build-tools), que `sdkmanager` descarga desde `dl.google.com` —
+host bloqueado por la política de red de este entorno en la nube (403 al
+intentar el `CONNECT`). Por eso el proyecto queda armado y lo que falta es
+correrlo en un lugar con ese acceso: tu máquina con Android Studio, o
+cualquier entorno con `ANDROID_HOME` configurado.
+
+Para compilar una vez tengas el SDK disponible:
+
+```bash
+# Opción 1: Android Studio (abre el proyecto android/ y compila desde ahí)
+npm run android:openStudio
+
+# Opción 2: línea de comandos, requiere Android SDK + ANDROID_HOME
+npm run android:assembleDebug
+# genera android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Ambos comandos corren primero `npm run cap:sync` (build web + `npx cap sync
+android`), que copia el último `dist/` a `android/app/src/main/assets/public`
+— siempre hay que correrlo después de cambiar el código web y antes de volver
+a compilar el APK, si no la app nativa queda con una versión vieja adentro.
+
+El APK de `assembleDebug` está firmado con una clave de debug genérica (no
+apta para publicar en Play Store, pero perfectamente instalable directo en un
+teléfono vía `adb install` o copiando el archivo). Para una versión firmada
+para distribuir fuera de Play Store hace falta generar un keystore propio y
+configurar `android/app/build.gradle` con `signingConfigs` — no incluido
+todavía porque es un paso que depende de decisiones del usuario (alias,
+contraseña, dónde guardar el keystore) que no correspondía tomar por él.
+
 ## Cómo verificar cambios
 
 Hay dos scripts de Playwright en `scripts/` que abren la app en un Chromium

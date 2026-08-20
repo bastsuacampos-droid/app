@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bitácora Vial</string>
+    <string name="title_activity_main">Bitácora Vial</string>
+    <string name="package_name">cl.bitacoravial.app</string>
+    <string name="custom_url_scheme">cl.bitacoravial.app</string>
+</resources>
