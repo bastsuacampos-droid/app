@@ -253,6 +253,30 @@ src/
   `CubicacionPage.tsx` cuando la calculadora agrega un elemento), se
   resincroniza desde Dexie solo mientras el campo no está enfocado, para
   no pisar lo que el usuario está escribiendo en ese momento.
+- **Total contratado visible junto al acumulado**: la línea de resumen de
+  cada tarea en "Tareas y Avances" (`TareaActivaRow`) pasó de "Total X
+  unidad (Avance Y%)" — donde X era el acumulado, no el total real — a "X
+  de Y unidad (Avance Z%)", usando `t.contratado` (ya calculado en
+  `queries.ts`), para ver de un vistazo cuánto falta sin entrar a
+  Cubicación.
+- **Clima por GPS** (`lib/clima.ts`, `obtenerClimaPorGPS()`): el botón
+  "Usar clima por GPS" junto al selector de Clima pide la ubicación del
+  dispositivo (`navigator.geolocation`) y consulta el clima actual en
+  Open-Meteo (`api.open-meteo.com`), una API gratuita sin API key —
+  encaja con el enfoque local-only de la app porque no depende de un
+  backend propio, solo de una consulta directa desde el navegador. El
+  código WMO que devuelve (`weather_code`) se reduce a los tres estados
+  que maneja la app (`climaDesdeCodigoWMO()`: 0-1 → soleado, 2-3-45-48 →
+  nublado, cualquier otro — llovizna, lluvia, nieve, tormenta — →
+  lluvia) y junto con la temperatura se escriben con un solo `patch()`.
+  Cualquier falla (sin permiso de ubicación, sin conexión, respuesta
+  incompleta) se atrapa y se muestra como un mensaje en español al lado
+  del botón, dejando los controles manuales de Clima/°C intactos como
+  respaldo — nunca bloquea el flujo. **Ojo con el Artifact/preview de
+  claude.ai**: ese sandbox bloquea fetch a hosts externos salvo Google
+  Fonts, así que ahí el botón siempre va a mostrar el error de conexión;
+  funciona normal corriendo la app fuera de ese sandbox (`npm run dev`,
+  o donde sea que quede alojada para uso real).
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

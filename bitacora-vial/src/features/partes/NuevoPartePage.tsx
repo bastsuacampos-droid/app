@@ -8,9 +8,10 @@ import {
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
+import { obtenerClimaPorGPS } from '../../lib/clima';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
-import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck } from '../../components/Icon';
+import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation } from '../../components/Icon';
 import type { Clima, EstadoTarea, Turno } from '../../types/models';
 
 const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
@@ -28,6 +29,8 @@ export function NuevoPartePage() {
   const [dropdownTareaAbierto, setDropdownTareaAbierto] = useState(false);
   const dropdownTareaRef = useRef<HTMLDivElement>(null);
   const [tabTareas, setTabTareas] = useState<'activas' | 'completadas'>('activas');
+  const [climaGpsEstado, setClimaGpsEstado] = useState<'inactivo' | 'cargando' | 'error'>('inactivo');
+  const [climaGpsError, setClimaGpsError] = useState('');
 
   const entriesHoy = useLiveQuery(
     () => (parte ? db.cubicacionEntries.where('parteId').equals(parte.id).toArray() : []),
@@ -139,6 +142,19 @@ export function NuevoPartePage() {
   async function onCubicarTarea(partidaId: string, valor: number) {
     if (valor <= 0) return;
     await db.partidas.update(partidaId, { cantidadContratada: valor });
+  }
+
+  async function usarClimaGPS() {
+    setClimaGpsEstado('cargando');
+    setClimaGpsError('');
+    try {
+      const { clima, temperaturaC } = await obtenerClimaPorGPS();
+      await patch({ clima, temperaturaC });
+      setClimaGpsEstado('inactivo');
+    } catch (err) {
+      setClimaGpsError(err instanceof Error ? err.message : 'No se pudo obtener el clima.');
+      setClimaGpsEstado('error');
+    }
   }
 
   async function crearFrente() {
@@ -308,29 +324,49 @@ export function NuevoPartePage() {
             </div>
           </div>
 
-          <div className="flex-row" style={{ justifyContent: 'space-between', paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
-            <span className="text-soft" style={{ fontSize: 13 }}>Clima</span>
-            <div className="flex-row gap-8">
-              {([['soleado', IconSun], ['nublado', IconCloudOutline], ['lluvia', IconRain]] as [Clima, typeof IconSun][]).map(([c, Icon]) => (
-                <button
-                  key={c}
-                  onClick={() => patch({ clima: c })}
-                  style={{
-                    width: 32, height: 32, borderRadius: 9, border: 'none',
-                    background: parte.clima === c ? 'var(--accent)' : 'var(--surface-alt)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                >
-                  <Icon color={parte.clima === c ? '#fff' : 'var(--text-soft)'} />
-                </button>
-              ))}
-              <input
-                type="number"
-                value={parte.temperaturaC ?? ''}
-                onChange={(e) => patch({ temperaturaC: e.target.value ? Number(e.target.value) : undefined })}
-                placeholder="°C"
-                style={{ width: 46, marginLeft: 2, fontSize: 13, fontWeight: 600, border: 'none', background: 'none', textAlign: 'right' }}
-              />
+          <div style={{ paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
+            <div className="flex-row" style={{ justifyContent: 'space-between' }}>
+              <span className="text-soft" style={{ fontSize: 13 }}>Clima</span>
+              <div className="flex-row gap-8">
+                {([['soleado', IconSun], ['nublado', IconCloudOutline], ['lluvia', IconRain]] as [Clima, typeof IconSun][]).map(([c, Icon]) => (
+                  <button
+                    key={c}
+                    onClick={() => patch({ clima: c })}
+                    style={{
+                      width: 32, height: 32, borderRadius: 9, border: 'none',
+                      background: parte.clima === c ? 'var(--accent)' : 'var(--surface-alt)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    <Icon color={parte.clima === c ? '#fff' : 'var(--text-soft)'} />
+                  </button>
+                ))}
+                <input
+                  type="number"
+                  value={parte.temperaturaC ?? ''}
+                  onChange={(e) => patch({ temperaturaC: e.target.value ? Number(e.target.value) : undefined })}
+                  placeholder="°C"
+                  style={{ width: 46, marginLeft: 2, fontSize: 13, fontWeight: 600, border: 'none', background: 'none', textAlign: 'right' }}
+                />
+              </div>
+            </div>
+            <div className="flex-row" style={{ justifyContent: 'flex-end', alignItems: 'center', gap: 6, marginTop: 8 }}>
+              {climaGpsEstado === 'error' && (
+                <span style={{ color: 'var(--red)', fontSize: 10.5 }}>{climaGpsError}</span>
+              )}
+              <button
+                type="button"
+                onClick={usarClimaGPS}
+                disabled={climaGpsEstado === 'cargando'}
+                className="flex-row"
+                style={{
+                  gap: 4, alignItems: 'center', background: 'none', border: 'none', padding: 0,
+                  color: 'var(--accent)', fontSize: 11, fontWeight: 700, opacity: climaGpsEstado === 'cargando' ? 0.6 : 1,
+                }}
+              >
+                <IconLocation size={12} color="var(--accent)" />
+                {climaGpsEstado === 'cargando' ? 'Obteniendo ubicación…' : 'Usar clima por GPS'}
+              </button>
             </div>
           </div>
 
