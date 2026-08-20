@@ -3,6 +3,7 @@ import { parseNumeroDecimal } from '../../lib/numero';
 import { TIPOS_POR_UNIDAD, camposDelTipo, calcularSubtotalElemento } from '../../lib/cubicacionCalculo';
 import type { MedicionInfo } from '../../lib/cubicacionCalculo';
 import type { TipoElementoMedicion } from '../../types/models';
+import { FiguraMedidas } from './FiguraMedidas';
 
 export function DimField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -67,6 +68,9 @@ export function CalculadoraCubicacion({
           ))}
         </div>
       )}
+      <div style={{ background: 'var(--surface-alt)', borderRadius: 10, padding: '8px 4px', marginBottom: 8 }}>
+        <FiguraMedidas tipo={tipo} unidad={unidad} campos={campos} />
+      </div>
       <input
         placeholder="Descripción (opcional, ej: Zapata Z-1)"
         value={descripcion}

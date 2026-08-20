@@ -176,6 +176,19 @@ src/
   (tipo, descripción opcional, dimensiones y subtotal) — visible después
   al abrir "Ver mediciones" en la tarjeta de la tarea, para poder
   revisar de dónde salió cada cifra.
+- **Figura con cotas en la calculadora** (`FiguraMedidas.tsx`): arriba de
+  los campos de largo/ancho/alto (etc.) de cada tipo de elemento aparece
+  un dibujo esquemático de la figura — prisma, trapecio, cilindro, muro
+  con vano, línea o barra de enfierradura — con cotas (líneas de cota con
+  flechas, como en un plano) que muestran en vivo lo que el usuario va
+  tipeando en cada campo ("3,2 m", "—" mientras está vacío), para que
+  quede claro de un vistazo a qué medida corresponde cada campo antes de
+  guardar. Las proporciones del dibujo son fijas y solo ilustrativas, no
+  a escala real de las cifras — es una ayuda visual, no un plano técnico.
+  Un badge "×N" aparece en la esquina cuando "Cantidad" es mayor a 1. Se
+  reutiliza igual en "Cantidad contratada", "Ejecutado hoy" y
+  "Cubicar esta tarea", porque las tres pasan por el mismo
+  `CalculadoraCubicacion`.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y
