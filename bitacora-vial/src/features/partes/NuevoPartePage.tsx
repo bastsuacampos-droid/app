@@ -630,7 +630,7 @@ function TareaActivaRow({
       <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
         {t.cubicada ? (
           <span className="text-soft" style={{ fontSize: 11.5 }}>
-            Total {t.acumulado.toLocaleString('es-CL')} {t.unidad} (Avance {t.pct}%)
+            {t.acumulado.toLocaleString('es-CL')} de {t.contratado.toLocaleString('es-CL')} {t.unidad} (Avance {t.pct}%)
           </span>
         ) : (
           <button
