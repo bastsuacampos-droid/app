@@ -787,10 +787,12 @@ function TareaActivaRow({
           Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar
         </div>
       )}
-      {t.unidad !== 'ml' && t.dimensionesTexto && (
+      {t.unidad !== 'ml' && (
         <div style={{ marginTop: 2 }}>
           <div className="flex-row gap-8" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
-            <span className="text-soft" style={{ fontSize: 10.5 }}>Dimensiones: {t.dimensionesTexto}</span>
+            {t.dimensionesTexto && (
+              <span className="text-soft" style={{ fontSize: 10.5 }}>Dimensiones: {t.dimensionesTexto}</span>
+            )}
             <button
               type="button"
               onClick={() => setDibujoAbierto((v) => !v)}
@@ -801,10 +803,16 @@ function TareaActivaRow({
               <IconChevronRight size={10} color="var(--accent)" style={{ transform: dibujoAbierto ? 'rotate(90deg)' : undefined }} />
             </button>
           </div>
-          {dibujoAbierto && ultimaMedicion && (
-            <div style={{ marginTop: 6 }}>
-              <FiguraMedidas tipo={ultimaMedicion.tipo} unidad={ultimaMedicion.unidad} campos={camposDesdeDatos(ultimaMedicion.datos)} />
-            </div>
+          {dibujoAbierto && (
+            ultimaMedicion ? (
+              <div style={{ marginTop: 6 }}>
+                <FiguraMedidas tipo={ultimaMedicion.tipo} unidad={ultimaMedicion.unidad} campos={camposDesdeDatos(ultimaMedicion.datos)} />
+              </div>
+            ) : (
+              <div className="text-soft" style={{ fontSize: 10.5, marginTop: 4 }}>
+                Esta tarea no tiene medidas registradas — se cubicó ingresando la cantidad directamente.
+              </div>
+            )
           )}
         </div>
       )}

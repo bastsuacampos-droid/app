@@ -224,15 +224,21 @@ src/
   `NuevoPartePage.tsx`): la misma capacidad de la memoria de cálculo,
   pero directamente en la tarjeta de cada tarea de la sección 3 ("Tareas
   y Avances"), para no tener que salir a Cubicación solo para recordar
-  con qué medidas se cubicó. Junto a la línea "Dimensiones: ..." (que ya
-  existía para unidades m³/m²/kg) hay un botón "Ver medidas" que trae la
-  medición más reciente de esa partida con `medicionesDePartida()` — vía
-  `useLiveQuery`, y solo mientras el dibujo está abierto, para no
-  consultar Dexie de más en una pantalla con varias tareas a la vez — y
-  dibuja su `FiguraMedidas` con `camposDesdeDatos()`, igual que en
-  Cubicación. Las tareas de unidad `ml` siguen mostrando "Faltan N ml por
-  completar" en vez de esto, porque una longitud simple no tiene
-  geometría que dibujar.
+  con qué medidas se cubicó. El botón se muestra siempre que la unidad
+  no sea `ml` — no solo cuando ya hay un texto "Dimensiones: ..." —
+  porque una tarea puede estar cubicada con la cantidad contratada
+  tipeada directo (sin pasar por la calculadora), y ese caso también
+  necesita el botón, solo que al abrirlo explica "Esta tarea no tiene
+  medidas registradas — se cubicó ingresando la cantidad directamente."
+  en vez de un dibujo (bug encontrado por el usuario en la primera
+  versión de esta función, que solo lo mostraba cuando ya había una
+  medición guardada). Cuando sí hay una, trae la más reciente de esa
+  partida con `medicionesDePartida()` — vía `useLiveQuery`, y solo
+  mientras el dibujo está abierto, para no consultar Dexie de más en una
+  pantalla con varias tareas a la vez — y dibuja su `FiguraMedidas` con
+  `camposDesdeDatos()`, igual que en Cubicación. Las tareas de unidad
+  `ml` siguen mostrando "Faltan N ml por completar" en vez de esto,
+  porque una longitud simple no tiene geometría que dibujar.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y
