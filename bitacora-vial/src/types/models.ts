@@ -46,6 +46,28 @@ export interface CubicacionEntry {
   cantidadEjecutada: number;
 }
 
+/** Shape of an element measured with the dimension calculator (see CubicacionPage). Not a
+ * transcription of NCh 353 Of.2000 — general geometric quantification for common site
+ * elements; each contributes its subtotal to either the contracted quantity or a day's
+ * executed progress. */
+export type TipoElementoMedicion = 'rectangular' | 'trapezoidal' | 'cilindrico' | 'muro_vanos' | 'enfierradura';
+
+/** A recorded measurement (memoria de cálculo) for a partida — kept even after its subtotal
+ * has been folded into cantidadContratada or a day's cantidadEjecutada, so the dimensions
+ * that produced that number stay visible when reviewing the tarea later. */
+export interface MedicionCubicacion {
+  id: string;
+  partidaId: string;
+  fecha: string; // ISO date (yyyy-MM-dd) when recorded
+  /** Whether this measurement fed the contracted quantity or one day's executed progress. */
+  proposito: 'contratado' | 'ejecutado';
+  tipo: TipoElementoMedicion;
+  descripcion?: string; // e.g. "Zapata Z-1"
+  datos: Record<string, number>; // raw dimensions entered, keyed by field name
+  subtotal: number;
+  unidad: string;
+}
+
 export interface RegistroAsistencia {
   id: string;
   parteId: string;

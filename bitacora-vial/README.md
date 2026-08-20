@@ -158,6 +158,24 @@ src/
   `lib/queries.ts` arma los grupos leyendo el padre de cada partida
   tocada hoy, así que tanto Cubicación como el resumen anidado de
   `NuevoPartePage` muestran la misma jerarquía sin datos duplicados.
+- **Calculadora de cubicación por elementos + memoria de cálculo**
+  (`CubicacionPage.tsx`, tabla `medicionesCubicacion` v4 del schema): la
+  antigua calculadora de largo×ancho×alto se amplió a varios tipos de
+  elemento según la unidad de la partida — prisma rectangular, sección
+  trapezoidal y cilíndrico para m³; rectangular y muro con descuento de
+  vanos para m²; enfierradura por diámetro para kg (peso ≈ d²/162, d en
+  mm — la fórmula estándar de densidad del acero, no específica de
+  ninguna norma). **Importante**: es un cálculo geométrico general de uso
+  práctico en obra, no una transcripción verificada de NCh 353 Of.2000
+  ("Mediciones y cubicaciones en construcción") — antes de usarlo para un
+  estado de pago conviene confirmar el criterio de medición exacto de
+  cada partida en el contrato; el mismo aviso aparece en la calculadora.
+  Disponible tanto para "Cantidad contratada" (al crear la tarea o al
+  editarla después con "Cubicar esta tarea") como para "Ejecutado hoy".
+  Cada elemento agregado queda guardado como una `MedicionCubicacion`
+  (tipo, descripción opcional, dimensiones y subtotal) — visible después
+  al abrir "Ver mediciones" en la tarjeta de la tarea, para poder
+  revisar de dónde salió cada cifra.
 
 ## Qué es real y qué es respaldo local (no hay backend)
 

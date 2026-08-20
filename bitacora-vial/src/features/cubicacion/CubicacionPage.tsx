@@ -2,15 +2,13 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
-import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea } from '../../lib/queries';
+import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, registrarMedicion, medicionesDePartida } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { CATALOGO_PARTIDAS } from '../../lib/catalogoPartidas';
+import { formatShortDate } from '../../lib/date';
 import { Header } from '../../components/Header';
 import { IconPlus, IconChevronRight } from '../../components/Icon';
-import type { CubicacionEntry, EstadoTarea, Partida } from '../../types/models';
-
-/** Units where a quantity can be computed from element dimensions rather than typed by hand. */
-const UNIDADES_CON_FORMULA = new Set(['m³', 'm²', 'ml']);
+import type { CubicacionEntry, EstadoTarea, Partida, TipoElementoMedicion } from '../../types/models';
 
 const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: string }> = {
   pendiente: { label: 'Pendiente de días anteriores', bg: 'var(--yellow-soft)', color: 'var(--yellow-text)' },
@@ -21,13 +19,104 @@ const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: strin
 
 const ORDEN_ESTADO: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
 
-function calcularSubtotal(unidad: string, largo: number, ancho: number, alto: number, cantidad: number): number {
-  const n = cantidad > 0 ? cantidad : 1;
-  if (unidad === 'm³') return largo * ancho * alto * n;
-  if (unidad === 'm²') return largo * ancho * n;
-  if (unidad === 'ml') return largo * n;
-  return 0;
+const TIPO_ELEMENTO_LABEL: Record<TipoElementoMedicion, string> = {
+  rectangular: 'Rectangular',
+  trapezoidal: 'Sección trapezoidal',
+  cilindrico: 'Cilíndrico',
+  muro_vanos: 'Muro con vanos',
+  enfierradura: 'Enfierradura',
+};
+
+/** Which element types make sense to compute for each unidad — a discrete unidad ("un", a
+ * count of prefabricated pieces) has no geometry to calculate. */
+const TIPOS_POR_UNIDAD: Partial<Record<string, { value: TipoElementoMedicion; label: string }[]>> = {
+  'm³': [
+    { value: 'rectangular', label: 'Prisma rectangular' },
+    { value: 'trapezoidal', label: 'Sección trapezoidal' },
+    { value: 'cilindrico', label: 'Cilíndrico' },
+  ],
+  'm²': [
+    { value: 'rectangular', label: 'Rectangular' },
+    { value: 'muro_vanos', label: 'Muro (descuenta vanos)' },
+  ],
+  ml: [{ value: 'rectangular', label: 'Longitud simple' }],
+  kg: [{ value: 'enfierradura', label: 'Enfierradura por diámetro' }],
+};
+
+function camposDelTipo(tipo: TipoElementoMedicion, unidad: string): { key: string; label: string }[] {
+  switch (tipo) {
+    case 'rectangular': {
+      const campos = [{ key: 'largo', label: 'Largo (m)' }];
+      if (unidad !== 'ml') campos.push({ key: 'ancho', label: 'Ancho (m)' });
+      if (unidad === 'm³') campos.push({ key: 'alto', label: 'Alto/Espesor (m)' });
+      campos.push({ key: 'cantidad', label: 'Cantidad (veces se repite)' });
+      return campos;
+    }
+    case 'trapezoidal':
+      return [
+        { key: 'baseMayor', label: 'Base mayor (m)' },
+        { key: 'baseMenor', label: 'Base menor (m)' },
+        { key: 'alto', label: 'Alto/Profundidad (m)' },
+        { key: 'largo', label: 'Largo (m)' },
+        { key: 'cantidad', label: 'Cantidad (veces se repite)' },
+      ];
+    case 'cilindrico':
+      return [
+        { key: 'diametro', label: 'Diámetro (m)' },
+        { key: 'alto', label: 'Alto/Largo (m)' },
+        { key: 'cantidad', label: 'Cantidad (veces se repite)' },
+      ];
+    case 'muro_vanos':
+      return [
+        { key: 'largo', label: 'Largo (m)' },
+        { key: 'alto', label: 'Alto (m)' },
+        { key: 'cantidad', label: 'Cantidad de paños' },
+        { key: 'vanos', label: 'Área de vanos a descontar (m²)' },
+      ];
+    case 'enfierradura':
+      return [
+        { key: 'diametro', label: 'Diámetro (mm)' },
+        { key: 'longitud', label: 'Longitud por barra (m)' },
+        { key: 'cantidad', label: 'Cantidad de barras' },
+      ];
+    default:
+      return [];
+  }
 }
+
+/** General geometric quantification for common site elements — NOT a transcription of
+ * NCh 353 Of.2000 (mediciones y cubicaciones en construcción); verify the measurement
+ * criteria that apply to your contract. The rebar formula (kg/m ≈ d²/162, d en mm) is the
+ * standard steel-density calculation, not specific to any one norm. */
+function calcularSubtotalElemento(tipo: TipoElementoMedicion, unidad: string, d: Record<string, number>): number {
+  const n = d.cantidad > 0 ? d.cantidad : 1;
+  switch (tipo) {
+    case 'rectangular':
+      if (unidad === 'm³') return d.largo * d.ancho * d.alto * n;
+      if (unidad === 'm²') return d.largo * d.ancho * n;
+      if (unidad === 'ml') return d.largo * n;
+      return 0;
+    case 'trapezoidal':
+      return ((d.baseMayor + d.baseMenor) / 2) * d.alto * d.largo * n;
+    case 'cilindrico':
+      return Math.PI * (d.diametro / 2) ** 2 * d.alto * n;
+    case 'muro_vanos':
+      return Math.max(0, d.largo * d.alto * n - (d.vanos || 0));
+    case 'enfierradura':
+      return ((d.diametro * d.diametro) / 162) * d.longitud * n;
+    default:
+      return 0;
+  }
+}
+
+function formatDatosMedicion(tipo: TipoElementoMedicion, datos: Record<string, number>, unidad: string): string {
+  return camposDelTipo(tipo, unidad)
+    .map((c) => `${c.label.replace(/\s*\(.*\)/, '')}: ${datos[c.key]?.toLocaleString('es-CL') ?? 0}`)
+    .join(' · ');
+}
+
+interface MedicionInfo { tipo: TipoElementoMedicion; descripcion: string; datos: Record<string, number>; subtotal: number }
+interface NuevaPartidaDatos { nombre: string; unidad: string; cantidadContratada: number; avanceHoy: number; mediciones: MedicionInfo[] }
 
 /** Aggregate estado for a group card (sub-tareas), so it sorts sensibly among leaf cards:
  * any pending sub-tarea surfaces the group first, an in-progress one next, all-done last. */
@@ -43,8 +132,6 @@ function estadoDeGrupo(hijos: Partida[], totales: Record<string, number>, entrie
   if (estados.every((e) => e === 'terminada')) return 'terminada';
   return 'sin_iniciar';
 }
-
-interface NuevaPartidaDatos { nombre: string; unidad: string; cantidadContratada: number; avanceHoy: number }
 
 export function CubicacionPage() {
   const navigate = useNavigate();
@@ -84,10 +171,27 @@ export function CubicacionPage() {
     await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, valor);
   }
 
-  async function onAgregarFormula(partidaId: string, subtotal: number) {
-    if (!parte || subtotal <= 0) return;
+  /** "Calcular por dimensiones" while logging today's progress: adds the subtotal on top of
+   * whatever was already typed for hoy, and keeps the measurement for later reference. */
+  async function onAgregarMedicionEjecutado(partidaId: string, unidad: string, info: MedicionInfo) {
+    if (!parte || info.subtotal <= 0) return;
     const existente = entriesHoy.find((e) => e.partidaId === partidaId)?.cantidadEjecutada ?? 0;
-    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, Number((existente + subtotal).toFixed(3)));
+    await upsertCubicacionEntry(parte.id, partidaId, parte.fecha, Number((existente + info.subtotal).toFixed(3)));
+    await registrarMedicion({
+      partidaId, fecha: parte.fecha, proposito: 'ejecutado',
+      tipo: info.tipo, descripcion: info.descripcion || undefined, datos: info.datos, subtotal: info.subtotal, unidad,
+    });
+  }
+
+  /** Cubicar (o corregir) la cantidad contratada por elementos: cada uno agregado suma a la
+   * cantidad contratada y queda registrado, para tareas que se agregaron sin dato fijo. */
+  async function onAgregarMedicionContratado(partidaId: string, unidad: string, cantidadActual: number, info: MedicionInfo) {
+    if (!parte || info.subtotal <= 0) return;
+    await db.partidas.update(partidaId, { cantidadContratada: Number((cantidadActual + info.subtotal).toFixed(3)) });
+    await registrarMedicion({
+      partidaId, fecha: parte.fecha, proposito: 'contratado',
+      tipo: info.tipo, descripcion: info.descripcion || undefined, datos: info.datos, subtotal: info.subtotal, unidad,
+    });
   }
 
   const activeFrente = frentes.find((f) => f.id === activeFrenteId);
@@ -99,6 +203,16 @@ export function CubicacionPage() {
   const contratadoTotal = partidasHoja.reduce((s, p) => s + p.cantidadContratada, 0);
   const acumuladoTotal = partidasHoja.reduce((s, p) => s + Math.min(totales[p.id] ?? 0, p.cantidadContratada), 0);
   const avancePct = contratadoTotal > 0 ? Math.round((acumuladoTotal / contratadoTotal) * 100) : 0;
+
+  async function persistirMediciones(partidaId: string, unidad: string, mediciones: MedicionInfo[]) {
+    if (!parte) return;
+    for (const m of mediciones) {
+      await registrarMedicion({
+        partidaId, fecha: parte.fecha, proposito: 'contratado',
+        tipo: m.tipo, descripcion: m.descripcion || undefined, datos: m.datos, subtotal: m.subtotal, unidad,
+      });
+    }
+  }
 
   async function guardarPartida(datos: NuevaPartidaDatos) {
     if (!datos.nombre.trim() || !activeFrenteId || !parte) return;
@@ -113,6 +227,7 @@ export function CubicacionPage() {
     if (datos.avanceHoy > 0) {
       await upsertCubicacionEntry(parte.id, id, parte.fecha, datos.avanceHoy);
     }
+    await persistirMediciones(id, datos.unidad, datos.mediciones);
     setShowAdd(false);
   }
 
@@ -130,6 +245,7 @@ export function CubicacionPage() {
     if (datos.avanceHoy > 0) {
       await upsertCubicacionEntry(parte.id, id, parte.fecha, datos.avanceHoy);
     }
+    await persistirMediciones(id, datos.unidad, datos.mediciones);
     setSubAddParentId(null);
   }
 
@@ -213,7 +329,8 @@ export function CubicacionPage() {
                     setEditContratadoId={setEditContratadoId}
                     onGuardarContratado={guardarCantidadContratada}
                     onEjecutadoChange={onEjecutadoChange}
-                    onAgregarFormula={onAgregarFormula}
+                    onAgregarMedicionEjecutado={(info) => onAgregarMedicionEjecutado(p.id, p.unidad, info)}
+                    onAgregarMedicionContratado={(info) => onAgregarMedicionContratado(p.id, p.unidad, p.cantidadContratada, info)}
                   />
                 )}
 
@@ -247,7 +364,8 @@ export function CubicacionPage() {
                             setEditContratadoId={setEditContratadoId}
                             onGuardarContratado={guardarCantidadContratada}
                             onEjecutadoChange={onEjecutadoChange}
-                            onAgregarFormula={onAgregarFormula}
+                            onAgregarMedicionEjecutado={(info) => onAgregarMedicionEjecutado(h.id, h.unidad, info)}
+                            onAgregarMedicionContratado={(info) => onAgregarMedicionContratado(h.id, h.unidad, h.cantidadContratada, info)}
                           />
                         </div>
                       );
@@ -295,10 +413,12 @@ export function CubicacionPage() {
   );
 }
 
-/** Badges + progress bar + "ejecutado hoy" + optional dimension calculator for one cubicated
- * partida — reused for a top-level (leaf) tarea and for each of its sub-tareas alike. */
+/** Badges + progress bar + "ejecutado hoy" + calculadora de cubicación + memoria de cálculo
+ * for one cubicated partida — reused for a top-level (leaf) tarea and for each of its
+ * sub-tareas alike. */
 function TareaBody({
-  p, acumulado, entry, estado, calcOpenId, setCalcOpenId, editContratadoId, setEditContratadoId, onGuardarContratado, onEjecutadoChange, onAgregarFormula,
+  p, acumulado, entry, estado, calcOpenId, setCalcOpenId, editContratadoId, setEditContratadoId,
+  onGuardarContratado, onEjecutadoChange, onAgregarMedicionEjecutado, onAgregarMedicionContratado,
 }: {
   p: Partida;
   acumulado: number;
@@ -310,10 +430,12 @@ function TareaBody({
   setEditContratadoId: (id: string | null) => void;
   onGuardarContratado: (partidaId: string, valor: number) => void;
   onEjecutadoChange: (partidaId: string, valor: number) => void;
-  onAgregarFormula: (partidaId: string, subtotal: number) => void;
+  onAgregarMedicionEjecutado: (info: MedicionInfo) => void;
+  onAgregarMedicionContratado: (info: MedicionInfo) => void;
 }) {
   const pct = p.cantidadContratada > 0 ? Math.round((acumulado / p.cantidadContratada) * 100) : 0;
   const estadoInfo = ESTADO_INFO[estado];
+  const tieneFormula = !!TIPOS_POR_UNIDAD[p.unidad];
 
   return (
     <>
@@ -337,6 +459,7 @@ function TareaBody({
             valorInicial={p.cantidadContratada}
             onGuardar={(v) => onGuardarContratado(p.id, v)}
             onCancelar={() => setEditContratadoId(null)}
+            onAgregarMedicion={onAgregarMedicionContratado}
           />
         ) : (
           <button
@@ -362,7 +485,7 @@ function TareaBody({
         <span className="text-soft" style={{ fontSize: 12 }}>{p.unidad}</span>
       </div>
 
-      {UNIDADES_CON_FORMULA.has(p.unidad) && (
+      {tieneFormula && (
         <>
           <button
             onClick={() => setCalcOpenId(calcOpenId === p.id ? null : p.id)}
@@ -372,72 +495,172 @@ function TareaBody({
             <IconChevronRight size={12} color="var(--accent)" style={{ transform: calcOpenId === p.id ? 'rotate(90deg)' : undefined }} />
           </button>
           {calcOpenId === p.id && (
-            <DimensionCalculator unidad={p.unidad} onAgregar={(subtotal) => onAgregarFormula(p.id, subtotal)} />
+            <CalculadoraCubicacion unidad={p.unidad} modo="ejecutado" onAgregar={onAgregarMedicionEjecutado} />
           )}
         </>
       )}
+
+      <MemoriaCalculo partidaId={p.id} />
     </>
   );
 }
 
 /**
- * Calcula la cantidad a partir de las dimensiones de un elemento (largo × ancho × alto,
- * según la unidad) y cuántas veces se repite, para no tener que hacer la multiplicación a
- * mano cada vez que hay varios elementos iguales (zapatas, tramos de muro, etc.).
+ * Calculadora de cubicación por elementos: prisma rectangular, sección trapezoidal,
+ * cilíndrico, muro con descuento de vanos y enfierradura por diámetro. Es un cálculo
+ * geométrico general de uso práctico en obra — no una transcripción de NCh 353 Of.2000
+ * ("Mediciones y cubicaciones en construcción"); antes de usarla para el estado de pago
+ * conviene verificar el criterio de medición exacto de cada partida en el contrato.
  */
-function DimensionCalculator({ unidad, onAgregar }: { unidad: string; onAgregar: (subtotal: number) => void }) {
-  const [largo, setLargo] = useState('');
-  const [ancho, setAncho] = useState('');
-  const [alto, setAlto] = useState('');
-  const [cantidad, setCantidad] = useState('1');
+function CalculadoraCubicacion({
+  unidad, modo, onAgregar,
+}: {
+  unidad: string;
+  modo: 'contratado' | 'ejecutado';
+  onAgregar: (info: MedicionInfo) => void;
+}) {
+  const opciones = TIPOS_POR_UNIDAD[unidad] ?? [];
+  const [tipo, setTipo] = useState<TipoElementoMedicion>(opciones[0]?.value ?? 'rectangular');
+  const [descripcion, setDescripcion] = useState('');
+  const [campos, setCampos] = useState<Record<string, string>>({});
 
-  const subtotal = calcularSubtotal(unidad, parseFloat(largo) || 0, parseFloat(ancho) || 0, parseFloat(alto) || 0, parseFloat(cantidad) || 1);
+  const camposActivos = camposDelTipo(tipo, unidad);
+  const datos: Record<string, number> = {};
+  camposActivos.forEach((c) => { datos[c.key] = parseFloat(campos[c.key]) || (c.key === 'cantidad' ? 1 : 0); });
+  const subtotal = calcularSubtotalElemento(tipo, unidad, datos);
+
+  function elegirTipo(t: TipoElementoMedicion) {
+    setTipo(t);
+    setCampos({});
+  }
 
   function agregar() {
-    onAgregar(subtotal);
-    setLargo('');
-    setAncho('');
-    setAlto('');
-    setCantidad('1');
+    onAgregar({ tipo, descripcion: descripcion.trim(), datos, subtotal });
+    setCampos({});
+    setDescripcion('');
   }
 
   return (
     <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+      {opciones.length > 1 && (
+        <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 8 }}>
+          {opciones.map((o) => (
+            <button
+              key={o.value}
+              className="chip"
+              style={tipo === o.value ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+              onClick={() => elegirTipo(o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <input
+        placeholder="Descripción (opcional, ej: Zapata Z-1)"
+        value={descripcion}
+        onChange={(e) => setDescripcion(e.target.value)}
+        className="field-input"
+        style={{ width: '100%', marginBottom: 8, fontWeight: 500 }}
+      />
       <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 8 }}>
-        <DimField label="Largo (m)" value={largo} onChange={setLargo} />
-        {unidad !== 'ml' && <DimField label="Ancho (m)" value={ancho} onChange={setAncho} />}
-        {unidad === 'm³' && <DimField label="Alto/Espesor (m)" value={alto} onChange={setAlto} />}
-        <DimField label="Cantidad (veces se repite)" value={cantidad} onChange={setCantidad} />
+        {camposActivos.map((c) => (
+          <DimField key={c.key} label={c.label} value={campos[c.key] ?? ''} onChange={(v) => setCampos((prev) => ({ ...prev, [c.key]: v }))} />
+        ))}
       </div>
-      <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <span style={{ fontSize: 12.5 }}>
           Subtotal: <strong>{subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {unidad}</strong>
         </span>
         <button className="btn btn-primary" style={{ padding: '8px 14px', fontSize: 12 }} onClick={agregar} disabled={subtotal <= 0}>
-          Agregar al total de hoy
+          {modo === 'contratado' ? 'Agregar a lo contratado' : 'Agregar al total de hoy'}
         </button>
+      </div>
+      <div className="text-soft" style={{ fontSize: 9.5, lineHeight: 1.4 }}>
+        Cálculo geométrico general de uso práctico en obra — no es una transcripción de NCh 353
+        Of.2000. Verifica el criterio de medición de tu contrato antes de usarlo en un estado de pago.
       </div>
     </div>
   );
 }
 
-/** Inline editor for a task's cantidadContratada — lets you cubicar una tarea que se agregó
- * sin dato fijo, o corregirlo más adelante, sin tener que recrear la tarea. */
-function ContratadoEditor({ unidad, valorInicial, onGuardar, onCancelar }: { unidad: string; valorInicial: number; onGuardar: (v: number) => void; onCancelar: () => void }) {
-  const [valor, setValor] = useState(valorInicial ? String(valorInicial) : '');
+/** Lista colapsable de las mediciones registradas para una partida (memoria de cálculo), para
+ * poder revisar de dónde salió cada cifra al volver a mirar la tarea más adelante. */
+function MemoriaCalculo({ partidaId }: { partidaId: string }) {
+  const mediciones = useLiveQuery(() => medicionesDePartida(partidaId), [partidaId]) ?? [];
+  const [abierto, setAbierto] = useState(false);
+
+  if (mediciones.length === 0) return null;
+
   return (
-    <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
-      <input
-        type="number"
-        autoFocus
-        placeholder={`Cantidad contratada (${unidad})`}
-        value={valor}
-        onChange={(e) => setValor(e.target.value)}
-        className="field-input"
-        style={{ width: 120 }}
-      />
-      <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
-      <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+    <div style={{ marginTop: 9 }}>
+      <button
+        onClick={() => setAbierto((v) => !v)}
+        style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4, padding: 0 }}
+      >
+        Ver mediciones ({mediciones.length})
+        <IconChevronRight size={11} color="var(--text-soft)" style={{ transform: abierto ? 'rotate(90deg)' : undefined }} />
+      </button>
+      {abierto && (
+        <div className="stack" style={{ gap: 6, marginTop: 8 }}>
+          {mediciones.map((m) => (
+            <div key={m.id} style={{ background: 'var(--surface-alt)', borderRadius: 8, padding: '7px 9px' }}>
+              <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: 2, gap: 8 }}>
+                <strong style={{ fontSize: 11 }}>{m.descripcion || TIPO_ELEMENTO_LABEL[m.tipo]}</strong>
+                <span style={{ fontSize: 10, fontWeight: 700, color: m.proposito === 'contratado' ? 'var(--accent-dark)' : 'var(--green)', whiteSpace: 'nowrap' }}>
+                  {m.proposito === 'contratado' ? 'Contratado' : 'Ejecutado'} · {formatShortDate(m.fecha)}
+                </span>
+              </div>
+              <div className="text-soft" style={{ fontSize: 10.5 }}>
+                {formatDatosMedicion(m.tipo, m.datos, m.unidad)} = <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {m.unidad}</strong>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Inline editor for a task's cantidadContratada — lets you cubicar una tarea que se agregó
+ * sin dato fijo (a mano o por elementos con la calculadora), o corregirlo más adelante. */
+function ContratadoEditor({
+  unidad, valorInicial, onGuardar, onCancelar, onAgregarMedicion,
+}: {
+  unidad: string;
+  valorInicial: number;
+  onGuardar: (v: number) => void;
+  onCancelar: () => void;
+  onAgregarMedicion: (info: MedicionInfo) => void;
+}) {
+  const [valor, setValor] = useState(valorInicial ? String(valorInicial) : '');
+  const [modoCalc, setModoCalc] = useState(false);
+  const tieneFormula = !!TIPOS_POR_UNIDAD[unidad];
+
+  return (
+    <div style={{ width: '100%' }}>
+      <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+        <input
+          type="number"
+          autoFocus
+          placeholder={`Cantidad contratada (${unidad})`}
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          className="field-input"
+          style={{ width: 120 }}
+        />
+        <button onClick={() => onGuardar(Number(valor) || 0)} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+        <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+      </div>
+      {tieneFormula && (
+        <button
+          onClick={() => setModoCalc((v) => !v)}
+          style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700, padding: '7px 0 0' }}
+        >
+          {modoCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
+        </button>
+      )}
+      {modoCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={onAgregarMedicion} />}
     </div>
   );
 }
@@ -459,16 +682,43 @@ function DimField({ label, value, onChange }: { label: string; value: string; on
 }
 
 /** Form to create a new partida — used both for a top-level tarea (with the suggested
- * catálogo) and, more compactly, for a sub-tarea under an existing one. */
+ * catálogo) and, more compactly, for a sub-tarea under an existing one. Cantidad contratada
+ * can be typed directly or built up from elements with the calculadora; either way, the
+ * measurements used are carried into onGuardar so they land in the memoria de cálculo once
+ * the partida (and its id) exists. */
 function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (datos: NuevaPartidaDatos) => void; onCancelar: () => void; conCatalogo?: boolean }) {
   const [catCategoria, setCatCategoria] = useState(CATALOGO_PARTIDAS[0].categoria);
   const [nombre, setNombre] = useState('');
   const [unidad, setUnidad] = useState('m³');
   const [cantidadContratada, setCantidadContratada] = useState(0);
   const [avanceHoy, setAvanceHoy] = useState(0);
+  const [mostrarCalc, setMostrarCalc] = useState(false);
+  const [mediciones, setMediciones] = useState<MedicionInfo[]>([]);
+  const tieneFormula = !!TIPOS_POR_UNIDAD[unidad];
+
+  function cambiarUnidad(u: string) {
+    setUnidad(u);
+    // Pending measurements were computed for the previous unidad's geometry — they don't
+    // carry over cleanly, so start the memoria de cálculo over rather than show stale data.
+    setMediciones([]);
+    setCantidadContratada(0);
+    setMostrarCalc(false);
+  }
+
+  function agregarMedicion(info: MedicionInfo) {
+    setMediciones((m) => [...m, info]);
+    setCantidadContratada((v) => Number((v + info.subtotal).toFixed(3)));
+  }
+
+  function quitarMedicion(idx: number) {
+    setMediciones((m) => {
+      setCantidadContratada((v) => Number((v - m[idx].subtotal).toFixed(3)));
+      return m.filter((_, i) => i !== idx);
+    });
+  }
 
   function guardar() {
-    onGuardar({ nombre, unidad, cantidadContratada, avanceHoy });
+    onGuardar({ nombre, unidad, cantidadContratada, avanceHoy, mediciones });
   }
 
   return (
@@ -489,7 +739,7 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
               <button
                 key={it.nombre}
                 className="chip"
-                onClick={() => { setNombre(it.nombre); setUnidad(it.unidad); }}
+                onClick={() => { setNombre(it.nombre); cambiarUnidad(it.unidad); }}
               >
                 {it.nombre} · {it.unidad}
               </button>
@@ -507,7 +757,7 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
         autoFocus={!conCatalogo}
       />
       <div className="flex-row gap-8">
-        <select value={unidad} onChange={(e) => setUnidad(e.target.value)} className="field-input">
+        <select value={unidad} onChange={(e) => cambiarUnidad(e.target.value)} className="field-input">
           {['m³', 'm²', 'ml', 'kg', 'un'].map((u) => <option key={u} value={u}>{u}</option>)}
         </select>
         <input
@@ -519,6 +769,28 @@ function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (
           style={{ flexGrow: 1 }}
         />
       </div>
+
+      {tieneFormula && (
+        <button
+          onClick={() => setMostrarCalc((v) => !v)}
+          style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
+        >
+          {mostrarCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
+          <IconChevronRight size={12} color="var(--accent)" style={{ transform: mostrarCalc ? 'rotate(90deg)' : undefined }} />
+        </button>
+      )}
+      {mostrarCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={agregarMedicion} />}
+      {mediciones.length > 0 && (
+        <div className="stack" style={{ gap: 5 }}>
+          {mediciones.map((m, i) => (
+            <div key={i} className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', fontSize: 11, background: 'var(--surface-alt)', borderRadius: 7, padding: '6px 9px' }}>
+              <span>{m.descripcion || TIPO_ELEMENTO_LABEL[m.tipo]}: <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {unidad}</strong></span>
+              <button onClick={() => quitarMedicion(i)} aria-label="Quitar medición" style={{ background: 'none', border: 'none', color: 'var(--red)', fontWeight: 800, fontSize: 14, lineHeight: 1, padding: '0 2px' }}>×</button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <label className="text-soft" style={{ fontSize: 11.5 }}>
         Avance de hoy en esta tarea (opcional)
         <input

@@ -1,5 +1,5 @@
 import { db, newId, nowISO, todayISO } from './db';
-import type { EstadoTarea, Parte, Partida } from '../types/models';
+import type { EstadoTarea, MedicionCubicacion, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -219,6 +219,19 @@ export async function tareasDelDiaAgrupadas(parteId: string): Promise<TareaDelDi
     grupos.get(groupId)!.items.push(item);
   });
   return Array.from(grupos.values());
+}
+
+/** Records one dimension-calculator measurement (memoria de cálculo) for a partida, keeping
+ * the dimensions that produced a subtotal visible after that number has already been folded
+ * into cantidadContratada or a day's cantidadEjecutada. */
+export async function registrarMedicion(medicion: Omit<MedicionCubicacion, 'id'>): Promise<void> {
+  await db.medicionesCubicacion.add({ id: newId(), ...medicion });
+}
+
+/** All measurements recorded for a partida, most recent first. */
+export async function medicionesDePartida(partidaId: string): Promise<MedicionCubicacion[]> {
+  const rows = await db.medicionesCubicacion.where('partidaId').equals(partidaId).toArray();
+  return rows.sort((a, b) => b.fecha.localeCompare(a.fecha));
 }
 
 /** Makes sure every active trabajador of a frente has an attendance row for this parte (defaults to presente). */

@@ -5,6 +5,7 @@ import type {
   Trabajador,
   Partida,
   CubicacionEntry,
+  MedicionCubicacion,
   RegistroAsistencia,
   Foto,
   Documento,
@@ -17,6 +18,7 @@ class BitacoraDB extends Dexie {
   trabajadores!: Table<Trabajador, string>;
   partidas!: Table<Partida, string>;
   cubicacionEntries!: Table<CubicacionEntry, string>;
+  medicionesCubicacion!: Table<MedicionCubicacion, string>;
   asistencias!: Table<RegistroAsistencia, string>;
   fotos!: Table<Foto, string>;
   documentos!: Table<Documento, string>;
@@ -56,6 +58,13 @@ class BitacoraDB extends Dexie {
     // partidas simply have no partidaPadreId, which is exactly "top-level".
     this.version(3).stores({
       partidas: 'id, frenteId, partidaPadreId',
+    });
+
+    // v4: the dimension calculator can now record the measurements it used (memoria de
+    // cálculo) instead of only folding the computed subtotal into the number — a new table,
+    // no existing data to migrate.
+    this.version(4).stores({
+      medicionesCubicacion: 'id, partidaId, fecha',
     });
   }
 }
