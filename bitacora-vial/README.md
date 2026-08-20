@@ -220,6 +220,19 @@ src/
   Record<string, number>` guardados de vuelta al `campos: Record<string,
   string>` que `FiguraMedidas` espera, formateando cada valor con
   `toLocaleString('es-CL')`.
+- **"Ver medidas" en Nuevo Parte Diario** (`TareaActivaRow` en
+  `NuevoPartePage.tsx`): la misma capacidad de la memoria de cálculo,
+  pero directamente en la tarjeta de cada tarea de la sección 3 ("Tareas
+  y Avances"), para no tener que salir a Cubicación solo para recordar
+  con qué medidas se cubicó. Junto a la línea "Dimensiones: ..." (que ya
+  existía para unidades m³/m²/kg) hay un botón "Ver medidas" que trae la
+  medición más reciente de esa partida con `medicionesDePartida()` — vía
+  `useLiveQuery`, y solo mientras el dibujo está abierto, para no
+  consultar Dexie de más en una pantalla con varias tareas a la vez — y
+  dibuja su `FiguraMedidas` con `camposDesdeDatos()`, igual que en
+  Cubicación. Las tareas de unidad `ml` siguen mostrando "Faltan N ml por
+  completar" en vez de esto, porque una longitud simple no tiene
+  geometría que dibujar.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y

@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import {
   attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
-  incrementarCubicacionEntry,
+  incrementarCubicacionEntry, medicionesDePartida,
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
+import { camposDesdeDatos } from '../../lib/cubicacionCalculo';
 import { obtenerClimaPorGPS } from '../../lib/clima';
 import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
+import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation, IconRefresh } from '../../components/Icon';
@@ -665,6 +667,12 @@ function TareaActivaRow({
   const [incremento, setIncremento] = useState('');
   const [cubicarAbierto, setCubicarAbierto] = useState(false);
   const [contratadaInput, setContratadaInput] = useState('');
+  const [dibujoAbierto, setDibujoAbierto] = useState(false);
+  const mediciones = useLiveQuery(
+    () => (dibujoAbierto ? medicionesDePartida(t.partidaId) : Promise.resolve([])),
+    [t.partidaId, dibujoAbierto],
+  ) ?? [];
+  const ultimaMedicion = mediciones[0];
 
   function agregar() {
     const valor = parseNumeroDecimal(incremento);
@@ -780,8 +788,24 @@ function TareaActivaRow({
         </div>
       )}
       {t.unidad !== 'ml' && t.dimensionesTexto && (
-        <div className="text-soft" style={{ fontSize: 10.5, marginTop: 2 }}>
-          Dimensiones: {t.dimensionesTexto}
+        <div style={{ marginTop: 2 }}>
+          <div className="flex-row gap-8" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
+            <span className="text-soft" style={{ fontSize: 10.5 }}>Dimensiones: {t.dimensionesTexto}</span>
+            <button
+              type="button"
+              onClick={() => setDibujoAbierto((v) => !v)}
+              className="flex-row"
+              style={{ gap: 3, alignItems: 'center', background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10, fontWeight: 700, padding: 0 }}
+            >
+              {dibujoAbierto ? 'Ocultar medidas' : 'Ver medidas'}
+              <IconChevronRight size={10} color="var(--accent)" style={{ transform: dibujoAbierto ? 'rotate(90deg)' : undefined }} />
+            </button>
+          </div>
+          {dibujoAbierto && ultimaMedicion && (
+            <div style={{ marginTop: 6 }}>
+              <FiguraMedidas tipo={ultimaMedicion.tipo} unidad={ultimaMedicion.unidad} campos={camposDesdeDatos(ultimaMedicion.datos)} />
+            </div>
+          )}
         </div>
       )}
     </div>
