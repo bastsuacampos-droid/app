@@ -189,6 +189,17 @@ src/
   reutiliza igual en "Cantidad contratada", "Ejecutado hoy" y
   "Cubicar esta tarea", porque las tres pasan por el mismo
   `CalculadoraCubicacion`.
+  **Sobre las cotas:** no son un calco de fotos de planos reales —las
+  herramientas de este entorno solo leen texto/markdown de una URL, no
+  bajan ni recortan píxeles de una imagen— sino que siguen la
+  convención real de acotado de planos de construcción, confirmada por
+  investigación (líneas de cota con puntas de flecha alargadas ~3:1,
+  líneas testigo que salen del borde del objeto con un pequeño espacio
+  y sobrepasan un poco la línea de cota, y achurado diagonal en el
+  material sólido —dejando en blanco los vanos, como en un plano real).
+  Sigue siendo SVG vectorial puro (nada de imágenes rasterizadas), así
+  que el peso agregado al bundle es mínimo (~7 KB comprimido) frente a
+  lo que costaría incrustar fotos de referencia.
 - **Selector de tareas + pestaña Completadas** (`Parte.tareasSeleccionadasIds`,
   `tareasActivasAgrupadas()` / `tareasDisponiblesParaFrentes()` /
   `tareasCompletadas()` en `lib/queries.ts`): la sección "Tareas y

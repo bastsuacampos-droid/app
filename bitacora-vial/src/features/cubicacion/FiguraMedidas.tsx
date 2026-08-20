@@ -1,38 +1,65 @@
 import type { TipoElementoMedicion } from '../../types/models';
 
 const ARROW_ID = 'figura-cota-flecha';
+const HATCH_ID = 'figura-achurado';
 
-/** One <marker> arrowhead, shared by every cota line in a figure. Declared once per <svg> via
- * <DefsFlecha />, referenced by id from each cota's markerStart/markerEnd. */
-function DefsFlecha() {
+/** Shared <defs> for every figure: the cota arrowhead (elongated ~3:1, per the standard
+ * dimensioning convention) and a 45° diagonal hatch pattern — the "achurado" real construction
+ * plans use to mark solid/cut material, as opposed to open space (a vano, air). */
+function DefsFigura() {
   return (
     <defs>
-      <marker id={ARROW_ID} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M0,0 L10,5 L0,10 Z" fill="var(--accent)" />
+      <marker id={ARROW_ID} viewBox="0 0 9 3" refX="8" refY="1.5" markerWidth="9" markerHeight="3" orient="auto-start-reverse">
+        <path d="M0,0 L9,1.5 L0,3 Z" fill="var(--accent)" />
       </marker>
+      <pattern id={HATCH_ID} width={6} height={6} patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1={0} y1={0} x2={0} y2={6} stroke="var(--border)" strokeWidth={1} />
+      </pattern>
     </defs>
   );
 }
 
-/** Horizontal dimension line (cota) with extension ticks at each end and a centered label —
- * the standard "cota" convention for showing a measurement alongside a technical drawing. */
-function CotaH({ x1, x2, y, label }: { x1: number; x2: number; y: number; label: string }) {
+/** Horizontal cota: witness lines run from the object's edge (small gap, per convention) past
+ * the dimension line, which carries the arrowheads and the centered label. Pass `desde` (the
+ * object edge's y) to draw those witness lines; omit it for a cota that deliberately crosses
+ * straight through the shape (e.g. a diameter). */
+function CotaH({ x1, x2, y, label, desde }: { x1: number; x2: number; y: number; label: string; desde?: number }) {
+  const testigos = desde !== undefined && (() => {
+    const dir = y > desde ? 1 : -1;
+    const y1 = desde + 3 * dir;
+    const y2 = y + 4 * dir;
+    return (
+      <>
+        <line x1={x1} y1={y1} x2={x1} y2={y2} stroke="var(--border)" strokeWidth={1} />
+        <line x1={x2} y1={y1} x2={x2} y2={y2} stroke="var(--border)" strokeWidth={1} />
+      </>
+    );
+  })();
   return (
     <g>
-      <line x1={x1} y1={y - 5} x2={x1} y2={y + 5} stroke="var(--border)" strokeWidth={1} />
-      <line x1={x2} y1={y - 5} x2={x2} y2={y + 5} stroke="var(--border)" strokeWidth={1} />
+      {testigos}
       <line x1={x1} y1={y} x2={x2} y2={y} stroke="var(--accent)" strokeWidth={1} markerStart={`url(#${ARROW_ID})`} markerEnd={`url(#${ARROW_ID})`} />
-      <text x={(x1 + x2) / 2} y={y - 7} textAnchor="middle" fontSize={10} fontWeight={700} fill="var(--accent-dark)">{label}</text>
+      <text x={(x1 + x2) / 2} y={y - 6} textAnchor="middle" fontSize={10} fontWeight={700} fill="var(--accent-dark)">{label}</text>
     </g>
   );
 }
 
-/** Vertical cota — same idea as CotaH, label sits to the left of the line. */
-function CotaV({ y1, y2, x, label }: { y1: number; y2: number; x: number; label: string }) {
+/** Vertical cota — same witness-line convention as CotaH, label sits to the left of the line. */
+function CotaV({ y1, y2, x, label, desde }: { y1: number; y2: number; x: number; label: string; desde?: number }) {
+  const testigos = desde !== undefined && (() => {
+    const dir = x > desde ? 1 : -1;
+    const x1 = desde + 3 * dir;
+    const x2 = x + 4 * dir;
+    return (
+      <>
+        <line x1={x1} y1={y1} x2={x2} y2={y1} stroke="var(--border)" strokeWidth={1} />
+        <line x1={x1} y1={y2} x2={x2} y2={y2} stroke="var(--border)" strokeWidth={1} />
+      </>
+    );
+  })();
   return (
     <g>
-      <line x1={x - 5} y1={y1} x2={x + 5} y2={y1} stroke="var(--border)" strokeWidth={1} />
-      <line x1={x - 5} y1={y2} x2={x + 5} y2={y2} stroke="var(--border)" strokeWidth={1} />
+      {testigos}
       <line x1={x} y1={y1} x2={x} y2={y2} stroke="var(--accent)" strokeWidth={1} markerStart={`url(#${ARROW_ID})`} markerEnd={`url(#${ARROW_ID})`} />
       <text x={x - 8} y={(y1 + y2) / 2} textAnchor="end" dominantBaseline="middle" fontSize={10} fontWeight={700} fill="var(--accent-dark)">{label}</text>
     </g>
@@ -62,6 +89,7 @@ function BadgeCantidad({ n }: { n: number }) {
 
 const SVG_PROPS = { viewBox: '-16 0 296 180', width: '100%', style: { maxWidth: 320, display: 'block', margin: '0 auto' } as const };
 const TRAZO = { stroke: 'var(--text)', strokeWidth: 1.6, fill: 'none' } as const;
+const TRAZO_ACHURADO = { stroke: 'var(--text)', strokeWidth: 1.6, fill: `url(#${HATCH_ID})` } as const;
 const TRAZO_OCULTO = { stroke: 'var(--text-soft)', strokeWidth: 1.2, fill: 'none', strokeDasharray: '3 3' } as const;
 
 /** value in campos → cota label text ("3,2 m" or a muted placeholder "— m" while empty), so the
@@ -79,16 +107,16 @@ function n(campos: Record<string, string>, key: string): number {
 function FiguraPrisma({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
+      <DefsFigura />
       {/* back-hidden edges, from the corner behind the box */}
       <path d="M55,140 L110,105 M110,105 L220,105 M110,105 L110,25" {...TRAZO_OCULTO} />
-      {/* front, top and right faces */}
-      <path d="M55,140 L165,140 L165,60 L55,60 Z" {...TRAZO} />
+      {/* front face achurada (material lleno), top and right faces sin achurar */}
+      <path d="M55,140 L165,140 L165,60 L55,60 Z" {...TRAZO_ACHURADO} />
       <path d="M55,60 L110,25 L220,25 L165,60" {...TRAZO} />
       <path d="M165,140 L220,105 L220,25" {...TRAZO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={55} x2={165} y={158} label={textoCota(campos, 'largo', 'm')} />
-      <CotaV y1={60} y2={140} x={36} label={textoCota(campos, 'alto', 'm')} />
+      <CotaH x1={55} x2={165} y={158} desde={140} label={textoCota(campos, 'largo', 'm')} />
+      <CotaV y1={60} y2={140} x={36} desde={55} label={textoCota(campos, 'alto', 'm')} />
       <CotaDiag x1={55} y1={60} x2={110} y2={25} label={textoCota(campos, 'ancho', 'm')} dx={-4} dy={-10} />
     </svg>
   );
@@ -97,11 +125,11 @@ function FiguraPrisma({ campos }: { campos: Record<string, string> }) {
 function FiguraRectangulo({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
-      <rect x={60} y={50} width={160} height={90} {...TRAZO} />
+      <DefsFigura />
+      <rect x={60} y={50} width={160} height={90} {...TRAZO_ACHURADO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={60} x2={220} y={158} label={textoCota(campos, 'largo', 'm')} />
-      <CotaV y1={50} y2={140} x={42} label={textoCota(campos, 'ancho', 'm')} />
+      <CotaH x1={60} x2={220} y={158} desde={140} label={textoCota(campos, 'largo', 'm')} />
+      <CotaV y1={50} y2={140} x={42} desde={60} label={textoCota(campos, 'ancho', 'm')} />
     </svg>
   );
 }
@@ -109,12 +137,12 @@ function FiguraRectangulo({ campos }: { campos: Record<string, string> }) {
 function FiguraLinea({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
+      <DefsFigura />
       <line x1={40} y1={90} x2={240} y2={90} stroke="var(--text)" strokeWidth={5} strokeLinecap="round" />
       <line x1={40} y1={78} x2={40} y2={102} stroke="var(--text)" strokeWidth={1.6} />
       <line x1={240} y1={78} x2={240} y2={102} stroke="var(--text)" strokeWidth={1.6} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={40} x2={240} y={118} label={textoCota(campos, 'largo', 'm')} />
+      <CotaH x1={40} x2={240} y={122} desde={102} label={textoCota(campos, 'largo', 'm')} />
     </svg>
   );
 }
@@ -122,15 +150,15 @@ function FiguraLinea({ campos }: { campos: Record<string, string> }) {
 function FiguraTrapecio({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
+      <DefsFigura />
       <path d="M50,140 L105,105 M105,105 L225,105 M105,105 L140,35" {...TRAZO_OCULTO} />
-      <path d="M50,140 L170,140 L135,70 L85,70 Z" {...TRAZO} />
+      <path d="M50,140 L170,140 L135,70 L85,70 Z" {...TRAZO_ACHURADO} />
       <path d="M85,70 L140,35 L190,35 L135,70" {...TRAZO} />
       <path d="M170,140 L225,105 L190,35" {...TRAZO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={50} x2={170} y={158} label={textoCota(campos, 'baseMayor', 'm')} />
-      <CotaH x1={85} x2={135} y={52} label={textoCota(campos, 'baseMenor', 'm')} />
-      <CotaV y1={70} y2={140} x={30} label={textoCota(campos, 'alto', 'm')} />
+      <CotaH x1={50} x2={170} y={158} desde={140} label={textoCota(campos, 'baseMayor', 'm')} />
+      <CotaH x1={85} x2={135} y={54} desde={70} label={textoCota(campos, 'baseMenor', 'm')} />
+      <CotaV y1={70} y2={140} x={30} desde={50} label={textoCota(campos, 'alto', 'm')} />
       <CotaDiag x1={170} y1={140} x2={225} y2={105} label={textoCota(campos, 'largo', 'm')} dx={10} dy={4} />
     </svg>
   );
@@ -139,14 +167,14 @@ function FiguraTrapecio({ campos }: { campos: Record<string, string> }) {
 function FiguraCilindro({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
+      <DefsFigura />
       <line x1={80} y1={55} x2={80} y2={140} {...TRAZO} />
       <line x1={200} y1={55} x2={200} y2={140} {...TRAZO} />
       <path d="M80,140 A60,18 0 0 0 200,140" {...TRAZO} />
-      <ellipse cx={140} cy={55} rx={60} ry={18} {...TRAZO} />
+      <ellipse cx={140} cy={55} rx={60} ry={18} {...TRAZO_ACHURADO} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
       <CotaH x1={80} x2={200} y={55} label={`Ø ${textoCota(campos, 'diametro', 'm')}`} />
-      <CotaV y1={55} y2={140} x={62} label={textoCota(campos, 'alto', 'm')} />
+      <CotaV y1={55} y2={140} x={62} desde={80} label={textoCota(campos, 'alto', 'm')} />
     </svg>
   );
 }
@@ -154,14 +182,14 @@ function FiguraCilindro({ campos }: { campos: Record<string, string> }) {
 function FiguraMuroVanos({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
-      <rect x={50} y={50} width={170} height={90} {...TRAZO} />
-      <rect x={110} y={72} width={50} height={46} stroke="var(--text-soft)" strokeWidth={1.2} strokeDasharray="3 3" fill="none" />
+      <DefsFigura />
+      <path d="M50,50 L220,50 L220,140 L50,140 Z M110,72 L160,72 L160,118 L110,118 Z" fillRule="evenodd" {...TRAZO_ACHURADO} />
+      <rect x={110} y={72} width={50} height={46} stroke="var(--text)" strokeWidth={1.2} fill="none" />
       <line x1={160} y1={95} x2={200} y2={95} stroke="var(--text-soft)" strokeWidth={1} strokeDasharray="2 2" />
       <text x={202} y={99} fontSize={9.5} fontWeight={600} fill="var(--text-soft)">{`Vanos: ${textoCota(campos, 'vanos', 'm²')}`}</text>
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={50} x2={220} y={158} label={textoCota(campos, 'largo', 'm')} />
-      <CotaV y1={50} y2={140} x={32} label={textoCota(campos, 'alto', 'm')} />
+      <CotaH x1={50} x2={220} y={158} desde={140} label={textoCota(campos, 'largo', 'm')} />
+      <CotaV y1={50} y2={140} x={32} desde={50} label={textoCota(campos, 'alto', 'm')} />
     </svg>
   );
 }
@@ -169,22 +197,22 @@ function FiguraMuroVanos({ campos }: { campos: Record<string, string> }) {
 function FiguraBarra({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
-      <DefsFlecha />
+      <DefsFigura />
       <line x1={30} y1={90} x2={195} y2={90} stroke="var(--text)" strokeWidth={7} strokeLinecap="round" />
       <circle cx={232} cy={90} r={17} {...TRAZO} />
-      <line x1={215} y1={73} x2={215} y2={58} stroke="var(--border)" strokeWidth={1} />
-      <line x1={249} y1={73} x2={249} y2={58} stroke="var(--border)" strokeWidth={1} />
       <BadgeCantidad n={n(campos, 'cantidad')} />
-      <CotaH x1={30} x2={195} y={112} label={textoCota(campos, 'longitud', 'm')} />
-      <CotaH x1={215} x2={249} y={58} label={`Ø ${textoCota(campos, 'diametro', 'mm')}`} />
+      <CotaH x1={30} x2={195} y={112} desde={94} label={textoCota(campos, 'longitud', 'm')} />
+      <CotaH x1={215} x2={249} y={58} desde={73} label={`Ø ${textoCota(campos, 'diametro', 'mm')}`} />
     </svg>
   );
 }
 
-/** Live schematic of the element being cubicado, with cotas (dimension lines) reading straight
- * from the campos the foreman is typing — so it's clear at a glance which line in the drawing
- * each field corresponds to, before committing to "Agregar". Purely illustrative proportions,
- * not to scale with the actual numbers. */
+/** Live schematic of the element being cubicado, with cotas (dimension lines, following the
+ * real construction-plan convention: witness lines with a gap from the object, elongated
+ * arrowheads, diagonal achurado on solid material) reading straight from the campos the
+ * foreman is typing — so it's clear at a glance which line in the drawing each field
+ * corresponds to, before committing to "Agregar". Purely illustrative proportions, not to
+ * scale with the actual numbers. */
 export function FiguraMedidas({ tipo, unidad, campos }: { tipo: TipoElementoMedicion; unidad: string; campos: Record<string, string> }) {
   switch (tipo) {
     case 'rectangular':
