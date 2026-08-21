@@ -9,6 +9,7 @@ import { BottomNav } from './components/BottomNav';
 import { OnboardingPage } from './features/onboarding/OnboardingPage';
 import { DashboardPage } from './features/dashboard/DashboardPage';
 import { NuevoPartePage } from './features/partes/NuevoPartePage';
+import { VerPartePage } from './features/partes/VerPartePage';
 import { CubicacionPage } from './features/cubicacion/CubicacionPage';
 import { AsistenciaPage } from './features/asistencia/AsistenciaPage';
 import { CuadrillaPage } from './features/cuadrilla/CuadrillaPage';
@@ -74,6 +75,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/nuevo-parte" element={<NuevoPartePage />} />
+        <Route path="/parte/:parteId" element={<VerPartePage />} />
         <Route path="/cubicacion" element={<CubicacionPage />} />
         <Route path="/asistencia" element={<AsistenciaPage />} />
         <Route path="/cuadrilla" element={<CuadrillaPage />} />

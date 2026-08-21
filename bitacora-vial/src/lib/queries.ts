@@ -448,6 +448,12 @@ export async function asignarTrabajadorAFrente(parteId: string, trabajadorId: st
   });
 }
 
+/** Where a parte's row (Historial, Partes recientes) should navigate to: an open draft goes
+ * to the editing form, a finalized parte goes to its read-only report view instead. */
+export function rutaParaParte(parte: Pick<Parte, 'id' | 'estado'>): string {
+  return parte.estado === 'en_edicion' ? `/nuevo-parte?parte=${parte.id}` : `/parte/${parte.id}`;
+}
+
 export async function attendanceSummaryForParte(parteId: string) {
   const registros = await db.asistencias.where('parteId').equals(parteId).toArray();
   const presentes = registros.filter((r) => r.presente).length;

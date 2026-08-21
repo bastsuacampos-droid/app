@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../lib/db';
-import { overallProgressPct, pendingBackupCount, attendanceSummaryForParte } from '../../lib/queries';
+import { overallProgressPct, pendingBackupCount, attendanceSummaryForParte, rutaParaParte } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { formatLongDate } from '../../lib/date';
 import { Header } from '../../components/Header';
@@ -119,7 +119,7 @@ export function DashboardPage() {
           {(recientes ?? []).map((parte: Parte, i: number) => (
             <button
               key={parte.id}
-              onClick={() => navigate(`/nuevo-parte?parte=${parte.id}`)}
+              onClick={() => navigate(rutaParaParte(parte))}
               className="card list-row"
               style={{
                 textAlign: 'left', width: '100%',

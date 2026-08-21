@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, nowISO } from '../../lib/db';
 import { useSettings, updateSettings } from '../../lib/useSettings';
 import { exportCubicacionCSV, exportFullBackup } from '../../lib/export';
+import { rutaParaParte } from '../../lib/queries';
 import { Header } from '../../components/Header';
 import { StatusBadge } from '../../components/StatusBadge';
 import { Toggle } from '../../components/Toggle';
@@ -87,7 +88,7 @@ export function HistorialPage() {
           {filtrados.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => navigate(`/nuevo-parte?parte=${p.id}`)}
+              onClick={() => navigate(rutaParaParte(p))}
               className="card list-row"
               style={{ width: '100%', textAlign: 'left' }}
             >
