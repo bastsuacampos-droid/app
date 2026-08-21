@@ -72,6 +72,11 @@ export function AsistenciaPage() {
     setMoverRow(null);
   }
 
+  async function quitar(registroId: string, nombre: string) {
+    if (!confirm(`¿Quitar a ${nombre} de la asistencia de hoy?`)) return;
+    await db.asistencias.delete(registroId);
+  }
+
   if (!parte) return null;
 
   return (
@@ -156,31 +161,39 @@ export function AsistenciaPage() {
                   />
                 )}
 
-                {otrosFrentes.length > 0 && (
-                  <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border)' }}>
-                    {moverRow === t.id ? (
-                      <div className="flex-row gap-8">
-                        <select
-                          className="field-input"
-                          style={{ flexGrow: 1 }}
-                          defaultValue=""
-                          onChange={(e) => e.target.value && mover(r.id, e.target.value)}
-                        >
-                          <option value="" disabled>¿A qué frente lo mueves?</option>
-                          {otrosFrentes.map((f) => <option key={f.id} value={f.id}>{f.nombre}</option>)}
-                        </select>
-                        <button className="btn btn-outline" style={{ padding: '8px 12px', fontSize: 11.5 }} onClick={() => setMoverRow(null)}>Cancelar</button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setMoverRow(t.id)}
-                        style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11, fontWeight: 600 }}
+                <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border)' }}>
+                  {moverRow === t.id ? (
+                    <div className="flex-row gap-8">
+                      <select
+                        className="field-input"
+                        style={{ flexGrow: 1 }}
+                        defaultValue=""
+                        onChange={(e) => e.target.value && mover(r.id, e.target.value)}
                       >
-                        Mover a otro frente hoy
+                        <option value="" disabled>¿A qué frente lo mueves?</option>
+                        {otrosFrentes.map((f) => <option key={f.id} value={f.id}>{f.nombre}</option>)}
+                      </select>
+                      <button className="btn btn-outline" style={{ padding: '8px 12px', fontSize: 11.5 }} onClick={() => setMoverRow(null)}>Cancelar</button>
+                    </div>
+                  ) : (
+                    <div className="flex-row gap-8" style={{ justifyContent: 'space-between' }}>
+                      {otrosFrentes.length > 0 ? (
+                        <button
+                          onClick={() => setMoverRow(t.id)}
+                          style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11, fontWeight: 600 }}
+                        >
+                          Mover a otro frente hoy
+                        </button>
+                      ) : <span />}
+                      <button
+                        onClick={() => quitar(r.id, t.nombre)}
+                        style={{ background: 'none', border: 'none', color: 'var(--red)', fontSize: 11, fontWeight: 600 }}
+                      >
+                        Quitar de hoy
                       </button>
-                    )}
-                  </div>
-                )}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}

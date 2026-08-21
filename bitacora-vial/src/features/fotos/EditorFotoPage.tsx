@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../lib/db';
-import { IconPencil, IconArrow, IconText, IconSquare, IconCircle, IconUndo } from '../../components/Icon';
+import { IconPencil, IconArrow, IconText, IconSquare, IconCircle, IconUndo, IconTrash } from '../../components/Icon';
 import { ETAPA_POR_ID } from '../../lib/etapas';
 
 type Tool = 'lapiz' | 'flecha' | 'texto' | 'rect' | 'circulo';
@@ -31,29 +31,50 @@ export function EditorFotoPage() {
   const tarea = useLiveQuery(() => (foto?.partidaId ? db.partidas.get(foto.partidaId) : undefined), [foto?.partidaId]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  // CSS-pixel display size — the canvas's own pixel buffer is this times `dpr` (see below), so
+  // shape coordinates and pointer coordinates can both stay in this one simple space regardless
+  // of screen density.
   const [size, setSize] = useState({ w: 360, h: 480 });
   const [tool, setTool] = useState<Tool>('lapiz');
   const [color, setColor] = useState(COLORS[0]);
   const [opacity, setOpacity] = useState(0.35);
   const [shapes, setShapes] = useState<Shape[]>([]);
   const draftRef = useRef<Shape | null>(null);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+
+  function fitToContainer() {
+    const img = imgRef.current;
+    const container = containerRef.current;
+    if (!img || !container) return;
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+    if (!cw || !ch) return;
+    // Fit the whole photo inside the available space without distorting it — the previous
+    // version capped height without scaling width to match, which stretched/squished the image
+    // (and everything drawn on it) whenever a photo's aspect ratio didn't fit the guessed box.
+    const scale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+    setSize({ w: Math.round(img.naturalWidth * scale), h: Math.round(img.naturalHeight * scale) });
+  }
 
   useEffect(() => {
     if (!foto) return;
     const url = URL.createObjectURL(foto.blob);
     const img = new Image();
     img.onload = () => {
-      const maxW = Math.min(440, window.innerWidth);
-      const w = maxW;
-      const h = Math.round((img.naturalHeight / img.naturalWidth) * w);
-      setSize({ w, h: Math.min(h, window.innerHeight - 220) });
       imgRef.current = img;
+      fitToContainer();
     };
     img.src = url;
     return () => URL.revokeObjectURL(url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foto?.id]);
+
+  useEffect(() => {
+    window.addEventListener('resize', fitToContainer);
+    return () => window.removeEventListener('resize', fitToContainer);
+  }, []);
 
   function redraw() {
     const canvas = canvasRef.current;
@@ -61,8 +82,12 @@ export function EditorFotoPage() {
     if (!canvas || !img) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    // The canvas's physical pixel buffer is `size * dpr` (set on the element below) so drawing
+    // stays sharp on high-density screens; scaling the context lets every coordinate below stay
+    // in plain CSS-pixel space, matching what pointFromEvent() reads from getBoundingClientRect().
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, size.w, size.h);
+    ctx.drawImage(img, 0, 0, size.w, size.h);
     for (const shape of [...shapes, draftRef.current].filter(Boolean) as Shape[]) {
       drawShape(ctx, shape);
     }
@@ -192,34 +217,49 @@ export function EditorFotoPage() {
     }, 'image/jpeg', 0.9);
   }
 
+  async function eliminar() {
+    if (!foto) return;
+    if (!confirm('¿Eliminar esta foto? Esta acción no se puede deshacer.')) return;
+    await db.fotos.delete(foto.id);
+    navigate('/fotos');
+  }
+
   if (!foto) return null;
 
   const hora = new Date(foto.capturedAt).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div style={{ background: '#000', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div className="flex-row" style={{ justifyContent: 'space-between', padding: '18px 16px 12px', color: '#fff' }}>
+      <div
+        className="flex-row"
+        style={{ justifyContent: 'space-between', padding: '18px 16px 12px', paddingTop: 'calc(18px + var(--safe-top))', color: '#fff' }}
+      >
         <button onClick={() => navigate('/fotos')} style={{ background: 'none', border: 'none', color: '#fff' }} aria-label="Cerrar">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 12.5, fontWeight: 700 }}>{tarea?.nombre ?? frente?.nombre ?? 'Foto'}</div>
+        <div style={{ textAlign: 'center', minWidth: 0, flex: 1 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tarea?.nombre ?? frente?.nombre ?? 'Foto'}</div>
           <div className="flex-row gap-8" style={{ justifyContent: 'center', fontSize: 10, color: '#d8d3c8' }}>
             <span style={{ color: ETAPA_POR_ID.get(foto.etapa)?.color, fontWeight: 700 }}>{ETAPA_POR_ID.get(foto.etapa)?.label}</span>
             <span>{hora}{frente?.km ? ` · ${frente.km}` : ''}</span>
           </div>
         </div>
-        <button onClick={guardar} style={{ background: 'none', border: 'none', color: 'var(--amber)', fontSize: 13.5, fontWeight: 800 }}>
-          Guardar
-        </button>
+        <div className="flex-row gap-8" style={{ flexShrink: 0 }}>
+          <button onClick={eliminar} style={{ background: 'none', border: 'none', color: 'var(--red)', display: 'flex', padding: 4 }} aria-label="Eliminar foto">
+            <IconTrash size={19} color="var(--red)" />
+          </button>
+          <button onClick={guardar} style={{ background: 'none', border: 'none', color: 'var(--amber)', fontSize: 13.5, fontWeight: 800 }}>
+            Guardar
+          </button>
+        </div>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+      <div ref={containerRef} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         <canvas
           ref={canvasRef}
-          width={size.w}
-          height={size.h}
-          style={{ touchAction: 'none', borderRadius: 8 }}
+          width={Math.round(size.w * dpr)}
+          height={Math.round(size.h * dpr)}
+          style={{ width: size.w, height: size.h, touchAction: 'none', borderRadius: 8 }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
