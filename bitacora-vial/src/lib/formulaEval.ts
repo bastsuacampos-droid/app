@@ -41,6 +41,31 @@ function tokenize(input: string): Token[] {
   return tokens;
 }
 
+const OP_LEGIBLE: Record<string, string> = { '+': '+', '-': '−', '*': '×', '/': '÷', '(': '(', ')': ')', '^': '^' };
+
+/** Renders `formula` (stored with the calculadora's internal a/b/c… tokens) back into
+ * something a foreman actually wrote by tapping — each identifier replaced by its field's real
+ * label (falling back to the raw token if unknown) and operators shown as +, −, ×, ÷ instead of
+ * the plain arithmetic symbols the evaluator itself needs. Used to redisplay a personalizado
+ * medición without ever surfacing the internal letters. Falls back to the raw formula text on a
+ * malformed formula (e.g. one saved before this parser existed) rather than throwing in a
+ * display context. */
+export function formulaLegible(formula: string, etiquetas: Record<string, string>): string {
+  let tokens: Token[];
+  try {
+    tokens = tokenize(formula);
+  } catch {
+    return formula;
+  }
+  return tokens
+    .map((t) => {
+      if (t.type === 'ident') return etiquetas[t.value] || t.value;
+      if (t.type === 'op') return OP_LEGIBLE[t.value] ?? t.value;
+      return t.value.toLocaleString('es-CL');
+    })
+    .join(' ');
+}
+
 /** Evaluates `formula` against `valores` (identifier → number). Throws FormulaError with a
  * message suitable to show directly to the user on any syntax problem, unknown variable, or
  * division by zero — callers should catch it and fall back to a 0 subtotal. */

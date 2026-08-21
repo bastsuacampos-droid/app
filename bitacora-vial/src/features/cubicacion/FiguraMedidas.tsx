@@ -1,4 +1,5 @@
 import type { CampoPersonalizado, TipoElementoMedicion } from '../../types/models';
+import { formulaLegible } from '../../lib/formulaEval';
 
 const ARROW_ID = 'figura-cota-flecha';
 const HATCH_ID = 'figura-achurado';
@@ -258,27 +259,30 @@ function FiguraCirculoPlano({ campos }: { campos: Record<string, string> }) {
 }
 
 /** No fixed geometry to draw for a personalizado medición — instead, a little "ficha de
- * cálculo" listing the formula and each field's token/label/value, so it's still clear at a
- * glance what fed the subtotal. */
+ * cálculo" listing the formula (in the foreman's own words, via formulaLegible — never the
+ * internal a/b/c token) and each field's label/value, so it's still clear at a glance what fed
+ * the subtotal. */
 function FiguraPersonalizada({
   campos, camposPersonalizados, formula,
 }: { campos: Record<string, string>; camposPersonalizados?: CampoPersonalizado[]; formula?: string }) {
   const filas = camposPersonalizados ?? [];
+  const etiquetas = Object.fromEntries(filas.map((c) => [c.key, c.label || c.key]));
+  const formulaTexto = formula?.trim() ? formulaLegible(formula, etiquetas) : '';
   return (
     <svg {...SVG_PROPS}>
       <DefsFigura />
       <Marco titulo="Cálculo personalizado" />
       <text x={0} y={30} fontSize={10} fontWeight={700} fill="var(--text-soft)">Fórmula</text>
-      <text x={0} y={49} fontSize={13} fontWeight={800} fill="var(--accent-dark)">{formula?.trim() || '— sin definir —'}</text>
+      <text x={0} y={49} fontSize={13} fontWeight={800} fill="var(--accent-dark)">{formulaTexto || '— sin definir —'}</text>
       <line x1={-8} y1={60} x2={272} y2={60} stroke="var(--border)" strokeWidth={1} />
       {filas.length === 0 && (
         <text x={0} y={82} fontSize={10.5} fill="var(--text-soft)">Agrega medidas abajo para verlas aquí.</text>
       )}
       {filas.map((c, i) => (
         <text key={c.key} x={0} y={82 + i * 20} fontSize={11} fill="var(--text)">
-          <tspan fontWeight={800} fill="var(--accent-dark)">{c.key}</tspan>
-          <tspan>{` = ${c.label || 'medida'}: `}</tspan>
-          <tspan fontWeight={700}>{campos[c.key]?.trim() || '—'}</tspan>
+          <tspan fontWeight={700}>{c.label || 'Medida'}</tspan>
+          <tspan>{': '}</tspan>
+          <tspan fontWeight={800} fill="var(--accent-dark)">{campos[c.key]?.trim() || '—'}</tspan>
         </text>
       ))}
     </svg>

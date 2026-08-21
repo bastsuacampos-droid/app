@@ -7,9 +7,34 @@ import type { CampoPersonalizado, TipoElementoMedicion } from '../../types/model
 import { IconTrash } from '../../components/Icon';
 import { FiguraMedidas } from './FiguraMedidas';
 
-/** Short, unambiguous tokens for personalizado fields — used in the formula regardless of
- * what the user types as the field's label, so accents/spaces in a label never break parsing. */
+/** Short, unambiguous tokens for personalizado fields — used internally (as the identifier
+ * evaluarFormula resolves) regardless of what the user types as the field's label. Never shown
+ * to the user: the formula builder below always displays a field's real label instead. */
 const TOKENS_PERSONALIZADO = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+const OPERADORES_FORMULA: { symbol: string; display: string }[] = [
+  { symbol: '+', display: '+' },
+  { symbol: '-', display: '−' },
+  { symbol: '*', display: '×' },
+  { symbol: '/', display: '÷' },
+  { symbol: '(', display: '(' },
+  { symbol: ')', display: ')' },
+];
+
+/** One piece of a personalizado formula being built by tapping, in entry order. A 'campo' token
+ * only stores the field's key — its display label is looked up live from camposPersonalizados,
+ * so renaming a field after adding it to the formula updates that chip automatically. */
+type TokenFormula =
+  | { type: 'campo'; key: string }
+  | { type: 'op'; symbol: string; display: string }
+  | { type: 'numero'; texto: string };
+
+function formulaDesdeTokens(tokens: TokenFormula[]): string {
+  // Joined with spaces (not concatenated) so two adjacent field tokens, e.g. "a" then "b" typed
+  // back to back with no operator between them, can never fuse into one bogus identifier "ab" —
+  // the formula tokenizer treats whitespace as an ordinary separator either way.
+  return tokens.map((t) => (t.type === 'campo' ? t.key : t.type === 'op' ? t.symbol : t.texto)).join(' ');
+}
 
 export function DimField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -44,10 +69,13 @@ export function CalculadoraCubicacion({
   const esPersonalizado = tipo === 'personalizado';
 
   // Personalizado-only state: a dynamic, user-grown list of named fields (token a, b, c… +
-  // whatever label the foreman gives it) plus the formula combining them. Values themselves
-  // still live in `campos` (keyed by token), same as every other tipo.
+  // whatever label the foreman gives it) plus a formula built by tapping — never typed — so
+  // nobody has to learn or remember what "a" or "b" stand for. Field values themselves still
+  // live in `campos` (keyed by token), same as every other tipo.
   const [camposPersonalizados, setCamposPersonalizados] = useState<CampoPersonalizado[]>([]);
-  const [formula, setFormula] = useState('');
+  const [tokensFormula, setTokensFormula] = useState<TokenFormula[]>([]);
+  const [numeroPendiente, setNumeroPendiente] = useState('');
+  const formula = formulaDesdeTokens(tokensFormula);
 
   const camposActivos = esPersonalizado ? camposPersonalizados : camposDelTipo(tipo, unidad);
   const datos: Record<string, number> = {};
@@ -71,7 +99,8 @@ export function CalculadoraCubicacion({
     setTipo(t);
     setCampos({});
     setCamposPersonalizados([]);
-    setFormula('');
+    setTokensFormula([]);
+    setNumeroPendiente('');
   }
 
   function agregarCampoPersonalizado() {
@@ -87,7 +116,7 @@ export function CalculadoraCubicacion({
 
   function quitarUltimoCampoPersonalizado() {
     // Tokens are positional (a, b, c…), so only the last field can be removed without
-    // invalidating whatever the user already typed in the formula referencing earlier tokens.
+    // invalidating whatever the formula already references by an earlier token.
     setCamposPersonalizados((c) => c.slice(0, -1));
   }
 
@@ -95,12 +124,31 @@ export function CalculadoraCubicacion({
     setCamposPersonalizados((c) => c.map((f) => (f.key === key ? { ...f, label } : f)));
   }
 
+  function agregarTokenFormula(token: TokenFormula) {
+    setTokensFormula((t) => [...t, token]);
+  }
+
+  function insertarNumeroFormula() {
+    if (!numeroPendiente.trim()) return;
+    agregarTokenFormula({ type: 'numero', texto: numeroPendiente.trim() });
+    setNumeroPendiente('');
+  }
+
+  function quitarTokenFormula(idx: number) {
+    setTokensFormula((t) => t.filter((_, i) => i !== idx));
+  }
+
+  function vaciarFormula() {
+    setTokensFormula([]);
+  }
+
   function agregar() {
     if (subtotal <= 0) return;
     if (esPersonalizado) {
       onAgregar({ tipo, descripcion: descripcion.trim(), datos, subtotal, camposPersonalizados, formula: formula.trim() });
       setCamposPersonalizados([]);
-      setFormula('');
+      setTokensFormula([]);
+      setNumeroPendiente('');
     } else {
       onAgregar({ tipo, descripcion: descripcion.trim(), datos, subtotal });
     }
@@ -137,18 +185,11 @@ export function CalculadoraCubicacion({
 
       {esPersonalizado ? (
         <>
+          <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 4 }}>1. Agrega y nombra tus medidas</div>
           {camposPersonalizados.length > 0 && (
             <div className="stack" style={{ gap: 6, marginBottom: 8 }}>
               {camposPersonalizados.map((c, i) => (
                 <div key={c.key} className="flex-row gap-8" style={{ alignItems: 'center' }}>
-                  <span
-                    style={{
-                      width: 22, height: 22, borderRadius: 6, background: 'var(--accent-soft)', color: 'var(--accent-dark)',
-                      fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                    }}
-                  >
-                    {c.key}
-                  </span>
                   <input
                     placeholder="Nombre de la medida (ej: Base menor)"
                     value={c.label}
@@ -181,23 +222,88 @@ export function CalculadoraCubicacion({
           <button
             onClick={agregarCampoPersonalizado}
             disabled={camposPersonalizados.length >= TOKENS_PERSONALIZADO.length}
-            style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0, marginBottom: 8 }}
+            style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0, marginBottom: 14 }}
           >
             + Agregar medida
           </button>
-          <label style={{ display: 'block', marginBottom: 8 }}>
-            <span className="text-soft" style={{ fontSize: 10.5 }}>
-              Fórmula (usa las letras de arriba, ej: {camposPersonalizados.length >= 2 ? `${camposPersonalizados[0].key} * ${camposPersonalizados[1].key}` : 'a * b / 2'})
-            </span>
+
+          <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 4 }}>2. Arma la fórmula tocando medidas y signos</div>
+          <div
+            className="flex-row gap-8"
+            style={{
+              flexWrap: 'wrap', minHeight: 38, alignItems: 'center', background: 'var(--surface)',
+              border: '1px solid var(--border)', borderRadius: 8, padding: '6px 8px', marginBottom: 8,
+            }}
+          >
+            {tokensFormula.length === 0 && (
+              <span className="text-soft" style={{ fontSize: 11 }}>Vacía — toca las medidas y signos de abajo</span>
+            )}
+            {tokensFormula.map((t, i) => (
+              <button
+                key={i}
+                onClick={() => quitarTokenFormula(i)}
+                aria-label="Quitar de la fórmula"
+                className="chip"
+                style={{
+                  padding: '3px 10px', fontSize: 13, fontWeight: 700,
+                  background: t.type === 'campo' ? 'var(--accent-soft)' : 'var(--surface-alt)',
+                  color: t.type === 'campo' ? 'var(--accent-dark)' : 'var(--text)',
+                  borderColor: 'transparent',
+                }}
+              >
+                {t.type === 'campo' ? (camposPersonalizados.find((c) => c.key === t.key)?.label || 'medida') : t.type === 'op' ? t.display : t.texto}
+              </button>
+            ))}
+          </div>
+
+          {camposPersonalizados.length > 0 && (
+            <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 6 }}>
+              {camposPersonalizados.map((c) => (
+                <button
+                  key={c.key}
+                  onClick={() => agregarTokenFormula({ type: 'campo', key: c.key })}
+                  className="chip"
+                  style={{ background: 'var(--accent-soft)', borderColor: 'var(--accent-soft)', color: 'var(--accent-dark)', fontWeight: 700 }}
+                >
+                  {c.label || 'medida'}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 8, alignItems: 'center' }}>
+            {OPERADORES_FORMULA.map((op) => (
+              <button
+                key={op.symbol}
+                onClick={() => agregarTokenFormula({ type: 'op', symbol: op.symbol, display: op.display })}
+                className="chip"
+                style={{ width: 38, textAlign: 'center', fontWeight: 800, fontSize: 15 }}
+              >
+                {op.display}
+              </button>
+            ))}
             <input
-              placeholder="ej: a * b / 2"
-              value={formula}
-              onChange={(e) => setFormula(e.target.value)}
+              type="text"
+              inputMode="decimal"
+              placeholder="Número"
+              value={numeroPendiente}
+              onChange={(e) => setNumeroPendiente(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') insertarNumeroFormula(); }}
               className="field-input"
-              style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
+              style={{ width: 72 }}
             />
-          </label>
-          {errorFormula && (
+            <button onClick={insertarNumeroFormula} className="chip" disabled={!numeroPendiente.trim()}>
+              Insertar
+            </button>
+            {tokensFormula.length > 0 && (
+              <button
+                onClick={vaciarFormula}
+                style={{ background: 'none', border: 'none', color: 'var(--red)', fontSize: 11, fontWeight: 700, padding: '0 4px' }}
+              >
+                Vaciar
+              </button>
+            )}
+          </div>
+          {errorFormula && tokensFormula.length > 0 && (
             <div style={{ color: 'var(--red)', fontSize: 10.5, marginBottom: 8 }}>{errorFormula}</div>
           )}
         </>
