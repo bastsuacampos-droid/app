@@ -170,7 +170,18 @@ export function EditorFotoPage() {
       }
       return;
     }
-    canvasRef.current!.setPointerCapture(e.pointerId);
+    // touch-action: none on the canvas (below) should already stop the WebView from treating
+    // this as a scroll/pan gesture, but preventDefault() here is needed too on some Android
+    // WebView builds where CSS alone doesn't fully suppress the default touch handling.
+    e.preventDefault();
+    try {
+      // Keeps the stroke tracking even if the finger drifts off the canvas mid-draw. Some
+      // WebView versions throw for a touch pointerId here — if it does, drawing still works,
+      // it just won't follow the finger past the canvas edge, so failure here isn't fatal.
+      canvasRef.current!.setPointerCapture(e.pointerId);
+    } catch {
+      // ignored — see comment above
+    }
     if (tool === 'lapiz') {
       draftRef.current = { type: 'lapiz', points: [{ x, y }], color };
     } else if (tool === 'flecha') {
@@ -185,6 +196,7 @@ export function EditorFotoPage() {
 
   function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
     if (!draftRef.current) return;
+    e.preventDefault();
     const { x, y } = pointFromEvent(e);
     const d = draftRef.current;
     if (d.type === 'lapiz') {
@@ -196,8 +208,9 @@ export function EditorFotoPage() {
     redraw();
   }
 
-  function onPointerUp() {
+  function onPointerUp(e: React.PointerEvent<HTMLCanvasElement>) {
     if (draftRef.current) {
+      e.preventDefault();
       setShapes((s) => [...s, draftRef.current as Shape]);
       draftRef.current = null;
     }
