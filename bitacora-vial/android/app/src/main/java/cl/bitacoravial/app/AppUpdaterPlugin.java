@@ -123,18 +123,38 @@ public class AppUpdaterPlugin extends Plugin {
             @Override
             public void run() {
                 if (activeDownloadId == -1) return;
-                DownloadManager.Query query = new DownloadManager.Query().setFilterById(activeDownloadId);
+                long id = activeDownloadId;
+                DownloadManager.Query query = new DownloadManager.Query().setFilterById(id);
                 try (Cursor cursor = manager.query(query)) {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int bytesIdx = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                        int totalIdx = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                        long bytes = bytesIdx >= 0 ? cursor.getLong(bytesIdx) : 0;
-                        long total = totalIdx >= 0 ? cursor.getLong(totalIdx) : 0;
-                        if (total > 0) {
-                            JSObject data = new JSObject();
-                            data.put("percent", (double) bytes / (double) total * 100.0);
-                            notifyListeners("downloadProgress", data);
-                        }
+                    if (cursor == null || !cursor.moveToFirst()) {
+                        // The row is gone before we ever saw it finish — treat as a failure
+                        // instead of polling a download that will never report back.
+                        stopProgressPolling();
+                        handleDownloadComplete(id);
+                        return;
+                    }
+
+                    int bytesIdx = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+                    int totalIdx = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
+                    long bytes = bytesIdx >= 0 ? cursor.getLong(bytesIdx) : 0;
+                    long total = totalIdx >= 0 ? cursor.getLong(totalIdx) : 0;
+                    if (total > 0) {
+                        JSObject data = new JSObject();
+                        data.put("percent", (double) bytes / (double) total * 100.0);
+                        notifyListeners("downloadProgress", data);
+                    }
+
+                    // Don't rely solely on the ACTION_DOWNLOAD_COMPLETE broadcast to know the
+                    // download finished — some devices (aggressive battery/background restrictions
+                    // on several OEM Android builds) never deliver it, leaving the download
+                    // visibly at 100% forever with no installer ever launching. Polling the status
+                    // column directly here means completion is detected either way.
+                    int statusIdx = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                    int status = statusIdx >= 0 ? cursor.getInt(statusIdx) : -1;
+                    if (status == DownloadManager.STATUS_SUCCESSFUL || status == DownloadManager.STATUS_FAILED) {
+                        stopProgressPolling();
+                        handleDownloadComplete(id);
+                        return;
                     }
                 }
                 progressHandler.postDelayed(this, 400);
