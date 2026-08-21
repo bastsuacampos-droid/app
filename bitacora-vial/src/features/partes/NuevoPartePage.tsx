@@ -12,7 +12,7 @@ import { camposDesdeDatos } from '../../lib/cubicacionCalculo';
 import { obtenerClimaPorGPS } from '../../lib/clima';
 import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
 import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
-import { useTodayParte } from '../../lib/useTodayParte';
+import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation, IconRefresh } from '../../components/Icon';
 import type { Clima, EstadoTarea, Turno } from '../../types/models';
@@ -22,7 +22,7 @@ const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_prog
 export function NuevoPartePage() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const parte = useTodayParte();
+  const parte = useActiveParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
   const [nuevoFrenteAbierto, setNuevoFrenteAbierto] = useState(false);
   const [nombreFrente, setNombreFrente] = useState('');
@@ -84,7 +84,7 @@ export function NuevoPartePage() {
   // Cubicación) counts as "selected" too, so it never silently disappears from the report
   // just because nobody picked it from this page's selector.
   useEffect(() => {
-    if (!parte) return;
+    if (!parte || parte.estado !== 'en_edicion') return;
     const actuales = parte.tareasSeleccionadasIds ?? [];
     const faltantes = entriesHoy.map((e) => e.partidaId).filter((id) => !actuales.includes(id));
     if (faltantes.length > 0) {
@@ -195,10 +195,16 @@ export function NuevoPartePage() {
   }
 
   async function finalizar() {
+    if (!confirm('¿Finalizar este parte? Podrás reabrirlo después desde Historial si necesitas corregir algo.')) return;
     await patch({ estado: 'pendiente' });
     navigate('/');
   }
 
+  async function reabrir() {
+    await patch({ estado: 'en_edicion' });
+  }
+
+  const bloqueado = parte.estado !== 'en_edicion';
   const ausentes = asistencia ? asistencia.total - asistencia.presentes : 0;
   const frenteActualId = frenteFiltroTareaId && parte.frentesIds.includes(frenteFiltroTareaId)
     ? frenteFiltroTareaId
@@ -206,9 +212,18 @@ export function NuevoPartePage() {
 
   return (
     <>
-      <Header title="Nuevo Parte Diario" subtitle={`N° ${parte.numero} · ${parte.estado === 'en_edicion' ? 'borrador sin guardar' : 'finalizado'}`} back />
+      <Header
+        title="Nuevo Parte Diario"
+        subtitle={`N° ${parte.numero} · ${parte.estado === 'en_edicion' ? 'borrador sin guardar' : parte.estado === 'pendiente' ? 'Pendiente de respaldo' : 'Respaldado'}`}
+        back
+      />
+      {bloqueado && (
+        <div style={{ background: 'var(--yellow-soft)', borderBottom: '1px solid #f0e2b8', padding: '10px 20px', fontSize: 12, color: '#8a6408', textAlign: 'center' }}>
+          Este parte ya fue finalizado. Reábrelo para poder corregirlo.
+        </div>
+      )}
 
-      <div className="content">
+      <div className="content" style={bloqueado ? { pointerEvents: 'none', opacity: 0.55 } : undefined}>
         <SectionHeading n={1} title="Ubicación y Fecha" />
         <div className="card" style={{ marginBottom: 20 }}>
           <div className="flex-row" style={{ justifyContent: 'space-between', paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
@@ -407,7 +422,7 @@ export function NuevoPartePage() {
             <Stat label="Ausentes" value={ausentes} color="var(--red)" />
             <Stat label="Total" value={asistencia?.total ?? 0} color="var(--text)" />
           </div>
-          <button className="btn btn-primary btn-block" onClick={() => navigate('/asistencia')}>
+          <button className="btn btn-primary btn-block" onClick={() => navigate(`/asistencia?parte=${parte.id}`)}>
             Registrar Asistencia
           </button>
         </div>
@@ -587,7 +602,7 @@ export function NuevoPartePage() {
 
         <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
           <SectionHeading n={4} title="Registro Fotográfico" style={{ marginBottom: 0 }} />
-          <button onClick={() => navigate('/fotos')} className="flex-row gap-8" style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700 }}>
+          <button onClick={() => navigate(`/fotos?parte=${parte.id}`)} className="flex-row gap-8" style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700 }}>
             Ver todas <IconChevronRight size={15} color="var(--accent)" />
           </button>
         </div>
@@ -615,8 +630,14 @@ export function NuevoPartePage() {
       </div>
 
       <div style={{ flexShrink: 0, background: 'var(--surface)', borderTop: '1px solid var(--border)', padding: '12px 20px 16px', display: 'flex', gap: 10 }}>
-        <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => navigate('/')}>Guardar borrador</button>
-        <button className="btn btn-primary" style={{ flex: 1.3 }} onClick={finalizar}>Finalizar parte</button>
+        {bloqueado ? (
+          <button className="btn btn-primary btn-block" onClick={reabrir}>Reabrir para editar</button>
+        ) : (
+          <>
+            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => navigate('/')}>Guardar borrador</button>
+            <button className="btn btn-primary" style={{ flex: 1.3 }} onClick={finalizar}>Finalizar parte</button>
+          </>
+        )}
       </div>
 
       {nuevaTareaAbierta && frenteActualId && (

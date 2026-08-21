@@ -213,7 +213,7 @@ export function EditorFotoPage() {
     canvas.toBlob(async (blob) => {
       if (!blob) return;
       await db.fotos.update(foto.id, { blob, anotada: shapes.length > 0 });
-      navigate('/fotos');
+      navigate(`/fotos?parte=${foto.parteId}`);
     }, 'image/jpeg', 0.9);
   }
 
@@ -221,7 +221,7 @@ export function EditorFotoPage() {
     if (!foto) return;
     if (!confirm('¿Eliminar esta foto? Esta acción no se puede deshacer.')) return;
     await db.fotos.delete(foto.id);
-    navigate('/fotos');
+    navigate(`/fotos?parte=${foto.parteId}`);
   }
 
   if (!foto) return null;
@@ -234,7 +234,7 @@ export function EditorFotoPage() {
         className="flex-row"
         style={{ justifyContent: 'space-between', padding: '18px 16px 12px', paddingTop: 'calc(18px + var(--safe-top))', color: '#fff' }}
       >
-        <button onClick={() => navigate('/fotos')} style={{ background: 'none', border: 'none', color: '#fff' }} aria-label="Cerrar">
+        <button onClick={() => navigate(`/fotos?parte=${foto.parteId}`)} style={{ background: 'none', border: 'none', color: '#fff' }} aria-label="Cerrar">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
         <div style={{ textAlign: 'center', minWidth: 0, flex: 1 }}>

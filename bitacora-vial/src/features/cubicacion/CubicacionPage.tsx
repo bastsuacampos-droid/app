@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../lib/db';
 import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, crearPartida, registrarMedicion, medicionesDePartida } from '../../lib/queries';
-import { useTodayParte } from '../../lib/useTodayParte';
+import { useActiveParte } from '../../lib/useActiveParte';
 import { formatShortDate } from '../../lib/date';
 import { TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, formatDatosMedicion, camposDesdeDatos } from '../../lib/cubicacionCalculo';
 import type { MedicionInfo, NuevaPartidaDatos } from '../../lib/cubicacionCalculo';
@@ -42,7 +42,7 @@ function estadoDeGrupo(hijos: Partida[], totales: Record<string, number>, entrie
 
 export function CubicacionPage() {
   const navigate = useNavigate();
-  const parte = useTodayParte();
+  const parte = useActiveParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
   const [frenteId, setFrenteId] = useState<string | null>(null);
   const activeFrenteId = frenteId ?? frentes[0]?.id;
@@ -272,7 +272,7 @@ export function CubicacionPage() {
       </div>
 
       <div style={{ flexShrink: 0, background: 'var(--surface)', borderTop: '1px solid var(--border)', padding: '12px 20px 16px' }}>
-        <button className="btn btn-primary btn-block" onClick={() => navigate('/nuevo-parte')}>Volver al parte</button>
+        <button className="btn btn-primary btn-block" onClick={() => navigate(`/nuevo-parte?parte=${parte.id}`)}>Volver al parte</button>
       </div>
     </>
   );

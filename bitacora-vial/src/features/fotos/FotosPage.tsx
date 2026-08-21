@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
-import { useTodayParte } from '../../lib/useTodayParte';
+import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { IconPencil, IconFotos } from '../../components/Icon';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
@@ -12,7 +12,7 @@ import type { EtapaFoto } from '../../types/models';
 export function FotosPage() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const parte = useTodayParte();
+  const parte = useActiveParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
   const partidasHoy = useLiveQuery(
     () => (parte && parte.frentesIds.length > 0 ? db.partidas.where('frenteId').anyOf(parte.frentesIds).toArray() : []),

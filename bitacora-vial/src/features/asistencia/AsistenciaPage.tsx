@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
 import { attendanceSummaryForParte, moveTrabajadorAFrente, asignarTrabajadorAFrente } from '../../lib/queries';
-import { useTodayParte } from '../../lib/useTodayParte';
+import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
 import { IconSearch, IconPlus, IconClockPlus, IconChevronRight } from '../../components/Icon';
@@ -11,7 +11,7 @@ import type { Trabajador } from '../../types/models';
 
 export function AsistenciaPage() {
   const navigate = useNavigate();
-  const parte = useTodayParte();
+  const parte = useActiveParte();
   const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
   const [frenteId, setFrenteId] = useState<string | null>(null);
   const activeFrenteId = frenteId ?? frentes[0]?.id;
@@ -261,7 +261,7 @@ export function AsistenciaPage() {
           <span>Total personal presente hoy</span>
           <span style={{ fontWeight: 700, color: 'var(--text)' }}>{totalHoy ? `${totalHoy.presentes} / ${totalHoy.total}` : '—'}</span>
         </div>
-        <button className="btn btn-primary btn-block" onClick={() => navigate('/nuevo-parte')}>Volver al parte</button>
+        <button className="btn btn-primary btn-block" onClick={() => navigate(`/nuevo-parte?parte=${parte.id}`)}>Volver al parte</button>
       </div>
     </>
   );

@@ -119,7 +119,7 @@ export function DashboardPage() {
           {(recientes ?? []).map((parte: Parte, i: number) => (
             <button
               key={parte.id}
-              onClick={() => navigate(parte.estado === 'en_edicion' ? '/nuevo-parte' : '/historial')}
+              onClick={() => navigate(`/nuevo-parte?parte=${parte.id}`)}
               className="card list-row"
               style={{
                 textAlign: 'left', width: '100%',

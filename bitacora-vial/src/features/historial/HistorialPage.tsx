@@ -87,7 +87,7 @@ export function HistorialPage() {
           {filtrados.map((p, i) => (
             <button
               key={p.id}
-              onClick={() => navigate(p.estado === 'en_edicion' ? '/nuevo-parte' : '/')}
+              onClick={() => navigate(`/nuevo-parte?parte=${p.id}`)}
               className="card list-row"
               style={{ width: '100%', textAlign: 'left' }}
             >
