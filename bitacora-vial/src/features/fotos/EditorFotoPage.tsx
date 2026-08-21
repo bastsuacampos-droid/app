@@ -211,8 +211,13 @@ export function EditorFotoPage() {
   function onPointerUp(e: React.PointerEvent<HTMLCanvasElement>) {
     if (draftRef.current) {
       e.preventDefault();
-      setShapes((s) => [...s, draftRef.current as Shape]);
+      // Capture the shape into a local before clearing the ref: setShapes's updater runs later
+      // (during React's batched re-render), not synchronously here, so if it read
+      // draftRef.current directly it would see the null we're about to assign instead of the
+      // finished stroke — which is exactly why the stroke was vanishing on release.
+      const finished = draftRef.current;
       draftRef.current = null;
+      setShapes((s) => [...s, finished]);
     }
   }
 
