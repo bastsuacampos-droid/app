@@ -173,6 +173,13 @@ export const IconDownload = (p: IconProps) => (
   </svg>
 );
 
+export const IconOpenExternal = (p: IconProps) => (
+  <svg {...base(p.size ?? 17, p)} strokeWidth={1.9}>
+    <path d="M14 4h6v6" /><path d="M20 4 11 13" />
+    <path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6" />
+  </svg>
+);
+
 export const IconDoc = (p: IconProps) => (
   <svg {...base(p.size ?? 22, p)} strokeWidth={1.7}>
     <rect x="6" y="3" width="12" height="18" rx="1.5" /><path d="M9 12h6M9 15.5h6M9 8.5h3" />

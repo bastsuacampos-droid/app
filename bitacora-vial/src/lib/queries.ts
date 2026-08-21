@@ -412,47 +412,24 @@ export async function medicionesDePartida(partidaId: string): Promise<MedicionCu
   return rows.sort((a, b) => b.fecha.localeCompare(a.fecha));
 }
 
-/** Makes sure every active trabajador of a frente has an attendance row for this parte (defaults to presente). */
-export async function ensureAsistenciaForFrente(parteId: string, frenteId: string, fecha: string) {
-  const trabajadores = await db.trabajadores.where('frenteId').equals(frenteId).toArray();
-  const existentes = await db.asistencias.where('parteId').equals(parteId).toArray();
-  const yaRegistrados = new Set(existentes.map((r) => r.trabajadorId));
-
-  const faltantes = trabajadores.filter((t) => t.activo && !yaRegistrados.has(t.id));
-  if (faltantes.length === 0) return;
-
-  await db.asistencias.bulkAdd(
-    faltantes.map((t) => ({
-      id: newId(),
-      parteId,
-      trabajadorId: t.id,
-      frenteId,
-      fecha,
-      presente: true,
-      horasNormales: 8,
-      horasExtra: 0,
-    })),
-  );
-}
-
-/** Sends a worker to another frente for today: their existing attendance row just moves —
- * they stop appearing under their home frente's list and start appearing under the
- * destination's, badged there as "prestado". */
+/** Moves a worker's attendance row for today to another frente — used to fix a wrong
+ * assignment without losing their hours already logged for the day. */
 export async function moveTrabajadorAFrente(registroId: string, nuevoFrenteId: string) {
   await db.asistencias.update(registroId, { frenteId: nuevoFrenteId });
 }
 
-/** Brings a worker from another crew into `frenteDestinoId` for today. Reuses their
- * existing row for this parte if they already have one (so they only ever have one
- * attendance row per day, wherever they end up working), otherwise creates it. */
-export async function agregarTrabajadorPrestado(parteId: string, trabajadorId: string, frenteDestinoId: string, fecha: string) {
+/** Assigns a trabajador from the global roster to `frenteId` for today. Reuses their existing
+ * row for this parte if they already have one elsewhere today (so they only ever have one
+ * attendance row per day, wherever they end up working), otherwise creates it. This is the
+ * only place a worker's location for the day gets decided — there's no fixed "home" frente. */
+export async function asignarTrabajadorAFrente(parteId: string, trabajadorId: string, frenteId: string, fecha: string) {
   const existente = await db.asistencias
     .where('parteId').equals(parteId)
     .filter((r) => r.trabajadorId === trabajadorId)
     .first();
 
   if (existente) {
-    await db.asistencias.update(existente.id, { frenteId: frenteDestinoId });
+    await db.asistencias.update(existente.id, { frenteId });
     return;
   }
 
@@ -460,7 +437,7 @@ export async function agregarTrabajadorPrestado(parteId: string, trabajadorId: s
     id: newId(),
     parteId,
     trabajadorId,
-    frenteId: frenteDestinoId,
+    frenteId,
     fecha,
     presente: true,
     horasNormales: 8,

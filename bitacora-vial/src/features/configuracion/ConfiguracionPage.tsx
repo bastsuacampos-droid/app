@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings, updateSettings } from '../../lib/useSettings';
 import { Header } from '../../components/Header';
@@ -7,14 +8,89 @@ import {
   IconChevronRight, IconFotos, IconFolder, IconLocation, IconBell, IconCheck, IconRefresh,
 } from '../../components/Icon';
 import type { Tema } from '../../types/models';
+import { APP_VERSION } from '../../version';
+import {
+  checkForUpdate, downloadAndInstallUpdate, isOnWifi, requestInstallPermission, type UpdateInfo,
+} from '../../lib/appUpdater';
+import AppUpdaterNative from '../../lib/nativeAppUpdater';
+import { Capacitor } from '@capacitor/core';
 
-const APP_VERSION: string = '1.0';
+type UpdateState =
+  | { status: 'checking' | 'up-to-date' | 'unsupported' }
+  | { status: 'available'; info: UpdateInfo }
+  | { status: 'needs-permission'; info: UpdateInfo }
+  | { status: 'downloading'; info: UpdateInfo; percent: number }
+  | { status: 'error'; message: string };
 
 export function ConfiguracionPage() {
   const navigate = useNavigate();
   const settings = useSettings();
+  const [update, setUpdate] = useState<UpdateState>({ status: 'checking' });
 
   const notifPermission = typeof Notification !== 'undefined' ? Notification.permission : 'default';
+
+  async function buscarActualizacion() {
+    if (!Capacitor.isNativePlatform()) {
+      setUpdate({ status: 'unsupported' });
+      return;
+    }
+    setUpdate({ status: 'checking' });
+    try {
+      const info = await checkForUpdate();
+      if (!info) {
+        setUpdate({ status: 'up-to-date' });
+        return;
+      }
+      const canInstall = await AppUpdaterNative.canInstallPackages();
+      setUpdate(canInstall.value ? { status: 'available', info } : { status: 'needs-permission', info });
+    } catch {
+      setUpdate({ status: 'error', message: 'No se pudo buscar actualizaciones. Revisa tu conexión.' });
+    }
+  }
+
+  useEffect(() => {
+    buscarActualizacion();
+  }, []);
+
+  useEffect(() => {
+    const progressHandle = AppUpdaterNative.addListener('downloadProgress', ({ percent }) => {
+      setUpdate((prev) => (prev.status === 'downloading' || prev.status === 'available'
+        ? { status: 'downloading', info: prev.info, percent }
+        : prev));
+    });
+    const errorHandle = AppUpdaterNative.addListener('downloadError', ({ message }) => {
+      setUpdate({ status: 'error', message });
+    });
+    return () => {
+      progressHandle.then((h) => h.remove());
+      errorHandle.then((h) => h.remove());
+    };
+  }, []);
+
+  async function instalarAhora(info: UpdateInfo) {
+    setUpdate({ status: 'downloading', info, percent: 0 });
+    const result = await downloadAndInstallUpdate(info);
+    if (result === 'needs-permission') setUpdate({ status: 'needs-permission', info });
+    if (result === 'unsupported') setUpdate({ status: 'unsupported' });
+  }
+
+  async function pedirPermiso(info: UpdateInfo) {
+    await requestInstallPermission();
+    // El usuario vuelve de Configuración del sistema; reintenta al volver a esta pantalla.
+    setUpdate({ status: 'available', info });
+  }
+
+  // Actualización automática: si el toggle está activo y hay Wi-Fi, descarga sola apenas hay
+  // una versión disponible. Android igual va a pedirle al usuario que confirme la instalación.
+  useEffect(() => {
+    if (update.status !== 'available' || !settings.autoUpdate) return;
+    let cancelado = false;
+    isOnWifi().then((wifi) => {
+      if (!cancelado && wifi) instalarAhora(update.info);
+    });
+    return () => { cancelado = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [update.status, settings.autoUpdate]);
 
   async function activarUbicacion() {
     if (!navigator.geolocation) return;
@@ -90,15 +166,38 @@ export function ConfiguracionPage() {
 
         <div className="section-label">Actualizaciones</div>
         <div className="card" style={{ marginBottom: 10 }}>
-          <div className="list-row" style={{ paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
+          <div
+            className="list-row"
+            style={{ paddingBottom: 12, marginBottom: update.status === 'available' || update.status === 'needs-permission' ? 12 : 0, borderBottom: update.status === 'available' || update.status === 'needs-permission' ? '1px solid var(--border)' : undefined }}
+          >
             <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--blue-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <IconRefresh color="var(--blue)" />
             </div>
-            <div style={{ flexGrow: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 700 }}>Estás al día</div>
-              <div className="text-soft" style={{ fontSize: 11 }}>{`v${APP_VERSION}`}</div>
+            <div style={{ flexGrow: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 700 }}>{updateTitulo(update)}</div>
+              <div className="text-soft" style={{ fontSize: 11 }}>{updateSubtitulo(update)}</div>
+              {update.status === 'downloading' && (
+                <div style={{ height: 4, borderRadius: 2, background: 'var(--border)', marginTop: 6, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${Math.min(100, Math.max(0, update.percent))}%`, background: 'var(--blue)', transition: 'width 0.3s' }} />
+                </div>
+              )}
             </div>
+            {update.status !== 'checking' && update.status !== 'downloading' && (
+              <button onClick={buscarActualizacion} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700, flexShrink: 0 }}>
+                Buscar
+              </button>
+            )}
           </div>
+          {update.status === 'available' && (
+            <button onClick={() => instalarAhora(update.info)} className="card list-row" style={{ width: '100%', justifyContent: 'center', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13 }}>
+              Actualizar ahora
+            </button>
+          )}
+          {update.status === 'needs-permission' && (
+            <button onClick={() => pedirPermiso(update.info)} className="card list-row" style={{ width: '100%', justifyContent: 'center', background: 'var(--accent)', color: '#fff', fontWeight: 700, fontSize: 13 }}>
+              Permitir instalación
+            </button>
+          )}
         </div>
         <div className="card list-row" style={{ marginBottom: 20 }}>
           <div>
@@ -118,6 +217,32 @@ export function ConfiguracionPage() {
       </div>
     </>
   );
+}
+
+function updateTitulo(update: UpdateState): string {
+  switch (update.status) {
+    case 'checking': return 'Buscando actualizaciones…';
+    case 'up-to-date': return 'Estás al día';
+    case 'available': return `Versión ${update.info.version} disponible`;
+    case 'needs-permission': return `Versión ${update.info.version} disponible`;
+    case 'downloading': return 'Descargando…';
+    case 'unsupported': return 'No disponible';
+    case 'error': return 'No se pudo buscar';
+    default: return '';
+  }
+}
+
+function updateSubtitulo(update: UpdateState): string {
+  switch (update.status) {
+    case 'checking': return `v${APP_VERSION}`;
+    case 'up-to-date': return `v${APP_VERSION}`;
+    case 'available': return 'Toca "Actualizar ahora" para descargar e instalar';
+    case 'needs-permission': return 'Primero autoriza instalar desde esta app';
+    case 'downloading': return `${Math.round(update.percent)}%`;
+    case 'unsupported': return 'Solo disponible en la app instalada (APK)';
+    case 'error': return update.message;
+    default: return '';
+  }
 }
 
 function Row({ children, border }: { children: React.ReactNode; border?: boolean }) {

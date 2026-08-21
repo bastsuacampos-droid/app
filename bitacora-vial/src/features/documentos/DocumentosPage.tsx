@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, newId, nowISO } from '../../lib/db';
-import { downloadBlob } from '../../lib/export';
+import { formatFileSize } from '../../lib/archivos';
 import { Header } from '../../components/Header';
-import { IconSearch, IconUpload, IconDownload } from '../../components/Icon';
-import { CampoDesplegable } from '../../components/CampoDesplegable';
+import { IconSearch, IconUpload } from '../../components/Icon';
+import { DocumentoPreviewModal } from './DocumentoPreviewModal';
+import { ClasificarDocumentoModal } from './ClasificarDocumentoModal';
 import type { Documento, DocumentoCategoria } from '../../types/models';
 
 const CATEGORIAS: DocumentoCategoria[] = ['Planos', 'Permisos', 'Contratos', 'Fichas técnicas', 'Otros'];
@@ -20,19 +21,16 @@ function badgeFor(doc: Documento) {
   return TYPE_BADGE.find((t) => t.test(doc.mime, doc.nombre)) ?? { label: 'DOC', bg: 'var(--text-soft)' };
 }
 
-function formatSize(bytes: number) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 export function DocumentosPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState('');
   const [categoria, setCategoria] = useState<'Todos' | DocumentoCategoria>('Todos');
-  const [pendingCategoria, setPendingCategoria] = useState<DocumentoCategoria>('Otros');
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const [archivoPendiente, setArchivoPendiente] = useState<File | null>(null);
 
   const documentos = useLiveQuery(() => db.documentos.orderBy('createdAt').reverse().toArray(), []) ?? [];
+  // Derived from the live list (not a snapshot) so reclassifying inside the modal stays in sync.
+  const preview = documentos.find((d) => d.id === previewId) ?? null;
 
   const filtrados = documentos.filter((d) => {
     if (categoria !== 'Todos' && d.categoria !== categoria) return false;
@@ -40,19 +38,25 @@ export function DocumentosPage() {
     return true;
   });
 
-  async function onFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
+  function onFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = '';
+    if (file) setArchivoPendiente(file);
+  }
+
+  async function guardarConCategoria(categoriaElegida: DocumentoCategoria) {
+    const file = archivoPendiente;
     if (!file) return;
     await db.documentos.add({
       id: newId(),
       nombre: file.name,
-      categoria: pendingCategoria,
+      categoria: categoriaElegida,
       mime: file.type || 'application/octet-stream',
       tamano: file.size,
       blob: file,
       createdAt: nowISO(),
     });
+    setArchivoPendiente(null);
   }
 
   return (
@@ -81,16 +85,6 @@ export function DocumentosPage() {
       </Header>
 
       <div className="content" style={{ paddingBottom: 90 }}>
-        <div className="flex-row gap-8" style={{ marginBottom: 14 }}>
-          <span className="text-soft" style={{ fontSize: 11.5 }}>Nuevo archivo se guarda como</span>
-          <CampoDesplegable
-            valor={pendingCategoria}
-            opciones={CATEGORIAS.map((c) => ({ value: c, label: c }))}
-            onSeleccionar={(v) => setPendingCategoria(v as DocumentoCategoria)}
-            estiloBoton={{ fontSize: 11.5, padding: '4px 8px' }}
-          />
-        </div>
-
         {filtrados.length === 0 ? (
           <div className="text-soft" style={{ fontSize: 13, textAlign: 'center', marginTop: 30 }}>
             No hay documentos {categoria !== 'Todos' ? `en “${categoria}”` : 'todavía'}.
@@ -100,18 +94,15 @@ export function DocumentosPage() {
             {filtrados.map((doc) => {
               const badge = badgeFor(doc);
               return (
-                <div key={doc.id} className="card list-row">
+                <button key={doc.id} onClick={() => setPreviewId(doc.id)} className="card list-row" style={{ width: '100%', textAlign: 'left' }}>
                   <div style={{ width: 40, height: 40, borderRadius: 10, background: badge.bg, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, flexShrink: 0 }}>
                     {badge.label}
                   </div>
                   <div style={{ flexGrow: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 12.5, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.nombre}</div>
-                    <div className="text-soft" style={{ fontSize: 10.5 }}>{doc.categoria} · {formatSize(doc.tamano)} · {new Date(doc.createdAt).toLocaleDateString('es-CL')}</div>
+                    <div className="text-soft" style={{ fontSize: 10.5 }}>{doc.categoria} · {formatFileSize(doc.tamano)} · {new Date(doc.createdAt).toLocaleDateString('es-CL')}</div>
                   </div>
-                  <button onClick={() => downloadBlob(doc.nombre, doc.blob)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', flexShrink: 0 }} aria-label={`Descargar ${doc.nombre}`}>
-                    <IconDownload />
-                  </button>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -122,6 +113,22 @@ export function DocumentosPage() {
       <button className="fab" onClick={() => fileInputRef.current?.click()} aria-label="Subir documento">
         <IconUpload color="#fff" />
       </button>
+
+      {preview && (
+        <DocumentoPreviewModal
+          documento={preview}
+          onCerrar={() => setPreviewId(null)}
+          onEliminado={() => setPreviewId(null)}
+        />
+      )}
+
+      {archivoPendiente && (
+        <ClasificarDocumentoModal
+          archivo={archivoPendiente}
+          onElegir={guardarConCategoria}
+          onCancelar={() => setArchivoPendiente(null)}
+        />
+      )}
     </>
   );
 }

@@ -14,11 +14,12 @@ export interface Frente {
   activo: boolean;
 }
 
+/** The crew is a single global roster — nobody has a fixed "home" frente. Where someone works
+ * is only decided day to day, when attendance is taken (see RegistroAsistencia.frenteId). */
 export interface Trabajador {
   id: string;
   nombre: string;
   cargo: string;
-  frenteId: string;
   activo: boolean;
 }
 

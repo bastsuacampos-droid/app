@@ -97,20 +97,6 @@ export function DashboardPage() {
           </div>
         </div>
 
-        <div className="card-dark" style={{ marginBottom: 16 }}>
-          <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
-            <div style={{ fontSize: 11, color: '#c9c3b8', textTransform: 'uppercase', letterSpacing: '.06em' }}>Proyecto activo</div>
-            <div style={{ fontSize: 11, color: 'var(--amber)' }}>Km 10+000 – 22+500</div>
-          </div>
-          <div className="disp" style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>Ruta 5 Sur — Tramo Chillán–Bulnes</div>
-          <div className="progress-track" style={{ background: 'var(--dark-card-bg-2)', marginBottom: 6 }}>
-            <div className="progress-fill progress-fill--gradient" style={{ width: `${avance ?? 0}%` }} />
-          </div>
-          <div className="flex-row" style={{ justifyContent: 'space-between', fontSize: 11, color: '#c9c3b8' }}>
-            <span>{avance ?? 0}% avance físico</span><span>Contrato: 145 días</span>
-          </div>
-        </div>
-
         <button
           className="btn btn-primary btn-block"
           style={{ marginBottom: 22 }}

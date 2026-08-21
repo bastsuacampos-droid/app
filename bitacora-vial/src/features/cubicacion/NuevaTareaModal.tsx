@@ -28,7 +28,10 @@ export function NuevaTareaModal({
     <div style={{ position: 'fixed', inset: 0, background: 'var(--bg)', zIndex: 100, display: 'flex', flexDirection: 'column' }}>
       <div
         className="flex-row"
-        style={{ justifyContent: 'space-between', alignItems: 'center', padding: '18px 20px 14px', flexShrink: 0, borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}
+        style={{
+          justifyContent: 'space-between', alignItems: 'center', padding: '18px 20px 14px',
+          paddingTop: 'calc(18px + var(--safe-top))', flexShrink: 0, borderBottom: '1px solid var(--border)', background: 'var(--surface)',
+        }}
       >
         <div>
           <div className="disp" style={{ fontSize: 18, fontWeight: 800 }}>Nueva tarea</div>

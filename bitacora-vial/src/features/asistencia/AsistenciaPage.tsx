@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
-import { ensureAsistenciaForFrente, attendanceSummaryForParte, moveTrabajadorAFrente, agregarTrabajadorPrestado } from '../../lib/queries';
+import { attendanceSummaryForParte, moveTrabajadorAFrente, asignarTrabajadorAFrente } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
@@ -17,19 +17,14 @@ export function AsistenciaPage() {
   const activeFrenteId = frenteId ?? frentes[0]?.id;
   const [query, setQuery] = useState('');
   const [showAdd, setShowAdd] = useState(false);
+  const [addQuery, setAddQuery] = useState('');
   const [nuevo, setNuevo] = useState({ nombre: '', cargo: '' });
-  const [showPrestamo, setShowPrestamo] = useState(false);
-  const [prestamoRow, setPrestamoRow] = useState<string | null>(null);
+  const [moverRow, setMoverRow] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (parte && activeFrenteId) {
-      ensureAsistenciaForFrente(parte.id, activeFrenteId, parte.fecha);
-    }
-  }, [parte?.id, activeFrenteId]);
-
-  // All workers, regardless of home frente — needed to resolve loaned-in workers and to
-  // list candidates for "traer prestado de otro frente".
-  const todosTrabajadores = useLiveQuery(() => db.trabajadores.toArray(), []) ?? [];
+  // The crew is one global roster — nobody is "assigned" to a frente until attendance for
+  // today assigns them one (see RegistroAsistencia.frenteId), so it's needed here regardless
+  // of which frente tab is active.
+  const todosTrabajadores = useLiveQuery(() => db.trabajadores.filter((t) => t.activo).toArray(), []) ?? [];
   const trabajadorPorId = new Map<string, Trabajador>(todosTrabajadores.map((t) => [t.id, t]));
 
   const registros = useLiveQuery(
@@ -47,31 +42,34 @@ export function AsistenciaPage() {
     .filter((f): f is { registro: typeof registrosFrente[number]; trabajador: Trabajador } => !!f.trabajador)
     .filter((f) => f.trabajador.nombre.toLowerCase().includes(query.toLowerCase()));
 
-  const idsYaEnEsteFrente = new Set(registrosFrente.map((r) => r.trabajadorId));
-  const candidatosPrestamo = todosTrabajadores.filter(
-    (t) => t.activo && t.frenteId !== activeFrenteId && !idsYaEnEsteFrente.has(t.id),
-  );
+  // Anyone in the crew not yet placed on a frente today — the pool "Agregar trabajador" picks from.
+  const idsAsignadosHoy = new Set(registros.map((r) => r.trabajadorId));
+  const disponibles = todosTrabajadores
+    .filter((t) => !idsAsignadosHoy.has(t.id))
+    .filter((t) => t.nombre.toLowerCase().includes(addQuery.toLowerCase()));
 
   async function updateRegistro(id: string, patch: Partial<(typeof registros)[number]>) {
     await db.asistencias.update(id, patch);
   }
 
-  async function agregarTrabajador() {
-    if (!nuevo.nombre.trim() || !activeFrenteId) return;
-    await db.trabajadores.add({ id: newId(), nombre: nuevo.nombre.trim(), cargo: nuevo.cargo.trim() || 'Obrero', frenteId: activeFrenteId, activo: true });
+  async function asignar(trabajadorId: string) {
+    if (!parte || !activeFrenteId) return;
+    await asignarTrabajadorAFrente(parte.id, trabajadorId, activeFrenteId, parte.fecha);
+    setAddQuery('');
+  }
+
+  async function crearYAsignar() {
+    if (!nuevo.nombre.trim() || !parte || !activeFrenteId) return;
+    const id = newId();
+    await db.trabajadores.add({ id, nombre: nuevo.nombre.trim(), cargo: nuevo.cargo.trim() || 'Obrero', activo: true });
+    await asignarTrabajadorAFrente(parte.id, id, activeFrenteId, parte.fecha);
     setNuevo({ nombre: '', cargo: '' });
     setShowAdd(false);
   }
 
-  async function traerPrestado(trabajadorId: string) {
-    if (!parte || !activeFrenteId) return;
-    await agregarTrabajadorPrestado(parte.id, trabajadorId, activeFrenteId, parte.fecha);
-    setShowPrestamo(false);
-  }
-
-  async function enviarAPrestamo(registroId: string, destinoFrenteId: string) {
+  async function mover(registroId: string, destinoFrenteId: string) {
     await moveTrabajadorAFrente(registroId, destinoFrenteId);
-    setPrestamoRow(null);
+    setMoverRow(null);
   }
 
   if (!parte) return null;
@@ -109,8 +107,6 @@ export function AsistenciaPage() {
         <div className="stack" style={{ gap: 8 }}>
           {filas.map(({ registro: r, trabajador: t }) => {
             const initials = t.nombre.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
-            const esPrestado = t.frenteId !== activeFrenteId;
-            const frenteHogar = frentes.find((f) => f.id === t.frenteId);
             const otrosFrentes = frentes.filter((f) => f.id !== activeFrenteId);
             return (
               <div key={t.id} className="card">
@@ -124,10 +120,7 @@ export function AsistenciaPage() {
                     {initials}
                   </div>
                   <div style={{ flexGrow: 1, minWidth: 0 }}>
-                    <div className="flex-row gap-8">
-                      <span style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</span>
-                      {esPrestado && <span className="badge badge-blue">Prestado{frenteHogar ? ` de ${frenteHogar.nombre}` : ''}</span>}
-                    </div>
+                    <span style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</span>
                     <div className="text-soft" style={{ fontSize: 11 }}>{t.cargo}</div>
                   </div>
                   <Toggle on={r.presente} onChange={(v) => updateRegistro(r.id, { presente: v })} label={`Presente: ${t.nombre}`} />
@@ -165,25 +158,25 @@ export function AsistenciaPage() {
 
                 {otrosFrentes.length > 0 && (
                   <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border)' }}>
-                    {prestamoRow === t.id ? (
+                    {moverRow === t.id ? (
                       <div className="flex-row gap-8">
                         <select
                           className="field-input"
                           style={{ flexGrow: 1 }}
                           defaultValue=""
-                          onChange={(e) => e.target.value && enviarAPrestamo(r.id, e.target.value)}
+                          onChange={(e) => e.target.value && mover(r.id, e.target.value)}
                         >
-                          <option value="" disabled>¿A qué frente lo prestas?</option>
+                          <option value="" disabled>¿A qué frente lo mueves?</option>
                           {otrosFrentes.map((f) => <option key={f.id} value={f.id}>{f.nombre}</option>)}
                         </select>
-                        <button className="btn btn-outline" style={{ padding: '8px 12px', fontSize: 11.5 }} onClick={() => setPrestamoRow(null)}>Cancelar</button>
+                        <button className="btn btn-outline" style={{ padding: '8px 12px', fontSize: 11.5 }} onClick={() => setMoverRow(null)}>Cancelar</button>
                       </div>
                     ) : (
                       <button
-                        onClick={() => setPrestamoRow(t.id)}
+                        onClick={() => setMoverRow(t.id)}
                         style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11, fontWeight: 600 }}
                       >
-                        Prestar a otro frente hoy
+                        Mover a otro frente hoy
                       </button>
                     )}
                   </div>
@@ -192,44 +185,48 @@ export function AsistenciaPage() {
             );
           })}
 
-          {!showAdd && !showPrestamo && (
-            <div className="flex-row gap-8">
-              <button className="chip-dashed card" style={{ justifyContent: 'center', flex: 1, background: 'none' }} onClick={() => setShowAdd(true)}>
-                <IconPlus size={14} /> Agregar trabajador
-              </button>
-              {candidatosPrestamo.length > 0 && (
-                <button className="chip-dashed card" style={{ justifyContent: 'center', flex: 1, background: 'none' }} onClick={() => setShowPrestamo(true)}>
-                  <IconPlus size={14} /> Traer prestado
-                </button>
-              )}
-            </div>
-          )}
-
-          {showPrestamo && (
-            <div className="card stack">
-              <div className="section-label" style={{ marginBottom: 0 }}>Traer trabajador prestado de otro frente</div>
-              {candidatosPrestamo.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => traerPrestado(t.id)}
-                  className="list-row"
-                  style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '6px 0' }}
-                >
-                  <span style={{ flexGrow: 1, fontSize: 13 }}>{t.nombre} <span className="text-soft">· {t.cargo}</span></span>
-                  <span className="text-soft" style={{ fontSize: 11 }}>{frentes.find((f) => f.id === t.frenteId)?.nombre}</span>
-                </button>
-              ))}
-              <button className="btn btn-outline" onClick={() => setShowPrestamo(false)}>Cancelar</button>
-            </div>
+          {!showAdd && (
+            <button className="chip-dashed card" style={{ justifyContent: 'center' }} onClick={() => setShowAdd(true)}>
+              <IconPlus size={14} /> Agregar trabajador
+            </button>
           )}
 
           {showAdd && (
             <div className="card stack">
-              <input placeholder="Nombre" value={nuevo.nombre} onChange={(e) => setNuevo({ ...nuevo, nombre: e.target.value })} className="field-input" style={{ fontWeight: 500 }} />
-              <input placeholder="Cargo" value={nuevo.cargo} onChange={(e) => setNuevo({ ...nuevo, cargo: e.target.value })} className="field-input" style={{ fontWeight: 500 }} />
+              <div className="section-label" style={{ marginBottom: 0 }}>Agregar a {frentes.find((f) => f.id === activeFrenteId)?.nombre}</div>
+
+              <div className="search-bar">
+                <IconSearch color="var(--text-soft)" />
+                <input placeholder="Buscar en la cuadrilla..." value={addQuery} onChange={(e) => setAddQuery(e.target.value)} />
+              </div>
+
+              {disponibles.length > 0 && (
+                <div className="stack" style={{ gap: 0, maxHeight: 200, overflowY: 'auto' }}>
+                  {disponibles.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => asignar(t.id)}
+                      className="list-row"
+                      style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '7px 0' }}
+                    >
+                      <span style={{ flexGrow: 1, fontSize: 13 }}>{t.nombre} <span className="text-soft">· {t.cargo}</span></span>
+                      <IconPlus size={13} color="var(--accent)" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10 }}>
+                <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 8 }}>¿No está en la cuadrilla? Créalo:</div>
+                <div className="stack" style={{ gap: 8 }}>
+                  <input placeholder="Nombre" value={nuevo.nombre} onChange={(e) => setNuevo({ ...nuevo, nombre: e.target.value })} className="field-input" style={{ fontWeight: 500 }} />
+                  <input placeholder="Cargo" value={nuevo.cargo} onChange={(e) => setNuevo({ ...nuevo, cargo: e.target.value })} className="field-input" style={{ fontWeight: 500 }} />
+                </div>
+              </div>
+
               <div className="flex-row gap-8">
-                <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setShowAdd(false)}>Cancelar</button>
-                <button className="btn btn-primary" style={{ flex: 1 }} onClick={agregarTrabajador}>Guardar</button>
+                <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => { setShowAdd(false); setNuevo({ nombre: '', cargo: '' }); setAddQuery(''); }}>Cancelar</button>
+                <button className="btn btn-primary" style={{ flex: 1 }} onClick={crearYAsignar} disabled={!nuevo.nombre.trim()}>Crear y agregar</button>
               </div>
             </div>
           )}

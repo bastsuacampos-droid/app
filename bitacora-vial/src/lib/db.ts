@@ -66,6 +66,13 @@ class BitacoraDB extends Dexie {
     this.version(4).stores({
       medicionesCubicacion: 'id, partidaId, fecha',
     });
+
+    // v5: trabajadores are a single global roster, no fixed "home" frente — where someone
+    // works is decided per parte via RegistroAsistencia.frenteId instead. Existing rows just
+    // carry a leftover frenteId property the app no longer reads; nothing to transform.
+    this.version(5).stores({
+      trabajadores: 'id',
+    });
   }
 }
 
@@ -111,12 +118,12 @@ async function seedIfEmptyInner() {
   await db.frentes.bulkAdd(frentes);
 
   const trabajadores: Trabajador[] = [
-    { id: newId(), nombre: 'Juan Muñoz', cargo: 'Operador excavadora', frenteId: 'frente-1', activo: true },
-    { id: newId(), nombre: 'Rosa Sánchez', cargo: 'Prevencionista', frenteId: 'frente-1', activo: true },
-    { id: newId(), nombre: 'Pedro Cárdenas', cargo: 'Obrero', frenteId: 'frente-1', activo: true },
-    { id: newId(), nombre: 'Luis Torres', cargo: 'Chofer camión tolva', frenteId: 'frente-1', activo: true },
-    { id: newId(), nombre: 'Marcela Fuentes', cargo: 'Obrero', frenteId: 'frente-1', activo: true },
-    { id: newId(), nombre: 'Ana Rojas', cargo: 'Obrero', frenteId: 'frente-2', activo: true },
+    { id: newId(), nombre: 'Juan Muñoz', cargo: 'Operador excavadora', activo: true },
+    { id: newId(), nombre: 'Rosa Sánchez', cargo: 'Prevencionista', activo: true },
+    { id: newId(), nombre: 'Pedro Cárdenas', cargo: 'Obrero', activo: true },
+    { id: newId(), nombre: 'Luis Torres', cargo: 'Chofer camión tolva', activo: true },
+    { id: newId(), nombre: 'Marcela Fuentes', cargo: 'Obrero', activo: true },
+    { id: newId(), nombre: 'Ana Rojas', cargo: 'Obrero', activo: true },
   ];
   await db.trabajadores.bulkAdd(trabajadores);
 

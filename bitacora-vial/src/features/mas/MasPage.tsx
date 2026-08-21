@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { IconClockPlus, IconFolder, IconGear, IconChevronRight } from '../../components/Icon';
+import {
+  IconClockPlus, IconFolder, IconGear, IconChevronRight, IconAsistencia,
+} from '../../components/Icon';
 
 export function MasPage() {
   const navigate = useNavigate();
@@ -13,6 +15,13 @@ export function MasPage() {
 
       <div className="content">
         <div className="section-label">Personal</div>
+        <MenuCard
+          Icon={IconAsistencia}
+          bg="var(--blue-soft)"
+          title="Cuadrilla"
+          subtitle="Editar, agregar o dar de baja trabajadores"
+          onClick={() => navigate('/cuadrilla')}
+        />
         <MenuCard
           Icon={IconClockPlus}
           bg="var(--accent-soft)"
