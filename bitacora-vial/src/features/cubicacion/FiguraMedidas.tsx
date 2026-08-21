@@ -1,4 +1,4 @@
-import type { TipoElementoMedicion } from '../../types/models';
+import type { CampoPersonalizado, TipoElementoMedicion } from '../../types/models';
 
 const ARROW_ID = 'figura-cota-flecha';
 const HATCH_ID = 'figura-achurado';
@@ -199,6 +199,92 @@ function FiguraCilindro({ campos }: { campos: Record<string, string> }) {
   );
 }
 
+function FiguraConoTruncado({ campos }: { campos: Record<string, string> }) {
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Vista isométrica — Cono truncado" />
+      <line x1={100} y1={55} x2={85} y2={140} {...TRAZO} />
+      <line x1={180} y1={55} x2={195} y2={140} {...TRAZO} />
+      <path d="M85,140 A55,16 0 0 0 195,140" {...TRAZO} />
+      <ellipse cx={140} cy={55} rx={40} ry={13} {...TRAZO_ACHURADO} />
+      <BadgeCantidad n={n(campos, 'cantidad')} />
+      <CotaH x1={100} x2={180} y={38} label={`Ø men. ${textoCota(campos, 'diametroMenor', 'm')}`} />
+      <CotaH x1={85} x2={195} y={162} desde={140} label={`Ø may. ${textoCota(campos, 'diametroMayor', 'm')}`} />
+      <CotaV y1={55} y2={140} x={65} desde={85} label={textoCota(campos, 'alto', 'm')} />
+    </svg>
+  );
+}
+
+function FiguraCuna({ campos }: { campos: Record<string, string> }) {
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Corte transversal — Cuña / talud triangular" />
+      <path d="M50,140 L105,105 M105,105 L225,105 M105,105 L105,45" {...TRAZO_OCULTO} />
+      <path d="M50,140 L170,140 L170,45 Z" {...TRAZO_ACHURADO} />
+      <path d="M170,45 L225,105 L170,140" {...TRAZO} />
+      <BadgeCantidad n={n(campos, 'cantidad')} />
+      <CotaH x1={50} x2={170} y={158} desde={140} label={textoCota(campos, 'base', 'm')} />
+      <CotaV y1={45} y2={140} x={30} desde={50} label={textoCota(campos, 'altura', 'm')} />
+      <CotaDiag x1={170} y1={140} x2={225} y2={105} label={textoCota(campos, 'largo', 'm')} dx={10} dy={4} />
+    </svg>
+  );
+}
+
+function FiguraTriangulo({ campos }: { campos: Record<string, string> }) {
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Vista en planta — Triangular" />
+      <path d="M60,140 L220,140 L140,50 Z" {...TRAZO_ACHURADO} />
+      <BadgeCantidad n={n(campos, 'cantidad')} />
+      <CotaH x1={60} x2={220} y={158} desde={140} label={textoCota(campos, 'base', 'm')} />
+      <CotaV y1={50} y2={140} x={242} label={textoCota(campos, 'altura', 'm')} />
+    </svg>
+  );
+}
+
+function FiguraCirculoPlano({ campos }: { campos: Record<string, string> }) {
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Vista en planta — Área circular" />
+      <circle cx={140} cy={95} r={55} {...TRAZO_ACHURADO} />
+      <BadgeCantidad n={n(campos, 'cantidad')} />
+      <CotaH x1={85} x2={195} y={95} label={`Ø ${textoCota(campos, 'diametro', 'm')}`} />
+    </svg>
+  );
+}
+
+/** No fixed geometry to draw for a personalizado medición — instead, a little "ficha de
+ * cálculo" listing the formula and each field's token/label/value, so it's still clear at a
+ * glance what fed the subtotal. */
+function FiguraPersonalizada({
+  campos, camposPersonalizados, formula,
+}: { campos: Record<string, string>; camposPersonalizados?: CampoPersonalizado[]; formula?: string }) {
+  const filas = camposPersonalizados ?? [];
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Cálculo personalizado" />
+      <text x={0} y={30} fontSize={10} fontWeight={700} fill="var(--text-soft)">Fórmula</text>
+      <text x={0} y={49} fontSize={13} fontWeight={800} fill="var(--accent-dark)">{formula?.trim() || '— sin definir —'}</text>
+      <line x1={-8} y1={60} x2={272} y2={60} stroke="var(--border)" strokeWidth={1} />
+      {filas.length === 0 && (
+        <text x={0} y={82} fontSize={10.5} fill="var(--text-soft)">Agrega medidas abajo para verlas aquí.</text>
+      )}
+      {filas.map((c, i) => (
+        <text key={c.key} x={0} y={82 + i * 20} fontSize={11} fill="var(--text)">
+          <tspan fontWeight={800} fill="var(--accent-dark)">{c.key}</tspan>
+          <tspan>{` = ${c.label || 'medida'}: `}</tspan>
+          <tspan fontWeight={700}>{campos[c.key]?.trim() || '—'}</tspan>
+        </text>
+      ))}
+    </svg>
+  );
+}
+
 function FiguraMuroVanos({ campos }: { campos: Record<string, string> }) {
   return (
     <svg {...SVG_PROPS}>
@@ -235,7 +321,16 @@ function FiguraBarra({ campos }: { campos: Record<string, string> }) {
  * foreman is typing — so it's clear at a glance which line in the drawing each field
  * corresponds to, before committing to "Agregar". Purely illustrative proportions, not to
  * scale with the actual numbers. */
-export function FiguraMedidas({ tipo, unidad, campos }: { tipo: TipoElementoMedicion; unidad: string; campos: Record<string, string> }) {
+export function FiguraMedidas({
+  tipo, unidad, campos, camposPersonalizados, formula,
+}: {
+  tipo: TipoElementoMedicion;
+  unidad: string;
+  campos: Record<string, string>;
+  /** Only meaningful (and needed) when tipo is 'personalizado'. */
+  camposPersonalizados?: CampoPersonalizado[];
+  formula?: string;
+}) {
   switch (tipo) {
     case 'rectangular':
       if (unidad === 'm³') return <FiguraPrisma campos={campos} />;
@@ -245,10 +340,20 @@ export function FiguraMedidas({ tipo, unidad, campos }: { tipo: TipoElementoMedi
       return <FiguraTrapecio campos={campos} />;
     case 'cilindrico':
       return <FiguraCilindro campos={campos} />;
+    case 'conico_truncado':
+      return <FiguraConoTruncado campos={campos} />;
+    case 'cuna':
+      return <FiguraCuna campos={campos} />;
+    case 'triangular':
+      return <FiguraTriangulo campos={campos} />;
+    case 'circular':
+      return <FiguraCirculoPlano campos={campos} />;
     case 'muro_vanos':
       return <FiguraMuroVanos campos={campos} />;
     case 'enfierradura':
       return <FiguraBarra campos={campos} />;
+    case 'personalizado':
+      return <FiguraPersonalizada campos={campos} camposPersonalizados={camposPersonalizados} formula={formula} />;
     default:
       return null;
   }

@@ -256,7 +256,9 @@ async function agruparPorPadre(partidas: Partida[], entriesPorPartida: Map<strin
     const ultimaMedicion = ultimaMedicionPorPartida.get(p.id);
     const item: TareaDelDiaItem = {
       partidaId: p.id, nombre: p.nombre, unidad: p.unidad, avanceHoy, acumulado, contratado: p.cantidadContratada, pct, cubicada, estado,
-      dimensionesTexto: p.unidad !== 'ml' && ultimaMedicion ? formatDimensionesCompacto(ultimaMedicion.tipo, ultimaMedicion.datos) : undefined,
+      dimensionesTexto: p.unidad !== 'ml' && ultimaMedicion
+        ? formatDimensionesCompacto(ultimaMedicion.tipo, ultimaMedicion.datos, ultimaMedicion.camposPersonalizados)
+        : undefined,
       faltanteLineal: p.unidad === 'ml' && cubicada ? Math.max(0, p.cantidadContratada - acumulado) : undefined,
     };
 
@@ -401,6 +403,7 @@ export async function crearPartida(
     await registrarMedicion({
       partidaId: id, fecha, proposito: 'contratado',
       tipo: m.tipo, descripcion: m.descripcion || undefined, datos: m.datos, subtotal: m.subtotal, unidad: datos.unidad,
+      camposPersonalizados: m.camposPersonalizados, formula: m.formula,
     });
   }
   return id;

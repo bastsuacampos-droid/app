@@ -50,8 +50,26 @@ export interface CubicacionEntry {
 /** Shape of an element measured with the dimension calculator (see CubicacionPage). Not a
  * transcription of NCh 353 Of.2000 — general geometric quantification for common site
  * elements; each contributes its subtotal to either the contracted quantity or a day's
- * executed progress. */
-export type TipoElementoMedicion = 'rectangular' | 'trapezoidal' | 'cilindrico' | 'muro_vanos' | 'enfierradura';
+ * executed progress. 'personalizado' is a free-form shape: the foreman defines their own named
+ * measurements and a formula combining them, for a geometry that isn't one of the presets. */
+export type TipoElementoMedicion =
+  | 'rectangular'
+  | 'trapezoidal'
+  | 'cilindrico'
+  | 'conico_truncado'
+  | 'cuna'
+  | 'triangular'
+  | 'circular'
+  | 'muro_vanos'
+  | 'enfierradura'
+  | 'personalizado';
+
+/** One named measurement in a 'personalizado' medición — `key` is the short token (a, b, c…)
+ * used in the formula, `label` is what the foreman actually called it (e.g. "Base menor"). */
+export interface CampoPersonalizado {
+  key: string;
+  label: string;
+}
 
 /** A recorded measurement (memoria de cálculo) for a partida — kept even after its subtotal
  * has been folded into cantidadContratada or a day's cantidadEjecutada, so the dimensions
@@ -67,6 +85,11 @@ export interface MedicionCubicacion {
   datos: Record<string, number>; // raw dimensions entered, keyed by field name
   subtotal: number;
   unidad: string;
+  /** Only for tipo 'personalizado': the field labels behind each datos key, and the formula
+   * (referencing those keys) used to compute subtotal — needed to redisplay a saved
+   * personalizado medición later, since its "shape" isn't a fixed geometry to derive from tipo. */
+  camposPersonalizados?: CampoPersonalizado[];
+  formula?: string;
 }
 
 export interface RegistroAsistencia {

@@ -87,6 +87,7 @@ export function CubicacionPage() {
     await registrarMedicion({
       partidaId, fecha: parte.fecha, proposito: 'ejecutado',
       tipo: info.tipo, descripcion: info.descripcion || undefined, datos: info.datos, subtotal: info.subtotal, unidad,
+      camposPersonalizados: info.camposPersonalizados, formula: info.formula,
     });
   }
 
@@ -98,6 +99,7 @@ export function CubicacionPage() {
     await registrarMedicion({
       partidaId, fecha: parte.fecha, proposito: 'contratado',
       tipo: info.tipo, descripcion: info.descripcion || undefined, datos: info.datos, subtotal: info.subtotal, unidad,
+      camposPersonalizados: info.camposPersonalizados, formula: info.formula,
     });
   }
 
@@ -424,7 +426,7 @@ function MemoriaCalculo({ partidaId }: { partidaId: string }) {
                 </span>
               </div>
               <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 4 }}>
-                {formatDatosMedicion(m.tipo, m.datos, m.unidad)} = <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {m.unidad}</strong>
+                {formatDatosMedicion(m.tipo, m.datos, m.unidad, m.camposPersonalizados)} = <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {m.unidad}</strong>
               </div>
               <button
                 type="button"
@@ -437,7 +439,13 @@ function MemoriaCalculo({ partidaId }: { partidaId: string }) {
               </button>
               {dibujoAbiertoId === m.id && (
                 <div style={{ marginTop: 6 }}>
-                  <FiguraMedidas tipo={m.tipo} unidad={m.unidad} campos={camposDesdeDatos(m.datos)} />
+                  <FiguraMedidas
+                    tipo={m.tipo}
+                    unidad={m.unidad}
+                    campos={camposDesdeDatos(m.datos)}
+                    camposPersonalizados={m.camposPersonalizados}
+                    formula={m.formula}
+                  />
                 </div>
               )}
             </div>
