@@ -12,6 +12,7 @@ import { NuevoPartePage } from './features/partes/NuevoPartePage';
 import { CubicacionPage } from './features/cubicacion/CubicacionPage';
 import { AsistenciaPage } from './features/asistencia/AsistenciaPage';
 import { CuadrillaPage } from './features/cuadrilla/CuadrillaPage';
+import { FrentesPage } from './features/frentes/FrentesPage';
 import { FotosPage } from './features/fotos/FotosPage';
 import { EditorFotoPage } from './features/fotos/EditorFotoPage';
 import { HistorialPage } from './features/historial/HistorialPage';
@@ -76,6 +77,7 @@ export default function App() {
         <Route path="/cubicacion" element={<CubicacionPage />} />
         <Route path="/asistencia" element={<AsistenciaPage />} />
         <Route path="/cuadrilla" element={<CuadrillaPage />} />
+        <Route path="/frentes" element={<FrentesPage />} />
         <Route path="/fotos" element={<FotosPage />} />
         <Route path="/fotos/:fotoId/editar" element={<EditorFotoPage />} />
         <Route path="/historial" element={<HistorialPage />} />

@@ -23,8 +23,10 @@ export function AsistenciaPage() {
 
   // The crew is one global roster — nobody is "assigned" to a frente until attendance for
   // today assigns them one (see RegistroAsistencia.frenteId), so it's needed here regardless
-  // of which frente tab is active.
-  const todosTrabajadores = useLiveQuery(() => db.trabajadores.filter((t) => t.activo).toArray(), []) ?? [];
+  // of which frente tab is active. Includes inactive trabajadores too: a registro from before
+  // someone was deactivated in Cuadrilla still needs to resolve to a name and render — only the
+  // "add someone new" picker below should hide inactive people.
+  const todosTrabajadores = useLiveQuery(() => db.trabajadores.toArray(), []) ?? [];
   const trabajadorPorId = new Map<string, Trabajador>(todosTrabajadores.map((t) => [t.id, t]));
 
   const registros = useLiveQuery(
@@ -42,9 +44,10 @@ export function AsistenciaPage() {
     .filter((f): f is { registro: typeof registrosFrente[number]; trabajador: Trabajador } => !!f.trabajador)
     .filter((f) => f.trabajador.nombre.toLowerCase().includes(query.toLowerCase()));
 
-  // Anyone in the crew not yet placed on a frente today — the pool "Agregar trabajador" picks from.
+  // Anyone active in the crew not yet placed on a frente today — the pool "Agregar trabajador" picks from.
   const idsAsignadosHoy = new Set(registros.map((r) => r.trabajadorId));
   const disponibles = todosTrabajadores
+    .filter((t) => t.activo)
     .filter((t) => !idsAsignadosHoy.has(t.id))
     .filter((t) => t.nombre.toLowerCase().includes(addQuery.toLowerCase()));
 
@@ -125,7 +128,10 @@ export function AsistenciaPage() {
                     {initials}
                   </div>
                   <div style={{ flexGrow: 1, minWidth: 0 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</span>
+                    <div className="flex-row gap-8">
+                      <span style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</span>
+                      {!t.activo && <span className="badge" style={{ background: 'var(--surface-alt)', color: 'var(--text-soft)' }}>Inactivo</span>}
+                    </div>
                     <div className="text-soft" style={{ fontSize: 11 }}>{t.cargo}</div>
                   </div>
                   <Toggle on={r.presente} onChange={(v) => updateRegistro(r.id, { presente: v })} label={`Presente: ${t.nombre}`} />

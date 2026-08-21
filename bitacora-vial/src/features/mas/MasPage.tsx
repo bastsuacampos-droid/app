@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  IconClockPlus, IconFolder, IconGear, IconChevronRight, IconAsistencia,
+  IconClockPlus, IconFolder, IconGear, IconChevronRight, IconAsistencia, IconCubicacion,
 } from '../../components/Icon';
 
 export function MasPage() {
@@ -31,6 +31,14 @@ export function MasPage() {
         />
 
         <div className="section-label" style={{ marginTop: 20 }}>Proyecto</div>
+        <MenuCard
+          Icon={IconCubicacion}
+          bg="var(--yellow-soft)"
+          iconColor="var(--yellow-text)"
+          title="Frentes de trabajo"
+          subtitle="Editar, agregar o eliminar puntos de trabajo"
+          onClick={() => navigate('/frentes')}
+        />
         <MenuCard
           Icon={IconFolder}
           bg="var(--blue-soft)"
