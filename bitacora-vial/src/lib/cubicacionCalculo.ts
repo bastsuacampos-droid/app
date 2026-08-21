@@ -19,6 +19,7 @@ export const TIPO_ELEMENTO_LABEL: Record<TipoElementoMedicion, string> = {
   cuna: 'Cuña / talud triangular',
   triangular: 'Triangular',
   circular: 'Circular',
+  arco: 'Arco / bóveda',
   muro_vanos: 'Muro con vanos',
   enfierradura: 'Enfierradura',
   personalizado: 'Personalizado',
@@ -36,6 +37,7 @@ export const TIPOS_POR_UNIDAD: Partial<Record<string, { value: TipoElementoMedic
     { value: 'cilindrico', label: 'Cilíndrico' },
     { value: 'conico_truncado', label: 'Cono truncado' },
     { value: 'cuna', label: 'Cuña / talud triangular' },
+    { value: 'arco', label: 'Arco / bóveda' },
     OPCION_PERSONALIZADO,
   ],
   'm²': [
@@ -98,6 +100,14 @@ export function camposDelTipo(tipo: TipoElementoMedicion, unidad: string): { key
         { key: 'diametro', label: 'Diámetro (m)' },
         { key: 'cantidad', label: 'Cantidad (veces se repite)' },
       ];
+    case 'arco':
+      return [
+        { key: 'luz', label: 'Luz / ancho de base (m)' },
+        { key: 'flecha', label: 'Flecha del arco (m)' },
+        { key: 'alturaMuros', label: 'Altura de muros rectos (m, 0 si no hay)' },
+        { key: 'largo', label: 'Largo (m)' },
+        { key: 'cantidad', label: 'Cantidad (veces se repite)' },
+      ];
     case 'muro_vanos':
       return [
         { key: 'largo', label: 'Largo (m)' },
@@ -147,6 +157,25 @@ export function calcularSubtotalElemento(tipo: TipoElementoMedicion, unidad: str
       return 0.5 * d.base * d.altura * n;
     case 'circular':
       return Math.PI * (d.diametro / 2) ** 2 * n;
+    case 'arco': {
+      // Cross-section = straight side walls (if any) + a circular segment on top, defined by
+      // its chord (luz) and sagitta (flecha) — works for a plain semicircular vault as much as
+      // a "bóveda rebajada" (a segmental arch flatter than a semicircle), which is the more
+      // common real shape. R derives from the segment's own chord/height, per the standard
+      // circular-segment formula; segment area = (R²/2)(α − sin α) where α is the central angle.
+      const luz = d.luz;
+      const flecha = d.flecha;
+      let areaArco = 0;
+      if (luz > 0 && flecha > 0) {
+        const mitadLuz = luz / 2;
+        const radio = (mitadLuz ** 2 + flecha ** 2) / (2 * flecha);
+        const ratio = Math.min(1, Math.max(-1, mitadLuz / radio));
+        const angulo = 2 * Math.asin(ratio);
+        areaArco = (radio ** 2 / 2) * (angulo - Math.sin(angulo));
+      }
+      const areaMuros = luz * (d.alturaMuros || 0);
+      return (areaArco + areaMuros) * d.largo * n;
+    }
     case 'muro_vanos':
       return Math.max(0, d.largo * d.alto * n - (d.vanos || 0));
     case 'enfierradura':
@@ -221,6 +250,10 @@ export function formatDimensionesCompacto(
     }
     case 'circular': {
       const base = `Ø${n(datos.diametro)} m`;
+      return datos.cantidad > 1 ? `${base} ×${n(datos.cantidad)}` : base;
+    }
+    case 'arco': {
+      const base = `Luz ${n(datos.luz)} × flecha ${n(datos.flecha)} m, largo ${n(datos.largo)} m`;
       return datos.cantidad > 1 ? `${base} ×${n(datos.cantidad)}` : base;
     }
     case 'muro_vanos': {

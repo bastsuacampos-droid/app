@@ -258,6 +258,23 @@ function FiguraCirculoPlano({ campos }: { campos: Record<string, string> }) {
   );
 }
 
+function FiguraArco({ campos }: { campos: Record<string, string> }) {
+  return (
+    <svg {...SVG_PROPS}>
+      <DefsFigura />
+      <Marco titulo="Corte transversal — Arco / bóveda" />
+      <path d="M70,105 L105,85 M105,85 L245,85 M105,85 Q175,25 245,85" {...TRAZO_OCULTO} />
+      <path d="M70,140 L70,105 Q140,45 210,105 L210,140 Z" {...TRAZO_ACHURADO} />
+      <path d="M210,140 L245,120 L245,85 M210,105 L245,85" {...TRAZO} />
+      <BadgeCantidad n={n(campos, 'cantidad')} />
+      <CotaH x1={70} x2={210} y={158} desde={140} label={textoCota(campos, 'luz', 'm')} />
+      <CotaV y1={45} y2={105} x={50} label={textoCota(campos, 'flecha', 'm')} />
+      <CotaV y1={105} y2={140} x={228} desde={210} label={textoCota(campos, 'alturaMuros', 'm')} />
+      <CotaDiag x1={210} y1={140} x2={245} y2={120} label={textoCota(campos, 'largo', 'm')} dx={8} dy={6} />
+    </svg>
+  );
+}
+
 /** No fixed geometry to draw for a personalizado medición — instead, a little "ficha de
  * cálculo" listing the formula (in the foreman's own words, via formulaLegible — never the
  * internal a/b/c token) and each field's label/value, so it's still clear at a glance what fed
@@ -352,6 +369,8 @@ export function FiguraMedidas({
       return <FiguraTriangulo campos={campos} />;
     case 'circular':
       return <FiguraCirculoPlano campos={campos} />;
+    case 'arco':
+      return <FiguraArco campos={campos} />;
     case 'muro_vanos':
       return <FiguraMuroVanos campos={campos} />;
     case 'enfierradura':

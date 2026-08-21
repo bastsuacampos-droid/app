@@ -60,6 +60,7 @@ export type TipoElementoMedicion =
   | 'cuna'
   | 'triangular'
   | 'circular'
+  | 'arco'
   | 'muro_vanos'
   | 'enfierradura'
   | 'personalizado';
