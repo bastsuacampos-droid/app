@@ -216,6 +216,12 @@ export function EditorFotoPage() {
     }
   }
 
+  // Android WebView sometimes fires pointercancel instead of pointerup at the end of a touch
+  // gesture (e.g. if it briefly considers the movement a scroll/other native gesture). Without
+  // this, that stroke's draft was silently dropped on the next redraw instead of being kept —
+  // it would visibly draw while dragging, then vanish the moment the finger lifted.
+  const onPointerCancel = onPointerUp;
+
   function undo() {
     setShapes((s) => s.slice(0, -1));
   }
@@ -276,6 +282,7 @@ export function EditorFotoPage() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
         />
       </div>
 
