@@ -9,6 +9,13 @@ export function formatShortDate(iso: string): string {
   return format(parseISO(iso), 'dd MMM', { locale: es });
 }
 
+/** "dd-MM-yyyy", for a form's plain "Fecha" field — parseISO reads the date-only string as
+ * local midnight, unlike `new Date(iso)` which the native Date constructor reads as UTC
+ * midnight and would then display a day early in any timezone behind UTC (Chile included). */
+export function formatNumericDate(iso: string): string {
+  return format(parseISO(iso), 'dd-MM-yyyy');
+}
+
 export function formatMonthLabel(iso: string): string {
   const label = format(parseISO(iso), 'MMMM yyyy', { locale: es });
   return label.charAt(0).toUpperCase() + label.slice(1);
@@ -24,7 +31,10 @@ export function monthRangeISO(monthISO: string): { start: string; end: string } 
 }
 
 export function currentMonthISO(): string {
-  return new Date().toISOString().slice(0, 7);
+  // Local getFullYear/getMonth, not toISOString() — that converts to UTC first, which on the
+  // last evening of a month (after ~20:00 in Chile, UTC-4) would already report next month.
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
 
 export function shiftMonthISO(monthISO: string, delta: number): string {

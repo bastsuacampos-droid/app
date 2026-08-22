@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, newId } from '../../lib/db';
 import { attendanceSummaryForParte, moveTrabajadorAFrente, asignarTrabajadorAFrente } from '../../lib/queries';
 import { useActiveParte } from '../../lib/useActiveParte';
+import { formatLongDate } from '../../lib/date';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
 import { IconSearch, IconPlus, IconClockPlus, IconChevronRight } from '../../components/Icon';
@@ -84,7 +85,7 @@ export function AsistenciaPage() {
 
   return (
     <>
-      <Header title="Asistencia de Personal" subtitle={new Date(parte.fecha).toLocaleDateString('es-CL')} back>
+      <Header title="Asistencia de Personal" subtitle={formatLongDate(parte.fecha)} back>
         <div className="search-bar" style={{ marginBottom: 12 }}>
           <IconSearch color="var(--text-soft)" />
           <input placeholder="Buscar trabajador..." value={query} onChange={(e) => setQuery(e.target.value)} />

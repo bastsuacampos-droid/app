@@ -1,9 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../../lib/db';
+import { db, todayISO } from '../../lib/db';
 import { overallProgressPct, pendingBackupCount, attendanceSummaryForParte, rutaParaParte } from '../../lib/queries';
 import { useTodayParte } from '../../lib/useTodayParte';
-import { formatLongDate } from '../../lib/date';
+import { formatLongDate, formatShortDate } from '../../lib/date';
 import { Header } from '../../components/Header';
 import { StatusBadge } from '../../components/StatusBadge';
 import { IconLogo, IconCloud, IconGear, IconPlus } from '../../components/Icon';
@@ -64,7 +64,7 @@ export function DashboardPage() {
         <div style={{ marginBottom: 16 }}>
           <div className="disp" style={{ fontSize: 20, fontWeight: 800 }}>Hola, Capataz</div>
           <div className="text-soft" style={{ fontSize: 13 }}>
-            {formatLongDate(new Date().toISOString().slice(0, 10))}
+            {formatLongDate(todayISO())}
           </div>
         </div>
 
@@ -129,7 +129,7 @@ export function DashboardPage() {
               <div style={{ width: 46, height: 46, borderRadius: 10, background: THUMB_GRADIENTS[i % THUMB_GRADIENTS.length], flexShrink: 0 }} />
               <div style={{ flexGrow: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13.5, fontWeight: 600 }}>
-                  Parte N° {parte.numero} · {parte.fecha === new Date().toISOString().slice(0, 10) ? 'Hoy' : new Date(parte.fecha).toLocaleDateString('es-CL', { day: '2-digit', month: 'short' })}
+                  Parte N° {parte.numero} · {parte.fecha === todayISO() ? 'Hoy' : formatShortDate(parte.fecha)}
                 </div>
                 <div className="text-soft" style={{ fontSize: 11.5 }}>
                   {parte.frentesIds.length > 0 ? `${parte.frentesIds.length} frente(s) activos` : 'Sin frentes asignados'}

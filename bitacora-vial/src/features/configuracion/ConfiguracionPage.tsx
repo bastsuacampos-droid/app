@@ -53,6 +53,10 @@ export function ConfiguracionPage() {
   }, []);
 
   useEffect(() => {
+    // AppUpdater has no web implementation — addListener() rejects there (visible as an
+    // unhandled promise rejection in a browser/PWA preview), unlike every other call to this
+    // plugin in the app, which already guards on Capacitor.isNativePlatform() first.
+    if (!Capacitor.isNativePlatform()) return;
     const progressHandle = AppUpdaterNative.addListener('downloadProgress', ({ percent }) => {
       setUpdate((prev) => (prev.status === 'downloading' || prev.status === 'available'
         ? { status: 'downloading', info: prev.info, percent }

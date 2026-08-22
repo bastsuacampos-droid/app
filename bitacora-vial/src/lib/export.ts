@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { Capacitor } from '@capacitor/core';
-import { db } from './db';
+import { db, todayISO } from './db';
 import type { HorasExtraPorTrabajador } from './queries';
 import { formatShortDate } from './date';
 import FileOpener, { writeFileChunked } from './nativeFileOpener';
@@ -175,5 +175,5 @@ export async function exportFullBackup() {
   };
 
   const json = JSON.stringify(payload);
-  downloadBlob(`bitacora-vial-respaldo-${new Date().toISOString().slice(0, 10)}.json`, new Blob([json], { type: 'application/json' }));
+  downloadBlob(`bitacora-vial-respaldo-${todayISO()}.json`, new Blob([json], { type: 'application/json' }));
 }

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
-import { db, nowISO } from '../../lib/db';
+import { differenceInCalendarDays, parseISO } from 'date-fns';
+import { db, nowISO, todayISO } from '../../lib/db';
 import { useSettings, updateSettings } from '../../lib/useSettings';
 import { exportCubicacionCSV, exportFullBackup } from '../../lib/export';
 import { rutaParaParte } from '../../lib/queries';
+import { formatShortDate } from '../../lib/date';
 import { Header } from '../../components/Header';
 import { StatusBadge } from '../../components/StatusBadge';
 import { Toggle } from '../../components/Toggle';
@@ -30,7 +32,11 @@ export function HistorialPage() {
   const filtrados = partes.filter((p) => {
     if (query && !`parte n° ${p.numero}`.includes(query.toLowerCase()) && !p.fecha.includes(query)) return false;
     if (filtro === 'todos') return true;
-    const dias = (Date.now() - new Date(p.fecha).getTime()) / 86_400_000;
+    // differenceInCalendarDays (local calendar dates via parseISO), not raw ms since epoch —
+    // new Date(p.fecha) alone parses a date-only string as UTC midnight, which in any
+    // timezone behind UTC (Chile included) both shifts the count and, worse, could put
+    // today's own parte a day "in the past".
+    const dias = differenceInCalendarDays(new Date(), parseISO(p.fecha));
     if (filtro === 'semana') return dias <= 7;
     if (filtro === 'mes') return dias <= 31;
     return true;
@@ -95,7 +101,7 @@ export function HistorialPage() {
               <div style={{ width: 38, height: 38, borderRadius: 10, background: THUMB_GRADIENTS[i % THUMB_GRADIENTS.length], flexShrink: 0 }} />
               <div style={{ flexGrow: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 600 }}>
-                  Parte N° {p.numero} · {p.fecha === new Date().toISOString().slice(0, 10) ? 'Hoy' : new Date(p.fecha).toLocaleDateString('es-CL', { day: '2-digit', month: 'short' })}
+                  Parte N° {p.numero} · {p.fecha === todayISO() ? 'Hoy' : formatShortDate(p.fecha)}
                 </div>
                 <div className="text-soft" style={{ fontSize: 11 }}>{p.frentesIds.length} frente(s)</div>
               </div>

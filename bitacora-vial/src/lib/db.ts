@@ -83,7 +83,14 @@ export function newId(): string {
 }
 
 export function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  // NOT new Date().toISOString().slice(0, 10) — that converts to UTC first, so anyone west of
+  // UTC (Chile included, UTC-3/-4) gets tomorrow's date for the last few hours of every local
+  // day. A foreman finishing a report in the evening would have it silently filed under the
+  // wrong day, or get a second "today" parte if they reopened the app after that rollover.
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
 }
 
 export function nowISO(): string {

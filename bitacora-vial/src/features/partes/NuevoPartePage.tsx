@@ -10,6 +10,7 @@ import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { camposDesdeDatos } from '../../lib/cubicacionCalculo';
 import { obtenerClimaPorGPS } from '../../lib/clima';
+import { formatNumericDate, formatShortDate } from '../../lib/date';
 import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
 import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
 import { useActiveParte } from '../../lib/useActiveParte';
@@ -228,7 +229,7 @@ export function NuevoPartePage() {
         <div className="card" style={{ marginBottom: 20 }}>
           <div className="flex-row" style={{ justifyContent: 'space-between', paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
             <div className="flex-row gap-8"><IconCalendar color="var(--text-soft)" /><span className="text-soft" style={{ fontSize: 13 }}>Fecha</span></div>
-            <span style={{ fontSize: 13, fontWeight: 600 }}>{new Date(parte.fecha).toLocaleDateString('es-CL')}</span>
+            <span style={{ fontSize: 13, fontWeight: 600 }}>{formatNumericDate(parte.fecha)}</span>
           </div>
 
           <div style={{ paddingBottom: 12, marginBottom: 12, borderBottom: '1px solid var(--border)' }}>
@@ -591,7 +592,7 @@ export function NuevoPartePage() {
                       <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--green)', whiteSpace: 'nowrap' }}>{t.cantidad.toLocaleString('es-CL')} {t.unidad}</span>
                     </div>
                     <div className="text-soft" style={{ fontSize: 11 }}>
-                      {t.frenteNombre} · Terminada el {t.fechaCompletada ? new Date(t.fechaCompletada).toLocaleDateString('es-CL') : '—'}
+                      {t.frenteNombre} · Terminada el {t.fechaCompletada ? formatShortDate(t.fechaCompletada) : '—'}
                     </div>
                   </div>
                 ))}
