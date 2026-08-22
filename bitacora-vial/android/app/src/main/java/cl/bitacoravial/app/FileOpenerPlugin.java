@@ -15,18 +15,49 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 /**
- * Writes a documento's bytes to a cache file and hands it to Android's "abrir con" chooser
- * (ACTION_VIEW wrapped in createChooser) — the WebView can preview images/PDFs itself, but for
- * everything else (Word, Excel, etc.) the user needs whatever app they already have installed.
+ * Writes a file to cacheDir/compartidos in bounded-size chunks (see writeChunk — a single huge
+ * base64 string handed to a Capacitor plugin call, e.g. a multi-MB respaldo completo with
+ * embedded photos, has been observed to crash the app; the JS-to-native bridge just isn't built
+ * for large single messages), then hands the finished file to Android's "abrir con" chooser
+ * (ACTION_VIEW, for previewing a document the user picked) or its share sheet (ACTION_SEND, for
+ * an export the user wants to save or send elsewhere).
  */
 @CapacitorPlugin(name = "FileOpener")
 public class FileOpenerPlugin extends Plugin {
 
+    /** Appends one base64-decoded chunk to cacheDir/compartidos/<fileName> — call repeatedly
+     * (append=false on the first chunk to truncate/create, true after) from
+     * writeFileChunked() in nativeFileOpener.ts, then open()/share() once all chunks are
+     * written. */
+    @PluginMethod
+    public void writeChunk(PluginCall call) {
+        String base64 = call.getString("data");
+        String fileName = call.getString("fileName", "archivo");
+        boolean append = Boolean.TRUE.equals(call.getBoolean("append", false));
+
+        if (base64 == null) {
+            call.reject("Missing data");
+            return;
+        }
+
+        try {
+            byte[] bytes = base64.isEmpty() ? new byte[0] : Base64.decode(base64, Base64.DEFAULT);
+            File dir = new File(getContext().getCacheDir(), "compartidos");
+            if (!dir.exists()) dir.mkdirs();
+            File file = new File(dir, fileName);
+            try (FileOutputStream fos = new FileOutputStream(file, append)) {
+                fos.write(bytes);
+            }
+            call.resolve(new JSObject());
+        } catch (Exception e) {
+            call.reject("No se pudo escribir el archivo: " + e.getMessage(), e);
+        }
+    }
+
     @PluginMethod
     public void open(PluginCall call) {
         try {
-            Uri contentUri = writeToCache(call);
-            if (contentUri == null) return; // writeToCache already rejected the call
+            Uri contentUri = contentUriFor(call.getString("fileName", "archivo"));
 
             Intent viewIntent = new Intent(Intent.ACTION_VIEW);
             viewIntent.setDataAndType(contentUri, call.getString("mimeType", "*/*"));
@@ -52,8 +83,7 @@ public class FileOpenerPlugin extends Plugin {
     @PluginMethod
     public void share(PluginCall call) {
         try {
-            Uri contentUri = writeToCache(call);
-            if (contentUri == null) return;
+            Uri contentUri = contentUriFor(call.getString("fileName", "archivo"));
 
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             sendIntent.setType(call.getString("mimeType", "*/*"));
@@ -70,25 +100,8 @@ public class FileOpenerPlugin extends Plugin {
         }
     }
 
-    /** Decodes call's base64 "data" into cacheDir/compartidos/<fileName> and returns its
-     * FileProvider content URI, or rejects the call and returns null if "data" is missing. */
-    private Uri writeToCache(PluginCall call) throws Exception {
-        String base64 = call.getString("data");
-        String fileName = call.getString("fileName", "archivo");
-
-        if (base64 == null || base64.isEmpty()) {
-            call.reject("Missing data");
-            return null;
-        }
-
-        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
-        File dir = new File(getContext().getCacheDir(), "compartidos");
-        if (!dir.exists()) dir.mkdirs();
-        File file = new File(dir, fileName);
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(bytes);
-        }
-
+    private Uri contentUriFor(String fileName) {
+        File file = new File(new File(getContext().getCacheDir(), "compartidos"), fileName);
         return FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
     }
 }

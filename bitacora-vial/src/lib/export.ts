@@ -3,8 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { db } from './db';
 import type { HorasExtraPorTrabajador } from './queries';
 import { formatShortDate } from './date';
-import { blobToBase64 } from './archivos';
-import FileOpener from './nativeFileOpener';
+import FileOpener, { writeFileChunked } from './nativeFileOpener';
 
 // When this build runs inside a published Claude Artifact preview, a plain <a download>
 // link is inert (the sandbox blocks it) — files must go through window.claude.downloads
@@ -20,11 +19,13 @@ export async function downloadBlob(filename: string, blob: Blob) {
   // Android's WebView has no DownloadListener registered, so a plain <a download> click below
   // is a silent no-op there — same class of problem FileOpener.open() already solves for
   // Documentos' "Abrir con", just with .share() (ACTION_SEND) instead of .open() (ACTION_VIEW):
-  // an export is meant to be saved or sent elsewhere, not necessarily opened in place.
+  // an export is meant to be saved or sent elsewhere, not necessarily opened in place. Written
+  // in chunks (not one big base64 call) since a respaldo completo with embedded photos can run
+  // into the tens of MB, which crashed the app when sent across the bridge in a single message.
   if (Capacitor.isNativePlatform()) {
     try {
-      const data = await blobToBase64(blob);
-      await FileOpener.share({ data, fileName: filename, mimeType: blob.type || 'application/octet-stream' });
+      await writeFileChunked(filename, blob);
+      await FileOpener.share({ fileName: filename, mimeType: blob.type || 'application/octet-stream' });
       return;
     } catch {
       // Fall through to the browser-style download below as a last resort.

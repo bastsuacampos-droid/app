@@ -5,8 +5,8 @@ import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { Capacitor } from '@capacitor/core';
 import { db } from '../../lib/db';
 import { downloadBlob } from '../../lib/export';
-import { formatFileSize, blobToBase64 } from '../../lib/archivos';
-import FileOpener from '../../lib/nativeFileOpener';
+import { formatFileSize } from '../../lib/archivos';
+import FileOpener, { writeFileChunked } from '../../lib/nativeFileOpener';
 import { IconX, IconOpenExternal, IconChevronLeft, IconChevronRight } from '../../components/Icon';
 import type { Documento } from '../../types/models';
 
@@ -46,8 +46,10 @@ export function DocumentoPreviewModal({
     }
     setAbriendo(true);
     try {
-      const data = await blobToBase64(documento.blob);
-      await FileOpener.open({ data, fileName: documento.nombre, mimeType: documento.mime || 'application/octet-stream' });
+      // Written in chunks — a large PDF plan set handed to the plugin as one giant base64 call
+      // risks the same bridge-message-size crash fixed for exportFullBackup (see export.ts).
+      await writeFileChunked(documento.nombre, documento.blob);
+      await FileOpener.open({ fileName: documento.nombre, mimeType: documento.mime || 'application/octet-stream' });
     } finally {
       setAbriendo(false);
     }
