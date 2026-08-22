@@ -1,7 +1,10 @@
 import jsPDF from 'jspdf';
+import { Capacitor } from '@capacitor/core';
 import { db } from './db';
 import type { HorasExtraPorTrabajador } from './queries';
 import { formatShortDate } from './date';
+import { blobToBase64 } from './archivos';
+import FileOpener from './nativeFileOpener';
 
 // When this build runs inside a published Claude Artifact preview, a plain <a download>
 // link is inert (the sandbox blocks it) — files must go through window.claude.downloads
@@ -14,6 +17,20 @@ declare global {
 }
 
 export async function downloadBlob(filename: string, blob: Blob) {
+  // Android's WebView has no DownloadListener registered, so a plain <a download> click below
+  // is a silent no-op there — same class of problem FileOpener.open() already solves for
+  // Documentos' "Abrir con", just with .share() (ACTION_SEND) instead of .open() (ACTION_VIEW):
+  // an export is meant to be saved or sent elsewhere, not necessarily opened in place.
+  if (Capacitor.isNativePlatform()) {
+    try {
+      const data = await blobToBase64(blob);
+      await FileOpener.share({ data, fileName: filename, mimeType: blob.type || 'application/octet-stream' });
+      return;
+    } catch {
+      // Fall through to the browser-style download below as a last resort.
+    }
+  }
+
   const claudeDownloads = window.claude?.downloads;
   if (claudeDownloads) {
     try {
@@ -124,7 +141,10 @@ export async function exportFullBackup() {
     db.settings.toArray(),
   ]);
 
-  const blobToBase64 = (blob: Blob) =>
+  // Full data: URL (with its "data:mime;base64," prefix), not the bare-base64 archivos.ts
+  // blobToBase64 imported above — this one needs to round-trip as a self-contained string a
+  // future import could feed straight back into an <img>/fetch without knowing the mime type.
+  const blobToDataURL = (blob: Blob) =>
     new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
@@ -133,10 +153,10 @@ export async function exportFullBackup() {
     });
 
   const fotosSerializadas = await Promise.all(
-    fotos.map(async (f) => ({ ...f, blob: await blobToBase64(f.blob) })),
+    fotos.map(async (f) => ({ ...f, blob: await blobToDataURL(f.blob) })),
   );
   const documentosSerializados = await Promise.all(
-    documentos.map(async (d) => ({ ...d, blob: await blobToBase64(d.blob) })),
+    documentos.map(async (d) => ({ ...d, blob: await blobToDataURL(d.blob) })),
   );
 
   const payload = {
