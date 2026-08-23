@@ -6,6 +6,7 @@ import { useTodayParte } from '../../lib/useTodayParte';
 import { formatLongDate, formatShortDate } from '../../lib/date';
 import { Header } from '../../components/Header';
 import { StatusBadge } from '../../components/StatusBadge';
+import { Skeleton } from '../../components/Skeleton';
 import { IconLogo, IconCloud, IconGear, IconPlus } from '../../components/Icon';
 import type { Parte } from '../../types/models';
 
@@ -70,29 +71,41 @@ export function DashboardPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 16 }}>
           <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px' }}>
-            <div
-              style={{
-                width: 44, height: 44, borderRadius: '50%',
-                background: `conic-gradient(var(--accent) ${avance ?? 0}%, var(--surface-alt) 0)`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10.5, fontWeight: 700 }}>
-                {avance ?? 0}%
+            {avance === undefined ? (
+              <Skeleton width={44} height={44} circle />
+            ) : (
+              <div
+                style={{
+                  width: 44, height: 44, borderRadius: '50%',
+                  background: `conic-gradient(var(--accent) ${avance}%, var(--surface-alt) 0)`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10.5, fontWeight: 700 }}>
+                  {avance}%
+                </div>
               </div>
-            </div>
+            )}
             <div className="text-soft" style={{ fontSize: 10, textAlign: 'center', lineHeight: 1.2 }}>Avance contrato</div>
           </div>
 
           <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px' }}>
-            <div className="disp" style={{ fontSize: 19, fontWeight: 800, color: 'var(--green)' }}>
-              {asistenciaHoy ? `${asistenciaHoy.presentes}/${asistenciaHoy.total}` : '—'}
-            </div>
+            {hoy === undefined ? (
+              <Skeleton width={40} height={19} />
+            ) : (
+              <div className="disp" style={{ fontSize: 19, fontWeight: 800, color: 'var(--green)' }}>
+                {asistenciaHoy ? `${asistenciaHoy.presentes}/${asistenciaHoy.total}` : '—'}
+              </div>
+            )}
             <div className="text-soft" style={{ fontSize: 10, textAlign: 'center', lineHeight: 1.2 }}>Personal presente</div>
           </div>
 
           <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '12px 8px' }}>
-            <div className="disp" style={{ fontSize: 19, fontWeight: 800, color: 'var(--amber)' }}>{pendientes ?? 0}</div>
+            {pendientes === undefined ? (
+              <Skeleton width={20} height={19} />
+            ) : (
+              <div className="disp" style={{ fontSize: 19, fontWeight: 800, color: 'var(--amber)' }}>{pendientes}</div>
+            )}
             <div className="text-soft" style={{ fontSize: 10, textAlign: 'center', lineHeight: 1.2 }}>Partes sin respaldar</div>
           </div>
         </div>
@@ -116,6 +129,15 @@ export function DashboardPage() {
         </div>
 
         <div className="stack">
+          {recientes === undefined && [0, 1].map((i) => (
+            <div key={i} className="card list-row">
+              <Skeleton width={46} height={46} radius={10} />
+              <div className="stack" style={{ gap: 6, flexGrow: 1 }}>
+                <Skeleton width="60%" height={13} />
+                <Skeleton width="40%" height={11} />
+              </div>
+            </div>
+          ))}
           {(recientes ?? []).map((parte: Parte, i: number) => (
             <button
               key={parte.id}

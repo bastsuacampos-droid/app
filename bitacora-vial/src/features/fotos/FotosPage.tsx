@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
+import { Skeleton } from '../../components/Skeleton';
 import { IconPencil, IconFotos } from '../../components/Icon';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { ETAPAS, ETAPA_POR_ID } from '../../lib/etapas';
@@ -24,10 +25,11 @@ export function FotosPage() {
   const [tareaSel, setTareaSel] = useState('');
   const [etapaSel, setEtapaSel] = useState<EtapaFoto>('durante');
 
-  const fotos = useLiveQuery(
+  const fotosRaw = useLiveQuery(
     () => (parte ? db.fotos.where('parteId').equals(parte.id).reverse().sortBy('capturedAt') : []),
     [parte?.id],
-  ) ?? [];
+  );
+  const fotos = fotosRaw ?? [];
 
   const filtradas = fotos.filter((f) => {
     if (filtro === 'todas') return true;
@@ -80,7 +82,11 @@ export function FotosPage() {
       </Header>
 
       <div className="content" style={{ paddingBottom: 90 }}>
-        {filtradas.length === 0 ? (
+        {fotosRaw === undefined ? (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 11 }}>
+            {[0, 1, 2, 3].map((i) => <Skeleton key={i} width="100%" height={160} radius={14} />)}
+          </div>
+        ) : filtradas.length === 0 ? (
           <div className="text-soft" style={{ fontSize: 13, textAlign: 'center', marginTop: 40 }}>
             Aún no hay fotos. Toca el botón + para agregar la primera.
           </div>

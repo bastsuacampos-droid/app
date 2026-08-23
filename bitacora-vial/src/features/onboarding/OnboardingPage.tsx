@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { db } from '../../lib/db';
-import { IconLogo, IconFotos, IconFolder, IconLocation, IconBell } from '../../components/Icon';
+import { IconLogo, IconFotos, IconFolder, IconLocation, IconBell, IconCubicacion, IconAsistencia, IconCloud } from '../../components/Icon';
+
+const DESTACADOS = [
+  { Icon: IconCubicacion, text: 'Cubica tareas por dimensiones, con dibujo de la figura incluido' },
+  { Icon: IconAsistencia, text: 'Controla asistencia y horas extra de toda la cuadrilla' },
+  { Icon: IconCloud, text: 'Funciona sin internet — respalda cuando quieras' },
+];
 
 const PERMISOS = [
   {
@@ -43,6 +49,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 }
 
 export function OnboardingPage() {
+  const [step, setStep] = useState<'intro' | 'permisos'>('intro');
   const [working, setWorking] = useState(false);
 
   async function handleContinue() {
@@ -73,6 +80,39 @@ export function OnboardingPage() {
       permisoNotificaciones,
       permisoUbicacion: false,
     });
+  }
+
+  if (step === 'intro') {
+    return (
+      <div style={{ background: 'var(--dark-card-bg)', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div className="content" style={{ paddingTop: 56, color: '#fff' }}>
+          <div style={{ textAlign: 'center', marginBottom: 34 }}>
+            <div style={{ display: 'inline-flex', width: 64, height: 64, borderRadius: 18, background: 'rgba(255,255,255,.08)', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <IconLogo size={34} stroke="var(--amber)" />
+            </div>
+            <div className="disp" style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>Bitácora Vial</div>
+            <div style={{ color: '#c9c3b8', fontSize: 14, lineHeight: 1.5 }}>
+              El parte diario de tu obra vial, hecho para llenarse desde el terreno.
+            </div>
+          </div>
+
+          <div className="stack" style={{ gap: 14 }}>
+            {DESTACADOS.map(({ Icon, text }) => (
+              <div key={text} className="flex-row gap-10" style={{ alignItems: 'center' }}>
+                <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon size={17} color="var(--amber)" />
+                </div>
+                <span style={{ fontSize: 13, color: '#e8e4da', lineHeight: 1.4 }}>{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ flexShrink: 0, padding: '14px 24px 30px' }}>
+          <button className="btn btn-primary btn-block" onClick={() => setStep('permisos')}>Comenzar</button>
+        </div>
+      </div>
+    );
   }
 
   return (

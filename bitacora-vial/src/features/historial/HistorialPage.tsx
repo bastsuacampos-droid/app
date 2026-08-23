@@ -11,6 +11,7 @@ import { Header } from '../../components/Header';
 import { StatusBadge } from '../../components/StatusBadge';
 import { Toggle } from '../../components/Toggle';
 import { IconSearch, IconCloud, IconDoc, IconTable, IconClockPlus, IconChevronRight } from '../../components/Icon';
+import { Skeleton } from '../../components/Skeleton';
 
 const THUMB_GRADIENTS = [
   'linear-gradient(135deg,#cfd6da,#8a9aa3)',
@@ -26,7 +27,8 @@ export function HistorialPage() {
   const [query, setQuery] = useState('');
   const [filtro, setFiltro] = useState<'todos' | 'semana' | 'mes'>('todos');
 
-  const partes = useLiveQuery(() => db.partes.orderBy('fecha').reverse().toArray(), []) ?? [];
+  const partesRaw = useLiveQuery(() => db.partes.orderBy('fecha').reverse().toArray(), []);
+  const partes = partesRaw ?? [];
   const pendientes = partes.filter((p) => p.estado === 'pendiente');
 
   const filtrados = partes.filter((p) => {
@@ -75,6 +77,9 @@ export function HistorialPage() {
           >
             Respaldar ahora {pendientes.length > 0 ? `(${pendientes.length} pendiente${pendientes.length > 1 ? 's' : ''})` : ''}
           </button>
+          <div style={{ fontSize: 10, color: '#a39c8e', marginTop: 9, lineHeight: 1.4 }}>
+            Tus partes, fotos y documentos se guardan solo en este teléfono — se pierden si desinstalas la app sin respaldar antes.
+          </div>
         </div>
 
         <div className="flex-row gap-8" style={{ marginBottom: 14 }}>
@@ -91,6 +96,15 @@ export function HistorialPage() {
         </div>
 
         <div className="stack" style={{ gap: 9, marginBottom: 18 }}>
+          {partesRaw === undefined && [0, 1, 2].map((i) => (
+            <div key={i} className="card list-row">
+              <Skeleton width={38} height={38} radius={10} />
+              <div className="stack" style={{ gap: 6, flexGrow: 1 }}>
+                <Skeleton width="50%" height={13} />
+                <Skeleton width="30%" height={11} />
+              </div>
+            </div>
+          ))}
           {filtrados.map((p, i) => (
             <button
               key={p.id}
@@ -108,7 +122,7 @@ export function HistorialPage() {
               <StatusBadge estado={p.estado} />
             </button>
           ))}
-          {filtrados.length === 0 && <div className="text-soft" style={{ fontSize: 13 }}>No se encontraron partes.</div>}
+          {partesRaw !== undefined && filtrados.length === 0 && <div className="text-soft" style={{ fontSize: 13 }}>No se encontraron partes.</div>}
         </div>
 
         <div className="section-label">Exportar</div>

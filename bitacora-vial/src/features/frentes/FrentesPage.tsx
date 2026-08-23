@@ -7,7 +7,8 @@ import { IconSearch, IconPlus, IconChevronRight } from '../../components/Icon';
 import type { Frente } from '../../types/models';
 
 export function FrentesPage() {
-  const frentes = useLiveQuery(() => db.frentes.toArray(), []) ?? [];
+  const frentesRaw = useLiveQuery(() => db.frentes.toArray(), []);
+  const frentes = frentesRaw ?? [];
   // Whether a frente has anything hanging off it (tareas, asistencias, fotos, or it's listed on
   // some parte) — computed once here rather than per-row so eliminar() can tell in O(1) whether
   // deleting it would orphan real data.
@@ -134,7 +135,7 @@ export function FrentesPage() {
             );
           })}
 
-          {filtrados.length === 0 && (
+          {frentesRaw !== undefined && filtrados.length === 0 && (
             <div className="text-soft" style={{ textAlign: 'center', fontSize: 12.5, padding: '20px 0' }}>
               No hay frentes {query ? 'que coincidan con la búsqueda' : 'creados todavía'}.
             </div>

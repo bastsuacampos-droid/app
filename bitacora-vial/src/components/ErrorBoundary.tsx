@@ -23,12 +23,24 @@ export class ErrorBoundary extends Component<Props, State> {
         <div style={{ padding: 24, color: 'var(--text)', background: 'var(--bg)', height: '100%', fontFamily: 'sans-serif' }}>
           <h2 style={{ color: 'var(--red)' }}>Algo salió mal</h2>
           <p style={{ fontSize: 13, color: 'var(--text-soft)' }}>{this.state.error.message || this.state.error.name}</p>
-          <button
-            onClick={() => this.setState({ error: null })}
-            style={{ marginTop: 16, background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700 }}
-          >
-            Reintentar
-          </button>
+          <div className="flex-row gap-8" style={{ marginTop: 16 }}>
+            <button
+              onClick={() => this.setState({ error: null })}
+              style={{ background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700 }}
+            >
+              Reintentar
+            </button>
+            {/* Plain hash navigation, not react-router's navigate() — this is a class component
+             * with no router context, and a crash inside the current screen shouldn't require
+             * one to still work. Always available, regardless of which screen broke or whether
+             * its own header/back button is part of what crashed. */}
+            <button
+              onClick={() => { window.location.hash = '/'; this.setState({ error: null }); }}
+              style={{ background: 'var(--surface-alt)', color: 'var(--text)', border: 'none', borderRadius: 10, padding: '10px 16px', fontWeight: 700 }}
+            >
+              Volver al inicio
+            </button>
+          </div>
         </div>
       );
     }

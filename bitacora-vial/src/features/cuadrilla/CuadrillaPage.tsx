@@ -7,7 +7,8 @@ import { IconSearch, IconPlus, IconChevronRight } from '../../components/Icon';
 import type { Trabajador } from '../../types/models';
 
 export function CuadrillaPage() {
-  const trabajadores = useLiveQuery(() => db.trabajadores.toArray(), []) ?? [];
+  const trabajadoresRaw = useLiveQuery(() => db.trabajadores.toArray(), []);
+  const trabajadores = trabajadoresRaw ?? [];
   const conteoAsistencias = useLiveQuery(async () => {
     const rows = await db.asistencias.toArray();
     const counts = new Map<string, number>();
@@ -128,7 +129,7 @@ export function CuadrillaPage() {
             );
           })}
 
-          {filtrados.length === 0 && (
+          {trabajadoresRaw !== undefined && filtrados.length === 0 && (
             <div className="text-soft" style={{ textAlign: 'center', fontSize: 12.5, padding: '20px 0' }}>
               No hay trabajadores {query ? 'que coincidan con la búsqueda' : 'en la cuadrilla'}.
             </div>
