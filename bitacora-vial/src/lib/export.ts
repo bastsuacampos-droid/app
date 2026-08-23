@@ -2,7 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Capacitor } from '@capacitor/core';
 import { db, todayISO } from './db';
-import type { HorasExtraPorTrabajador } from './queries';
+import type { HorasExtraPorTrabajador, SabadosPorTrabajador } from './queries';
 import { formatShortDate } from './date';
 import FileOpener, { writeFileChunked } from './nativeFileOpener';
 
@@ -60,11 +60,21 @@ function toCSV(rows: (string | number)[][]): string {
     .join('\r\n');
 }
 
-export function exportOvertimeCSV(monthLabel: string, report: HorasExtraPorTrabajador[]) {
-  const rows: (string | number)[][] = [['Trabajador', 'Cargo', 'Fecha', 'Horas extra', 'Motivo']];
+const JORNADA_SABADO_LABEL = { medio: 'Media jornada', completo: 'Jornada completa' } as const;
+
+export function exportOvertimeCSV(monthLabel: string, report: HorasExtraPorTrabajador[], sabados: SabadosPorTrabajador[] = []) {
+  // "Jornada sábado" is additive at the end rather than restructuring the existing columns —
+  // sábado se paga a trato (no por hora), so those rows leave Horas extra/Motivo blank instead
+  // of reusing them for something they don't mean.
+  const rows: (string | number)[][] = [['Trabajador', 'Cargo', 'Fecha', 'Horas extra', 'Motivo', 'Jornada sábado']];
   for (const t of report) {
     for (const dia of t.dias) {
-      rows.push([t.nombre, t.cargo, dia.fecha, dia.horas, dia.motivo ?? '']);
+      rows.push([t.nombre, t.cargo, dia.fecha, dia.horas, dia.motivo ?? '', '']);
+    }
+  }
+  for (const t of sabados) {
+    for (const dia of t.dias) {
+      rows.push([t.nombre, t.cargo, dia.fecha, 0, '', JORNADA_SABADO_LABEL[dia.jornada]]);
     }
   }
   const csv = '﻿' + toCSV(rows);
@@ -134,7 +144,13 @@ function drawPageNumbers(doc: jsPDF) {
   }
 }
 
-export function exportOvertimePDF(monthLabel: string, report: HorasExtraPorTrabajador[], totales: { totalHoras: number; totalJornadas: number }) {
+export function exportOvertimePDF(
+  monthLabel: string,
+  report: HorasExtraPorTrabajador[],
+  totales: { totalHoras: number; totalJornadas: number },
+  sabados: SabadosPorTrabajador[] = [],
+  sabadosTotales: { totalSabados: number; totalCompletos: number; totalMedios: number } = { totalSabados: 0, totalCompletos: 0, totalMedios: 0 },
+) {
   const doc = new jsPDF();
   let y = drawReportHeader(doc, 'Reporte mensual de horas extra', monthLabel);
 
@@ -157,63 +173,110 @@ export function exportOvertimePDF(monthLabel: string, report: HorasExtraPorTraba
   });
   y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
 
-  if (report.length === 0) {
-    doc.setFont('helvetica', 'normal');
+  if (report.length > 0) {
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
+    doc.setTextColor(...PDF_TEXT);
+    doc.text('Resumen por trabajador', PAGE_MARGIN, y);
+    y += 4;
+
+    autoTable(doc, {
+      startY: y,
+      margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+      head: [['Trabajador', 'Cargo', 'Días', 'Total horas']],
+      body: report.map((t) => [t.nombre, t.cargo, String(t.dias.length), `${t.totalHoras} h`]),
+      headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [248, 249, 251] },
+      columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right', fontStyle: 'bold' } },
+      styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
+    });
+    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...PDF_TEXT);
+    doc.text('Detalle diario', PAGE_MARGIN, y);
+    y += 4;
+
+    // Grouped by trabajador via a full-width shaded header row ahead of that person's days,
+    // instead of repeating their name on every row.
+    const detailBody: (string | { content: string; colSpan: number; styles: Record<string, unknown> })[][] = [];
+    for (const t of report) {
+      detailBody.push([{
+        content: `${t.nombre} — ${t.cargo}    ·    ${t.dias.length} día(s), ${t.totalHoras} h en total`,
+        colSpan: 3,
+        styles: { fillColor: PDF_ACCENT_SOFT, textColor: PDF_ACCENT_DARK, fontStyle: 'bold', fontSize: 9.5 },
+      }]);
+      for (const dia of t.dias) {
+        detailBody.push([formatShortDate(dia.fecha), `${dia.horas} h`, dia.motivo || '—']);
+      }
+    }
+
+    autoTable(doc, {
+      startY: y,
+      margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+      head: [['Fecha', 'Horas', 'Motivo']],
+      body: detailBody,
+      headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
+      columnStyles: { 0: { cellWidth: 28 }, 1: { cellWidth: 22, halign: 'right' } },
+      styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
+    });
+    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+  } else {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10.5);
     doc.setTextColor(...PDF_TEXT_SOFT);
     doc.text(`Sin horas extra registradas en ${monthLabel.toLowerCase()}.`, PAGE_MARGIN, y);
-    drawPageNumbers(doc);
-    downloadBlob(`horas-extra-${monthLabel}.pdf`, doc.output('blob'));
-    return;
+    y += 12;
   }
 
+  // Sábado se paga a trato (según acuerdo), no por hora — kept as its own section rather than
+  // folded into the horas-extra numbers above, which would misrepresent a negotiated day rate
+  // as if it were an hourly figure.
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...PDF_TEXT);
-  doc.text('Resumen por trabajador', PAGE_MARGIN, y);
+  doc.text('Sábados trabajados (a trato)', PAGE_MARGIN, y);
   y += 4;
 
-  autoTable(doc, {
-    startY: y,
-    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
-    head: [['Trabajador', 'Cargo', 'Días', 'Total horas']],
-    body: report.map((t) => [t.nombre, t.cargo, String(t.dias.length), `${t.totalHoras} h`]),
-    headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
-    alternateRowStyles: { fillColor: [248, 249, 251] },
-    columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right', fontStyle: 'bold' } },
-    styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
-  });
-  y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+  if (sabados.length > 0) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...PDF_TEXT_SOFT);
+    doc.text(
+      `${sabadosTotales.totalSabados} sábado(s) trabajado(s) · ${sabadosTotales.totalCompletos} jornada completa, ${sabadosTotales.totalMedios} media jornada`,
+      PAGE_MARGIN,
+      y,
+    );
+    y += 5;
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.setTextColor(...PDF_TEXT);
-  doc.text('Detalle diario', PAGE_MARGIN, y);
-  y += 4;
-
-  // Grouped by trabajador via a full-width shaded header row ahead of that person's days,
-  // instead of repeating their name on every row.
-  const detailBody: (string | { content: string; colSpan: number; styles: Record<string, unknown> })[][] = [];
-  for (const t of report) {
-    detailBody.push([{
-      content: `${t.nombre} — ${t.cargo}    ·    ${t.dias.length} día(s), ${t.totalHoras} h en total`,
-      colSpan: 3,
-      styles: { fillColor: PDF_ACCENT_SOFT, textColor: PDF_ACCENT_DARK, fontStyle: 'bold', fontSize: 9.5 },
-    }]);
-    for (const dia of t.dias) {
-      detailBody.push([formatShortDate(dia.fecha), `${dia.horas} h`, dia.motivo || '—']);
+    const sabadosBody: (string | { content: string; colSpan: number; styles: Record<string, unknown> })[][] = [];
+    for (const t of sabados) {
+      sabadosBody.push([{
+        content: `${t.nombre} — ${t.cargo}    ·    ${t.dias.length} sábado(s)`,
+        colSpan: 2,
+        styles: { fillColor: PDF_ACCENT_SOFT, textColor: PDF_ACCENT_DARK, fontStyle: 'bold', fontSize: 9.5 },
+      }]);
+      for (const dia of t.dias) {
+        sabadosBody.push([formatShortDate(dia.fecha), JORNADA_SABADO_LABEL[dia.jornada]]);
+      }
     }
-  }
 
-  autoTable(doc, {
-    startY: y,
-    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
-    head: [['Fecha', 'Horas', 'Motivo']],
-    body: detailBody,
-    headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
-    columnStyles: { 0: { cellWidth: 28 }, 1: { cellWidth: 22, halign: 'right' } },
-    styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
-  });
+    autoTable(doc, {
+      startY: y,
+      margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+      head: [['Fecha', 'Jornada']],
+      body: sabadosBody,
+      headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
+      columnStyles: { 0: { cellWidth: 28 } },
+      styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
+    });
+  } else {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10.5);
+    doc.setTextColor(...PDF_TEXT_SOFT);
+    doc.text(`Sin sábados trabajados en ${monthLabel.toLowerCase()}.`, PAGE_MARGIN, y);
+  }
 
   drawPageNumbers(doc);
 

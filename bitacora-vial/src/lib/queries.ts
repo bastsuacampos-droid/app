@@ -2,7 +2,7 @@ import { db, newId, nowISO, todayISO } from './db';
 import { formatDimensionesCompacto } from './cubicacionCalculo';
 import { esSabado, horasNormalesEsperadas } from './horario';
 import type { NuevaPartidaDatos } from './cubicacionCalculo';
-import type { EstadoTarea, Frente, MedicionCubicacion, Parte, Partida } from '../types/models';
+import type { EstadoTarea, Frente, JornadaSabado, MedicionCubicacion, Parte, Partida } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -152,6 +152,52 @@ export async function monthlyOvertimeTotals(monthISO: string) {
   const totalHoras = report.reduce((sum, r) => sum + r.totalHoras, 0);
   const totalJornadas = report.reduce((sum, r) => sum + r.dias.length, 0);
   return { totalHoras, totalJornadas };
+}
+
+export interface DiaSabado {
+  fecha: string;
+  jornada: JornadaSabado;
+}
+
+export interface SabadosPorTrabajador {
+  trabajadorId: string;
+  nombre: string;
+  cargo: string;
+  dias: DiaSabado[];
+}
+
+/** Every Saturday worked within a month (yyyy-MM), grouped by trabajador — kept separate from
+ * monthlyOvertimeReport rather than folded into horasExtra, since sábado se paga a trato
+ * (según acuerdo) and always carries horasExtra: 0 (see asignarTrabajadorAFrente); without this,
+ * a worked Saturday would never surface in any monthly report or summary at all. */
+export async function monthlySaturdaysReport(monthISO: string): Promise<SabadosPorTrabajador[]> {
+  const registros = await db.asistencias
+    .filter((r) => r.fecha.startsWith(monthISO) && r.presente && !!r.jornadaSabado)
+    .toArray();
+
+  const trabajadores = await db.trabajadores.toArray();
+  const byId = new Map(trabajadores.map((t) => [t.id, t]));
+
+  const grouped = new Map<string, SabadosPorTrabajador>();
+  for (const r of registros) {
+    const trabajador = byId.get(r.trabajadorId);
+    if (!trabajador) continue;
+    if (!grouped.has(r.trabajadorId)) {
+      grouped.set(r.trabajadorId, { trabajadorId: r.trabajadorId, nombre: trabajador.nombre, cargo: trabajador.cargo, dias: [] });
+    }
+    grouped.get(r.trabajadorId)!.dias.push({ fecha: r.fecha, jornada: r.jornadaSabado! });
+  }
+
+  return Array.from(grouped.values())
+    .map((e) => ({ ...e, dias: e.dias.sort((a, b) => a.fecha.localeCompare(b.fecha)) }))
+    .sort((a, b) => b.dias.length - a.dias.length);
+}
+
+export async function monthlySaturdaysTotals(monthISO: string) {
+  const report = await monthlySaturdaysReport(monthISO);
+  const totalSabados = report.reduce((sum, r) => sum + r.dias.length, 0);
+  const totalCompletos = report.reduce((sum, r) => sum + r.dias.filter((d) => d.jornada === 'completo').length, 0);
+  return { totalSabados, totalCompletos, totalMedios: totalSabados - totalCompletos };
 }
 
 /** Creates or updates today's execution entry for a partida (one entry per parte+partida). */

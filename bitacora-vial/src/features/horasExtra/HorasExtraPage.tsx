@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { monthlyOvertimeReport, monthlyOvertimeTotals } from '../../lib/queries';
+import { monthlyOvertimeReport, monthlyOvertimeTotals, monthlySaturdaysReport, monthlySaturdaysTotals } from '../../lib/queries';
 import { currentMonthISO, formatMonthLabel, formatShortDate, shiftMonthISO } from '../../lib/date';
 import { exportOvertimeCSV, exportOvertimePDF } from '../../lib/export';
 import { Header } from '../../components/Header';
@@ -11,6 +11,8 @@ export function HorasExtraPage() {
 
   const report = useLiveQuery(() => monthlyOvertimeReport(month), [month]) ?? [];
   const totales = useLiveQuery(() => monthlyOvertimeTotals(month), [month]) ?? { totalHoras: 0, totalJornadas: 0 };
+  const sabados = useLiveQuery(() => monthlySaturdaysReport(month), [month]) ?? [];
+  const sabadosTotales = useLiveQuery(() => monthlySaturdaysTotals(month), [month]) ?? { totalSabados: 0, totalCompletos: 0, totalMedios: 0 };
   const monthLabel = formatMonthLabel(`${month}-01`);
 
   return (
@@ -84,14 +86,60 @@ export function HorasExtraPage() {
             Las horas extra y su motivo se registran día a día en Asistencia; este reporte las consolida automáticamente para el mes seleccionado.
           </span>
         </div>
+
+        {/* Sábado se paga a trato (según acuerdo), no por hora, así que vive en su propia
+         * sección en vez de sumarse a las horas extra de arriba — mezclarlo ahí haría parecer
+         * un valor por hora lo que en realidad es un día pagado por acuerdo. */}
+        <div className="card" style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 11, color: 'var(--text-soft)', textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 6 }}>
+            Sábados trabajados del mes (a trato)
+          </div>
+          <div className="disp" style={{ fontSize: 26, fontWeight: 800, color: 'var(--accent-dark)', marginBottom: 4 }}>
+            {sabadosTotales.totalSabados}
+          </div>
+          <div className="text-soft" style={{ fontSize: 11.5 }}>
+            {sabadosTotales.totalCompletos} jornada completa · {sabadosTotales.totalMedios} media jornada
+          </div>
+        </div>
+
+        <div className="section-label">Sábados por trabajador</div>
+
+        {sabados.length === 0 ? (
+          <div className="text-soft" style={{ fontSize: 13, marginBottom: 16 }}>
+            Sin sábados trabajados en {monthLabel.toLowerCase()}.
+          </div>
+        ) : (
+          <div className="stack" style={{ marginBottom: 16 }}>
+            {sabados.map((t) => (
+              <div key={t.trabajadorId} className="card">
+                <div className="list-row" style={{ marginBottom: 10 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
+                    {t.nombre.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
+                  </div>
+                  <div style={{ flexGrow: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13, fontWeight: 600 }}>{t.nombre}</div>
+                    <div className="text-soft" style={{ fontSize: 11 }}>{t.cargo} · {t.dias.length} sábado(s)</div>
+                  </div>
+                </div>
+                <div className="flex-row gap-8" style={{ flexWrap: 'wrap' }}>
+                  {t.dias.map((d, i) => (
+                    <div key={i} style={{ background: 'var(--surface-alt)', borderRadius: 7, padding: '4px 8px', fontSize: 11 }}>
+                      {formatShortDate(d.fecha)} <span style={{ color: 'var(--accent-dark)', fontWeight: 700 }}>· {d.jornada === 'medio' ? 'Media' : 'Completa'}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div style={{ flexShrink: 0, background: 'var(--surface)', borderTop: '1px solid var(--border)', padding: '12px 20px 16px', display: 'flex', gap: 10 }}>
-        <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => exportOvertimeCSV(month, report)}>CSV</button>
+        <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => exportOvertimeCSV(month, report, sabados)}>CSV</button>
         <button
           className="btn btn-primary"
           style={{ flex: 1.6 }}
-          onClick={() => exportOvertimePDF(monthLabel, report, totales)}
+          onClick={() => exportOvertimePDF(monthLabel, report, totales, sabados, sabadosTotales)}
         >
           <IconDoc size={17} color="#fff" /> Exportar PDF
         </button>
