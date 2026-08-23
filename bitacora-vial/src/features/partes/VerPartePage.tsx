@@ -149,7 +149,11 @@ export function VerPartePage() {
                             color: r.presente ? 'var(--green)' : 'var(--red)',
                           }}
                         >
-                          {r.presente ? `Presente · ${r.horasNormales}h` : 'Ausente'}
+                          {r.presente
+                            ? r.jornadaSabado
+                              ? `Presente · ${r.jornadaSabado === 'medio' ? 'Media jornada' : 'Jornada completa'}`
+                              : `Presente · ${r.horasNormales}h`
+                            : 'Ausente'}
                         </span>
                       </div>
                     );

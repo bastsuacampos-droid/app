@@ -1,5 +1,6 @@
 import { db, newId, nowISO, todayISO } from './db';
 import { formatDimensionesCompacto } from './cubicacionCalculo';
+import { esSabado, horasNormalesEsperadas } from './horario';
 import type { NuevaPartidaDatos } from './cubicacionCalculo';
 import type { EstadoTarea, Frente, MedicionCubicacion, Parte, Partida } from '../types/models';
 
@@ -443,8 +444,13 @@ export async function asignarTrabajadorAFrente(parteId: string, trabajadorId: st
     frenteId,
     fecha,
     presente: true,
-    horasNormales: 8,
+    // Real weekly schedule, not a flat 8 — lunes a jueves 10h, viernes 7h. Sábado se paga a
+    // trato (no por hora), así que horasNormales queda en 0 y se anota jornadaSabado en su
+    // lugar; se asume día completo por defecto, igual que el resto de la semana asume
+    // asistencia completa hasta que se corrija.
+    horasNormales: horasNormalesEsperadas(fecha),
     horasExtra: 0,
+    ...(esSabado(fecha) ? { jornadaSabado: 'completo' as const } : {}),
   });
 }
 

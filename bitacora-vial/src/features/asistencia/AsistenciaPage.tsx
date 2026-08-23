@@ -5,10 +5,11 @@ import { db, newId } from '../../lib/db';
 import { attendanceSummaryForParte, moveTrabajadorAFrente, asignarTrabajadorAFrente } from '../../lib/queries';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { formatLongDate } from '../../lib/date';
+import { descripcionJornada, esSabado } from '../../lib/horario';
 import { Header } from '../../components/Header';
 import { Toggle } from '../../components/Toggle';
 import { IconSearch, IconPlus, IconClockPlus, IconChevronRight } from '../../components/Icon';
-import type { Trabajador } from '../../types/models';
+import type { JornadaSabado, Trabajador } from '../../types/models';
 
 export function AsistenciaPage() {
   const navigate = useNavigate();
@@ -83,9 +84,12 @@ export function AsistenciaPage() {
 
   if (!parte) return null;
 
+  const sabado = esSabado(parte.fecha);
+  const jornada = descripcionJornada(parte.fecha);
+
   return (
     <>
-      <Header title="Asistencia de Personal" subtitle={formatLongDate(parte.fecha)} back>
+      <Header title="Asistencia de Personal" subtitle={jornada ? `${formatLongDate(parte.fecha)} · ${jornada}` : formatLongDate(parte.fecha)} back>
         <div className="search-bar" style={{ marginBottom: 12 }}>
           <IconSearch color="var(--text-soft)" />
           <input placeholder="Buscar trabajador..." value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -139,26 +143,43 @@ export function AsistenciaPage() {
                 </div>
 
                 {r.presente ? (
-                  <div className="flex-row gap-8" style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
-                    <label className="text-soft" style={{ fontSize: 11 }}>
-                      Horas
-                      <input type="number" className="field-input" style={{ width: 50, marginLeft: 6 }} value={r.horasNormales}
-                        onChange={(e) => updateRegistro(r.id, { horasNormales: Number(e.target.value) || 0 })} />
-                    </label>
-                    <label className="text-soft" style={{ fontSize: 11 }}>
-                      Extra
-                      <input type="number" className="field-input" style={{ width: 50, marginLeft: 6, color: r.horasExtra > 0 ? 'var(--accent-dark)' : undefined }}
-                        value={r.horasExtra} onChange={(e) => updateRegistro(r.id, { horasExtra: Number(e.target.value) || 0 })} />
-                    </label>
-                    {r.horasExtra > 0 && (
-                      <input
-                        placeholder="Motivo de la hora extra"
-                        value={r.motivoExtra ?? ''}
-                        onChange={(e) => updateRegistro(r.id, { motivoExtra: e.target.value })}
-                        style={{ flexGrow: 1, border: 'none', background: 'none', fontSize: 10.5, fontStyle: 'italic', color: 'var(--accent-dark)' }}
-                      />
-                    )}
-                  </div>
+                  sabado ? (
+                    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                      <div className="text-soft" style={{ fontSize: 10.5, marginBottom: 6 }}>Sábado a trato — ¿media jornada o completa?</div>
+                      <div className="segmented">
+                        {(['medio', 'completo'] as JornadaSabado[]).map((j) => (
+                          <button
+                            key={j}
+                            className={r.jornadaSabado === j ? 'active' : ''}
+                            onClick={() => updateRegistro(r.id, { jornadaSabado: j })}
+                          >
+                            {j === 'medio' ? 'Media jornada' : 'Jornada completa'}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex-row gap-8" style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+                      <label className="text-soft" style={{ fontSize: 11 }}>
+                        Horas
+                        <input type="number" className="field-input" style={{ width: 50, marginLeft: 6 }} value={r.horasNormales}
+                          onChange={(e) => updateRegistro(r.id, { horasNormales: Number(e.target.value) || 0 })} />
+                      </label>
+                      <label className="text-soft" style={{ fontSize: 11 }}>
+                        Extra
+                        <input type="number" className="field-input" style={{ width: 50, marginLeft: 6, color: r.horasExtra > 0 ? 'var(--accent-dark)' : undefined }}
+                          value={r.horasExtra} onChange={(e) => updateRegistro(r.id, { horasExtra: Number(e.target.value) || 0 })} />
+                      </label>
+                      {r.horasExtra > 0 && (
+                        <input
+                          placeholder="Motivo de la hora extra"
+                          value={r.motivoExtra ?? ''}
+                          onChange={(e) => updateRegistro(r.id, { motivoExtra: e.target.value })}
+                          style={{ flexGrow: 1, border: 'none', background: 'none', fontSize: 10.5, fontStyle: 'italic', color: 'var(--accent-dark)' }}
+                        />
+                      )}
+                    </div>
+                  )
                 ) : (
                   <input
                     placeholder="Motivo de ausencia"

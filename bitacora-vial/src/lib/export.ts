@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { Capacitor } from '@capacitor/core';
 import { db, todayISO } from './db';
 import type { HorasExtraPorTrabajador } from './queries';
@@ -70,38 +71,151 @@ export function exportOvertimeCSV(monthLabel: string, report: HorasExtraPorTraba
   downloadBlob(`horas-extra-${monthLabel}.csv`, new Blob([csv], { type: 'text/csv;charset=utf-8' }));
 }
 
+// Same accent palette as the app's own UI (src/styles/tokens.css) so the exported report
+// reads as the same product, not a generic PDF bolted on the side.
+const PDF_ACCENT: [number, number, number] = [37, 99, 235]; // --accent
+const PDF_ACCENT_DARK: [number, number, number] = [29, 78, 216]; // --accent-dark
+const PDF_ACCENT_SOFT: [number, number, number] = [232, 240, 254]; // --accent-soft
+const PDF_TEXT: [number, number, number] = [20, 23, 28]; // --text
+const PDF_TEXT_SOFT: [number, number, number] = [102, 112, 133]; // --text-soft
+const PDF_BORDER: [number, number, number] = [225, 229, 236]; // --border
+const PAGE_MARGIN = 14;
+
+/** Letterhead + report title shared by every export page: the project header repeated via
+ * autoTable's margin.top on later pages would look off, so this only runs once and everything
+ * after relies on autoTable's own page-break handling instead. Returns the y to start below it. */
+function drawReportHeader(doc: jsPDF, titulo: string, periodo: string): number {
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...PDF_ACCENT_DARK);
+  doc.text('Bitácora Vial', PAGE_MARGIN, 20);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(...PDF_TEXT_SOFT);
+  doc.text('Ruta 5 Sur · Tramo Chillán–Bulnes', PAGE_MARGIN, 26);
+
+  const generado = new Date().toLocaleString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  doc.setFontSize(8.5);
+  doc.text(`Generado el ${generado}`, pageWidth - PAGE_MARGIN, 20, { align: 'right' });
+
+  doc.setDrawColor(...PDF_BORDER);
+  doc.setLineWidth(0.4);
+  doc.line(PAGE_MARGIN, 31, pageWidth - PAGE_MARGIN, 31);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...PDF_TEXT);
+  doc.text(titulo, PAGE_MARGIN, 41);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10.5);
+  doc.setTextColor(...PDF_TEXT_SOFT);
+  doc.text(`Periodo: ${periodo}`, PAGE_MARGIN, 47.5);
+
+  return 55;
+}
+
+/** Page X de Y footer on every page — has to run after the full document is built, since the
+ * total page count isn't known until then. */
+function drawPageNumbers(doc: jsPDF) {
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const totalPages = doc.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...PDF_TEXT_SOFT);
+    doc.text(`Página ${i} de ${totalPages}`, pageWidth - PAGE_MARGIN, pageHeight - 8, { align: 'right' });
+    doc.text('Bitácora Vial — Reporte mensual de horas extra', PAGE_MARGIN, pageHeight - 8);
+  }
+}
+
 export function exportOvertimePDF(monthLabel: string, report: HorasExtraPorTrabajador[], totales: { totalHoras: number; totalJornadas: number }) {
   const doc = new jsPDF();
-  doc.setFontSize(16);
-  doc.text('Bitácora Vial — Reporte mensual de horas extra', 14, 18);
-  doc.setFontSize(11);
-  doc.text(`Periodo: ${monthLabel}`, 14, 27);
-  doc.text(`Total horas extra: ${totales.totalHoras} h   ·   Jornadas: ${totales.totalJornadas}`, 14, 34);
+  let y = drawReportHeader(doc, 'Reporte mensual de horas extra', monthLabel);
 
-  let y = 46;
-  doc.setFontSize(12);
-  for (const t of report) {
-    if (y > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.setFont('helvetica', 'bold');
-    doc.text(`${t.nombre} — ${t.cargo}`, 14, y);
+  // Summary strip — the three headline numbers a supervisor or payroll reviewer looks for
+  // first, as its own compact table rather than buried in running text.
+  autoTable(doc, {
+    startY: y,
+    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+    theme: 'plain',
+    body: [[
+      { content: `${totales.totalHoras}\nHoras extra totales`, styles: { halign: 'center' } },
+      { content: `${report.length}\nTrabajador(es) con horas extra`, styles: { halign: 'center' } },
+      { content: `${totales.totalJornadas}\nJornada(s) registradas`, styles: { halign: 'center' } },
+    ]],
+    styles: { fillColor: PDF_ACCENT_SOFT, textColor: PDF_ACCENT_DARK, fontStyle: 'bold', fontSize: 13, cellPadding: { top: 8, bottom: 6, left: 4, right: 4 }, lineWidth: 0 },
+    didParseCell: (data) => {
+      // The label half of each cell (after the \n) reads as a caption, not part of the number.
+      if (data.section === 'body') data.cell.styles.fontSize = 13;
+    },
+  });
+  y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+
+  if (report.length === 0) {
     doc.setFont('helvetica', 'normal');
-    doc.text(`${t.totalHoras} h · ${t.dias.length} día(s)`, 150, y);
-    y += 6;
-    for (const dia of t.dias) {
-      if (y > 275) {
-        doc.addPage();
-        y = 20;
-      }
-      doc.setFontSize(10);
-      doc.text(`  ${formatShortDate(dia.fecha)} · ${dia.horas} h${dia.motivo ? `  —  ${dia.motivo}` : ''}`, 18, y);
-      y += 5.5;
-      doc.setFontSize(12);
-    }
-    y += 4;
+    doc.setFontSize(11);
+    doc.setTextColor(...PDF_TEXT_SOFT);
+    doc.text(`Sin horas extra registradas en ${monthLabel.toLowerCase()}.`, PAGE_MARGIN, y);
+    drawPageNumbers(doc);
+    downloadBlob(`horas-extra-${monthLabel}.pdf`, doc.output('blob'));
+    return;
   }
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...PDF_TEXT);
+  doc.text('Resumen por trabajador', PAGE_MARGIN, y);
+  y += 4;
+
+  autoTable(doc, {
+    startY: y,
+    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+    head: [['Trabajador', 'Cargo', 'Días', 'Total horas']],
+    body: report.map((t) => [t.nombre, t.cargo, String(t.dias.length), `${t.totalHoras} h`]),
+    headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
+    alternateRowStyles: { fillColor: [248, 249, 251] },
+    columnStyles: { 2: { halign: 'center' }, 3: { halign: 'right', fontStyle: 'bold' } },
+    styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
+  });
+  y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...PDF_TEXT);
+  doc.text('Detalle diario', PAGE_MARGIN, y);
+  y += 4;
+
+  // Grouped by trabajador via a full-width shaded header row ahead of that person's days,
+  // instead of repeating their name on every row.
+  const detailBody: (string | { content: string; colSpan: number; styles: Record<string, unknown> })[][] = [];
+  for (const t of report) {
+    detailBody.push([{
+      content: `${t.nombre} — ${t.cargo}    ·    ${t.dias.length} día(s), ${t.totalHoras} h en total`,
+      colSpan: 3,
+      styles: { fillColor: PDF_ACCENT_SOFT, textColor: PDF_ACCENT_DARK, fontStyle: 'bold', fontSize: 9.5 },
+    }]);
+    for (const dia of t.dias) {
+      detailBody.push([formatShortDate(dia.fecha), `${dia.horas} h`, dia.motivo || '—']);
+    }
+  }
+
+  autoTable(doc, {
+    startY: y,
+    margin: { left: PAGE_MARGIN, right: PAGE_MARGIN },
+    head: [['Fecha', 'Horas', 'Motivo']],
+    body: detailBody,
+    headStyles: { fillColor: PDF_ACCENT, textColor: 255, fontStyle: 'bold' },
+    columnStyles: { 0: { cellWidth: 28 }, 1: { cellWidth: 22, halign: 'right' } },
+    styles: { fontSize: 9.5, textColor: PDF_TEXT, lineColor: PDF_BORDER, lineWidth: 0.2 },
+  });
+
+  drawPageNumbers(doc);
 
   // doc.save() would trigger jsPDF's own direct download, bypassing downloadBlob's
   // capability-aware path — get the bytes instead and route them through downloadBlob.

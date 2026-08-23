@@ -93,6 +93,10 @@ export interface MedicionCubicacion {
   formula?: string;
 }
 
+/** Sábado se trabaja "a trato" — se paga según acuerdo, no por hora — así que en vez de
+ * horasNormales/horasExtra solo se anota si fue media jornada o jornada completa. */
+export type JornadaSabado = 'medio' | 'completo';
+
 export interface RegistroAsistencia {
   id: string;
   parteId: string;
@@ -104,6 +108,10 @@ export interface RegistroAsistencia {
   horasNormales: number;
   horasExtra: number;
   motivoExtra?: string;
+  /** Only set (and only meaningful) when `fecha` falls on a Saturday — see JornadaSabado.
+   * horasNormales/horasExtra stay 0 for a Saturday registro since that day isn't paid by the
+   * hour. */
+  jornadaSabado?: JornadaSabado;
 }
 
 /** Photo stage: lets a task carry a before/during/after record, plus an issue callout. */
