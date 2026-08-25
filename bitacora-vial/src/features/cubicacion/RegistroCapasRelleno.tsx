@@ -3,8 +3,12 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { capasDePartida, registrarCapa, actualizarCapa, eliminarCapa } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { formatShortDate } from '../../lib/date';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { IconCheck, IconPencil, IconPlus, IconX } from '../../components/Icon';
 import type { RegistroCapaRelleno } from '../../types/models';
+
+const MATERIALES_RELLENO = ['Material seleccionado', 'Material del sitio', 'Grava', 'Arena', 'Ripio', 'Bolones'];
+const OTRO_MATERIAL = 'otro';
 
 /** Control de compactación capa por capa para una partida de "Relleno estructural" — se
  * muestra automáticamente junto al avance normal en m³ (ver esRellenoPorCapas), como un
@@ -24,7 +28,10 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
   const [espesor, setEspesor] = useState('');
   const [densidad, setDensidad] = useState('');
   const [muestreadoPor, setMuestreadoPor] = useState('');
+  const [material, setMaterial] = useState('');
+  const [materialOtro, setMaterialOtro] = useState('');
   const espesorRef = useRef<HTMLInputElement>(null);
+  const materialFinal = material === OTRO_MATERIAL ? materialOtro.trim() : material;
 
   // Confirmación visual de "sí quedó guardada" tras cada capa — se limpia sola a los 2.5s. En
   // terreno, sin esto, no queda claro si el toque en "Guardar capa" realmente surtió efecto.
@@ -41,6 +48,8 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     setEspesor('');
     setDensidad('');
     setMuestreadoPor('');
+    setMaterial('');
+    setMaterialOtro('');
     setFormAbierto(true);
   }
 
@@ -50,6 +59,13 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     setEspesor(String(c.espesorCm));
     setDensidad(String(c.densidad));
     setMuestreadoPor(c.muestreadoPor);
+    if (c.material && MATERIALES_RELLENO.includes(c.material)) {
+      setMaterial(c.material);
+      setMaterialOtro('');
+    } else {
+      setMaterial(c.material ? OTRO_MATERIAL : '');
+      setMaterialOtro(c.material ?? '');
+    }
     setFormAbierto(true);
   }
 
@@ -67,8 +83,8 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     const nCapa = parseNumeroDecimal(numeroCapa);
     const nEspesor = parseNumeroDecimal(espesor);
     const nDensidad = parseNumeroDecimal(densidad);
-    if (nCapa <= 0 || nEspesor <= 0 || nDensidad <= 0 || !muestreadoPor.trim()) return;
-    const datos = { numeroCapa: nCapa, espesorCm: nEspesor, densidad: nDensidad, muestreadoPor: muestreadoPor.trim() };
+    if (nCapa <= 0 || nEspesor <= 0 || nDensidad <= 0 || !muestreadoPor.trim() || !materialFinal) return;
+    const datos = { numeroCapa: nCapa, espesorCm: nEspesor, densidad: nDensidad, muestreadoPor: muestreadoPor.trim(), material: materialFinal };
     if (editandoId) {
       await actualizarCapa(editandoId, datos);
       setConfirmacion(nCapa);
@@ -83,7 +99,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     espesorRef.current?.focus();
   }
 
-  const formValido = parseNumeroDecimal(numeroCapa) > 0 && parseNumeroDecimal(espesor) > 0 && parseNumeroDecimal(densidad) > 0 && muestreadoPor.trim().length > 0;
+  const formValido = parseNumeroDecimal(numeroCapa) > 0 && parseNumeroDecimal(espesor) > 0 && parseNumeroDecimal(densidad) > 0 && muestreadoPor.trim().length > 0 && materialFinal.length > 0;
 
   return (
     <div style={{ marginTop: 9, borderTop: '1px dashed var(--border)', paddingTop: 9 }}>
@@ -122,6 +138,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
             >
               <div style={{ fontSize: 11 }}>
                 <strong>Capa {c.numeroCapa}</strong> · {c.espesorCm.toLocaleString('es-CL')} cm · densidad {c.densidad.toLocaleString('es-CL')}
+                {c.material && <span> · {c.material}</span>}
                 <div className="text-soft" style={{ fontSize: 10 }}>
                   Muestreó {c.muestreadoPor} · {formatShortDate(c.fecha)}
                 </div>
@@ -155,6 +172,28 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
         <div className="stack" style={{ gap: 8 }}>
           {editandoId && (
             <div className="text-soft" style={{ fontSize: 10.5, fontWeight: 700 }}>Editando capa {numeroCapa}</div>
+          )}
+          <label className="text-soft" style={{ fontSize: 10.5 }}>
+            Material de relleno
+            <div style={{ marginTop: 3 }}>
+              <CampoDesplegable
+                valor={material}
+                placeholder="Selecciona material"
+                opciones={[
+                  ...MATERIALES_RELLENO.map((m) => ({ value: m, label: m })),
+                  { value: OTRO_MATERIAL, label: 'Otro (especificar)' },
+                ]}
+                onSeleccionar={setMaterial}
+                ancho="100%"
+              />
+            </div>
+          </label>
+          {material === OTRO_MATERIAL && (
+            <input
+              type="text" placeholder="Nombre del material"
+              value={materialOtro} onChange={(e) => setMaterialOtro(e.target.value)}
+              className="field-input" style={{ width: '100%' }}
+            />
           )}
           <div className="flex-row gap-8">
             <label className="text-soft" style={{ fontSize: 10.5, flex: 1 }}>

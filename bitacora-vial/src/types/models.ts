@@ -60,6 +60,10 @@ export interface RegistroCapaRelleno {
   espesorCm: number;
   densidad: number; // g/cm³ o % Proctor, según lo que use el proyecto — sin conversión.
   muestreadoPor: string;
+  /** Material de relleno usado en esa capa (p. ej. "Material seleccionado", "Grava") — texto
+   * libre para poder anotar cualquier variante que use el proyecto. Ausente en capas
+   * registradas antes de este campo (ver db.ts v7); se trata como "no especificado" al leer. */
+  material?: string;
 }
 
 /** Shape of an element measured with the dimension calculator (see CubicacionPage). Not a
