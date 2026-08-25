@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../lib/db';
-import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, crearPartida, registrarMedicion, medicionesDePartida } from '../../lib/queries';
+import { cumulativeForAllPartidas, upsertCubicacionEntry, estadoTarea, crearPartida, registrarMedicion, medicionesDePartida, esRellenoPorCapas } from '../../lib/queries';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { formatShortDate } from '../../lib/date';
 import { TIPO_ELEMENTO_LABEL, TIPOS_POR_UNIDAD, formatDatosMedicion, camposDesdeDatos } from '../../lib/cubicacionCalculo';
@@ -14,6 +14,7 @@ import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { CalculadoraCubicacion } from './CalculadoraCubicacion';
 import { NuevaPartidaForm } from './NuevaPartidaForm';
 import { FiguraMedidas } from './FiguraMedidas';
+import { RegistroCapasRelleno } from './RegistroCapasRelleno';
 import type { CubicacionEntry, EstadoTarea, Partida } from '../../types/models';
 
 const ESTADO_INFO: Record<EstadoTarea, { label: string; bg: string; color: string }> = {
@@ -190,6 +191,8 @@ export function CubicacionPage() {
                     acumulado={acumulado}
                     entry={entry}
                     estado={estado}
+                    parteId={parte.id}
+                    fecha={parte.fecha}
                     calcOpenId={calcOpenId}
                     setCalcOpenId={setCalcOpenId}
                     editContratadoId={editContratadoId}
@@ -225,6 +228,8 @@ export function CubicacionPage() {
                             acumulado={acumuladoH}
                             entry={entryH}
                             estado={estadoH}
+                            parteId={parte.id}
+                            fecha={parte.fecha}
                             calcOpenId={calcOpenId}
                             setCalcOpenId={setCalcOpenId}
                             editContratadoId={editContratadoId}
@@ -284,13 +289,15 @@ export function CubicacionPage() {
  * for one cubicated partida — reused for a top-level (leaf) tarea and for each of its
  * sub-tareas alike. */
 function TareaBody({
-  p, acumulado, entry, estado, calcOpenId, setCalcOpenId, editContratadoId, setEditContratadoId,
+  p, acumulado, entry, estado, parteId, fecha, calcOpenId, setCalcOpenId, editContratadoId, setEditContratadoId,
   onGuardarContratado, onEjecutadoChange, onAgregarMedicionEjecutado, onAgregarMedicionContratado,
 }: {
   p: Partida;
   acumulado: number;
   entry: CubicacionEntry | undefined;
   estado: EstadoTarea;
+  parteId: string;
+  fecha: string;
   calcOpenId: string | null;
   setCalcOpenId: (id: string | null) => void;
   editContratadoId: string | null;
@@ -395,6 +402,7 @@ function TareaBody({
       )}
 
       <MemoriaCalculo partidaId={p.id} />
+      {esRellenoPorCapas(p.nombre) && <RegistroCapasRelleno partidaId={p.id} parteId={parteId} fecha={fecha} />}
     </>
   );
 }

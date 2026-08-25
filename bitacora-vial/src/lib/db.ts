@@ -7,6 +7,7 @@ import type {
   CubicacionEntry,
   MedicionCubicacion,
   RegistroAsistencia,
+  RegistroCapaRelleno,
   Foto,
   Documento,
   Settings,
@@ -20,6 +21,7 @@ class BitacoraDB extends Dexie {
   cubicacionEntries!: Table<CubicacionEntry, string>;
   medicionesCubicacion!: Table<MedicionCubicacion, string>;
   asistencias!: Table<RegistroAsistencia, string>;
+  registrosCapas!: Table<RegistroCapaRelleno, string>;
   fotos!: Table<Foto, string>;
   documentos!: Table<Documento, string>;
   settings!: Table<Settings, string>;
@@ -72,6 +74,12 @@ class BitacoraDB extends Dexie {
     // carry a leftover frenteId property the app no longer reads; nothing to transform.
     this.version(5).stores({
       trabajadores: 'id',
+    });
+
+    // v6: layer-by-layer compaction control (número de capa, espesor, densidad, muestreado
+    // por) for "Relleno estructural" tasks — a new table, no existing data to migrate.
+    this.version(6).stores({
+      registrosCapas: 'id, parteId, partidaId, fecha',
     });
   }
 }

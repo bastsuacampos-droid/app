@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import {
   attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
-  incrementarCubicacionEntry, medicionesDePartida, crearPartida,
+  incrementarCubicacionEntry, medicionesDePartida, crearPartida, esRellenoPorCapas,
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
@@ -14,6 +14,7 @@ import { obtenerClimaPorGPS } from '../../lib/clima';
 import { formatNumericDate, formatShortDate } from '../../lib/date';
 import { NuevaPartidaForm } from '../cubicacion/NuevaPartidaForm';
 import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
+import { RegistroCapasRelleno } from '../cubicacion/RegistroCapasRelleno';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
@@ -487,6 +488,8 @@ export function NuevoPartePage() {
                           key={t.partidaId}
                           t={t}
                           agrupada={g.agrupada}
+                          parteId={parte.id}
+                          fecha={parte.fecha}
                           onAgregarAvance={onAvanceHoyAgregar}
                           onMarcarTerminada={onMarcarTerminada}
                           onCubicar={onCubicarTarea}
@@ -738,10 +741,12 @@ function Stat({ label, value, color }: { label: string; value: number; color: st
  * increment just realizado on top of today's existing entry (never replaces it), and
  * "Terminado" tops the task up to 100% in one tap. */
 function TareaActivaRow({
-  t, agrupada, onAgregarAvance, onMarcarTerminada, onCubicar, onQuitar,
+  t, agrupada, parteId, fecha, onAgregarAvance, onMarcarTerminada, onCubicar, onQuitar,
 }: {
   t: TareaDelDiaItem;
   agrupada: boolean;
+  parteId: string;
+  fecha: string;
   onAgregarAvance: (partidaId: string, incremento: number) => void;
   onMarcarTerminada: (t: TareaDelDiaItem) => void;
   onCubicar: (partidaId: string, valor: number, unidad?: string) => void;
@@ -935,6 +940,7 @@ function TareaActivaRow({
           )}
         </div>
       )}
+      {esRellenoPorCapas(t.nombre) && <RegistroCapasRelleno partidaId={t.partidaId} parteId={parteId} fecha={fecha} />}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { db, newId, nowISO, todayISO } from './db';
 import { formatDimensionesCompacto } from './cubicacionCalculo';
 import { esSabado, horasNormalesEsperadas } from './horario';
 import type { NuevaPartidaDatos } from './cubicacionCalculo';
-import type { EstadoTarea, Frente, JornadaSabado, MedicionCubicacion, Parte, Partida } from '../types/models';
+import type { EstadoTarea, Frente, JornadaSabado, MedicionCubicacion, Parte, Partida, RegistroCapaRelleno } from '../types/models';
 
 // Several screens independently call getOrCreateTodayParte() via useLiveQuery on mount. The
 // *creation* side-effect is deduplicated behind this in-flight promise (keyed by date) so two
@@ -460,6 +460,29 @@ export async function crearPartida(
 export async function medicionesDePartida(partidaId: string): Promise<MedicionCubicacion[]> {
   const rows = await db.medicionesCubicacion.where('partidaId').equals(partidaId).toArray();
   return rows.sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
+
+/** Whether a partida should show the capa-por-capa compaction control form — matched by
+ * nombre exactamente como aparece en el catálogo ("Relleno estructural"), no por unidad, ya
+ * que es la única partida típica de un contrato vial que se controla capa a capa. */
+export function esRellenoPorCapas(nombre: string): boolean {
+  return nombre.trim().toLowerCase() === 'relleno estructural';
+}
+
+/** Capas registradas para una partida de Relleno estructural, ordenadas por número de capa. */
+export async function capasDePartida(partidaId: string): Promise<RegistroCapaRelleno[]> {
+  const rows = await db.registrosCapas.where('partidaId').equals(partidaId).toArray();
+  return rows.sort((a, b) => a.numeroCapa - b.numeroCapa);
+}
+
+/** Registra una capa compactada (control de densidad) para una partida de Relleno
+ * estructural — independiente del avance en m³, que se sigue anotando por separado. */
+export async function registrarCapa(registro: Omit<RegistroCapaRelleno, 'id'>): Promise<void> {
+  await db.registrosCapas.add({ id: newId(), ...registro });
+}
+
+export async function eliminarCapa(id: string): Promise<void> {
+  await db.registrosCapas.delete(id);
 }
 
 /** Moves a worker's attendance row for today to another frente — used to fix a wrong

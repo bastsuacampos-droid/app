@@ -47,6 +47,21 @@ export interface CubicacionEntry {
   cantidadEjecutada: number;
 }
 
+/** Control de compactación capa por capa para una partida de "Relleno estructural" — un
+ * registro independiente del avance en m³ (CubicacionEntry), para dejar trazabilidad de cada
+ * capa compactada: su espesor, la densidad obtenida y quién tomó la muestra. Se muestra
+ * automáticamente cuando la partida se llama "Relleno estructural" (ver esRellenoPorCapas). */
+export interface RegistroCapaRelleno {
+  id: string;
+  parteId: string;
+  partidaId: string;
+  fecha: string; // ISO date (yyyy-MM-dd)
+  numeroCapa: number;
+  espesorCm: number;
+  densidad: number; // g/cm³ o % Proctor, según lo que use el proyecto — sin conversión.
+  muestreadoPor: string;
+}
+
 /** Shape of an element measured with the dimension calculator (see CubicacionPage). Not a
  * transcription of NCh 353 Of.2000 — general geometric quantification for common site
  * elements; each contributes its subtotal to either the contracted quantity or a day's
