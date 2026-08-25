@@ -17,6 +17,11 @@ export type { NuevaPartidaDatos };
 export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGuardar: (datos: NuevaPartidaDatos) => void; onCancelar: () => void; conCatalogo?: boolean }) {
   const [catCategoria, setCatCategoria] = useState(CATALOGO_PARTIDAS[0].categoria);
   const [nombre, setNombre] = useState('');
+  // 'porcentaje' is for tareas that no tienen una cantidad física que cubicar (m³, m², etc.) —
+  // se anota directo qué % de avance se logró, y la tarea se cierra sola al llegar a 100%
+  // acumulado, reusando el mismo motor de cantidadContratada/cantidadEjecutada con
+  // cantidadContratada fija en 100 y unidad '%'.
+  const [modo, setModo] = useState<'cantidad' | 'porcentaje'>('cantidad');
   const [unidad, setUnidad] = useState('m³');
   // Text buffers, not numbers: the input's displayed value must echo exactly what the user
   // typed. Deriving a number and feeding it back into `value` on every keystroke reformats the
@@ -40,6 +45,13 @@ export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGua
     setMostrarCalc(false);
   }
 
+  function cambiarModo(m: 'cantidad' | 'porcentaje') {
+    setModo(m);
+    setMediciones([]);
+    setCantidadContratadaTexto('');
+    setMostrarCalc(false);
+  }
+
   function agregarMedicion(info: MedicionInfo) {
     setMediciones((m) => [...m, info]);
     setCantidadContratadaTexto((t) => String(Number((parseNumeroDecimal(t) + info.subtotal).toFixed(3))));
@@ -53,6 +65,10 @@ export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGua
   }
 
   function guardar() {
+    if (modo === 'porcentaje') {
+      onGuardar({ nombre, unidad: '%', cantidadContratada: 100, avanceHoy, mediciones: [] });
+      return;
+    }
     onGuardar({ nombre, unidad, cantidadContratada, avanceHoy, mediciones });
   }
 
@@ -91,52 +107,92 @@ export function NuevaPartidaForm({ onGuardar, onCancelar, conCatalogo }: { onGua
         style={{ fontWeight: 500 }}
         autoFocus={!conCatalogo}
       />
-      <div className="flex-row gap-8">
-        <CampoDesplegable valor={unidad} opciones={['m³', 'm²', 'ml', 'kg', 'un'].map((u) => ({ value: u, label: u }))} onSeleccionar={cambiarUnidad} ancho={76} />
-        <input
-          type="text"
-          inputMode="decimal"
-          placeholder="Cantidad contratada (si no la sabes, déjala en blanco)"
-          value={cantidadContratadaTexto}
-          onChange={(e) => setCantidadContratadaTexto(e.target.value)}
-          className="field-input"
-          style={{ flexGrow: 1 }}
-        />
+
+      <div>
+        <div className="section-label" style={{ marginBottom: 6 }}>¿Cómo se mide el avance?</div>
+        <div className="flex-row gap-8">
+          <button
+            type="button"
+            onClick={() => cambiarModo('cantidad')}
+            className="chip"
+            style={modo === 'cantidad' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+          >
+            Por cantidad (cubicación)
+          </button>
+          <button
+            type="button"
+            onClick={() => cambiarModo('porcentaje')}
+            className="chip"
+            style={modo === 'porcentaje' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+          >
+            Por % de avance
+          </button>
+        </div>
       </div>
 
-      {tieneFormula && (
-        <button
-          onClick={() => setMostrarCalc((v) => !v)}
-          style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
-        >
-          {mostrarCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
-          <IconChevronRight size={12} color="var(--accent)" style={{ transform: mostrarCalc ? 'rotate(90deg)' : undefined }} />
-        </button>
-      )}
-      {mostrarCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={agregarMedicion} />}
-      {mediciones.length > 0 && (
-        <div className="stack" style={{ gap: 5 }}>
-          {mediciones.map((m, i) => (
-            <div key={i} className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', fontSize: 11, background: 'var(--surface-alt)', borderRadius: 7, padding: '6px 9px' }}>
-              <span>{m.descripcion || TIPO_ELEMENTO_LABEL[m.tipo]}: <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {unidad}</strong></span>
-              <button onClick={() => quitarMedicion(i)} aria-label="Quitar medición" style={{ background: 'none', border: 'none', color: 'var(--red)', fontWeight: 800, fontSize: 14, lineHeight: 1, padding: '0 2px' }}>×</button>
-            </div>
-          ))}
-        </div>
-      )}
+      {modo === 'cantidad' ? (
+        <>
+          <div className="flex-row gap-8">
+            <CampoDesplegable valor={unidad} opciones={['m³', 'm²', 'ml', 'kg', 'un'].map((u) => ({ value: u, label: u }))} onSeleccionar={cambiarUnidad} ancho={76} />
+            <input
+              type="text"
+              inputMode="decimal"
+              placeholder="Cantidad contratada (si no la sabes, déjala en blanco)"
+              value={cantidadContratadaTexto}
+              onChange={(e) => setCantidadContratadaTexto(e.target.value)}
+              className="field-input"
+              style={{ flexGrow: 1 }}
+            />
+          </div>
 
-      <label className="text-soft" style={{ fontSize: 11.5 }}>
-        Avance de hoy en esta tarea (opcional)
-        <input
-          type="text"
-          inputMode="decimal"
-          placeholder="0"
-          value={avanceHoyTexto}
-          onChange={(e) => setAvanceHoyTexto(e.target.value)}
-          className="field-input"
-          style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
-        />
-      </label>
+          {tieneFormula && (
+            <button
+              onClick={() => setMostrarCalc((v) => !v)}
+              style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 11.5, fontWeight: 700, padding: 0, textAlign: 'left', display: 'flex', alignItems: 'center', gap: 4 }}
+            >
+              {mostrarCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
+              <IconChevronRight size={12} color="var(--accent)" style={{ transform: mostrarCalc ? 'rotate(90deg)' : undefined }} />
+            </button>
+          )}
+          {mostrarCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={agregarMedicion} />}
+          {mediciones.length > 0 && (
+            <div className="stack" style={{ gap: 5 }}>
+              {mediciones.map((m, i) => (
+                <div key={i} className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', fontSize: 11, background: 'var(--surface-alt)', borderRadius: 7, padding: '6px 9px' }}>
+                  <span>{m.descripcion || TIPO_ELEMENTO_LABEL[m.tipo]}: <strong>{m.subtotal.toLocaleString('es-CL', { maximumFractionDigits: 3 })} {unidad}</strong></span>
+                  <button onClick={() => quitarMedicion(i)} aria-label="Quitar medición" style={{ background: 'none', border: 'none', color: 'var(--red)', fontWeight: 800, fontSize: 14, lineHeight: 1, padding: '0 2px' }}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <label className="text-soft" style={{ fontSize: 11.5 }}>
+            Avance de hoy en esta tarea (opcional)
+            <input
+              type="text"
+              inputMode="decimal"
+              placeholder="0"
+              value={avanceHoyTexto}
+              onChange={(e) => setAvanceHoyTexto(e.target.value)}
+              className="field-input"
+              style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
+            />
+          </label>
+        </>
+      ) : (
+        <label className="text-soft" style={{ fontSize: 11.5 }}>
+          % de avance logrado hoy (opcional) — la tarea se marca "Terminada" sola al llegar a 100% acumulado
+          <input
+            type="text"
+            inputMode="decimal"
+            placeholder="Ej: 20"
+            value={avanceHoyTexto}
+            onChange={(e) => setAvanceHoyTexto(e.target.value)}
+            className="field-input"
+            style={{ width: '100%', marginTop: 4, fontWeight: 500 }}
+          />
+        </label>
+      )}
       <div className="flex-row gap-8">
         <button className="btn btn-outline" style={{ flex: 1 }} onClick={onCancelar}>Cancelar</button>
         <button className="btn btn-primary" style={{ flex: 1 }} onClick={guardar}>Guardar tarea</button>

@@ -15,8 +15,10 @@ import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
 import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
+import { ETAPAS } from '../../lib/etapas';
 import { IconCalendar, IconSun, IconCloudOutline, IconRain, IconChevronRight, IconPlus, IconFotos, IconX, IconCheck, IconLocation, IconRefresh } from '../../components/Icon';
-import type { Clima, EstadoTarea, Turno } from '../../types/models';
+import type { Clima, EstadoTarea, EtapaFoto, Turno } from '../../types/models';
 
 const ORDEN_RECOMENDACION: Record<EstadoTarea, number> = { pendiente: 0, en_progreso_hoy: 1, sin_iniciar: 2, terminada: 3 };
 
@@ -41,6 +43,12 @@ export function NuevoPartePage() {
   const [tabTareas, setTabTareas] = useState<'activas' | 'completadas'>('activas');
   const [climaGpsEstado, setClimaGpsEstado] = useState<'inactivo' | 'cargando' | 'error'>('inactivo');
   const [climaGpsError, setClimaGpsError] = useState('');
+  // "+ Agregar fotos" primero pregunta etapa (y tarea, si hay alguna activa hoy) antes de abrir
+  // la cámara — antes se disparaba la cámara directo con etapa 'durante' fija, sin poder
+  // clasificar la foto igual que se puede hacer desde Fotografías.
+  const [showCapture, setShowCapture] = useState(false);
+  const [etapaSel, setEtapaSel] = useState<EtapaFoto>('durante');
+  const [tareaFotoSel, setTareaFotoSel] = useState('');
 
   const entriesHoy = useLiveQuery(
     () => (parte ? db.cubicacionEntries.where('parteId').equals(parte.id).toArray() : []),
@@ -146,12 +154,12 @@ export function NuevoPartePage() {
     await incrementarCubicacionEntry(parte.id, t.partidaId, parte.fecha, t.contratado - t.acumulado);
   }
 
-  /** Sets cantidadContratada for a task that was added without one, right from this page —
-   * without a target quantity there's nothing for acumulado to reach, so "% avance" and
-   * "Terminado" have no meaning yet ("sin cubicar aún"). */
-  async function onCubicarTarea(partidaId: string, valor: number) {
+  /** Sets cantidadContratada (y opcionalmente unidad, al convertir a seguimiento por % de
+   * avance) for a task that was added without una cantidad — sin eso no hay nada que acumulado
+   * pueda alcanzar, así que "% avance" y "Terminado" no tienen sentido aún ("sin cubicar aún"). */
+  async function onCubicarTarea(partidaId: string, valor: number, unidad?: string) {
     if (valor <= 0) return;
-    await db.partidas.update(partidaId, { cantidadContratada: valor });
+    await db.partidas.update(partidaId, unidad ? { cantidadContratada: valor, unidad } : { cantidadContratada: valor });
   }
 
   async function usarClimaGPS() {
@@ -188,11 +196,15 @@ export function NuevoPartePage() {
       id: newId(),
       parteId: parte.id,
       frenteId,
-      etapa: 'durante',
+      partidaId: tareaFotoSel || undefined,
+      etapa: etapaSel,
       blob: file,
       anotada: false,
       capturedAt: nowISO(),
     });
+    setShowCapture(false);
+    setTareaFotoSel('');
+    setEtapaSel('durante');
   }
 
   async function finalizar() {
@@ -210,6 +222,9 @@ export function NuevoPartePage() {
   const frenteActualId = frenteFiltroTareaId && parte.frentesIds.includes(frenteFiltroTareaId)
     ? frenteFiltroTareaId
     : (parte.frentesIds[0] ?? null);
+  // Tareas activas de hoy, aplanadas, para el selector "¿Qué tarea documenta esta foto?" al
+  // capturar desde esta página — mismas tareas que ya se ven en la sección 3.
+  const tareasParaFoto = gruposActivos.flatMap((g) => g.items);
 
   return (
     <>
@@ -607,15 +622,56 @@ export function NuevoPartePage() {
             Ver todas <IconChevronRight size={15} color="var(--accent)" />
           </button>
         </div>
-        <div className="photo-strip" style={{ marginBottom: 20 }}>
+        <div className="photo-strip" style={{ marginBottom: showCapture ? 12 : 20 }}>
           {fotos.map((foto) => (
             <PhotoStripThumb key={foto.id} blob={foto.blob} onClick={() => navigate(`/fotos/${foto.id}/editar`)} />
           ))}
-          <button className="photo-strip-add" onClick={() => fileInputRef.current?.click()} aria-label="Agregar fotos">
-            <IconFotos size={20} color="var(--text-soft)" />
-            <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-soft)' }}>+ AGREGAR FOTOS</span>
-          </button>
+          {!showCapture && (
+            <button className="photo-strip-add" onClick={() => setShowCapture(true)} aria-label="Agregar fotos">
+              <IconFotos size={20} color="var(--text-soft)" />
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-soft)' }}>+ AGREGAR FOTOS</span>
+            </button>
+          )}
         </div>
+
+        {showCapture && (
+          <div className="card" style={{ marginBottom: 20 }}>
+            {tareasParaFoto.length > 0 && (
+              <>
+                <div className="section-label" style={{ marginBottom: 8 }}>Tarea que documenta esta foto</div>
+                <div style={{ marginBottom: 14 }}>
+                  <CampoDesplegable
+                    valor={tareaFotoSel}
+                    opciones={[
+                      { value: '', label: 'General (sin tarea asociada)' },
+                      ...tareasParaFoto.map((t) => ({ value: t.partidaId, label: t.nombre })),
+                    ]}
+                    onSeleccionar={setTareaFotoSel}
+                    ancho="100%"
+                    estiloBoton={{ fontWeight: 500 }}
+                  />
+                </div>
+              </>
+            )}
+            <div className="section-label" style={{ marginBottom: 8 }}>Etapa</div>
+            <div className="flex-row gap-8" style={{ flexWrap: 'wrap', marginBottom: 14 }}>
+              {ETAPAS.map((e) => (
+                <button
+                  key={e.id}
+                  onClick={() => setEtapaSel(e.id)}
+                  className="chip"
+                  style={etapaSel === e.id ? { background: e.color, borderColor: e.color, color: '#fff' } : undefined}
+                >
+                  {e.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex-row gap-8">
+              <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => { setShowCapture(false); setTareaFotoSel(''); setEtapaSel('durante'); }}>Cancelar</button>
+              <button className="btn btn-primary" style={{ flex: 1.4 }} onClick={() => fileInputRef.current?.click()}>Elegir foto</button>
+            </div>
+          </div>
+        )}
         <input ref={fileInputRef} type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={onFileSelected} />
 
         <SectionHeading n={5} title="Observaciones y Anotaciones" />
@@ -683,11 +739,12 @@ function TareaActivaRow({
   agrupada: boolean;
   onAgregarAvance: (partidaId: string, incremento: number) => void;
   onMarcarTerminada: (t: TareaDelDiaItem) => void;
-  onCubicar: (partidaId: string, valor: number) => void;
+  onCubicar: (partidaId: string, valor: number, unidad?: string) => void;
   onQuitar: (partidaId: string) => void;
 }) {
   const [incremento, setIncremento] = useState('');
   const [cubicarAbierto, setCubicarAbierto] = useState(false);
+  const [modoCubicar, setModoCubicar] = useState<'cantidad' | 'porcentaje'>('cantidad');
   const [contratadaInput, setContratadaInput] = useState('');
   const [dibujoAbierto, setDibujoAbierto] = useState(false);
   const mediciones = useLiveQuery(
@@ -708,6 +765,11 @@ function TareaActivaRow({
     if (valor <= 0) return;
     onCubicar(t.partidaId, valor);
     setContratadaInput('');
+    setCubicarAbierto(false);
+  }
+
+  function confirmarPorcentaje() {
+    onCubicar(t.partidaId, 100, '%');
     setCubicarAbierto(false);
   }
 
@@ -756,7 +818,9 @@ function TareaActivaRow({
         )}
       </div>
       <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-        {t.cubicada ? (
+        {t.unidad === '%' ? (
+          <span className="text-soft" style={{ fontSize: 11.5 }}>Avance acumulado: {t.pct}%</span>
+        ) : t.cubicada ? (
           <span className="text-soft" style={{ fontSize: 11.5 }}>
             {t.acumulado.toLocaleString('es-CL')} de {t.contratado.toLocaleString('es-CL')} {t.unidad} (Avance {t.pct}%)
           </span>
@@ -788,20 +852,48 @@ function TareaActivaRow({
         </div>
       </div>
       {cubicarAbierto && !t.cubicada && (
-        <div className="flex-row gap-8" style={{ alignItems: 'center', marginTop: 6 }}>
-          <input
-            type="text"
-            inputMode="decimal"
-            autoFocus
-            placeholder={`Cantidad contratada (${t.unidad})`}
-            value={contratadaInput}
-            onChange={(e) => setContratadaInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); guardarContratada(); } }}
-            className="field-input"
-            style={{ width: 140 }}
-          />
-          <button onClick={guardarContratada} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
-          <button onClick={() => { setCubicarAbierto(false); setContratadaInput(''); }} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+        <div style={{ marginTop: 6 }}>
+          <div className="flex-row gap-8" style={{ marginBottom: 6 }}>
+            <button
+              type="button"
+              onClick={() => setModoCubicar('cantidad')}
+              className="chip"
+              style={modoCubicar === 'cantidad' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+            >
+              Por cantidad
+            </button>
+            <button
+              type="button"
+              onClick={() => setModoCubicar('porcentaje')}
+              className="chip"
+              style={modoCubicar === 'porcentaje' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+            >
+              Por % de avance
+            </button>
+          </div>
+          {modoCubicar === 'cantidad' ? (
+            <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+              <input
+                type="text"
+                inputMode="decimal"
+                autoFocus
+                placeholder={`Cantidad contratada (${t.unidad})`}
+                value={contratadaInput}
+                onChange={(e) => setContratadaInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); guardarContratada(); } }}
+                className="field-input"
+                style={{ width: 140 }}
+              />
+              <button onClick={guardarContratada} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+              <button onClick={() => { setCubicarAbierto(false); setContratadaInput(''); }} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+            </div>
+          ) : (
+            <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+              <span className="text-soft" style={{ fontSize: 10.5, flexGrow: 1 }}>Esta tarea pasa a seguirse por % de avance.</span>
+              <button onClick={confirmarPorcentaje} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Confirmar</button>
+              <button onClick={() => setCubicarAbierto(false)} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+            </div>
+          )}
         </div>
       )}
       {t.unidad === 'ml' && t.cubicada && (
@@ -809,7 +901,7 @@ function TareaActivaRow({
           Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml por completar
         </div>
       )}
-      {t.unidad !== 'ml' && (
+      {t.unidad !== 'ml' && t.unidad !== '%' && (
         <div style={{ marginTop: 2 }}>
           <div className="flex-row gap-8" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
             {t.dimensionesTexto && (

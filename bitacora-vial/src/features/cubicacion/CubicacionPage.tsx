@@ -125,8 +125,8 @@ export function CubicacionPage() {
     setSubAddParentId(null);
   }
 
-  async function guardarCantidadContratada(partidaId: string, valor: number) {
-    await db.partidas.update(partidaId, { cantidadContratada: valor });
+  async function guardarCantidadContratada(partidaId: string, valor: number, unidad?: string) {
+    await db.partidas.update(partidaId, unidad ? { cantidadContratada: valor, unidad } : { cantidadContratada: valor });
     setEditContratadoId(null);
   }
 
@@ -295,7 +295,7 @@ function TareaBody({
   setCalcOpenId: (id: string | null) => void;
   editContratadoId: string | null;
   setEditContratadoId: (id: string | null) => void;
-  onGuardarContratado: (partidaId: string, valor: number) => void;
+  onGuardarContratado: (partidaId: string, valor: number, unidad?: string) => void;
   onEjecutadoChange: (partidaId: string, valor: number) => void;
   onAgregarMedicionEjecutado: (info: MedicionInfo) => void;
   onAgregarMedicionContratado: (info: MedicionInfo) => void;
@@ -335,11 +335,13 @@ function TareaBody({
         <div className="progress-fill" style={{ width: `${pct}%` }} />
       </div>
       <div className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: 'var(--text-soft)', marginBottom: 9 }}>
-        {editContratadoId === p.id ? (
+        {p.unidad === '%' ? (
+          <span>Tarea por % de avance</span>
+        ) : editContratadoId === p.id ? (
           <ContratadoEditor
             unidad={p.unidad}
             valorInicial={p.cantidadContratada}
-            onGuardar={(v) => onGuardarContratado(p.id, v)}
+            onGuardar={(v, u) => onGuardarContratado(p.id, v, u)}
             onCancelar={() => setEditContratadoId(null)}
             onAgregarMedicion={onAgregarMedicionContratado}
           />
@@ -353,7 +355,7 @@ function TareaBody({
               : `Contratado: ${p.cantidadContratada.toLocaleString('es-CL')} ${p.unidad} (editar)`}
           </button>
         )}
-        <span>Acum: {acumulado.toLocaleString('es-CL')} {p.unidad} · {pct}%</span>
+        <span>{p.unidad === '%' ? `Acumulado: ${pct}%` : `Acum: ${acumulado.toLocaleString('es-CL')} ${p.unidad} · ${pct}%`}</span>
       </div>
       <div className="flex-row gap-8">
         <span className="text-soft" style={{ fontSize: 12, flexGrow: 1 }}>Ejecutado hoy</span>
@@ -457,45 +459,79 @@ function MemoriaCalculo({ partidaId }: { partidaId: string }) {
 }
 
 /** Inline editor for a task's cantidadContratada — lets you cubicar una tarea que se agregó
- * sin dato fijo (a mano o por elementos con la calculadora), o corregirlo más adelante. */
+ * sin dato fijo (a mano o por elementos con la calculadora), corregirlo más adelante, o
+ * convertirla a seguimiento por % de avance (unidad '%', cantidadContratada fija en 100) en
+ * vez de por cantidad física — onGuardar recibe la unidad también cuando cambia. */
 function ContratadoEditor({
   unidad, valorInicial, onGuardar, onCancelar, onAgregarMedicion,
 }: {
   unidad: string;
   valorInicial: number;
-  onGuardar: (v: number) => void;
+  onGuardar: (v: number, unidad?: string) => void;
   onCancelar: () => void;
   onAgregarMedicion: (info: MedicionInfo) => void;
 }) {
+  const [modo, setModo] = useState<'cantidad' | 'porcentaje'>('cantidad');
   const [valor, setValor] = useState(valorInicial ? String(valorInicial) : '');
   const [modoCalc, setModoCalc] = useState(false);
   const tieneFormula = !!TIPOS_POR_UNIDAD[unidad];
 
   return (
     <div style={{ width: '100%' }}>
-      <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
-        <input
-          type="text"
-          inputMode="decimal"
-          autoFocus
-          placeholder={`Cantidad contratada (${unidad})`}
-          value={valor}
-          onChange={(e) => setValor(e.target.value)}
-          className="field-input"
-          style={{ width: 120 }}
-        />
-        <button onClick={() => onGuardar(parseNumeroDecimal(valor))} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
-        <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
-      </div>
-      {tieneFormula && (
+      <div className="flex-row gap-8" style={{ marginBottom: 8 }}>
         <button
-          onClick={() => setModoCalc((v) => !v)}
-          style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700, padding: '7px 0 0' }}
+          type="button"
+          onClick={() => setModo('cantidad')}
+          className="chip"
+          style={modo === 'cantidad' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
         >
-          {modoCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
+          Por cantidad
         </button>
+        <button
+          type="button"
+          onClick={() => setModo('porcentaje')}
+          className="chip"
+          style={modo === 'porcentaje' ? { background: 'var(--accent)', borderColor: 'var(--accent)', color: '#fff' } : undefined}
+        >
+          Por % de avance
+        </button>
+      </div>
+
+      {modo === 'cantidad' ? (
+        <>
+          <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+            <input
+              type="text"
+              inputMode="decimal"
+              autoFocus
+              placeholder={`Cantidad contratada (${unidad})`}
+              value={valor}
+              onChange={(e) => setValor(e.target.value)}
+              className="field-input"
+              style={{ width: 120 }}
+            />
+            <button onClick={() => onGuardar(parseNumeroDecimal(valor))} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Guardar</button>
+            <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+          </div>
+          {tieneFormula && (
+            <button
+              onClick={() => setModoCalc((v) => !v)}
+              style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 10.5, fontWeight: 700, padding: '7px 0 0' }}
+            >
+              {modoCalc ? 'Ocultar calculadora' : '¿Prefieres cubicar por medidas?'}
+            </button>
+          )}
+          {modoCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={onAgregarMedicion} />}
+        </>
+      ) : (
+        <div className="flex-row gap-8" style={{ alignItems: 'center' }}>
+          <span className="text-soft" style={{ fontSize: 10.5, flexGrow: 1 }}>
+            Esta tarea pasa a seguirse por % de avance, no por cantidad.
+          </span>
+          <button onClick={() => onGuardar(100, '%')} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, fontSize: 11 }}>Confirmar</button>
+          <button onClick={onCancelar} style={{ background: 'none', border: 'none', color: 'var(--text-soft)', fontSize: 11 }}>Cancelar</button>
+        </div>
       )}
-      {modoCalc && <CalculadoraCubicacion unidad={unidad} modo="contratado" onAgregar={onAgregarMedicion} />}
     </div>
   );
 }

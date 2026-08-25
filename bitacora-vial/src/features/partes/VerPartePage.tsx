@@ -277,7 +277,9 @@ function TareaResumenRow({ t, agrupada }: { t: TareaDelDiaItem; agrupada: boolea
         <span className="text-soft" style={{ fontSize: 11.5 }}>
           {t.avanceHoy > 0 ? `Avance de hoy: ${t.avanceHoy.toLocaleString('es-CL')} ${t.unidad}` : 'Sin avance registrado hoy'}
         </span>
-        {t.unidad === 'ml' ? (
+        {t.unidad === '%' ? (
+          <span className="text-soft" style={{ fontSize: 11 }}>Avance acumulado: {t.pct}%</span>
+        ) : t.unidad === 'ml' ? (
           t.cubicada && (
             <span className="text-soft" style={{ fontSize: 11 }}>Faltan {(t.faltanteLineal ?? 0).toLocaleString('es-CL')} ml</span>
           )
@@ -289,7 +291,7 @@ function TareaResumenRow({ t, agrupada }: { t: TareaDelDiaItem; agrupada: boolea
           <span className="text-soft" style={{ fontSize: 11 }}>Total {t.acumulado.toLocaleString('es-CL')} {t.unidad} · sin cubicar</span>
         )}
       </div>
-      {t.unidad !== 'ml' && (
+      {t.unidad !== 'ml' && t.unidad !== '%' && (
         <div style={{ marginTop: 4 }}>
           <div className="flex-row gap-8" style={{ alignItems: 'center', flexWrap: 'wrap' }}>
             {t.dimensionesTexto && (
