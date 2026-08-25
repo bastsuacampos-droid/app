@@ -1,18 +1,18 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { capasDePartida, registrarCapa, eliminarCapa } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { formatShortDate } from '../../lib/date';
-import { IconChevronRight, IconPlus, IconX } from '../../components/Icon';
+import { IconCheck, IconPlus, IconX } from '../../components/Icon';
 
 /** Control de compactación capa por capa para una partida de "Relleno estructural" — se
  * muestra automáticamente junto al avance normal en m³ (ver esRellenoPorCapas), como un
  * registro aparte para dejar trazabilidad ordenada de cada capa: espesor, densidad obtenida
- * y quién tomó la muestra. Compartido entre Nuevo Parte y Cubicación. */
+ * y quién tomó la muestra. Compartido entre Nuevo Parte y Cubicación. El listado ya guardado
+ * se muestra siempre (sin necesidad de desplegarlo) para poder revisarlo de un vistazo. */
 export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId: string; parteId: string; fecha: string }) {
   const capas = useLiveQuery(() => capasDePartida(partidaId), [partidaId]) ?? [];
   const [formAbierto, setFormAbierto] = useState(false);
-  const [listaAbierta, setListaAbierta] = useState(false);
   const siguienteCapa = capas.length > 0 ? Math.max(...capas.map((c) => c.numeroCapa)) + 1 : 1;
 
   const [numeroCapa, setNumeroCapa] = useState('');
@@ -20,6 +20,15 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
   const [densidad, setDensidad] = useState('');
   const [muestreadoPor, setMuestreadoPor] = useState('');
   const espesorRef = useRef<HTMLInputElement>(null);
+
+  // Confirmación visual de "sí quedó guardada" tras cada capa — se limpia sola a los 2.5s. En
+  // terreno, sin esto, no queda claro si el toque en "Guardar capa" realmente surtió efecto.
+  const [confirmacion, setConfirmacion] = useState<number | null>(null);
+  useEffect(() => {
+    if (confirmacion === null) return;
+    const t = setTimeout(() => setConfirmacion(null), 2500);
+    return () => clearTimeout(t);
+  }, [confirmacion]);
 
   function abrirForm() {
     setNumeroCapa(String(siguienteCapa));
@@ -45,7 +54,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     setNumeroCapa(String(nCapa + 1));
     setEspesor('');
     setDensidad('');
-    setListaAbierta(true);
+    setConfirmacion(nCapa);
     espesorRef.current?.focus();
   }
 
@@ -53,18 +62,10 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
 
   return (
     <div style={{ marginTop: 9, borderTop: '1px dashed var(--border)', paddingTop: 9 }}>
-      <div className="flex-row gap-8" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: formAbierto || (listaAbierta && capas.length > 0) ? 8 : 0 }}>
-        <button
-          type="button"
-          onClick={() => capas.length > 0 && setListaAbierta((v) => !v)}
-          className="flex-row"
-          style={{ gap: 4, alignItems: 'center', background: 'none', border: 'none', color: 'var(--text)', fontSize: 11.5, fontWeight: 700, padding: 0 }}
-        >
+      <div className="flex-row gap-8" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <span style={{ fontSize: 11.5, fontWeight: 700 }}>
           Registro de capas {capas.length > 0 ? `(${capas.length})` : ''}
-          {capas.length > 0 && (
-            <IconChevronRight size={11} color="var(--text-soft)" style={{ transform: listaAbierta ? 'rotate(90deg)' : undefined }} />
-          )}
-        </button>
+        </span>
         {!formAbierto && (
           <button
             type="button"
@@ -77,10 +78,23 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
         )}
       </div>
 
-      {listaAbierta && capas.length > 0 && (
+      {confirmacion !== null && (
+        <div className="flex-row gap-6" style={{ alignItems: 'center', background: 'var(--green-soft)', color: 'var(--green)', borderRadius: 8, padding: '6px 9px', marginBottom: 8, fontSize: 11, fontWeight: 700 }}>
+          <IconCheck size={13} color="var(--green)" /> Capa {confirmacion} guardada
+        </div>
+      )}
+
+      {capas.length > 0 ? (
         <div className="stack" style={{ gap: 6, marginBottom: formAbierto ? 10 : 0 }}>
           {capas.map((c) => (
-            <div key={c.id} className="flex-row" style={{ justifyContent: 'space-between', alignItems: 'center', gap: 8, background: 'var(--surface-alt)', borderRadius: 8, padding: '7px 9px' }}>
+            <div
+              key={c.id}
+              className="flex-row"
+              style={{
+                justifyContent: 'space-between', alignItems: 'center', gap: 8, borderRadius: 8, padding: '7px 9px',
+                background: c.numeroCapa === confirmacion ? 'var(--green-soft)' : 'var(--surface-alt)',
+              }}
+            >
               <div style={{ fontSize: 11 }}>
                 <strong>Capa {c.numeroCapa}</strong> · {c.espesorCm.toLocaleString('es-CL')} cm · densidad {c.densidad.toLocaleString('es-CL')}
                 <div className="text-soft" style={{ fontSize: 10 }}>
@@ -97,6 +111,10 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
             </div>
           ))}
         </div>
+      ) : (
+        !formAbierto && (
+          <div className="text-soft" style={{ fontSize: 10.5 }}>Aún no hay capas registradas.</div>
+        )
       )}
 
       {formAbierto && (
