@@ -485,6 +485,12 @@ export async function eliminarCapa(id: string): Promise<void> {
   await db.registrosCapas.delete(id);
 }
 
+/** Corrige una capa ya registrada (número, espesor, densidad o quién tomó la muestra) —
+ * para cuando se anotó algo mal y no conviene borrar y perder el lugar en la lista. */
+export async function actualizarCapa(id: string, datos: Omit<RegistroCapaRelleno, 'id' | 'parteId' | 'partidaId' | 'fecha'>): Promise<void> {
+  await db.registrosCapas.update(id, datos);
+}
+
 /** Moves a worker's attendance row for today to another frente — used to fix a wrong
  * assignment without losing their hours already logged for the day. */
 export async function moveTrabajadorAFrente(registroId: string, nuevoFrenteId: string) {

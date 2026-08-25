@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { capasDePartida, registrarCapa, eliminarCapa } from '../../lib/queries';
+import { capasDePartida, registrarCapa, actualizarCapa, eliminarCapa } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { formatShortDate } from '../../lib/date';
-import { IconCheck, IconPlus, IconX } from '../../components/Icon';
+import { IconCheck, IconPencil, IconPlus, IconX } from '../../components/Icon';
+import type { RegistroCapaRelleno } from '../../types/models';
 
 /** Control de compactación capa por capa para una partida de "Relleno estructural" — se
  * muestra automáticamente junto al avance normal en m³ (ver esRellenoPorCapas), como un
@@ -13,6 +14,10 @@ import { IconCheck, IconPlus, IconX } from '../../components/Icon';
 export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId: string; parteId: string; fecha: string }) {
   const capas = useLiveQuery(() => capasDePartida(partidaId), [partidaId]) ?? [];
   const [formAbierto, setFormAbierto] = useState(false);
+  // Set cuando el formulario está corrigiendo una capa ya guardada (en vez de agregando una
+  // nueva) — guardar() se comporta distinto en cada caso: crea vs. actualiza, y editar cierra
+  // el formulario al terminar en vez de dejarlo abierto para la siguiente.
+  const [editandoId, setEditandoId] = useState<string | null>(null);
   const siguienteCapa = capas.length > 0 ? Math.max(...capas.map((c) => c.numeroCapa)) + 1 : 1;
 
   const [numeroCapa, setNumeroCapa] = useState('');
@@ -31,6 +36,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
   }, [confirmacion]);
 
   function abrirForm() {
+    setEditandoId(null);
     setNumeroCapa(String(siguienteCapa));
     setEspesor('');
     setDensidad('');
@@ -38,19 +44,38 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     setFormAbierto(true);
   }
 
-  // Guardar deja el formulario abierto (en vez de cerrarlo) porque casi siempre se registran
-  // varias capas seguidas en la misma visita — solo limpia espesor/densidad y avanza el N° de
-  // capa, para poder cargarlas una tras otra sin tener que volver a tocar "Registrar capa"
-  // cada vez. "Muestreado por" queda igual, ya que suele ser la misma persona toda la sesión.
+  function editarCapa(c: RegistroCapaRelleno) {
+    setEditandoId(c.id);
+    setNumeroCapa(String(c.numeroCapa));
+    setEspesor(String(c.espesorCm));
+    setDensidad(String(c.densidad));
+    setMuestreadoPor(c.muestreadoPor);
+    setFormAbierto(true);
+  }
+
+  function cerrarForm() {
+    setFormAbierto(false);
+    setEditandoId(null);
+  }
+
+  // Al agregar, guardar deja el formulario abierto (en vez de cerrarlo) porque casi siempre se
+  // registran varias capas seguidas en la misma visita — solo limpia espesor/densidad y avanza
+  // el N° de capa, para poder cargarlas una tras otra sin tener que volver a tocar "Registrar
+  // capa" cada vez. Al editar en cambio se corrige una sola capa a la vez, así que cierra el
+  // formulario al terminar.
   async function guardar() {
     const nCapa = parseNumeroDecimal(numeroCapa);
     const nEspesor = parseNumeroDecimal(espesor);
     const nDensidad = parseNumeroDecimal(densidad);
     if (nCapa <= 0 || nEspesor <= 0 || nDensidad <= 0 || !muestreadoPor.trim()) return;
-    await registrarCapa({
-      parteId, partidaId, fecha,
-      numeroCapa: nCapa, espesorCm: nEspesor, densidad: nDensidad, muestreadoPor: muestreadoPor.trim(),
-    });
+    const datos = { numeroCapa: nCapa, espesorCm: nEspesor, densidad: nDensidad, muestreadoPor: muestreadoPor.trim() };
+    if (editandoId) {
+      await actualizarCapa(editandoId, datos);
+      setConfirmacion(nCapa);
+      cerrarForm();
+      return;
+    }
+    await registrarCapa({ parteId, partidaId, fecha, ...datos });
     setNumeroCapa(String(nCapa + 1));
     setEspesor('');
     setDensidad('');
@@ -101,13 +126,22 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
                   Muestreó {c.muestreadoPor} · {formatShortDate(c.fecha)}
                 </div>
               </div>
-              <button
-                onClick={() => eliminarCapa(c.id)}
-                aria-label={`Quitar registro de capa ${c.numeroCapa}`}
-                style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex', flexShrink: 0 }}
-              >
-                <IconX size={12} color="var(--text-soft)" />
-              </button>
+              <div className="flex-row gap-8" style={{ flexShrink: 0 }}>
+                <button
+                  onClick={() => editarCapa(c)}
+                  aria-label={`Editar registro de capa ${c.numeroCapa}`}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex' }}
+                >
+                  <IconPencil size={12} color="var(--text-soft)" />
+                </button>
+                <button
+                  onClick={() => eliminarCapa(c.id)}
+                  aria-label={`Quitar registro de capa ${c.numeroCapa}`}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-soft)', padding: 0, display: 'flex' }}
+                >
+                  <IconX size={12} color="var(--text-soft)" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -119,6 +153,9 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
 
       {formAbierto && (
         <div className="stack" style={{ gap: 8 }}>
+          {editandoId && (
+            <div className="text-soft" style={{ fontSize: 10.5, fontWeight: 700 }}>Editando capa {numeroCapa}</div>
+          )}
           <div className="flex-row gap-8">
             <label className="text-soft" style={{ fontSize: 10.5, flex: 1 }}>
               N° de capa
@@ -158,8 +195,10 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
             </label>
           </div>
           <div className="flex-row gap-8">
-            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setFormAbierto(false)}>Cerrar</button>
-            <button className="btn btn-primary" style={{ flex: 1 }} disabled={!formValido} onClick={guardar}>Guardar capa</button>
+            <button className="btn btn-outline" style={{ flex: 1 }} onClick={cerrarForm}>{editandoId ? 'Cancelar' : 'Cerrar'}</button>
+            <button className="btn btn-primary" style={{ flex: 1 }} disabled={!formValido} onClick={guardar}>
+              {editandoId ? 'Guardar cambios' : 'Guardar capa'}
+            </button>
           </div>
         </div>
       )}
