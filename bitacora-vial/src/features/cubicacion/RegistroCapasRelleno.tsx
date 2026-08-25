@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { capasDePartida, registrarCapa, eliminarCapa } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
@@ -19,6 +19,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
   const [espesor, setEspesor] = useState('');
   const [densidad, setDensidad] = useState('');
   const [muestreadoPor, setMuestreadoPor] = useState('');
+  const espesorRef = useRef<HTMLInputElement>(null);
 
   function abrirForm() {
     setNumeroCapa(String(siguienteCapa));
@@ -28,6 +29,10 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
     setFormAbierto(true);
   }
 
+  // Guardar deja el formulario abierto (en vez de cerrarlo) porque casi siempre se registran
+  // varias capas seguidas en la misma visita — solo limpia espesor/densidad y avanza el N° de
+  // capa, para poder cargarlas una tras otra sin tener que volver a tocar "Registrar capa"
+  // cada vez. "Muestreado por" queda igual, ya que suele ser la misma persona toda la sesión.
   async function guardar() {
     const nCapa = parseNumeroDecimal(numeroCapa);
     const nEspesor = parseNumeroDecimal(espesor);
@@ -37,7 +42,11 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
       parteId, partidaId, fecha,
       numeroCapa: nCapa, espesorCm: nEspesor, densidad: nDensidad, muestreadoPor: muestreadoPor.trim(),
     });
-    setFormAbierto(false);
+    setNumeroCapa(String(nCapa + 1));
+    setEspesor('');
+    setDensidad('');
+    setListaAbierta(true);
+    espesorRef.current?.focus();
   }
 
   const formValido = parseNumeroDecimal(numeroCapa) > 0 && parseNumeroDecimal(espesor) > 0 && parseNumeroDecimal(densidad) > 0 && muestreadoPor.trim().length > 0;
@@ -104,6 +113,7 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
             <label className="text-soft" style={{ fontSize: 10.5, flex: 1 }}>
               Espesor (cm)
               <input
+                ref={espesorRef}
                 type="text" inputMode="decimal" placeholder="Ej: 20"
                 value={espesor} onChange={(e) => setEspesor(e.target.value)}
                 className="field-input" style={{ width: '100%', marginTop: 3 }}
@@ -124,12 +134,13 @@ export function RegistroCapasRelleno({ partidaId, parteId, fecha }: { partidaId:
               <input
                 type="text" placeholder="Nombre"
                 value={muestreadoPor} onChange={(e) => setMuestreadoPor(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && formValido) { e.preventDefault(); guardar(); } }}
                 className="field-input" style={{ width: '100%', marginTop: 3 }}
               />
             </label>
           </div>
           <div className="flex-row gap-8">
-            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setFormAbierto(false)}>Cancelar</button>
+            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setFormAbierto(false)}>Cerrar</button>
             <button className="btn btn-primary" style={{ flex: 1 }} disabled={!formValido} onClick={guardar}>Guardar capa</button>
           </div>
         </div>
