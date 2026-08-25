@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { db, newId, nowISO } from '../../lib/db';
 import {
   attendanceSummaryForParte, tareasActivasAgrupadas, tareasDisponiblesParaFrentes, tareasCompletadas,
-  incrementarCubicacionEntry, medicionesDePartida,
+  incrementarCubicacionEntry, medicionesDePartida, crearPartida,
 } from '../../lib/queries';
 import type { TareaDelDiaItem } from '../../lib/queries';
 import { parseNumeroDecimal } from '../../lib/numero';
 import { camposDesdeDatos } from '../../lib/cubicacionCalculo';
+import type { NuevaPartidaDatos } from '../../lib/cubicacionCalculo';
 import { obtenerClimaPorGPS } from '../../lib/clima';
 import { formatNumericDate, formatShortDate } from '../../lib/date';
-import { NuevaTareaModal } from '../cubicacion/NuevaTareaModal';
+import { NuevaPartidaForm } from '../cubicacion/NuevaPartidaForm';
 import { FiguraMedidas } from '../cubicacion/FiguraMedidas';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
@@ -160,6 +161,15 @@ export function NuevoPartePage() {
   async function onCubicarTarea(partidaId: string, valor: number, unidad?: string) {
     if (valor <= 0) return;
     await db.partidas.update(partidaId, unidad ? { cantidadContratada: valor, unidad } : { cantidadContratada: valor });
+  }
+
+  /** Crea una tarea nueva directo desde el formulario que se despliega en esta misma sección
+   * (ya sea por cantidad/cubicación o por % de avance) y la deja seleccionada para hoy. */
+  async function guardarNuevaTarea(datos: NuevaPartidaDatos) {
+    if (!datos.nombre.trim() || !frenteActualId || !parte) return;
+    const id = await crearPartida(frenteActualId, parte.id, parte.fecha, datos);
+    seleccionarTarea(id);
+    setNuevaTareaAbierta(false);
   }
 
   async function usarClimaGPS() {
@@ -504,7 +514,7 @@ export function NuevoPartePage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => frenteActualId && setNuevaTareaAbierta(true)}
+                  onClick={() => frenteActualId && setNuevaTareaAbierta((v) => !v)}
                   disabled={!frenteActualId}
                   className="flex-row"
                   style={{
@@ -513,9 +523,15 @@ export function NuevoPartePage() {
                     opacity: frenteActualId ? 1 : 0.5,
                   }}
                 >
-                  <IconPlus size={14} color="var(--accent-dark)" /> Cubicar nueva tarea
+                  <IconPlus size={14} color="var(--accent-dark)" /> Agregar tarea nueva
                 </button>
               </div>
+
+              {nuevaTareaAbierta && frenteActualId && (
+                <div style={{ marginTop: 12 }}>
+                  <NuevaPartidaForm onGuardar={guardarNuevaTarea} onCancelar={() => setNuevaTareaAbierta(false)} conCatalogo />
+                </div>
+              )}
 
               {dropdownTareaAbierto && (
                 <div
@@ -696,17 +712,6 @@ export function NuevoPartePage() {
           </>
         )}
       </div>
-
-      {nuevaTareaAbierta && frenteActualId && (
-        <NuevaTareaModal
-          frenteId={frenteActualId}
-          frenteNombre={frentes.find((f) => f.id === frenteActualId)?.nombre}
-          parteId={parte.id}
-          fecha={parte.fecha}
-          onGuardado={(id) => { seleccionarTarea(id); setNuevaTareaAbierta(false); }}
-          onCerrar={() => setNuevaTareaAbierta(false)}
-        />
-      )}
     </>
   );
 }
