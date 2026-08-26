@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../lib/db';
 import { IconPencil, IconArrow, IconText, IconSquare, IconCircle, IconUndo, IconTrash } from '../../components/Icon';
+import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { ETAPA_POR_ID } from '../../lib/etapas';
 
 type Tool = 'lapiz' | 'flecha' | 'texto' | 'rect' | 'circulo';
@@ -29,6 +30,7 @@ export function EditorFotoPage() {
   const foto = useLiveQuery(() => (fotoId ? db.fotos.get(fotoId) : undefined), [fotoId]);
   const frente = useLiveQuery(() => (foto ? db.frentes.get(foto.frenteId) : undefined), [foto?.frenteId]);
   const tarea = useLiveQuery(() => (foto?.partidaId ? db.partidas.get(foto.partidaId) : undefined), [foto?.partidaId]);
+  const frentes = useLiveQuery(() => db.frentes.filter((f) => f.activo).toArray(), []) ?? [];
 
   // Abre siempre en modo "ver" (solo la foto, sin herramientas) — antes saltaba directo a
   // edición apenas se abría una foto, lo que hacía sentir la galería como un editor forzado en
@@ -318,6 +320,35 @@ export function EditorFotoPage() {
           />
         )}
       </div>
+
+      {modo === 'ver' && (
+        <div className="stack" style={{ gap: 10, padding: '12px 16px calc(16px + var(--safe-bottom, 0px))', flexShrink: 0 }}>
+          <div>
+            <div style={{ color: '#d8d3c8', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 5 }}>
+              Frente
+            </div>
+            <CampoDesplegable
+              valor={foto.frenteId}
+              opciones={frentes.map((f) => ({ value: f.id, label: f.nombre + (f.km ? ` · ${f.km}` : '') }))}
+              onSeleccionar={(id) => db.fotos.update(foto.id, { frenteId: id })}
+              ancho="100%"
+              estiloBoton={{ background: 'rgba(255,255,255,.08)', border: 'none', color: '#fff', borderRadius: 10, padding: '10px 12px', fontSize: 13, fontWeight: 600 }}
+            />
+          </div>
+          <div>
+            <div style={{ color: '#d8d3c8', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 5 }}>
+              Comentario
+            </div>
+            <textarea
+              value={foto.comentario ?? ''}
+              onChange={(e) => db.fotos.update(foto.id, { comentario: e.target.value })}
+              placeholder="Agrega un comentario a esta foto…"
+              rows={2}
+              style={{ width: '100%', background: 'rgba(255,255,255,.08)', border: 'none', borderRadius: 10, padding: '10px 12px', color: '#fff', fontSize: 13, resize: 'vertical' }}
+            />
+          </div>
+        </div>
+      )}
 
       {modo === 'editar' && (
         <>

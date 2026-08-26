@@ -5,7 +5,7 @@ import { db, newId, nowISO } from '../../lib/db';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { Skeleton } from '../../components/Skeleton';
-import { IconPencil, IconFotos } from '../../components/Icon';
+import { IconPencil, IconFotos, IconComment } from '../../components/Icon';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { ETAPAS, ETAPA_POR_ID } from '../../lib/etapas';
 import type { EtapaFoto } from '../../types/models';
@@ -97,6 +97,7 @@ export function FotosPage() {
                 key={foto.id}
                 blob={foto.blob}
                 anotada={foto.anotada}
+                tieneComentario={!!foto.comentario?.trim()}
                 capturedAt={foto.capturedAt}
                 etapa={foto.etapa}
                 frenteNombre={frentes.find((f) => f.id === foto.frenteId)?.nombre ?? ''}
@@ -159,8 +160,8 @@ export function FotosPage() {
 }
 
 function PhotoThumb({
-  blob, anotada, capturedAt, etapa, frenteNombre, tareaNombre, onClick,
-}: { blob: Blob; anotada: boolean; capturedAt: string; etapa: EtapaFoto; frenteNombre: string; tareaNombre?: string; onClick: () => void }) {
+  blob, anotada, tieneComentario, capturedAt, etapa, frenteNombre, tareaNombre, onClick,
+}: { blob: Blob; anotada: boolean; tieneComentario: boolean; capturedAt: string; etapa: EtapaFoto; frenteNombre: string; tareaNombre?: string; onClick: () => void }) {
   const [url, setUrl] = useState<string>('');
   useEffect(() => {
     const objectUrl = URL.createObjectURL(blob);
@@ -186,11 +187,18 @@ function PhotoThumb({
             {etapaInfo.label}
           </span>
         )}
-        {anotada && (
-          <div style={{ background: 'var(--accent)', color: '#fff', borderRadius: 7, padding: '3px 7px', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <IconPencil size={11} color="#fff" />
-          </div>
-        )}
+        <div className="flex-row gap-4">
+          {tieneComentario && (
+            <div style={{ background: 'rgba(20,18,15,.7)', color: '#fff', borderRadius: 7, padding: '3px 7px', display: 'flex', alignItems: 'center' }}>
+              <IconComment size={11} color="#fff" />
+            </div>
+          )}
+          {anotada && (
+            <div style={{ background: 'var(--accent)', color: '#fff', borderRadius: 7, padding: '3px 7px', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <IconPencil size={11} color="#fff" />
+            </div>
+          )}
+        </div>
       </div>
       <div style={{ position: 'absolute', left: 8, bottom: 8, right: 8, color: '#fff', fontSize: 10, fontWeight: 600, textShadow: '0 1px 3px rgba(0,0,0,.5)' }}>
         {tareaNombre && <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tareaNombre}</div>}

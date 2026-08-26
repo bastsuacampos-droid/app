@@ -146,6 +146,9 @@ export interface Foto {
   blob: Blob;
   anotada: boolean;
   capturedAt: string; // ISO datetime
+  /** Comentario libre a pie de foto — p. ej. una aclaración de contexto que no queda en la
+   * imagen misma. Ausente en fotos tomadas antes de esta versión, tratar como "sin comentario". */
+  comentario?: string;
 }
 
 export type DocumentoCategoria = 'Planos' | 'Permisos' | 'Contratos' | 'Fichas técnicas' | 'Otros';
