@@ -107,7 +107,7 @@ export function FotosPage() {
           </div>
         )}
         <div className="text-soft" style={{ textAlign: 'center', fontSize: 11.5, marginTop: 16 }}>
-          Toca una foto para anotarla o dibujar sobre ella
+          Toca una foto para verla en grande — anotarla o dibujar es opcional desde ahí
         </div>
       </div>
 

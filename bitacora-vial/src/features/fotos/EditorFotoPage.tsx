@@ -30,9 +30,16 @@ export function EditorFotoPage() {
   const frente = useLiveQuery(() => (foto ? db.frentes.get(foto.frenteId) : undefined), [foto?.frenteId]);
   const tarea = useLiveQuery(() => (foto?.partidaId ? db.partidas.get(foto.partidaId) : undefined), [foto?.partidaId]);
 
+  // Abre siempre en modo "ver" (solo la foto, sin herramientas) — antes saltaba directo a
+  // edición apenas se abría una foto, lo que hacía sentir la galería como un editor forzado en
+  // vez de un visor. "Editar" es una acción explícita desde la vista.
+  const [modo, setModo] = useState<'ver' | 'editar'>('ver');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
+  // Object URL for the plain <img> shown in modo "ver" — separate from imgRef, which the canvas
+  // draws from once editing starts.
+  const [imgUrl, setImgUrl] = useState('');
   // CSS-pixel display size — the canvas's own pixel buffer is this times `dpr` (see below), so
   // shape coordinates and pointer coordinates can both stay in this one simple space regardless
   // of screen density.
@@ -61,6 +68,7 @@ export function EditorFotoPage() {
   useEffect(() => {
     if (!foto) return;
     const url = URL.createObjectURL(foto.blob);
+    setImgUrl(url);
     const img = new Image();
     img.onload = () => {
       imgRef.current = img;
@@ -231,12 +239,22 @@ export function EditorFotoPage() {
     setShapes((s) => s.slice(0, -1));
   }
 
+  function entrarAEditar() {
+    setShapes([]);
+    setModo('editar');
+  }
+
+  function cancelarEdicion() {
+    setShapes([]);
+    setModo('ver');
+  }
+
   async function guardar() {
     const canvas = canvasRef.current;
     if (!canvas || !foto) return;
     canvas.toBlob(async (blob) => {
       if (!blob) return;
-      await db.fotos.update(foto.id, { blob, anotada: shapes.length > 0 });
+      await db.fotos.update(foto.id, { blob, anotada: shapes.length > 0 || foto.anotada });
       navigate(`/fotos?parte=${foto.parteId}`);
     }, 'image/jpeg', 0.9);
   }
@@ -268,72 +286,89 @@ export function EditorFotoPage() {
             <span>{hora}{frente?.km ? ` · ${frente.km}` : ''}</span>
           </div>
         </div>
-        <div className="flex-row gap-8" style={{ flexShrink: 0 }}>
+        <div className="flex-row gap-8" style={{ flexShrink: 0, alignItems: 'center' }}>
           <button onClick={eliminar} style={{ background: 'none', border: 'none', color: 'var(--red)', display: 'flex', padding: 4 }} aria-label="Eliminar foto">
             <IconTrash size={19} color="var(--red)" />
           </button>
-          <button onClick={guardar} style={{ background: 'none', border: 'none', color: 'var(--amber)', fontSize: 13.5, fontWeight: 800 }}>
-            Guardar
-          </button>
+          {modo === 'ver' ? (
+            <button onClick={entrarAEditar} className="flex-row gap-6" style={{ alignItems: 'center', background: 'var(--accent)', border: 'none', borderRadius: 20, padding: '7px 14px', color: '#fff', fontSize: 12.5, fontWeight: 700 }}>
+              <IconPencil size={14} color="#fff" /> Editar
+            </button>
+          ) : (
+            <button onClick={guardar} style={{ background: 'none', border: 'none', color: 'var(--amber)', fontSize: 13.5, fontWeight: 800 }}>
+              Guardar
+            </button>
+          )}
         </div>
       </div>
 
       <div ref={containerRef} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-        <canvas
-          ref={canvasRef}
-          width={Math.round(size.w * dpr)}
-          height={Math.round(size.h * dpr)}
-          style={{ width: size.w, height: size.h, touchAction: 'none', borderRadius: 8 }}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerCancel}
-        />
+        {modo === 'ver' ? (
+          imgUrl && <img src={imgUrl} alt="" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8 }} />
+        ) : (
+          <canvas
+            ref={canvasRef}
+            width={Math.round(size.w * dpr)}
+            height={Math.round(size.h * dpr)}
+            style={{ width: size.w, height: size.h, touchAction: 'none', borderRadius: 8 }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerCancel}
+          />
+        )}
       </div>
 
-      <div className="flex-row gap-8" style={{ padding: '12px 16px 10px', alignItems: 'center' }}>
-        {COLORS.map((c) => (
-          <button
-            key={c}
-            onClick={() => setColor(c)}
-            style={{
-              width: 26, height: 26, borderRadius: '50%', background: c, flexShrink: 0,
-              border: color === c ? '2px solid #fff' : '2px solid rgba(255,255,255,.35)',
-            }}
-            aria-label={`Color ${c}`}
-          />
-        ))}
-        <div className="flex-row gap-8" style={{ flexGrow: 1, marginLeft: 6 }}>
-          <span style={{ color: '#d8d3c8', fontSize: 10, whiteSpace: 'nowrap' }}>Opacidad</span>
-          <input
-            type="range" min={10} max={90} value={Math.round(opacity * 100)}
-            onChange={(e) => setOpacity(Number(e.target.value) / 100)}
-            style={{ flexGrow: 1 }}
-          />
-          <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>{Math.round(opacity * 100)}%</span>
-        </div>
-      </div>
-
-      <div style={{ background: 'rgba(20,18,15,.88)', padding: '10px 10px 20px', display: 'flex', justifyContent: 'space-around' }}>
-        {TOOLS.map(({ id, label, Icon }) => (
-          <button
-            key={id}
-            onClick={() => setTool(id)}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: tool === id ? '#fff' : '#d8d3c8' }}
-          >
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: tool === id ? 'var(--accent)' : 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon color={tool === id ? '#fff' : '#d8d3c8'} />
+      {modo === 'editar' && (
+        <>
+          <div className="flex-row gap-8" style={{ padding: '12px 16px 10px', alignItems: 'center' }}>
+            <button onClick={cancelarEdicion} style={{ background: 'none', border: 'none', color: '#d8d3c8', fontSize: 11.5, fontWeight: 700, marginRight: 2 }}>
+              Cancelar
+            </button>
+            {COLORS.map((c) => (
+              <button
+                key={c}
+                onClick={() => setColor(c)}
+                style={{
+                  width: 26, height: 26, borderRadius: '50%', background: c, flexShrink: 0,
+                  border: color === c ? '2px solid #fff' : '2px solid rgba(255,255,255,.35)',
+                }}
+                aria-label={`Color ${c}`}
+              />
+            ))}
+            <div className="flex-row gap-8" style={{ flexGrow: 1, marginLeft: 6 }}>
+              <span style={{ color: '#d8d3c8', fontSize: 10, whiteSpace: 'nowrap' }}>Opacidad</span>
+              <input
+                type="range" min={10} max={90} value={Math.round(opacity * 100)}
+                onChange={(e) => setOpacity(Number(e.target.value) / 100)}
+                style={{ flexGrow: 1 }}
+              />
+              <span style={{ color: '#fff', fontSize: 10, fontWeight: 700 }}>{Math.round(opacity * 100)}%</span>
             </div>
-            <span style={{ fontSize: 9 }}>{label}</span>
-          </button>
-        ))}
-        <button onClick={undo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: '#d8d3c8' }}>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <IconUndo color="#d8d3c8" />
           </div>
-          <span style={{ fontSize: 9 }}>Deshacer</span>
-        </button>
-      </div>
+
+          <div style={{ background: 'rgba(20,18,15,.88)', padding: '10px 10px 20px', display: 'flex', justifyContent: 'space-around' }}>
+            {TOOLS.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                onClick={() => setTool(id)}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: tool === id ? '#fff' : '#d8d3c8' }}
+              >
+                <div style={{ width: 42, height: 42, borderRadius: 12, background: tool === id ? 'var(--accent)' : 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon color={tool === id ? '#fff' : '#d8d3c8'} />
+                </div>
+                <span style={{ fontSize: 9 }}>{label}</span>
+              </button>
+            ))}
+            <button onClick={undo} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, background: 'none', border: 'none', color: '#d8d3c8' }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <IconUndo color="#d8d3c8" />
+              </div>
+              <span style={{ fontSize: 9 }}>Deshacer</span>
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
