@@ -5,7 +5,7 @@ import { db, newId, nowISO } from '../../lib/db';
 import { useActiveParte } from '../../lib/useActiveParte';
 import { Header } from '../../components/Header';
 import { Skeleton } from '../../components/Skeleton';
-import { IconPencil, IconFotos, IconComment } from '../../components/Icon';
+import { IconPencil, IconFotos, IconComment, IconCheck } from '../../components/Icon';
 import { CampoDesplegable } from '../../components/CampoDesplegable';
 import { ETAPAS, ETAPA_POR_ID } from '../../lib/etapas';
 import type { EtapaFoto } from '../../types/models';
@@ -24,6 +24,15 @@ export function FotosPage() {
   const [showCapture, setShowCapture] = useState(false);
   const [tareaSel, setTareaSel] = useState('');
   const [etapaSel, setEtapaSel] = useState<EtapaFoto>('durante');
+  // Confirmación breve tras cada foto guardada — el panel de captura se queda abierto (en vez
+  // de cerrarse) para poder tomar varias fotos seguidas de la misma tarea/etapa sin volver a
+  // tocar "+ Agregar foto" cada vez.
+  const [fotoGuardada, setFotoGuardada] = useState(false);
+  useEffect(() => {
+    if (!fotoGuardada) return;
+    const t = setTimeout(() => setFotoGuardada(false), 2000);
+    return () => clearTimeout(t);
+  }, [fotoGuardada]);
 
   const fotosRaw = useLiveQuery(
     () => (parte ? db.fotos.where('parteId').equals(parte.id).reverse().sortBy('capturedAt') : []),
@@ -53,9 +62,14 @@ export function FotosPage() {
       anotada: false,
       capturedAt: nowISO(),
     });
+    setFotoGuardada(true);
+  }
+
+  function cerrarCaptura() {
     setShowCapture(false);
     setTareaSel('');
     setEtapaSel('durante');
+    setFotoGuardada(false);
   }
 
   if (!parte) return null;
@@ -142,8 +156,14 @@ export function FotosPage() {
             ))}
           </div>
 
+          {fotoGuardada && (
+            <div className="flex-row gap-6" style={{ alignItems: 'center', background: 'var(--green-soft)', color: 'var(--green)', borderRadius: 8, padding: '6px 9px', marginBottom: 12, fontSize: 11.5, fontWeight: 700 }}>
+              <IconCheck size={13} color="var(--green)" /> Foto agregada — toca "Elegir foto" para la siguiente
+            </div>
+          )}
+
           <div className="flex-row gap-8">
-            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setShowCapture(false)}>Cancelar</button>
+            <button className="btn btn-outline" style={{ flex: 1 }} onClick={cerrarCaptura}>Listo</button>
             <button className="btn btn-primary" style={{ flex: 1.4 }} onClick={() => fileInputRef.current?.click()}>Elegir foto</button>
           </div>
         </div>
