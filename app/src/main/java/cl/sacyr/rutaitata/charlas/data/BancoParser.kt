@@ -14,11 +14,11 @@ object BancoParser {
                 colorHex = it.getString("color"),
             )
         }
+        val orden = especialidades.withIndex().associate { it.value.id to it.index }
         val charlas = raiz.getJSONArray("charlas").objetos().map {
             Charla(
                 id = it.getInt("id"),
-                semana = it.getInt("semana"),
-                dia = it.getInt("dia"),
+                codigo = it.optString("codigo").ifBlank { it.getInt("id").toString() },
                 especialidadId = it.getString("especialidad"),
                 titulo = it.getString("titulo"),
                 porQue = it.getString("porQue"),
@@ -29,6 +29,9 @@ object BancoParser {
                 reglaOro = it.getString("reglaOro"),
                 preguntaCierre = it.getString("preguntaCierre"),
             )
+        }.sortedWith(compareBy({ orden[it.especialidadId] ?: Int.MAX_VALUE }, { it.codigo }))
+        val plan = raiz.optJSONArray("plan")?.objetos().orEmpty().map {
+            EntradaPlan(semana = it.getInt("semana"), dia = it.getInt("dia"), charlaId = it.getInt("charla"))
         }.sortedWith(compareBy({ it.semana }, { it.dia }))
         return Banco(
             proyecto = raiz.getString("proyecto"),
@@ -37,6 +40,7 @@ object BancoParser {
             novedades = raiz.optString("novedades"),
             especialidades = especialidades,
             charlas = charlas,
+            plan = plan,
         )
     }
 
@@ -51,18 +55,26 @@ object BancoParser {
         banco.charlas.groupBy { it.id }.filterValues { it.size > 1 }.keys.forEach {
             errores += "Id de charla repetido: $it"
         }
-        banco.charlas.groupBy { it.semana to it.dia }.filterValues { it.size > 1 }.keys.forEach {
-            errores += "Hay más de una charla en semana ${it.first} día ${it.second}"
+        banco.charlas.groupBy { it.codigo }.filterValues { it.size > 1 }.keys.forEach {
+            errores += "Código de charla repetido: $it"
         }
         banco.charlas.forEach { c ->
-            val ref = "Charla ${c.id}"
-            if (c.semana !in 1..SEMANAS_CICLO) errores += "$ref: semana fuera de rango (1-$SEMANAS_CICLO)"
-            if (c.dia !in 1..NOMBRES_DIA.size) errores += "$ref: día fuera de rango (1-${NOMBRES_DIA.size})"
+            val ref = "Charla ${c.codigo}"
             if (c.especialidadId !in especialidades) errores += "$ref: especialidad desconocida '${c.especialidadId}'"
             if (c.checklist.isEmpty() || c.checklist.any { it.isBlank() }) errores += "$ref: checklist vacío"
             if (listOf(c.titulo, c.porQue, c.normativa, c.reglaOro, c.preguntaCierre).any { it.isBlank() }) {
                 errores += "$ref: hay campos de texto vacíos"
             }
+        }
+        val ids = banco.charlas.map { it.id }.toSet()
+        banco.plan.groupBy { it.semana to it.dia }.filterValues { it.size > 1 }.keys.forEach {
+            errores += "Plan: más de una charla en semana ${it.first} día ${it.second}"
+        }
+        banco.plan.forEach { e ->
+            val ref = "Plan semana ${e.semana} día ${e.dia}"
+            if (e.semana !in 1..SEMANAS_CICLO) errores += "$ref: semana fuera de rango (1-$SEMANAS_CICLO)"
+            if (e.dia !in 1..NOMBRES_DIA.size) errores += "$ref: día fuera de rango (1-${NOMBRES_DIA.size})"
+            if (e.charlaId !in ids) errores += "$ref: charla ${e.charlaId} no existe"
         }
         banco.especialidades.forEach {
             if (!Regex("#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})").matches(it.colorHex)) errores += "Especialidad ${it.id}: color inválido"

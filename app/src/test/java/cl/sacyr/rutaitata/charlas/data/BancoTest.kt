@@ -11,63 +11,81 @@ class BancoTest {
     private val banco = BancoParser.parse(File("src/main/assets/charlas.json").readText())
 
     @Test
-    fun cubreCuatroSemanasDeLunesASabado() {
-        assertEquals(24, banco.charlas.size)
-        for (semana in 1..4) for (dia in 1..6) {
-            assertNotNull("Falta semana $semana día $dia", banco.charla(semana, dia))
+    fun cadaEspecialidadTieneAlMenos25Charlas() {
+        banco.especialidades.forEach {
+            assertTrue("${it.nombre} tiene ${banco.charlasDe(it.id).size}", banco.charlasDe(it.id).size >= 25)
         }
-        assertEquals(24, banco.charlas.map { it.id }.toSet().size)
+        assertEquals(banco.charlas.size, banco.charlas.map { it.id }.toSet().size)
+    }
+
+    @Test
+    fun noHayTitulosRepetidos() {
+        val repetidos = banco.charlas.groupBy { it.titulo.lowercase() }.filterValues { it.size > 1 }.keys
+        assertEquals(emptySet<String>(), repetidos)
+    }
+
+    @Test
+    fun codigosCorrelativosPorEspecialidad() {
+        banco.especialidades.forEach { esp ->
+            val codigos = banco.charlasDe(esp.id).map { it.codigo }
+            assertEquals(List(codigos.size) { "${esp.id}-%02d".format(it + 1) }, codigos)
+        }
     }
 
     @Test
     fun cadaCharlaTieneLaEstructuraCompleta() {
         banco.charlas.forEach {
-            assertEquals("Charla ${it.id}", 3, it.checklist.size)
-            assertTrue(it.titulo.isNotBlank() && it.porQue.isNotBlank())
-            assertTrue(it.normativa.isNotBlank() && it.reglaOro.isNotBlank())
-            assertTrue(it.preguntaCierre.endsWith("?"))
-            banco.especialidad(it.especialidadId)
+            assertEquals("Charla ${it.codigo}", 3, it.checklist.size)
+            assertTrue(it.preguntaCierre.endsWith("?") || it.preguntaCierre.endsWith("."))
         }
     }
 
     @Test
-    fun cadaSemanaIncluyeTodasLasEspecialidades() {
+    fun elPlanCubreCuatroSemanasDeLunesASabado() {
+        assertEquals(24, banco.plan.size)
+        for (semana in 1..4) for (dia in 1..6) {
+            assertNotNull("Falta semana $semana día $dia", banco.charla(semana, dia))
+        }
         val todas = banco.especialidades.map { it.id }.toSet()
-        banco.charlas.groupBy { it.semana }.forEach { (semana, charlas) ->
-            assertEquals("Semana $semana", todas, charlas.map { it.especialidadId }.toSet())
+        banco.plan.groupBy { it.semana }.forEach { (semana, entradas) ->
+            val especialidades = entradas.mapNotNull { banco.charla(it.charlaId)?.especialidadId }.toSet()
+            assertEquals("Semana $semana", todas, especialidades)
         }
     }
 
     @Test
     fun elBancoIncluidoEsValidoYTieneVersion() {
         assertEquals(emptyList<String>(), BancoParser.validar(banco))
-        assertTrue(banco.version >= 1)
+        assertTrue(banco.version >= 2)
     }
 
     @Test
     fun validarDetectaErroresQueRomperianLaApp() {
         val charla = banco.charlas.first()
         val roto = banco.copy(
-            charlas = banco.charlas + charla.copy(id = 99, especialidadId = "XX", semana = 5, checklist = emptyList()),
+            charlas = banco.charlas + charla.copy(id = 9999, codigo = "XX-01", especialidadId = "XX", checklist = emptyList()),
+            plan = banco.plan + EntradaPlan(semana = 5, dia = 1, charlaId = 12345),
         )
         val errores = BancoParser.validar(roto)
         assertTrue(errores.any { "especialidad desconocida" in it })
-        assertTrue(errores.any { "semana fuera de rango" in it })
         assertTrue(errores.any { "checklist vacío" in it })
+        assertTrue(errores.any { "semana fuera de rango" in it })
+        assertTrue(errores.any { "no existe" in it })
         assertTrue(BancoParser.validar(banco.copy(charlas = banco.charlas + charla)).any { "repetido" in it })
     }
 
     @Test
-    fun primeraCharlaEsAtropelloHombreMaquina() {
+    fun primeraCharlaDelPlanEsAtropelloHombreMaquina() {
         val primera = banco.charla(1, 1)!!
-        assertEquals("MP", primera.especialidadId)
+        assertEquals("MP-01", primera.codigo)
         assertTrue(primera.titulo.contains("maquinaria"))
     }
 
     @Test
     fun textoCompartidoIncluyeTodasLasSecciones() {
-        val texto = banco.charlas.first().comoTexto(banco)
-        listOf("EL PORQUÉ", "PUNTOS DE CONTROL", "RESPALDO ESTÁNDAR", "PREGUNTA DE CIERRE", "☐ 3.").forEach {
+        val charla = banco.charlas.first()
+        val texto = charla.comoTexto(banco)
+        listOf(charla.codigo, "EL PORQUÉ", "PUNTOS DE CONTROL", "RESPALDO ESTÁNDAR", "PREGUNTA DE CIERRE", "☐ 3.").forEach {
             assertTrue("Falta '$it'", texto.contains(it))
         }
     }

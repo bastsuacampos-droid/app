@@ -6,20 +6,30 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 
 ## Qué incluye
 
-- **24 charlas** organizadas en 4 semanas, de lunes a sábado.
-- **5 especialidades**: Maquinaria Pesada, Control de Tránsito / Paleteros,
-  Cuadrillas de Asfalto, Obras de Arte / Manuales y Riesgos Transversales / Clima.
-  Todas las especialidades aparecen cada semana.
+- **125 charlas**, 25 por cada especialidad: Maquinaria Pesada (MP),
+  Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
+  Obras de Arte / Manuales (OA) y Riesgos Transversales / Clima (RT).
+  Cada una tiene un código (por ejemplo `MP-07`).
 - Cada charla trae: **título**, **el porqué** (mensaje clave), **3 puntos de
   control** marcables en terreno, **respaldo estándar** (Regla de Oro y
   normativa chilena) y una **pregunta de cierre** para la cuadrilla.
-- **Charla de hoy** según el día del ciclo; el domingo muestra la del lunes
-  para prepararla con tiempo.
-- Registro de charlas realizadas y avance del ciclo (se guarda en el teléfono).
-- **Compartir** la charla como texto (WhatsApp, correo).
-- Botones **A− / A+** para agrandar la letra en terreno.
+- **Especialidades**: eliges la especialidad y ves cuáles charlas ya usaste
+  este mes y cuáles quedan disponibles. "Siguiente disponible" abre la primera
+  que aún no dictas, y se pueden ocultar las ya usadas.
+- **Registro mensual**: al terminar, "Registrar charla dictada hoy" la marca
+  como usada. Si abres una charla ya usada en el mes, la app avisa y propone
+  otra de la misma especialidad. El día 1 de cada mes todas vuelven a quedar
+  disponibles.
+- **Historial** por mes, con el total por especialidad; un registro hecho por
+  error se puede borrar.
+- **Plan sugerido** de 4 semanas (lunes a sábado) que cubre todas las
+  especialidades, con la charla sugerida para hoy.
+- **Compartir** la charla como texto (WhatsApp, correo) y botones **A− / A+**
+  para agrandar la letra en terreno.
 - **Recibe charlas nuevas** automáticamente al abrirse (ver más abajo) y
   funciona sin conexión con la última versión guardada.
+
+El historial se guarda solo en el teléfono del capataz.
 
 El contenido completo también está en
 [`docs/BANCO_CHARLAS.md`](docs/BANCO_CHARLAS.md) para imprimir.
@@ -40,7 +50,10 @@ buscar a mano en *Ciclo y normativa → Buscar actualizaciones*.
 
 ### Publicar una actualización
 
-1. Editar `app/src/main/assets/charlas.json`.
+1. Editar `app/src/main/assets/charlas.json`. Para agregar una charla, sumarla
+   a `charlas` con un `id` nuevo (nunca reutilizar uno, porque el historial
+   del teléfono se guarda por `id`) y el siguiente `codigo` de su
+   especialidad. El plan sugerido está en `plan` (semana, día, id de charla).
 2. **Subir `version`** en uno (por ejemplo, de 1 a 2), poner la `fecha` y
    escribir en `novedades` qué cambió. Si no se sube la versión, los teléfonos
    no descargan el cambio.
