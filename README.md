@@ -13,7 +13,12 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 - Cada charla trae: **título**, **el porqué** (mensaje clave), **3 puntos de
   control** marcables en terreno, **respaldo estándar** (Regla de Oro y
   normativa chilena) y una **pregunta de cierre** para la cuadrilla.
-- **Especialidades**: eliges la especialidad y ves cuáles charlas ya usaste
+- **Semana**: marcas las especialidades que vas a trabajar (en orden) y los
+  días con charla, y la app arma el plan de lunes a sábado con charlas que no
+  has dictado ni planificado en el mes. Cada día se puede cambiar (otra charla
+  de la misma especialidad o de otra) y el plan se comparte por WhatsApp. Se
+  puede planificar hasta 4 semanas hacia adelante.
+- **Temas**: eliges la especialidad y ves cuáles charlas ya usaste
   este mes y cuáles quedan disponibles. "Siguiente disponible" abre la primera
   que aún no dictas, y se pueden ocultar las ya usadas.
 - **Registro mensual**: al terminar, "Registrar charla dictada hoy" la marca

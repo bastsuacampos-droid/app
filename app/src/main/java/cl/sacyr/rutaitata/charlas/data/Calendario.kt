@@ -14,6 +14,10 @@ object Calendario {
     fun lunesDe(fecha: LocalDate): LocalDate =
         fecha.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
 
+    /** Lunes de la semana que el capataz está trabajando; el domingo ya mira la semana siguiente. */
+    fun semanaVigente(hoy: LocalDate): LocalDate =
+        lunesDe(if (hoy.dayOfWeek == DayOfWeek.SUNDAY) hoy.plusDays(1) else hoy)
+
     /**
      * Posición del ciclo de 4 semanas (lunes a sábado) que corresponde a [hoy],
      * contando desde la semana de [inicioCiclo]. El domingo apunta a la charla

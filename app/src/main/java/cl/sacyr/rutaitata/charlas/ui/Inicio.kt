@@ -61,7 +61,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 
-private val PESTANAS = listOf("Especialidades", "Plan", "Historial")
+private val PESTANAS = listOf("Semana", "Temas", "Plan mes", "Historial")
 private val DIAS_CORTOS = listOf("Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom")
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,6 +80,7 @@ internal fun PantallaInicio(
 ) {
     var ocultarUsadas by rememberSaveable { mutableStateOf(false) }
     var mesHistorial by rememberSaveable { mutableStateOf(YearMonth.now().toString()) }
+    var lunesSemana by rememberSaveable { mutableStateOf(Calendario.semanaVigente(LocalDate.now()).toString()) }
 
     Scaffold(
         topBar = {
@@ -100,7 +101,7 @@ internal fun PantallaInicio(
                 )
                 TabRow(selectedTabIndex = pestana) {
                     PESTANAS.forEachIndexed { i, titulo ->
-                        Tab(selected = pestana == i, onClick = { onPestana(i) }, text = { Text(titulo) })
+                        Tab(selected = pestana == i, onClick = { onPestana(i) }, text = { Text(titulo, maxLines = 1) })
                     }
                 }
             }
@@ -120,11 +121,14 @@ internal fun PantallaInicio(
                 item { AvisoNovedad(novedad, onDescartarNovedad) }
             }
             when (pestana) {
-                0 -> listaPorEspecialidad(
+                0 -> listaSemana(
+                    banco, progreso, LocalDate.parse(lunesSemana), { lunesSemana = it.toString() }, onAbrir,
+                )
+                1 -> listaPorEspecialidad(
                     banco, progreso, especialidad, onEspecialidad,
                     ocultarUsadas, { ocultarUsadas = it }, onAbrir,
                 )
-                1 -> listaPlan(banco, progreso, onAbrir)
+                2 -> listaPlan(banco, progreso, onAbrir)
                 else -> listaHistorial(
                     banco, progreso, YearMonth.parse(mesHistorial), { mesHistorial = it.toString() }, onAbrir,
                 )
@@ -239,7 +243,7 @@ private fun LazyListScope.listaPlan(banco: Banco, progreso: Progreso, onAbrir: (
     item {
         Text(
             "Plan sugerido de $SEMANAS_CICLO semanas que cubre todas las especialidades. " +
-                "Si una charla del plan ya la usaste este mes, elige otra en la pestaña Especialidades.",
+                "Si una charla del plan ya la usaste este mes, elige otra en la pestaña Temas.",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(top = 4.dp),
         )

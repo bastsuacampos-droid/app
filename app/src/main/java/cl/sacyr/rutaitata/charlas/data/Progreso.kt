@@ -21,6 +21,14 @@ class Progreso(context: Context) {
     val usos: List<Uso> get() = _usos
 
     private val verificados = mutableStateMapOf<Int, Set<Int>>()
+    private val _planes = mutableStateMapOf<LocalDate, PlanSemanal>()
+    val planes: Collection<PlanSemanal> get() = _planes.values
+
+    /** Especialidades elegidas en el último plan semanal, para proponerlas la próxima vez. */
+    var ultimasEspecialidades by mutableStateOf(
+        prefs.getString(KEY_ULTIMAS_ESPECIALIDADES, null)?.split(',')?.filter { it.isNotBlank() }.orEmpty(),
+    )
+        private set
     private val hoy = LocalDate.now()
 
     var inicioCiclo by mutableStateOf(LocalDate.now())
@@ -49,6 +57,15 @@ class Progreso(context: Context) {
                     }
                     editor.remove(clave)
                 }
+                clave.startsWith(PREFIJO_PLAN) && valor is String -> {
+                    val plan = Planificador.deJson(valor)
+                    // Se conservan los planes de los últimos meses.
+                    if (plan != null && plan.lunes >= hoy.minusDays(DIAS_PLANES)) {
+                        _planes[plan.lunes] = plan
+                    } else {
+                        editor.remove(clave)
+                    }
+                }
                 // Los checklists son de la charla del día: se conservan solo los de hoy.
                 clave.startsWith(PREFIJO_CHECKS) -> {
                     val (dia, id) = clave.removePrefix(PREFIJO_CHECKS).split('_')
@@ -75,6 +92,22 @@ class Progreso(context: Context) {
         if (_usos.remove(uso)) guardarUsos()
     }
 
+    fun plan(lunes: LocalDate): PlanSemanal? = _planes[lunes]
+
+    fun guardarPlan(plan: PlanSemanal) {
+        _planes[plan.lunes] = plan
+        ultimasEspecialidades = plan.especialidades
+        prefs.edit()
+            .putString(keyPlan(plan.lunes), Planificador.aJson(plan))
+            .putString(KEY_ULTIMAS_ESPECIALIDADES, plan.especialidades.joinToString(","))
+            .apply()
+    }
+
+    fun borrarPlan(lunes: LocalDate) {
+        _planes.remove(lunes)
+        prefs.edit().remove(keyPlan(lunes)).apply()
+    }
+
     fun verificados(id: Int): Set<Int> = verificados[id].orEmpty()
 
     fun alternarPunto(id: Int, indice: Int) {
@@ -99,6 +132,7 @@ class Progreso(context: Context) {
         prefs.edit().putStringSet(KEY_USOS, _usos.map(::escribirUso).toSet()).apply()
     }
 
+    private fun keyPlan(lunes: LocalDate) = "$PREFIJO_PLAN${lunes.toEpochDay()}"
     private fun keyChecks(id: Int) = "$PREFIJO_CHECKS${hoy.toEpochDay()}_$id"
 
     companion object {
@@ -107,6 +141,9 @@ class Progreso(context: Context) {
         private const val KEY_USOS = "usos"
         private const val PREFIJO_REALIZADA_ANTIGUO = "realizada_"
         private const val PREFIJO_CHECKS = "checks_"
+        private const val PREFIJO_PLAN = "plan_semana_"
+        private const val KEY_ULTIMAS_ESPECIALIDADES = "ultimas_especialidades"
+        private const val DIAS_PLANES = 120L
         const val ESCALA_MIN = 0.85f
         const val ESCALA_MAX = 1.6f
 

@@ -71,7 +71,9 @@ internal fun PantallaAcerca(contenido: Contenido, progreso: Progreso, onVolver: 
         ) {
             Seccion(titulo = "Cómo elegir la charla") {
                 Text(
-                    "• En Especialidades eliges el foco de la faena del día y la app te muestra cuáles ya usaste este mes.\n" +
+                    "• En Semana marcas las especialidades que vas a trabajar y los días; la app arma el plan " +
+                        "con charlas que no has dictado ni planificado en el mes. Cada día se puede cambiar desde ⋮.\n" +
+                        "• En Temas eliges el foco de la faena del día y la app te muestra cuáles ya usaste este mes.\n" +
                         "• 'Siguiente disponible' abre la primera charla de esa especialidad que aún no dictas este mes.\n" +
                         "• Al terminar la charla, toca 'Registrar charla dictada hoy'. Queda en el Historial.\n" +
                         "• Cada día 1 las charlas vuelven a quedar disponibles; el historial de meses anteriores se conserva.",
