@@ -49,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cl.sacyr.rutaitata.charlas.data.ActualizadorApp
 import cl.sacyr.rutaitata.charlas.data.Banco
 import cl.sacyr.rutaitata.charlas.data.Calendario
 import cl.sacyr.rutaitata.charlas.data.Charla
@@ -73,6 +74,7 @@ internal fun PantallaInicio(
     onPestana: (Int) -> Unit,
     especialidad: String,
     onEspecialidad: (String) -> Unit,
+    actualizador: ActualizadorApp,
     novedad: Banco?,
     onDescartarNovedad: () -> Unit,
     onAbrir: (Charla) -> Unit,
@@ -117,6 +119,7 @@ internal fun PantallaInicio(
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            item(key = "version-app") { AvisoVersionApp(actualizador) }
             if (novedad != null) {
                 item { AvisoNovedad(novedad, onDescartarNovedad) }
             }

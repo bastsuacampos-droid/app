@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cl.sacyr.rutaitata.charlas.data.ActualizadorApp
 import cl.sacyr.rutaitata.charlas.data.Contenido
 import cl.sacyr.rutaitata.charlas.data.EstadoActualizacion
 import cl.sacyr.rutaitata.charlas.data.Progreso
@@ -43,7 +44,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun PantallaAcerca(contenido: Contenido, progreso: Progreso, onVolver: () -> Unit) {
+internal fun PantallaAcerca(
+    contenido: Contenido,
+    progreso: Progreso,
+    actualizador: ActualizadorApp,
+    onVolver: () -> Unit,
+) {
     val banco = contenido.banco
     var confirmar by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -94,7 +100,17 @@ internal fun PantallaAcerca(contenido: Contenido, progreso: Progreso, onVolver: 
                 }
             }
 
-            Seccion(titulo = "Actualizaciones") {
+            Seccion(titulo = "Versión de la app") {
+                Text(
+                    "Tienes la versión ${actualizador.versionActual}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Spacer(Modifier.height(4.dp))
+                ControlesActualizacion(actualizador)
+            }
+
+            Seccion(titulo = "Actualizaciones de charlas") {
                 val fecha = runCatching { LocalDate.parse(banco.fecha).format(FORMATO_FECHA) }.getOrNull()
                 Text(
                     "Banco de charlas versión ${banco.version}" + (fecha?.let { " · publicado el $it" } ?: ""),

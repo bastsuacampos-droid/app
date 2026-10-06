@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import cl.sacyr.rutaitata.charlas.data.ActualizadorApp
 import cl.sacyr.rutaitata.charlas.data.Banco
 import cl.sacyr.rutaitata.charlas.data.Charla
 import cl.sacyr.rutaitata.charlas.data.Contenido
@@ -64,7 +65,7 @@ private val FORMATO_MES = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.forLan
 internal fun nombreMes(mes: YearMonth): String = mes.format(FORMATO_MES).replaceFirstChar { it.uppercase() }
 
 @Composable
-fun AppCharlas(contenido: Contenido, progreso: Progreso) {
+fun AppCharlas(contenido: Contenido, progreso: Progreso, actualizador: ActualizadorApp) {
     val banco = contenido.banco
     var ruta by rememberSaveable { mutableStateOf(RUTA_INICIO) }
     // Pestaña y especialidad elegidas se conservan al volver del detalle.
@@ -75,6 +76,7 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso) {
     val scope = rememberCoroutineScope()
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         scope.launch { contenido.revisarSiCorresponde() }
+        scope.launch { actualizador.revisarSiCorresponde() }
     }
 
     val densidad = LocalDensity.current
@@ -84,7 +86,7 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso) {
         val abrir: (Charla) -> Unit = { ruta = PREFIJO_DETALLE + it.id }
         val detalle = ruta.removePrefix(PREFIJO_DETALLE).toIntOrNull()?.let(banco::charla)
         when {
-            ruta == RUTA_ACERCA -> PantallaAcerca(contenido, progreso, onVolver = { ruta = RUTA_INICIO })
+            ruta == RUTA_ACERCA -> PantallaAcerca(contenido, progreso, actualizador, onVolver = { ruta = RUTA_INICIO })
             detalle != null -> PantallaDetalle(
                 banco = banco,
                 charla = detalle,
@@ -100,6 +102,7 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso) {
                 especialidad = especialidad.takeIf { id -> banco.especialidades.any { it.id == id } }
                     ?: banco.especialidades.first().id,
                 onEspecialidad = { especialidad = it },
+                actualizador = actualizador,
                 novedad = contenido.novedadPendiente,
                 onDescartarNovedad = contenido::descartarNovedad,
                 onAbrir = abrir,

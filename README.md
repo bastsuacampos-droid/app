@@ -76,6 +76,49 @@ buscar a mano en *Ciclo y normativa → Buscar actualizaciones*.
 La URL se define en `app/build.gradle.kts` (`URL_CONTENIDO`) por si el banco se
 publica en otro lugar.
 
+## Actualizar la app desde la misma app
+
+Desde la versión 1.1, la app revisa al abrirse si hay una versión nueva publicada
+en las releases de este repositorio. Si la hay, muestra el aviso **Nueva versión
+de la app** con el botón para descargarla e instalarla; las charlas, planes e
+historial se mantienen. La primera vez, Android pide autorizar a la app para
+instalar actualizaciones ("Permitir de esta fuente").
+
+El repositorio también publica releases de otras apps, por eso las de esta app
+usan el tag `charlas-v<versión>`, se publican sin marcarse como *latest* y la app
+ignora cualquier otra release.
+
+### Publicar una versión nueva
+
+1. En `app/build.gradle.kts`, subir `versionCode` (en uno) y `versionName`
+   (por ejemplo, de `1.1` a `1.2`).
+2. Escribir en `app/novedades-version.txt` qué trae la versión (es el texto que
+   ve el capataz en el aviso).
+3. Llevar el cambio a `main`. El workflow *Publicar versión de la app* compila la
+   APK, verifica que esté firmada con la clave de la app y crea la release
+   `charlas-v1.2`. Los teléfonos la ofrecen la próxima vez que se abra la app.
+
+### Firma (una sola vez)
+
+Android solo instala una actualización si viene firmada con la misma clave que
+la app instalada. La clave (`charlas-ruta-itata.jks`) **no está en el
+repositorio**: se guarda en dos secrets de GitHub Actions
+(*Settings → Secrets and variables → Actions*):
+
+- `FIRMA_KEYSTORE_BASE64`: el archivo `.jks` codificado en base64.
+- `FIRMA_CLAVE`: la contraseña del archivo.
+
+Sin esos secrets el workflow no publica (deja un aviso). Si la clave se pierde,
+no se pueden publicar más actualizaciones para los teléfonos que ya tienen la
+app: guárdala también fuera de GitHub. El workflow verifica que la huella
+SHA-256 del certificado sea `1038edcb…f9ad3dc` antes de publicar.
+
+Para compilar una versión firmada a mano:
+
+```bash
+FIRMA_KEYSTORE=/ruta/charlas-ruta-itata.jks FIRMA_CLAVE='…' ./gradlew assembleRelease
+```
+
 ## Compilar
 
 Requiere JDK 17+ y el Android SDK (API 35). Abrir el proyecto en Android

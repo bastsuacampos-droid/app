@@ -1,0 +1,1 @@
+Ahora la app se actualiza sola: cuando hay una versión nueva aparece un aviso con el botón para descargarla e instalarla, sin perder charlas, planes ni historial.
