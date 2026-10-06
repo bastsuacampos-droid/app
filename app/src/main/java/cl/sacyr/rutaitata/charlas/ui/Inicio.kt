@@ -3,6 +3,7 @@ package cl.sacyr.rutaitata.charlas.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -26,11 +28,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Tab
@@ -157,28 +161,11 @@ private fun LazyListScope.listaPorEspecialidad(
     val disponibles = Usos.disponibles(charlas, progreso.usos, mes)
 
     item {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            banco.especialidades.forEach { e ->
-                val total = banco.charlasDe(e.id)
-                val usadas = total.size - Usos.disponibles(total, progreso.usos, mes).size
-                FilterChip(
-                    selected = e.id == especialidad,
-                    onClick = { onEspecialidad(e.id) },
-                    label = { Text("${e.nombre} · $usadas/${total.size}") },
-                    leadingIcon = { Punto(colorDe(e.colorHex)) },
-                )
-            }
-        }
+        SelectorEspecialidad(banco, progreso, mes, especialidad, onEspecialidad)
     }
 
     item {
         Column(Modifier.padding(vertical = 4.dp)) {
-            Text(esp.nombre, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             Text(
                 "${nombreMes(mes)}: ${charlas.size - disponibles.size} usadas · ${disponibles.size} disponibles de ${charlas.size}",
                 style = MaterialTheme.typography.bodyMedium,
@@ -219,6 +206,53 @@ private fun LazyListScope.listaPorEspecialidad(
             usada = fecha != null,
             onClick = { onAbrir(charla) },
         )
+    }
+}
+
+/** Especialidad elegida, siempre visible; al tocarla se despliegan todas con su avance del mes. */
+@Composable
+private fun SelectorEspecialidad(
+    banco: Banco,
+    progreso: Progreso,
+    mes: YearMonth,
+    especialidad: String,
+    onEspecialidad: (String) -> Unit,
+) {
+    var abierto by remember { mutableStateOf(false) }
+    fun avance(id: String): String {
+        val total = banco.charlasDe(id)
+        return "${total.size - Usos.disponibles(total, progreso.usos, mes).size}/${total.size}"
+    }
+    val esp = banco.especialidad(especialidad)
+    Box {
+        OutlinedCard(onClick = { abierto = true }, modifier = Modifier.fillMaxWidth()) {
+            Row(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Punto(colorDe(esp.colorHex))
+                Spacer(Modifier.width(10.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Especialidad", style = MaterialTheme.typography.labelMedium)
+                    Text(esp.nombre, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                }
+                Icon(Icons.Filled.ArrowDropDown, contentDescription = "Elegir especialidad")
+            }
+        }
+        DropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
+            banco.especialidades.forEach { e ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            "${e.nombre} · ${avance(e.id)} usadas",
+                            fontWeight = if (e.id == especialidad) FontWeight.Bold else FontWeight.Normal,
+                        )
+                    },
+                    leadingIcon = { Punto(colorDe(e.colorHex)) },
+                    onClick = {
+                        abierto = false
+                        onEspecialidad(e.id)
+                    },
+                )
+            }
+        }
     }
 }
 

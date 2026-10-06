@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 2,
+  "version": 3,
   "fecha": "2026-10-06",
-  "novedades": "Banco ampliado a 125 charlas: 25 por especialidad. Ahora puedes elegir la charla por especialidad y la app registra cuáles ya usaste en el mes.",
+  "novedades": "4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra, con al menos 25 charlas cada una (226 charlas en total).",
   "especialidades": [
     {
       "id": "MP",
@@ -28,6 +28,26 @@
       "id": "RT",
       "nombre": "Riesgos Transversales / Clima",
       "color": "#3B8F4E"
+    },
+    {
+      "id": "CA",
+      "nombre": "Carpintería",
+      "color": "#8D6E63"
+    },
+    {
+      "id": "EN",
+      "nombre": "Enfierradura",
+      "color": "#6A4C93"
+    },
+    {
+      "id": "HO",
+      "nombre": "Hormigonado",
+      "color": "#00897B"
+    },
+    {
+      "id": "MT",
+      "nombre": "Movimiento de Tierra",
+      "color": "#827717"
     }
   ],
   "charlas": [
@@ -1905,6 +1925,1521 @@
       "normativa": "Código del Trabajo Art. 184 bis (derecho a interrumpir labores ante riesgo grave e inminente); DS 44/2024 (participación de los trabajadores en la gestión preventiva); Ley 16.744 Art. 68.",
       "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
       "preguntaCierre": "¿Quién advirtió a un compañero de un riesgo esta semana? Cuéntenos qué pasó."
+    },
+    {
+      "id": 601,
+      "codigo": "CA-01",
+      "especialidad": "CA",
+      "titulo": "Sierra circular de banco: disco, cuchillo divisor y empujador",
+      "porQue": "La sierra de banco es la máquina que más dedos ha cortado en la construcción. El disco no distingue entre madera y mano, y una tabla que se traba puede ser lanzada de vuelta hacia el operador con mucha fuerza. Casi todos estos accidentes ocurren al cortar piezas chicas o al retirar recortes con la sierra girando.",
+      "checklist": [
+        "Guarda superior del disco, cuchillo divisor y parada de emergencia instalados y funcionando; disco afilado y sin dientes dañados.",
+        "Piezas pequeñas o el final del corte se empujan con empujador de madera, nunca con los dedos; el operador se ubica al costado de la línea del disco.",
+        "Sierra conectada a tablero con protección diferencial; nadie retira recortes ni mide con el disco en movimiento."
+      ],
+      "normativa": "DS 594 Art. 38 (protección de partes móviles de máquinas) y Art. 53 (EPP); DS 8/2019 (instalaciones eléctricas); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca anular las protecciones de herramientas o equipos.",
+      "preguntaCierre": "¿Dónde está el empujador de la sierra de banco y quién lo usó ayer?"
+    },
+    {
+      "id": 602,
+      "codigo": "CA-02",
+      "especialidad": "CA",
+      "titulo": "Sierra circular manual: el retroceso que no avisa",
+      "porQue": "La sierra circular de mano puede saltar hacia atrás cuando el disco se aprieta en el corte o toca un clavo. En una fracción de segundo la sierra sube hacia las piernas o las manos del carpintero. La guarda inferior que vuelve sola a su lugar es la última protección, y por eso nunca se amarra ni se traba.",
+      "checklist": [
+        "Guarda inferior retráctil que vuelve sola a cubrir el disco; nunca amarrada ni trabada abierta.",
+        "Pieza bien apoyada y sujeta, con el recorte libre para caer; revisar que no haya clavos en la línea de corte.",
+        "Esperar que el disco se detenga antes de levantar o apoyar la sierra; cuerpo fuera de la línea del corte."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 8/2019 (instalaciones eléctricas); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca anular las protecciones de herramientas o equipos.",
+      "preguntaCierre": "¿Qué pasa si el disco toca un clavo escondido en la tabla y dónde deben estar tus piernas?"
+    },
+    {
+      "id": 603,
+      "codigo": "CA-03",
+      "especialidad": "CA",
+      "titulo": "Clavos y puntas: el accidente que se pisa",
+      "porQue": "Una tabla con un clavo hacia arriba en el suelo es una trampa que espera a alguien. Un clavo puede atravesar la suela de un zapato común y provocar una herida profunda que se infecta con facilidad. Es uno de los accidentes más repetidos en carpintería, y uno de los más fáciles de evitar.",
+      "checklist": [
+        "Tablas con clavos se desclavan o se doblan los clavos al momento de retirarlas, nunca se dejan en el suelo con las puntas hacia arriba.",
+        "Calzado de seguridad con plantilla antiperforación en buen estado.",
+        "Restos de madera acopiados en un lugar definido y retirados durante la jornada."
+      ],
+      "normativa": "DS 594 (orden de los lugares de trabajo y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Cuántas tablas con clavos vemos ahora en el piso del frente?"
+    },
+    {
+      "id": 604,
+      "codigo": "CA-04",
+      "especialidad": "CA",
+      "titulo": "Martillo y uniones: golpes, astillas y clavos que saltan",
+      "porQue": "El martillo es la herramienta más usada por el carpintero y también la que más golpes en los dedos provoca. Un clavo mal golpeado puede salir disparado hacia los ojos, y una astilla puede clavarse en la mano. Usar bien la herramienta más simple también es prevención.",
+      "checklist": [
+        "Martillo con cabeza firme y mango sin fisuras; el adecuado para el tipo de clavo.",
+        "Lentes de seguridad siempre al clavar o desclavar; sujetar el clavo con pinza o iniciarlo con golpes suaves.",
+        "Guantes para manipular madera con astillas; posición estable, sin clavar con el brazo sobre la cabeza por largos períodos."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Quién usa lentes al clavar? ¿Y quién no, y por qué?"
+    },
+    {
+      "id": 605,
+      "codigo": "CA-05",
+      "especialidad": "CA",
+      "titulo": "Moldajes de muros: estabilidad antes, durante y después",
+      "porQue": "Un panel de moldaje de muro parado es una pared alta y delgada que el viento o un golpe pueden voltear sobre quien trabaja al lado. Hasta que está arriostrado y amarrado, no es estable. Muchas lesiones graves en obras de arte han sido por paneles que cayeron durante el armado.",
+      "checklist": [
+        "Paneles arriostrados con alzaprimas o puntales inclinados apenas se paran, antes de soltarlos del equipo o de las manos.",
+        "Armado según el diseño del moldaje: amarras, separadores y cantidad de puntales indicados.",
+        "Con viento fuerte no se paran paneles grandes; los ya armados se revisan antes de continuar."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (condiciones de seguridad); instrucciones del fabricante del sistema de moldaje.",
+      "reglaOro": "Nunca ubicarse bajo o junto a elementos que puedan caer.",
+      "preguntaCierre": "¿Cuántos puntales lleva cada panel del muro de hoy y quién lo revisa antes del hormigonado?"
+    },
+    {
+      "id": 606,
+      "codigo": "CA-06",
+      "especialidad": "CA",
+      "titulo": "Obra falsa y moldaje de losa: lo que sostiene todo",
+      "porQue": "Bajo una losa o un tablero de puente, la obra falsa (alzaprimas, vigas y tableros) sostiene el peso del hormigón fresco, que puede ser de cientos de toneladas. Si un puntal está mal apoyado o falta un arriostramiento, todo puede colapsar durante el hormigonado, con personas arriba y abajo.",
+      "checklist": [
+        "Obra falsa armada según el diseño aprobado: cantidad, separación y arriostramiento de puntales y vigas.",
+        "Bases de puntales sobre terreno compactado o placas de reparto, nunca sobre barro, ladrillos sueltos o tierra blanda.",
+        "Revisión y aprobación del moldaje por la persona responsable antes de iniciar el hormigonado."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (condiciones de seguridad); diseño del moldaje y obra falsa del proyecto.",
+      "reglaOro": "Ninguna estructura temporal se carga sin ser revisada y aprobada.",
+      "preguntaCierre": "¿Sobre qué están apoyados los puntales de la losa de hoy?"
+    },
+    {
+      "id": 607,
+      "codigo": "CA-07",
+      "especialidad": "CA",
+      "titulo": "Desmoldaje: el orden y el tiempo importan",
+      "porQue": "Desmoldar parece la tarea fácil, pero es cuando caen paneles, tablas y puntales. Si se desmolda antes del tiempo autorizado, el hormigón todavía no resiste y la estructura puede fallar. Si se desmolda sin orden, los elementos sueltos caen sobre quien está abajo.",
+      "checklist": [
+        "Desmoldar solo con autorización y respetando el plazo indicado por el responsable técnico.",
+        "Secuencia definida: aflojar y retirar de forma controlada, sin dejar paneles o tablas sueltas en altura.",
+        "Área bajo el desmoldaje demarcada y despejada; elementos retirados acopiados de inmediato y clavos doblados o retirados."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (condiciones de seguridad); especificaciones técnicas del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo elementos que puedan caer.",
+      "preguntaCierre": "¿Quién autorizó el desmoldaje de hoy y por dónde no debe pasar nadie mientras se hace?"
+    },
+    {
+      "id": 608,
+      "codigo": "CA-08",
+      "especialidad": "CA",
+      "titulo": "Alzaprimas y puntales: rectos, apoyados y sin daños",
+      "porQue": "Un puntal doblado, oxidado o con el pasador cambiado por un clavo pierde gran parte de su capacidad. Un puntal inclinado o apoyado sobre tierra blanda puede patinar. Cada uno de ellos es un eslabón de la cadena que sostiene el hormigón sobre nuestras cabezas.",
+      "checklist": [
+        "Puntales sin abolladuras, sin corrosión importante y con los pasadores originales; los dañados se retiran.",
+        "Instalados verticales (o con la inclinación del diseño), con placas de base y cabeza apoyadas completamente.",
+        "Nadie retira o mueve un puntal de una estructura cargada sin autorización."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594; instrucciones del fabricante de los puntales.",
+      "reglaOro": "Ninguna estructura temporal se modifica sin autorización.",
+      "preguntaCierre": "¿Hay algún puntal en uso con un clavo en vez de pasador? Revisémoslo."
+    },
+    {
+      "id": 609,
+      "codigo": "CA-09",
+      "especialidad": "CA",
+      "titulo": "Barandas provisorias: hechas para resistir, no para adornar",
+      "porQue": "Una baranda hecha con una tabla delgada o una cinta de peligro no detiene a nadie que tropieza. Una baranda de verdad debe resistir el peso de una persona que se apoya o cae contra ella. Los carpinteros son quienes las construyen, por eso saben mejor que nadie cómo deben quedar.",
+      "checklist": [
+        "Baranda con pasamanos a 1 metro aproximadamente, travesaño intermedio y rodapié, firmemente fijada a postes o a la estructura.",
+        "Instalada en todo borde con caída de 1,8 m o más, y en aberturas de losas y bordes de excavaciones según el procedimiento.",
+        "Nadie retira una baranda para trabajar sin protección alternativa (arnés) y se repone apenas termina la tarea."
+      ],
+      "normativa": "DS 594 (protección de aberturas y bordes); NCh 1258 (protección contra caídas); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Qué baranda del frente no resistiría que alguien se apoye en ella?"
+    },
+    {
+      "id": 610,
+      "codigo": "CA-10",
+      "especialidad": "CA",
+      "titulo": "Plataformas de trabajo de madera: tablones que no se mueven",
+      "porQue": "Para armar moldajes en altura muchas veces se improvisan plataformas con tablones. Un tablón suelto, partido o que sobresale puede girar o romperse bajo los pies. La plataforma es el piso donde trabajas: debe ser tan firme como el suelo.",
+      "checklist": [
+        "Tablones sanos, sin nudos grandes ni grietas, del espesor adecuado y fijados para que no se deslicen ni basculen.",
+        "Plataforma del ancho suficiente para trabajar y circular, con barandas cuando la altura lo exige.",
+        "Sin acumular material pesado sobre la plataforma; se limpia de barro, escarcha y restos."
+      ],
+      "normativa": "NCh 2501 (andamios); DS 594; NCh 1258 (protección contra caídas).",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "Si pisas el extremo del tablón de la plataforma, ¿se levanta el otro lado?"
+    },
+    {
+      "id": 611,
+      "codigo": "CA-11",
+      "especialidad": "CA",
+      "titulo": "Escalas en el frente: solo las adecuadas",
+      "porQue": "La escala hecha en obra con tablas y clavos, o la escala con un peldaño roto, causan caídas frecuentes. Además, se usan mal: apoyadas sobre barro, sin amarrar o para cargar material. Una caída de pocos metros puede terminar en una fractura de muñeca, de cadera o de cráneo.",
+      "checklist": [
+        "Usar escalas certificadas o fabricadas según un diseño aprobado, sin peldaños sueltos ni largueros dañados.",
+        "Apoyo firme y nivelado, inclinación correcta, sobresaliendo 1 m del punto de llegada y amarrada arriba.",
+        "Subir y bajar de frente, con las manos libres; el material se sube con cuerda o se entrega desde abajo."
+      ],
+      "normativa": "NCh 351 (escalas portátiles); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Tenemos alguna escala hechiza en el frente? ¿Qué hacemos con ella?"
+    },
+    {
+      "id": 612,
+      "codigo": "CA-12",
+      "especialidad": "CA",
+      "titulo": "Madera impregnada: el polvo que no se ve",
+      "porQue": "La madera impregnada que se usa para estacas, polines o defensas tiene químicos que la protegen de los hongos. Al cortarla o lijarla, ese polvo se respira y se pega en la piel. Además, sus restos no deben quemarse ni botarse como basura común, porque el humo y las cenizas son tóxicos.",
+      "checklist": [
+        "Cortar madera impregnada al aire libre, con mascarilla para polvo, guantes y lentes.",
+        "Lavarse las manos antes de comer, fumar o beber; no usar restos de esta madera para hacer fuego.",
+        "Restos y aserrín dispuestos según el procedimiento de residuos del proyecto."
+      ],
+      "normativa": "DS 594 (agentes químicos y Art. 53 sobre EPP); Hoja de Datos de Seguridad del producto (NCh 2245); DS 148/2003 (residuos peligrosos).",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿Dónde dejamos hoy los despuntes de madera impregnada?"
+    },
+    {
+      "id": 613,
+      "codigo": "CA-13",
+      "especialidad": "CA",
+      "titulo": "Desmoldante: el producto que hace resbalar",
+      "porQue": "El desmoldante se aplica a los paneles para que el hormigón no se pegue. Es un producto químico que irrita la piel y los ojos, y que deja las superficies muy resbaladizas. Aplicarlo sobre un panel ya instalado en altura o pisar donde cayó es una receta para una caída.",
+      "checklist": [
+        "Leer la HDS del desmoldante y usar guantes y lentes; aplicar con rociador o rodillo, sin salpicar.",
+        "Aplicar en lo posible antes de instalar los paneles y en un lugar con bandeja para escurrir.",
+        "Limpiar el desmoldante derramado en pisos, plataformas y escalas; envases rotulados y cerrados."
+      ],
+      "normativa": "DS 57/2019 (etiquetado de sustancias químicas); NCh 2245 (HDS); DS 594 Art. 53.",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿Dónde aplicamos el desmoldante hoy para no dejar el piso resbaladizo?"
+    },
+    {
+      "id": 614,
+      "codigo": "CA-14",
+      "especialidad": "CA",
+      "titulo": "Paneles de moldaje: pesados, grandes y con viento",
+      "porQue": "Un panel de moldaje puede pesar más de lo que parece y, al moverlo, el viento lo empuja como una vela. Entre dos personas, si una se descoordina, el otro recibe todo el peso. Cuando se iza con equipo, un panel mal amarrado puede girar y golpear.",
+      "checklist": [
+        "Peso del panel conocido: sobre 25 kg por persona, se usa equipo o se mueve entre más personas coordinadas.",
+        "Izaje con los puntos de izaje del fabricante, eslingas en buen estado y guía con cuerda, nunca con las manos bajo el panel.",
+        "Con viento fuerte se suspende el movimiento de paneles grandes."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); Ley 16.744 Art. 68; instrucciones del fabricante del moldaje.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Cuánto pesa el panel más grande que movemos hoy y cómo lo vamos a mover?"
+    },
+    {
+      "id": 615,
+      "codigo": "CA-15",
+      "especialidad": "CA",
+      "titulo": "Taller de carpintería: orden, viruta y electricidad",
+      "porQue": "En el taller se juntan sierras, extensiones eléctricas, aserrín y madera apilada. El aserrín acumulado es combustible y resbaladizo, y las extensiones en el suelo se pisan y se dañan. Un taller ordenado es un taller donde las máquinas se usan mejor y donde no empieza un incendio.",
+      "checklist": [
+        "Aserrín y viruta retirados a diario; madera apilada de forma estable y lejos de las máquinas.",
+        "Tablero eléctrico con diferencial, extensiones en buen estado y elevadas o protegidas del paso.",
+        "Extintor visible y accesible; prohibido fumar o hacer fuego en el taller."
+      ],
+      "normativa": "DS 594 (orden, prevención y protección contra incendios); DS 8/2019 (instalaciones eléctricas); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "Si hoy se enciende el aserrín del taller, ¿dónde está el extintor?"
+    },
+    {
+      "id": 616,
+      "codigo": "CA-16",
+      "especialidad": "CA",
+      "titulo": "Herramientas a batería: cargadores y baterías también son riesgo",
+      "porQue": "Taladros, sierras y atornilladores inalámbricos son prácticos, pero sus baterías de litio pueden calentarse, inflarse e incendiarse si se golpean, se mojan o se cargan con un cargador que no corresponde. Un incendio en una caseta o en la camioneta puede empezar en un cargador.",
+      "checklist": [
+        "Usar solo el cargador original de cada batería; cargar en un lugar ventilado, lejos de material combustible y nunca sin supervisión por la noche.",
+        "Baterías golpeadas, hinchadas o calientes se retiran de uso y se aíslan.",
+        "Herramienta con su guarda y accesorios correctos; retirar la batería antes de cambiar la broca o el disco."
+      ],
+      "normativa": "DS 594 (prevención de incendios y Art. 38); Ley 16.744 Art. 68; instrucciones del fabricante.",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Dónde cargamos las baterías de las herramientas y quién las desconecta al final del día?"
+    },
+    {
+      "id": 617,
+      "codigo": "CA-17",
+      "especialidad": "CA",
+      "titulo": "Clavadora neumática: un disparo que no se puede devolver",
+      "porQue": "La clavadora neumática dispara clavos a gran velocidad. Un disparo doble, un clavo que rebota en un nudo o un dedo en el gatillo al caminar pueden atravesar una mano o una pierna. Muchos accidentes ocurren al cargarla o al moverse con ella conectada.",
+      "checklist": [
+        "Usar el modo de disparo secuencial cuando sea posible; dedo fuera del gatillo al desplazarse.",
+        "Desconectar el aire antes de cargar clavos, destrabarla o hacer mantención; nunca apuntarla hacia personas.",
+        "Manos a distancia del punto de disparo; lentes de seguridad para el operador y quienes están cerca."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; Ley 16.744 Art. 68; instrucciones del fabricante.",
+      "reglaOro": "Nunca intervenir un equipo con energía conectada.",
+      "preguntaCierre": "¿En qué modo de disparo está hoy nuestra clavadora y quién la desconecta para cargarla?"
+    },
+    {
+      "id": 618,
+      "codigo": "CA-18",
+      "especialidad": "CA",
+      "titulo": "Taladro y broca: atrapamiento y torsión",
+      "porQue": "Una broca que se traba en la madera o en el hormigón puede hacer girar el taladro con fuerza y torcer la muñeca. Si un guante suelto, una manga o el pelo largo se acercan a la broca, pueden ser atrapados y enrollados en un instante.",
+      "checklist": [
+        "Sujetar el taladro con ambas manos y usar la empuñadura lateral; pieza fijada, nunca sostenida con la otra mano detrás de la broca.",
+        "Sin ropa suelta, mangas abiertas ni pelo largo suelto cerca de la broca; guantes ajustados.",
+        "Cambiar brocas con la herramienta desconectada; lentes de seguridad al perforar."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Dónde pones la otra mano cuando perforas una tabla?"
+    },
+    {
+      "id": 619,
+      "codigo": "CA-19",
+      "especialidad": "CA",
+      "titulo": "Ingletadora: cortes precisos con la mano lejos del disco",
+      "porQue": "La ingletadora baja el disco sobre la pieza para hacer cortes en ángulo. Como el disco baja cerca de donde sujetamos la madera, es fácil que la mano quede en su camino, sobre todo al cortar piezas cortas. Su guarda móvil es la que separa el disco de tus dedos.",
+      "checklist": [
+        "Guarda móvil del disco funcionando y la máquina firme sobre su base o banco.",
+        "Mano de apoyo fuera de la zona marcada de seguridad; piezas cortas sujetas con prensa.",
+        "Esperar que el disco se detenga antes de subir el brazo o retirar el recorte."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 8/2019 (instalaciones eléctricas); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca anular las protecciones de herramientas o equipos.",
+      "preguntaCierre": "¿Cuál es la pieza más corta que vamos a cortar hoy y cómo la vamos a sujetar?"
+    },
+    {
+      "id": 620,
+      "codigo": "CA-20",
+      "especialidad": "CA",
+      "titulo": "Armado de moldaje en altura: el arnés también es herramienta",
+      "porQue": "Al armar moldajes de cabezales, muros altos o losas de puentes, el carpintero trabaja en bordes donde todavía no hay barandas. Concentrado en clavar o alinear, da un paso atrás sin mirar. Por eso el punto de anclaje se piensa antes de subir, no cuando ya estás arriba.",
+      "checklist": [
+        "Planificar los puntos de anclaje y la línea de vida antes de empezar el armado en altura.",
+        "Arnés de cuerpo completo inspeccionado y conectado mientras no haya barandas.",
+        "Herramientas amarradas o en cinturón portaherramientas; zona inferior demarcada por posible caída de objetos."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594 Art. 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿A qué te vas a anclar hoy mientras armas el borde del moldaje?"
+    },
+    {
+      "id": 621,
+      "codigo": "CA-21",
+      "especialidad": "CA",
+      "titulo": "Moldajes dentro de excavaciones: dos riesgos en uno",
+      "porQue": "Para fundaciones de muros, cabezales o cámaras, el carpintero arma moldajes dentro de zanjas y excavaciones. Allí suma el riesgo del moldaje al riesgo de la excavación: derrumbes, material que cae desde el borde y poco espacio para moverse. El tablero se puede revisar dos veces; el talud, solo una antes de entrar.",
+      "checklist": [
+        "Excavación revisada (talud o entibación) por la persona competente antes de bajar a armar.",
+        "Paneles y materiales bajados con cuerda o equipo, nunca lanzados; nadie bajo la carga ni en el borde mientras se bajan.",
+        "Acceso con escala y salida despejada; materiales del borde alejados a la distancia que exige el procedimiento."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Quién revisó hoy la excavación donde armamos el moldaje de la fundación?"
+    },
+    {
+      "id": 622,
+      "codigo": "CA-22",
+      "especialidad": "CA",
+      "titulo": "Moldajes metálicos: pasadores, cuñas y golpes",
+      "porQue": "Los sistemas de moldaje metálico se unen con pasadores, cuñas y grapas que se ajustan a golpe de martillo. Una cuña puede saltar, un pasador mal puesto puede soltar un panel y una grapa puede atrapar los dedos. Son piezas pequeñas que sostienen mucho peso.",
+      "checklist": [
+        "Usar solo los pasadores, cuñas y grapas del sistema, completos y sin deformaciones; no reemplazarlos por clavos o alambre.",
+        "Lentes de seguridad y guantes al ajustar cuñas; mano de apoyo fuera de la trayectoria del martillo.",
+        "Revisión de todas las uniones antes del hormigonado según las instrucciones del fabricante."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 Art. 53; instrucciones del fabricante del sistema de moldaje.",
+      "reglaOro": "Ninguna estructura temporal se carga sin ser revisada y aprobada.",
+      "preguntaCierre": "¿Hay alguna unión del moldaje hecha con alambre o clavo en lugar de su pieza original?"
+    },
+    {
+      "id": 623,
+      "codigo": "CA-23",
+      "especialidad": "CA",
+      "titulo": "Caballetes y bancos de trabajo: estables y a la altura justa",
+      "porQue": "Muchos cortes y armados se hacen sobre caballetes improvisados. Si se mueven o están muy bajos, la pieza se cae, la sierra se tranca o el carpintero trabaja agachado todo el día. Un buen banco de trabajo reduce cortes, golpes y dolores de espalda.",
+      "checklist": [
+        "Caballetes firmes, nivelados y sin piezas sueltas; la madera apoyada en forma estable.",
+        "Altura de trabajo cercana a la cintura para evitar agacharse; nunca usarlos como escalera.",
+        "Espacio libre alrededor para moverse con las piezas largas."
+      ],
+      "normativa": "DS 594 (condiciones de los lugares de trabajo); Protocolo TMERT-EESS (MINSAL); Ley 16.744 Art. 68.",
+      "reglaOro": "Planificar la tarea para reducir el esfuerzo y la exposición.",
+      "preguntaCierre": "¿A qué altura cortamos hoy y cuánto nos agachamos para hacerlo?"
+    },
+    {
+      "id": 624,
+      "codigo": "CA-24",
+      "especialidad": "CA",
+      "titulo": "El cuerpo del carpintero: rodillas, espalda y hombros",
+      "porQue": "Clavar tableros a nivel de piso, alinear paneles sobre la cabeza y cargar tablones generan posturas forzadas todo el día. Las lesiones de rodilla, espalda y hombro del carpintero se acumulan durante años. Algunas medidas simples hacen una gran diferencia.",
+      "checklist": [
+        "Rodilleras al trabajar de rodillas sobre tableros o losas; alternar posturas.",
+        "Organizar el trabajo para que lo pesado se haga a la altura de la cintura y lo menos posible sobre la cabeza.",
+        "Pausas activas y rotación de tareas; informar dolores persistentes."
+      ],
+      "normativa": "Protocolo TMERT-EESS (MINSAL); Código del Trabajo Arts. 211-F a 211-J; Ley 16.744 Art. 68.",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "¿Qué tarea de hoy te obliga a trabajar más rato agachado o con los brazos arriba?"
+    },
+    {
+      "id": 625,
+      "codigo": "CA-25",
+      "especialidad": "CA",
+      "titulo": "Desclavar y reutilizar madera: el trabajo después del trabajo",
+      "porQue": "Reutilizar la madera del moldaje es eficiente, pero desclavar tablas con barreta y martillo produce golpes, astillas y clavos que saltan. Además, una tabla reutilizada muchas veces puede estar partida o debilitada, y fallar cuando vuelve a usarse en un moldaje o una plataforma.",
+      "checklist": [
+        "Desclavar sobre un banco o en el suelo firme, con lentes y guantes, sin apoyar la tabla contra el cuerpo.",
+        "Clasificar la madera: la partida, podrida o muy debilitada no se reutiliza en moldajes ni plataformas.",
+        "Clavos retirados en un recipiente; madera apilada por largo y en forma estable."
+      ],
+      "normativa": "DS 594 (orden y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Qué tablas de las que desclavamos ayer no deberían volver a usarse en una plataforma?"
+    },
+    {
+      "id": 701,
+      "codigo": "EN-01",
+      "especialidad": "EN",
+      "titulo": "Descarga de fierro: paquetes pesados que ruedan",
+      "porQue": "El fierro llega en paquetes de varias toneladas sobre camiones. Al descargarlos con grúa o excavadora, un paquete mal eslingado puede deslizarse, abrirse o girar, y las barras sueltas ruedan o caen. Quien está junto al camión queda en la línea de fuego.",
+      "checklist": [
+        "Descarga con equipo autorizado y eslingas en buen estado, en dos puntos para que el paquete no se incline.",
+        "Nadie sobre la carga del camión ni bajo el paquete suspendido; carga guiada con cuerda.",
+        "Zona de descarga demarcada y el paquete depositado sobre durmientes, nunca directo en el barro."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 Art. 38; estándar de izaje del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Dónde se para hoy el que guía la descarga del camión de fierro?"
+    },
+    {
+      "id": 702,
+      "codigo": "EN-02",
+      "especialidad": "EN",
+      "titulo": "Acopio de fierro: ordenado, separado del suelo y a baja altura",
+      "porQue": "Un acopio de barras mal hecho es una trampa: las barras se resbalan, ruedan, se mezclan los diámetros y para sacar una hay que tirar de todas. Además, el fierro en el barro se oxida y es más difícil de manipular. El orden del acopio define cuán seguro es todo el trabajo del día.",
+      "checklist": [
+        "Barras sobre durmientes o caballetes, separadas por diámetro y con su identificación visible.",
+        "Altura de acopio limitada para poder sacar las barras sin subirse ni tirar de abajo.",
+        "Pasillos libres entre acopios y extremos de barras señalizados o protegidos."
+      ],
+      "normativa": "DS 594 (almacenamiento y orden en lugares de trabajo); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Hay algún paquete de fierro que haya que reordenar antes de empezar?"
+    },
+    {
+      "id": 703,
+      "codigo": "EN-03",
+      "especialidad": "EN",
+      "titulo": "Barras largas a mano: coordinación entre los que cargan",
+      "porQue": "Una barra de 12 metros no se ve completa desde un extremo. Al moverla, la punta trasera puede golpear a un compañero, enredarse en un cable o barrer a alguien al girar. Si la carga se suelta de un lado, el peso completo cae sobre el otro.",
+      "checklist": [
+        "Barras largas se mueven entre dos o más personas, al mismo lado y con una sola persona que da las órdenes (levantar, avanzar, bajar).",
+        "Protección en el hombro si se cargan sobre él; caminar mirando ambos extremos y el entorno.",
+        "Al girar, mirar alrededor y avisar; nunca girar con barras largas cerca de cables o del tránsito."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); DS 594 Art. 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Planificar la tarea: si pesa, se usa ayuda mecánica o se reparte la carga.",
+      "preguntaCierre": "¿Quién da las órdenes cuando movemos una barra entre dos?"
+    },
+    {
+      "id": 704,
+      "codigo": "EN-04",
+      "especialidad": "EN",
+      "titulo": "Amarras con alambre: cortes y pinchazos todo el día",
+      "porQue": "Amarrar enfierradura significa miles de amarras de alambre al día. Los extremos del alambre cortan y pinchan las manos, y pueden saltar a los ojos al cortarlos. Son lesiones pequeñas que, repetidas, se infectan y quitan días de trabajo.",
+      "checklist": [
+        "Guantes resistentes al corte y lentes de seguridad al amarrar y cortar alambre.",
+        "Puntas de las amarras dobladas hacia adentro de la armadura, no hacia donde se pasa o se trabaja.",
+        "Rollo de alambre en su porta-rollo o cinturón, no suelto en el suelo."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Hacia dónde quedan las puntas de las amarras que hicimos ayer?"
+    },
+    {
+      "id": 705,
+      "codigo": "EN-05",
+      "especialidad": "EN",
+      "titulo": "Muñecas y codos del enfierrador: el movimiento repetido",
+      "porQue": "El giro de muñeca al amarrar se repite miles de veces por jornada. Con los años, aparecen tendinitis, síndrome del túnel carpiano y dolor de codo, que pueden terminar en licencia o cirugía. El daño se puede reducir con herramientas adecuadas, pausas y rotación de tareas.",
+      "checklist": [
+        "Usar herramienta de amarre adecuada (tenaza o gancho en buen estado; amarradora automática si está disponible).",
+        "Alternar la mano y la tarea (amarre, transporte, colocación de separadores) durante el día.",
+        "Pausas activas para muñecas y antebrazos; informar hormigueo o dolor nocturno en las manos."
+      ],
+      "normativa": "Protocolo TMERT-EESS (MINSAL, trastornos musculoesqueléticos de extremidades superiores); Ley 16.744 (enfermedades profesionales).",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "¿Alguien siente hormigueo en las manos al despertar? Eso hay que contarlo."
+    },
+    {
+      "id": 706,
+      "codigo": "EN-06",
+      "especialidad": "EN",
+      "titulo": "Caminar sobre parrillas de fierro: cada paso es un riesgo",
+      "porQue": "Caminar sobre la armadura de una losa o una fundación es como caminar sobre una escalera acostada: el pie se cuela entre las barras y el tobillo se tuerce, o la persona cae sobre las puntas. Cargando material, el riesgo es mayor.",
+      "checklist": [
+        "Instalar tablones o pasarelas sobre la armadura para circular y para trabajar.",
+        "No cargar material pesado caminando sobre las barras; entregarlo desde el borde o con equipo.",
+        "Calzado de seguridad con buena suela y caña que proteja el tobillo."
+      ],
+      "normativa": "DS 594 (vías de circulación y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Caminar por vías seguras, sin correr ni distraerse.",
+      "preguntaCierre": "¿Dónde pondremos hoy los tablones para circular sobre la parrilla?"
+    },
+    {
+      "id": 707,
+      "codigo": "EN-07",
+      "especialidad": "EN",
+      "titulo": "Armaduras verticales: jaulas que se pueden volcar",
+      "porQue": "Las armaduras de muros, pilares o estribos se arman paradas antes de poner el moldaje. Una jaula alta sin arriostrar se comporta como un poste sin base: el viento, un golpe o el peso de una persona apoyada la pueden volcar.",
+      "checklist": [
+        "Armaduras verticales arriostradas con tensores o puntales apenas se paran.",
+        "Nadie trepa por la armadura para amarrar arriba: usar escala, plataforma o andamio con protección contra caídas.",
+        "Con viento fuerte se revisan los arriostramientos y no se trabaja junto a jaulas inestables."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594; NCh 1258 (protección contra caídas).",
+      "reglaOro": "Nunca ubicarse bajo o junto a elementos que puedan caer.",
+      "preguntaCierre": "¿Cómo está arriostrada la armadura del muro de hoy?"
+    },
+    {
+      "id": 708,
+      "codigo": "EN-08",
+      "especialidad": "EN",
+      "titulo": "Izaje de armaduras prefabricadas: la jaula no es una carga rígida",
+      "porQue": "Una armadura armada en el patio y luego izada hasta su lugar puede deformarse, girar o soltar barras durante el izaje. A diferencia de un bloque de hormigón, se dobla. Si no se iza en los puntos correctos, puede desarmarse en el aire.",
+      "checklist": [
+        "Puntos de izaje definidos y reforzados; eslingas en varios puntos para que la jaula no se deforme.",
+        "Revisar amarras y barras sueltas antes de levantar.",
+        "Carga guiada con cuerdas, nadie bajo la jaula ni entre la jaula y el moldaje o la excavación."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 Art. 38; estándar de izaje del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿De dónde se va a enganchar hoy la jaula para que no se deforme?"
+    },
+    {
+      "id": 709,
+      "codigo": "EN-09",
+      "especialidad": "EN",
+      "titulo": "Protección de puntas: cada barra expuesta es una lanza",
+      "porQue": "Las barras de espera que quedan hacia arriba en fundaciones y muros son de los peligros más graves de la obra: una caída sobre ellas puede causar una herida penetrante mortal. No basta con verlas: hay que cubrirlas.",
+      "checklist": [
+        "Todas las barras de espera con capuchón o protegidas con una tabla o perfil continuo.",
+        "En zonas de paso o bajo trabajos en altura, protección que resista una caída (no solo un capuchón de color).",
+        "Revisión al final de cada jornada: capuchones repuestos donde se sacaron para trabajar."
+      ],
+      "normativa": "DS 594 (condiciones de seguridad de los lugares de trabajo); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y protección de elementos punzantes en todo frente de trabajo.",
+      "preguntaCierre": "¿Qué barras de espera quedaron sin capuchón ayer al terminar?"
+    },
+    {
+      "id": 710,
+      "codigo": "EN-10",
+      "especialidad": "EN",
+      "titulo": "Separadores y calugas: el trabajo agachado",
+      "porQue": "Colocar separadores y calugas para dar el recubrimiento del fierro obliga a trabajar agachado o de rodillas sobre la armadura, metiendo las manos entre las barras. Es una tarea repetitiva donde se combinan golpes, pinchazos y dolor de espalda.",
+      "checklist": [
+        "Rodilleras o un tablón para apoyarse al trabajar a nivel del piso.",
+        "Guantes y cuidado al meter las manos entre las barras; levantar la armadura con palanca o en equipo, no a pulso.",
+        "Pausas y cambios de postura frecuentes."
+      ],
+      "normativa": "Protocolo TMERT-EESS (MINSAL); DS 594 Art. 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "¿Cómo podemos colocar hoy los separadores sin pasar media hora agachados?"
+    },
+    {
+      "id": 711,
+      "codigo": "EN-11",
+      "especialidad": "EN",
+      "titulo": "Doblado manual con grifa: la palanca que se zafa",
+      "porQue": "Doblar fierro a mano con grifa y banco de doblado exige fuerza. Si la grifa se zafa o la barra resbala, el trabajador pierde el equilibrio y puede golpearse con la barra o caer. Con diámetros grandes el esfuerzo es mayor y conviene usar máquina.",
+      "checklist": [
+        "Banco de doblado firme y pernos de doblado en buen estado; grifa adecuada al diámetro.",
+        "Postura estable, sin tirar con el cuerpo hacia atrás en el vacío; nadie en la trayectoria de la barra.",
+        "Diámetros grandes o dobleces repetitivos, con dobladora mecánica."
+      ],
+      "normativa": "DS 594 (condiciones de seguridad y EPP); Código del Trabajo Arts. 211-F a 211-J; Ley 16.744 Art. 68.",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Qué diámetro vamos a doblar hoy a mano y debería ir a la máquina?"
+    },
+    {
+      "id": 712,
+      "codigo": "EN-12",
+      "especialidad": "EN",
+      "titulo": "Esmeril para cortar fierro: chispas, disco y retroceso",
+      "porQue": "Muchas veces se corta fierro en terreno con esmeril angular. El disco de corte es delgado y se puede quebrar si se traba, lanzando fragmentos. Las chispas pueden encender pasto seco, ropa o combustibles cercanos. Es una de las herramientas más peligrosas de la obra.",
+      "checklist": [
+        "Esmeril con guarda, empuñadura lateral y disco de corte para metal, adecuado a sus revoluciones y sin daños.",
+        "Barra sujeta firmemente; nunca cortar con la barra apoyada en la rodilla o sostenida por otra persona.",
+        "Careta facial, lentes, guantes y protección auditiva; dirigir las chispas lejos de personas y material combustible."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 8/2019 (instalaciones eléctricas); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca anular las protecciones de herramientas o equipos.",
+      "preguntaCierre": "¿Hacia dónde van las chispas cuando cortamos en el frente de hoy?"
+    },
+    {
+      "id": 713,
+      "codigo": "EN-13",
+      "especialidad": "EN",
+      "titulo": "Enfierradura dentro de excavaciones: no olvidar el talud",
+      "porQue": "Al armar fundaciones, el enfierrador trabaja dentro de la excavación concentrado en las barras y las amarras. Mientras tanto, la pared de tierra a su espalda puede ceder, sobre todo después de lluvias o con equipos trabajando cerca del borde.",
+      "checklist": [
+        "Excavación revisada por persona competente antes de bajar; talud o entibación según el procedimiento.",
+        "Barras bajadas de forma controlada desde el borde, nunca lanzadas a la excavación.",
+        "Equipos y acopios lejos del borde mientras hay personas abajo; escala de salida cerca del punto de trabajo."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Cómo bajamos hoy las barras a la fundación sin lanzarlas?"
+    },
+    {
+      "id": 714,
+      "codigo": "EN-14",
+      "especialidad": "EN",
+      "titulo": "Barras largas y líneas eléctricas: 12 metros de conductor",
+      "porQue": "Una barra de 12 metros levantada o girada cerca de una línea eléctrica puede tocarla o acercarse lo suficiente para que salte el arco. El fierro conduce la electricidad directo al cuerpo de quien la sostiene. Es un accidente mortal que ocurre en segundos.",
+      "checklist": [
+        "Identificar las líneas eléctricas del sector antes de mover barras largas; señalizar la zona bajo y junto a ellas.",
+        "Mover las barras horizontales y bajas cerca de líneas; nunca pararlas ni girarlas en vertical.",
+        "Respetar la distancia de seguridad definida; si una barra toca una línea, nadie toca a la persona ni la barra, y se avisa para cortar la energía."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71, distancias a líneas energizadas); Ley 16.744 Art. 68; Código del Trabajo Art. 184.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "¿Dónde están hoy las líneas eléctricas más cercanas al patio de fierro?"
+    },
+    {
+      "id": 715,
+      "codigo": "EN-15",
+      "especialidad": "EN",
+      "titulo": "Heridas con fierro oxidado: atender, informar y vacunar",
+      "porQue": "Una herida con fierro oxidado o con alambre puede parecer pequeña, pero puede infectarse y transmitir tétanos, una enfermedad grave. La vacuna antitetánica al día y la atención oportuna de cualquier herida evitan complicaciones.",
+      "checklist": [
+        "Toda herida, por pequeña que sea, se lava, se informa al capataz y se atiende en el policlínico o la mutualidad.",
+        "Conocer si tienes la vacuna antitetánica al día y consultarlo en tu centro de salud o mutualidad.",
+        "Guantes adecuados y manga larga al manipular fierro y alambre."
+      ],
+      "normativa": "Ley 16.744 (accidentes del trabajo y obligación de denuncia); recomendaciones del Ministerio de Salud sobre vacunación antitetánica; DS 594 Art. 53.",
+      "reglaOro": "Todo accidente e incidente se informa el mismo día.",
+      "preguntaCierre": "¿Sabes cuándo fue tu última vacuna antitetánica?"
+    },
+    {
+      "id": 716,
+      "codigo": "EN-16",
+      "especialidad": "EN",
+      "titulo": "Guantes del enfierrador: el adecuado para cada tarea",
+      "porQue": "Los guantes protegen de cortes y pinchazos, pero un guante suelto cerca de la dobladora o de un taladro puede ser atrapado y arrastrar la mano. Elegir el guante correcto para cada tarea es tan importante como usarlo.",
+      "checklist": [
+        "Guantes resistentes al corte para manipular barras y alambre.",
+        "Guantes ajustados (o el procedimiento de la máquina) al operar dobladoras y cortadoras; nunca guantes rotos o sueltos cerca de partes que giran.",
+        "Guantes dañados o empapados se reemplazan en bodega."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Qué guante usas en la dobladora y cuál para cargar barras?"
+    },
+    {
+      "id": 717,
+      "codigo": "EN-17",
+      "especialidad": "EN",
+      "titulo": "Enfierradura en altura: pilares, cabezales y estribos",
+      "porQue": "Al amarrar armaduras de cabezales, estribos o pilares se trabaja en altura, muchas veces en la orilla de la estructura y con ambas manos ocupadas. Trepar por la armadura o apoyarse en ella en vez de usar una plataforma es la causa de muchas caídas.",
+      "checklist": [
+        "Plataforma, andamio o escala adecuados; prohibido trepar por la armadura.",
+        "Sobre 1,8 m, barandas o arnés conectado a un punto de anclaje resistente (no a la propia armadura sin evaluación).",
+        "Herramientas y rollos de alambre asegurados; zona inferior demarcada."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); NCh 2501 (andamios); DS 594 Art. 53.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Desde dónde vamos a amarrar hoy la parte alta de la armadura?"
+    },
+    {
+      "id": 718,
+      "codigo": "EN-18",
+      "especialidad": "EN",
+      "titulo": "Patio de enfierradura en orden: despuntes y alambre fuera del suelo",
+      "porQue": "En el patio de corte y doblado quedan despuntes, restos de alambre y barras dobladas en el suelo. Son obstáculos que provocan tropiezos, cortes y torceduras. Un patio ordenado también ayuda a encontrar rápido lo que se necesita.",
+      "checklist": [
+        "Despuntes en un contenedor o lugar definido durante la jornada, no al final de la semana.",
+        "Alambre sobrante enrollado y retirado; pasillos libres entre máquinas y acopios.",
+        "Barras preparadas identificadas y acopiadas por elemento, listas para llevar."
+      ],
+      "normativa": "DS 594 (orden y aseo, residuos); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Dónde dejamos hoy los despuntes de fierro?"
+    },
+    {
+      "id": 719,
+      "codigo": "EN-19",
+      "especialidad": "EN",
+      "titulo": "Coordinación con carpinteros y hormigoneros: no trabajar unos sobre otros",
+      "porQue": "En una misma obra de arte trabajan enfierradores, carpinteros y la cuadrilla de hormigón. Si las tareas se cruzan, alguien termina trabajando bajo un moldaje que se está izando o junto a una bomba que empieza a descargar. La coordinación diaria evita esos encuentros.",
+      "checklist": [
+        "Secuencia del día acordada entre los capataces de cada cuadrilla.",
+        "Nadie trabaja bajo cargas o maniobras de otra cuadrilla; las áreas de maniobra se demarcan.",
+        "Inspección de armadura terminada y entregada antes de cerrar el moldaje o hormigonar."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 76/2007 (coordinación de actividades en obras con subcontratistas); DS 44/2024.",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "¿Qué otra cuadrilla trabaja hoy en la misma estructura y cómo nos coordinamos?"
+    },
+    {
+      "id": 720,
+      "codigo": "EN-20",
+      "especialidad": "EN",
+      "titulo": "Transporte de fierro en camioneta: la carga que sobresale",
+      "porQue": "Llevar barras en una camioneta parece rápido, pero barras que sobresalen sin señalizar pueden atravesar el parabrisas del vehículo que viene detrás o golpear a un peatón. Si no van amarradas, se deslizan en una frenada hacia la cabina.",
+      "checklist": [
+        "Barras amarradas firmemente y apoyadas en una rejilla o soporte para que no se deslicen hacia la cabina.",
+        "Carga que sobresale señalizada según la ley (bandera o elemento visible) y dentro del largo permitido.",
+        "Para cantidades o largos mayores, usar camión adecuado."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (carga de vehículos y carga que sobresale); Ley 16.744 Art. 68.",
+      "reglaOro": "Toda carga trasladada va asegurada y verificada antes de entrar a la vía.",
+      "preguntaCierre": "Si frenas fuerte con fierros en la camioneta, ¿hacia dónde se van?"
+    },
+    {
+      "id": 721,
+      "codigo": "EN-21",
+      "especialidad": "EN",
+      "titulo": "Fierro mojado o con escarcha: resbala en las manos y bajo los pies",
+      "porQue": "En las mañanas frías del sur, las barras amanecen mojadas o con escarcha. Resbalan al manipularlas y al caminar sobre la armadura, y el frío del metal entumece las manos hasta perder fuerza y sensibilidad.",
+      "checklist": [
+        "Guantes que mantengan el agarre con humedad y protejan del frío; cambiarlos si se empapan.",
+        "Esperar que la escarcha se derrita o usar pasarelas antes de caminar sobre la armadura.",
+        "Manipular barras con más cuidado y entre más personas cuando están resbaladizas."
+      ],
+      "normativa": "DS 594 (exposición al frío y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Protección personal adecuada a la condición del día.",
+      "preguntaCierre": "¿Cómo amaneció hoy la armadura? ¿Se puede caminar sobre ella?"
+    },
+    {
+      "id": 722,
+      "codigo": "EN-22",
+      "especialidad": "EN",
+      "titulo": "Fierro al sol: el metal también quema",
+      "porQue": "En verano, las barras expuestas al sol pueden calentarse tanto que queman la piel al tomarlas sin guantes. Además, el enfierrador trabaja sobre armaduras que reflejan calor, con poca sombra, durante horas.",
+      "checklist": [
+        "Guantes siempre al manipular fierro expuesto al sol.",
+        "Agua fresca disponible y pausas a la sombra; bloqueador y cubrenuca.",
+        "Planificar tareas más pesadas en las horas más frescas cuando sea posible."
+      ],
+      "normativa": "DS 594 (exposición al calor y agua potable); Ley 20.096 y DS 594 Arts. 109 a), b) y c) (radiación UV).",
+      "reglaOro": "Protección personal adecuada a la condición del día.",
+      "preguntaCierre": "¿Dónde está la sombra más cercana al patio de fierro hoy?"
+    },
+    {
+      "id": 723,
+      "codigo": "EN-23",
+      "especialidad": "EN",
+      "titulo": "Entre barras y moldajes: la cabeza también se golpea",
+      "porQue": "Dentro de armaduras densas o entre la armadura y el moldaje, el espacio es reducido. Al levantarse o girar, la cabeza choca con barras que sobresalen y el casco se desplaza. Sin barbiquejo, el casco puede caer justo cuando más se necesita.",
+      "checklist": [
+        "Casco con barbiquejo ajustado al trabajar entre armaduras o agachado.",
+        "Puntas que sobresalen hacia los espacios de trabajo protegidas o dobladas.",
+        "Moverse despacio dentro de espacios estrechos; lentes para proteger los ojos de las puntas."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Quién trabaja hoy dentro de la armadura y tiene el barbiquejo puesto?"
+    },
+    {
+      "id": 724,
+      "codigo": "EN-24",
+      "especialidad": "EN",
+      "titulo": "Recepción de armadura antes del hormigonado: revisar sin caerse",
+      "porQue": "Antes de hormigonar, la armadura se revisa: diámetros, separaciones, recubrimientos y amarras. Quienes revisan caminan por la armadura y los moldajes, muchas veces en altura y con planos en la mano. Esa revisión también debe hacerse con seguridad.",
+      "checklist": [
+        "Recorrido de revisión por pasarelas o tablones, no saltando entre barras.",
+        "Protección contra caídas en bordes y altura también para supervisores e inspectores.",
+        "Observaciones corregidas y armadura entregada formalmente antes de iniciar el hormigonado."
+      ],
+      "normativa": "Ley 16.744 Art. 68; NCh 1258; especificaciones técnicas del proyecto.",
+      "reglaOro": "Las reglas de seguridad son para todos, también para quien revisa.",
+      "preguntaCierre": "¿Por dónde va a caminar hoy el inspector para revisar la armadura?"
+    },
+    {
+      "id": 725,
+      "codigo": "EN-25",
+      "especialidad": "EN",
+      "titulo": "Herramientas del enfierrador: tenaza, gancho y tijera en buen estado",
+      "porQue": "La tenaza o el gancho de amarrar se usan miles de veces al día. Una tenaza gastada exige más fuerza y resbala; un gancho sin mango firme lastima la palma. La herramienta correcta en buen estado reduce el cansancio y las lesiones.",
+      "checklist": [
+        "Revisar tenazas, ganchos y tijeras al inicio: filo, articulaciones y mangos en buen estado.",
+        "Herramienta adecuada al diámetro del alambre y al tipo de amarra.",
+        "Herramientas guardadas en cinturón o caja, no sueltas sobre la armadura."
+      ],
+      "normativa": "DS 594 Art. 53; Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Tu tenaza corta bien o tienes que apretar el doble? Hay que cambiarla."
+    },
+    {
+      "id": 801,
+      "codigo": "HO-01",
+      "especialidad": "HO",
+      "titulo": "Dermatitis por cemento: el daño que llega de a poco",
+      "porQue": "El cemento húmedo es muy alcalino. En contacto con la piel puede causar quemaduras químicas en horas y, con exposición repetida, una dermatitis que agrieta las manos y puede volverse crónica. Muchos hormigoneros la sufren por años sin saber que es una enfermedad profesional.",
+      "checklist": [
+        "Guantes impermeables con puño largo y botas de goma con el pantalón por fuera; cambiarlos si se mojan por dentro.",
+        "Lavar con abundante agua cualquier contacto con hormigón o mortero; no limpiarse las manos con petróleo ni solventes.",
+        "Informar enrojecimiento, picazón o grietas persistentes en las manos para atenderlas a tiempo."
+      ],
+      "normativa": "DS 594 (agentes químicos y Art. 53 sobre EPP); Ley 16.744 (enfermedades profesionales); Hoja de Datos de Seguridad del cemento (NCh 2245).",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Quién ha tenido las manos agrietadas después de hormigonar? Eso tiene nombre y se trata."
+    },
+    {
+      "id": 802,
+      "codigo": "HO-02",
+      "especialidad": "HO",
+      "titulo": "Planificar el hormigonado: nadie improvisa con el camión esperando",
+      "porQue": "Una vez que llega el primer mixer, el hormigonado no se puede detener sin consecuencias. Esa presión de tiempo hace que se improvise: alguien se sube donde no debe, se olvida una baranda o se acerca a la bomba sin aviso. La planificación previa es la que permite trabajar rápido sin correr riesgos.",
+      "checklist": [
+        "Antes del primer camión: moldaje y armadura entregados, accesos listos, roles asignados (bomba, manguera, vibrado, regla, terminación).",
+        "Ruta de los mixer, punto de descarga y zona de la bomba definidos y demarcados.",
+        "Plan B conocido si falla la bomba o se atrasa el hormigón, sin que nadie tome atajos inseguros."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva e información de riesgos); procedimiento de hormigonado del proyecto.",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "Que cada uno diga cuál es su rol hoy en el hormigonado y dónde va a estar."
+    },
+    {
+      "id": 803,
+      "codigo": "HO-03",
+      "especialidad": "HO",
+      "titulo": "Llegada del mixer: ruta interna y punto de descarga",
+      "porQue": "Un camión mixer cargado pesa más de 25 toneladas y se mueve por caminos internos, accesos estrechos y bordes de excavaciones. El conductor muchas veces no conoce la obra. Si nadie lo recibe y lo guía, puede acercarse demasiado a un talud o retroceder sobre una persona.",
+      "checklist": [
+        "Ruta interna y punto de descarga definidos, con terreno firme y lejos de bordes de excavaciones.",
+        "Un responsable recibe a cada mixer, le indica la ruta y guía el retroceso desde un lugar visible.",
+        "Nadie camina detrás del mixer ni entre el mixer y la bomba durante la maniobra."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; DS 594 Art. 38; Ley 16.744 Art. 68.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el conductor antes de acercarse.",
+      "preguntaCierre": "¿Quién recibe hoy a los mixer y dónde se ubica para guiarlos?"
+    },
+    {
+      "id": 804,
+      "codigo": "HO-04",
+      "especialidad": "HO",
+      "titulo": "Canaleta del mixer: atrapamiento al desplegarla y girarla",
+      "porQue": "La canaleta del mixer se despliega, se extiende y se gira para dirigir el hormigón. Entre sus tramos y en las bisagras quedan puntos donde se atrapan los dedos, y una canaleta que se suelta puede caer sobre los pies. Además, el tambor gira cerca de quien está junto a la descarga.",
+      "checklist": [
+        "Desplegar y plegar la canaleta con los seguros puestos y las manos fuera de las bisagras.",
+        "Nadie bajo la canaleta ni junto al tambor en movimiento; el conductor solo gira el tambor con la señal acordada.",
+        "Lavado de la canaleta con el tambor detenido y lejos de las partes móviles."
+      ],
+      "normativa": "DS 594 Art. 38 (protección de partes móviles); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca intervenir un equipo en movimiento.",
+      "preguntaCierre": "¿Dónde quedan los puntos de atrapamiento de la canaleta del mixer?"
+    },
+    {
+      "id": 805,
+      "codigo": "HO-05",
+      "especialidad": "HO",
+      "titulo": "Pluma de la bomba: la zona que nadie debe ocupar",
+      "porQue": "La pluma de la bomba de hormigón se despliega sobre la estructura, a veces sobre personas y sobre el tránsito. Una falla en un estabilizador o en la pluma puede hacerla caer, y la manguera colgante se mueve con fuerza cuando llega el hormigón. Bajo la pluma no se camina.",
+      "checklist": [
+        "Bomba estabilizada sobre terreno firme con placas de reparto, lejos de bordes y de líneas eléctricas.",
+        "Zona bajo la pluma demarcada; nadie pasa ni se detiene bajo ella mientras está desplegada.",
+        "Operador de la bomba con visibilidad o señalero dedicado; la pluma no pasa sobre el tránsito habilitado sin control."
+      ],
+      "normativa": "DS 594 Art. 38; normativa eléctrica SEC (NSEG 5 E.n.71); Manual de Señalización de Tránsito, Cap. 5; manual del fabricante.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Por dónde pasa la pluma hoy y qué queda debajo de ella?"
+    },
+    {
+      "id": 806,
+      "codigo": "HO-06",
+      "especialidad": "HO",
+      "titulo": "Tuberías de la bomba: acoples que se sueltan y tapones que vuelan",
+      "porQue": "Cuando se usa tubería en lugar de pluma, el hormigón viaja a presión por tubos unidos con abrazaderas. Una abrazadera mal cerrada puede soltarse y hacer que el tubo latiguee. Al destapar o limpiar con pelota, el tapón o la pelota pueden salir disparados.",
+      "checklist": [
+        "Abrazaderas cerradas con su seguro y tubería apoyada y amarrada en cambios de dirección.",
+        "Nunca abrir un acople con la línea presurizada; aliviar la presión según el procedimiento.",
+        "Durante la limpieza con pelota, zona de salida despejada y con barrera; nadie frente al extremo de la tubería."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; manual del fabricante de la bomba.",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "Cuando limpiemos la tubería hoy, ¿dónde va a salir la pelota y quién controla esa zona?"
+    },
+    {
+      "id": 807,
+      "codigo": "HO-07",
+      "especialidad": "HO",
+      "titulo": "Capacho de hormigón: un balde de más de una tonelada sobre la cabeza",
+      "porQue": "Cuando el hormigón se coloca con capacho colgado de una grúa o excavadora, cada viaje es un izaje de una carga muy pesada. El capacho se balancea, y la compuerta puede abrirse de golpe. Quien lo guía está justo debajo o al lado.",
+      "checklist": [
+        "Capacho en buen estado, compuerta con seguro y equipo de izaje autorizado para ese peso.",
+        "Un solo señalero; el capacho se guía con cuerda y nadie se ubica bajo él en el traslado.",
+        "Apertura de la compuerta controlada, con las manos y el cuerpo fuera del chorro de hormigón."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 Art. 38; estándar de izaje del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Cuánto pesa el capacho lleno y quién da las señales al operador?"
+    },
+    {
+      "id": 808,
+      "codigo": "HO-08",
+      "especialidad": "HO",
+      "titulo": "Hormigonado en altura: manguera, vibrador y bordes al mismo tiempo",
+      "porQue": "En cabezales, losas de puentes o muros altos, la cuadrilla hormigonea sobre plataformas o moldajes en altura. La manguera de la bomba tira, el vibrador pesa y la atención está en el hormigón. Un paso atrás o un tirón de la manguera puede terminar en una caída.",
+      "checklist": [
+        "Plataformas con barandas completas a lo largo de todo el borde de trabajo, o arnés conectado si no las hay.",
+        "Manguera manejada por las personas necesarias, sin enrollarla en el cuerpo ni pararse en su trayectoria.",
+        "Cables y mangueras ordenados para no tropezar; la superficie se limpia de lechada que hace resbalar."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594 Art. 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "Si la manguera da un tirón, ¿qué te detiene de caer?"
+    },
+    {
+      "id": 809,
+      "codigo": "HO-09",
+      "especialidad": "HO",
+      "titulo": "Hormigonar fundaciones y zanjas: lo que cae desde el borde",
+      "porQue": "Al hormigonar fundaciones o rellenos en zanjas, el mixer o la bomba descargan desde el borde, cerca de quienes trabajan abajo. Las vibraciones y el peso del camión pueden desprender material del talud, y el hormigón puede caer sobre las personas.",
+      "checklist": [
+        "Mixer o bomba a la distancia del borde que define el procedimiento; nunca con las ruedas al borde de la excavación.",
+        "Descarga dirigida con canaleta o manguera, sin lanzar hormigón sobre las personas.",
+        "Excavación revisada antes del hormigonado; escala de salida libre."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿A qué distancia del borde va a quedar hoy el mixer?"
+    },
+    {
+      "id": 810,
+      "codigo": "HO-10",
+      "especialidad": "HO",
+      "titulo": "Vigilar el moldaje durante el hormigonado: el reventón avisa poco",
+      "porQue": "Mientras se hormigona, el moldaje recibe la presión del hormigón fresco. Si un puntal cede, una amarra se corta o un panel se abre, el hormigón revienta el moldaje y puede arrastrar a las personas que están encima o al lado. Detectarlo a tiempo permite detener todo.",
+      "checklist": [
+        "Un carpintero designado vigila el moldaje durante todo el hormigonado: puntales, amarras y deformaciones.",
+        "Velocidad y altura de vaciado según lo indicado; no acumular hormigón en un solo punto.",
+        "Ante ruidos, deformaciones o fugas importantes: detener la bomba, alejar a las personas y avisar."
+      ],
+      "normativa": "Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis (riesgo grave e inminente); diseño del moldaje.",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "¿Quién vigila hoy el moldaje y cuál es la señal para detener la bomba?"
+    },
+    {
+      "id": 811,
+      "codigo": "HO-11",
+      "especialidad": "HO",
+      "titulo": "Alisadora mecánica (helicóptero): aspas que giran a ras de piso",
+      "porQue": "La alisadora mecánica tiene aspas que giran a ras del hormigón. Si el operador la suelta, puede girar sobre sí misma y golpear las piernas. Además, es una máquina a combustión o eléctrica que se usa sobre una superficie húmeda.",
+      "checklist": [
+        "Alisadora con hombre muerto (parada al soltar el mango) funcionando y protecciones de las aspas instaladas.",
+        "Nadie camina cerca de las aspas mientras giran; el operador mantiene ambas manos en el mango.",
+        "Carga de combustible con el motor detenido y fuera de la losa; si es eléctrica, cable protegido y con diferencial."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 8/2019 (instalaciones eléctricas); manual del fabricante.",
+      "reglaOro": "Nunca anular las protecciones de herramientas o equipos.",
+      "preguntaCierre": "¿Funciona el hombre muerto de la alisadora? Probémoslo antes de partir."
+    },
+    {
+      "id": 812,
+      "codigo": "HO-12",
+      "especialidad": "HO",
+      "titulo": "Curado del hormigón: membranas químicas y superficies resbaladizas",
+      "porQue": "Para curar el hormigón se rocían membranas químicas o se mantiene la superficie mojada. Las membranas irritan la piel, los ojos y las vías respiratorias si se aplican sin protección o con viento. Además, dejan el hormigón resbaladizo para quien camina encima.",
+      "checklist": [
+        "Revisar la HDS de la membrana de curado y usar el EPP que indica (lentes, guantes, protección respiratoria).",
+        "Aplicar a favor del viento y con el resto de la cuadrilla alejada de la nube.",
+        "Señalizar la superficie curada como resbaladiza y no circular sobre ella sin necesidad."
+      ],
+      "normativa": "DS 57/2019 (etiquetado de sustancias químicas); NCh 2245 (HDS); DS 594 Art. 53.",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿Qué dice la HDS de la membrana de curado sobre la protección respiratoria?"
+    },
+    {
+      "id": 813,
+      "codigo": "HO-13",
+      "especialidad": "HO",
+      "titulo": "Aditivos del hormigón: químicos que también se manipulan",
+      "porQue": "Aceleradores, retardadores, plastificantes e impermeabilizantes se agregan al hormigón o al mortero en terreno. Algunos son corrosivos o irritantes. Como vienen en bidones sin mucha información a la vista, se manipulan con descuido.",
+      "checklist": [
+        "Aditivos en envases originales rotulados, con su HDS disponible.",
+        "Dosificar con jarros o dosificadores dedicados, con guantes y lentes; nunca trasvasijar a botellas de bebida.",
+        "Derrames contenidos y limpiados; envases vacíos dispuestos como indica el procedimiento."
+      ],
+      "normativa": "DS 43/2015 (almacenamiento de sustancias peligrosas); DS 57/2019 (etiquetado); DS 148/2003 (residuos peligrosos).",
+      "reglaOro": "Ningún producto químico sin rotular ni almacenar correctamente.",
+      "preguntaCierre": "¿Qué aditivo usamos hoy y qué pasa si nos salpica a los ojos?"
+    },
+    {
+      "id": 814,
+      "codigo": "HO-14",
+      "especialidad": "HO",
+      "titulo": "Muestras y probetas: el laboratorista junto al mixer",
+      "porQue": "El laboratorista toma muestras, mide el cono y llena probetas junto al mixer y a la bomba, en medio de la faena. Está concentrado en su trabajo, cerca de un camión que puede moverse y de un tambor que gira. Además, levanta probetas y carretillas con hormigón.",
+      "checklist": [
+        "Toma de muestras coordinada con el conductor: mixer detenido y con freno aplicado.",
+        "Laboratorista con ropa de alta visibilidad, guantes impermeables y lentes.",
+        "Probetas y moldes movidos con carro o entre dos; área de trabajo del laboratorio fuera de la ruta de los camiones."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; Código del Trabajo Arts. 211-F a 211-J; Ley 16.744 Art. 68.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el conductor antes de acercarse.",
+      "preguntaCierre": "¿Cómo le avisa hoy el laboratorista al conductor que va a sacar la muestra?"
+    },
+    {
+      "id": 815,
+      "codigo": "HO-15",
+      "especialidad": "HO",
+      "titulo": "Lavado de mixer y herramientas: el agua que contamina",
+      "porQue": "El agua con restos de hormigón es muy alcalina. Si el mixer o las herramientas se lavan en cualquier lugar, esa agua llega a cunetas, esteros y suelos agrícolas y los daña. Además, la zona de lavado se vuelve un barrial resbaladizo.",
+      "checklist": [
+        "Lavado de canaletas, mixer y herramientas solo en la poza o zona de lavado habilitada.",
+        "Nunca lavar en cauces, cunetas o terrenos de vecinos.",
+        "Zona de lavado con acceso firme y sin barro para el personal y los camiones."
+      ],
+      "normativa": "Compromisos ambientales del proyecto (RCA o plan de manejo ambiental); DS 594 (residuos); Ley 16.744 Art. 68.",
+      "reglaOro": "Cada residuo en su lugar: nada se vierte al suelo ni a los cauces.",
+      "preguntaCierre": "¿Dónde está hoy la poza de lavado y quién le indica al conductor del mixer?"
+    },
+    {
+      "id": 816,
+      "codigo": "HO-16",
+      "especialidad": "HO",
+      "titulo": "Hormigonados largos o nocturnos: el cansancio también hormigonea",
+      "porQue": "Algunas estructuras deben hormigonarse de una sola vez, aunque tome toda la tarde o la noche. Con las horas, el cansancio, el frío y la poca luz hacen que se cometan errores y se tomen atajos. Un hormigonado largo debe planificarse también para las personas.",
+      "checklist": [
+        "Iluminación suficiente en el área de vaciado, accesos y rutas de los mixer antes de que oscurezca.",
+        "Relevos o pausas programados, con alimentación e hidratación disponibles.",
+        "Ropa de abrigo y de agua a mano; ropa de alta visibilidad con cintas reflectantes."
+      ],
+      "normativa": "DS 594 (iluminación de lugares de trabajo y condiciones sanitarias); Código del Trabajo (jornada y descansos); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo nocturno solo con plan específico aprobado.",
+      "preguntaCierre": "Si el hormigonado de hoy se alarga, ¿quién releva a quién y a qué hora?"
+    },
+    {
+      "id": 817,
+      "codigo": "HO-17",
+      "especialidad": "HO",
+      "titulo": "Hormigonar con lluvia o frío: proteger el hormigón sin exponer a las personas",
+      "porQue": "La lluvia y el frío afectan al hormigón fresco, y la reacción natural es apurarse a taparlo. En ese apuro se camina sobre moldajes mojados, se manipulan lonas con viento y se trabaja con frío. Proteger el hormigón no justifica caídas ni hipotermia.",
+      "checklist": [
+        "Revisar el pronóstico antes de programar; definir con el responsable técnico si se posterga.",
+        "Lonas y polietileno preparados antes y fijados para que el viento no los arrastre; nadie sube a moldajes resbaladizos sin protección.",
+        "Ropa de agua y abrigo para la cuadrilla; pausas para recuperar temperatura."
+      ],
+      "normativa": "DS 594 (exposición al frío y Art. 53 sobre EPP); Ley 16.744 Art. 68; especificaciones técnicas del proyecto.",
+      "reglaOro": "Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.",
+      "preguntaCierre": "Si empieza a llover a mitad del hormigonado, ¿qué hacemos primero?"
+    },
+    {
+      "id": 818,
+      "codigo": "HO-18",
+      "especialidad": "HO",
+      "titulo": "Hormigón proyectado en taludes: rebote, polvo y altura",
+      "porQue": "Para proteger taludes se proyecta hormigón a presión (shotcrete). El material rebota con fuerza hacia la cara y el cuerpo del pitonero, genera polvo y neblina con cemento, y muchas veces se trabaja en altura sobre el talud o desde una plataforma.",
+      "checklist": [
+        "Pitonero con careta o protección facial completa, protección respiratoria, guantes y ropa que cubra la piel.",
+        "Nadie en la zona de rebote; comunicación por señales o radio entre el pitonero y el operador del equipo.",
+        "Trabajo en altura con plataforma o arnés anclado; mangueras y acoples revisados antes de presurizar."
+      ],
+      "normativa": "DS 594 (límites permisibles de sílice y polvo, Art. 53 sobre EPP); PLANESI; NCh 1258.",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "¿Dónde llega hoy el rebote del shotcrete y quién no debe estar ahí?"
+    },
+    {
+      "id": 819,
+      "codigo": "HO-19",
+      "especialidad": "HO",
+      "titulo": "Mortero y estuco a mano: salpicaduras en los ojos",
+      "porQue": "Al preparar y aplicar mortero o estuco con llana, la mezcla salpica hacia la cara, sobre todo al trabajar sobre la cabeza. Una gota de mortero en el ojo puede causar una lesión grave en minutos si no se lava de inmediato.",
+      "checklist": [
+        "Lentes de seguridad siempre al preparar y aplicar mortero; protección facial al trabajar sobre la cabeza.",
+        "Agua limpia o lavaojos disponible en el frente; ante una salpicadura, lavar al menos 15 minutos y consultar.",
+        "Guantes impermeables y manga larga."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP) y disposiciones de primeros auxilios; HDS del cemento (NCh 2245); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Dónde está el agua para lavar los ojos si salpica mortero hoy?"
+    },
+    {
+      "id": 820,
+      "codigo": "HO-20",
+      "especialidad": "HO",
+      "titulo": "Picado de hormigón: martillo, polvo y ruido",
+      "porQue": "Picar juntas de hormigonado, descabezar pilotes o demoler sobretamaños se hace con martillos eléctricos o neumáticos. Producen mucho polvo con sílice, ruido muy alto, vibraciones en manos y brazos, y fragmentos que salen proyectados.",
+      "checklist": [
+        "Humedecer la superficie antes de picar; protección respiratoria para polvo, auditiva y ocular.",
+        "Rotación del operador para limitar la vibración; martillo con empuñaduras en buen estado.",
+        "Zona de proyección demarcada; nadie trabaja frente al punto de picado."
+      ],
+      "normativa": "DS 594 (sílice, ruido y vibraciones); PLANESI; Protocolo PREXOR (MINSAL).",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "¿Cuánto tiempo seguido va a usar cada uno el martillo hoy?"
+    },
+    {
+      "id": 821,
+      "codigo": "HO-21",
+      "especialidad": "HO",
+      "titulo": "Mangueros: quien guía la punta de la manguera",
+      "porQue": "El manguero dirige la punta de la manguera de la bomba hacia el moldaje. Cuando llega el hormigón, o si entra aire, la manguera puede dar golpes fuertes. Si el manguero se para mal o se la enrolla en el cuerpo, puede ser derribado o lanzado.",
+      "checklist": [
+        "Manguero con postura firme, la manguera tomada con ambas manos y sin enrollarla en el cuerpo ni en los brazos.",
+        "Comunicación clara con el operador de la bomba (radio o señales) para iniciar, detener y bajar el caudal.",
+        "Nadie frente a la boca de la manguera al iniciar el bombeo; cambio de manguero cuando se canse."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; manual del fabricante de la bomba.",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "¿Cuál es la señal para que el operador detenga la bomba?"
+    },
+    {
+      "id": 822,
+      "codigo": "HO-22",
+      "especialidad": "HO",
+      "titulo": "No sobrecargar el moldaje: el hormigón se reparte",
+      "porQue": "Descargar mucho hormigón en un solo punto del moldaje de una losa o de un tablero produce una carga que el diseño no consideró. Puede deformar o colapsar la obra falsa con la cuadrilla encima. Repartir el vaciado es una medida de seguridad, no solo de calidad.",
+      "checklist": [
+        "Vaciado distribuido según la secuencia indicada, sin formar montones de hormigón.",
+        "No acopiar sacos, herramientas pesadas ni equipos sobre el moldaje durante el hormigonado.",
+        "Comunicar cualquier deformación de inmediato al vigía del moldaje."
+      ],
+      "normativa": "Ley 16.744 Art. 68; diseño de moldaje y obra falsa; procedimiento de hormigonado del proyecto.",
+      "reglaOro": "Ninguna estructura temporal se carga más allá de lo previsto.",
+      "preguntaCierre": "¿En qué orden vamos a llenar hoy la losa para no cargar un solo punto?"
+    },
+    {
+      "id": 823,
+      "codigo": "HO-23",
+      "especialidad": "HO",
+      "titulo": "Hormigonar junto al tránsito: la bomba y el mixer también ocupan la vía",
+      "porQue": "En obras de arte junto a la ruta, el mixer y la bomba se instalan en la berma o en la pista cerrada, a pocos metros del tránsito. Los estabilizadores, la manguera y las personas que se mueven alrededor quedan expuestos a un vehículo que se desvía.",
+      "checklist": [
+        "Desvío o cierre de pista instalado según el plano antes de posicionar la bomba y los mixer.",
+        "Estabilizadores y mangueras dentro del área protegida, sin invadir la pista habilitada.",
+        "Ingreso y salida de mixer con apoyo de paletero."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; Ley 18.290.",
+      "reglaOro": "Ningún trabajo en la vía sin el desvío instalado conforme al plano aprobado.",
+      "preguntaCierre": "¿Dónde queda hoy la bomba respecto de la pista habilitada?"
+    },
+    {
+      "id": 824,
+      "codigo": "HO-24",
+      "especialidad": "HO",
+      "titulo": "Acopio de prefabricados de hormigón: piezas que ruedan y se vuelcan",
+      "porQue": "Tubos, soleras, cámaras y barreras prefabricadas se acopian en la faena antes de instalarse. Un tubo sin calzo puede rodar, y una barrera o un muro prefabricado mal apoyado puede volcarse sobre quien pasa. Son piezas muy pesadas que no perdonan.",
+      "checklist": [
+        "Tubos acopiados con calzos en ambos lados y en una sola fila o en la altura que indica el fabricante.",
+        "Piezas altas (barreras, muros) apoyadas en posición estable o arriostradas.",
+        "Zona de acopio en terreno firme y nivelado, con pasillos y lejos de bordes de excavación."
+      ],
+      "normativa": "DS 594 (almacenamiento y orden); Ley 16.744 Art. 68; instrucciones del fabricante de los prefabricados.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Qué pieza del acopio podría rodar o volcarse si alguien la golpea?"
+    },
+    {
+      "id": 825,
+      "codigo": "HO-25",
+      "especialidad": "HO",
+      "titulo": "Barreras de hormigón junto al tránsito: instalar la protección sin desprotegerse",
+      "porQue": "Las barreras de hormigón separan el tránsito de la obra, pero mientras se instalan esa protección todavía no existe. Cada barrera pesa varias toneladas, se iza y se coloca a centímetros de la pista. Se juntan el riesgo del izaje y el del tránsito.",
+      "checklist": [
+        "Instalación con el tránsito controlado o desviado según el plano; trabajadores siempre de frente al tránsito.",
+        "Izaje con los elementos de izaje de la barrera y un solo señalero; manos fuera de la junta entre barreras.",
+        "Barreras unidas con sus conectores apenas se colocan, para que funcionen como un sistema continuo."
+      ],
+      "normativa": "Manual de Carreteras MOP, Vol. 6 (sistemas de contención); Manual de Señalización de Tránsito, Cap. 5; estándar de izaje del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Dónde ponemos las manos para alinear una barrera sin quedar atrapados en la junta?"
+    },
+    {
+      "id": 826,
+      "codigo": "HO-26",
+      "especialidad": "HO",
+      "titulo": "Terminación de superficies: rodillas, espalda y bordes",
+      "porQue": "Platachar, reglar y dar terminación a losas y tableros obliga a trabajar arrodillado o agachado durante horas, muchas veces de espaldas a un borde. Las lesiones de rodilla y espalda son frecuentes, y un paso atrás puede terminar en una caída.",
+      "checklist": [
+        "Rodilleras o tablones de apoyo para trabajar sobre la superficie.",
+        "Bordes con barandas o arnés conectado cuando se trabaja cerca de ellos; avanzar mirando hacia el borde, no de espaldas.",
+        "Pausas y rotación de tareas; regla y platachos con mangos largos cuando sea posible."
+      ],
+      "normativa": "Protocolo TMERT-EESS (MINSAL); NCh 1258 (protección contra caídas); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Hacia dónde avanzamos hoy al reglar para no quedar de espaldas al borde?"
+    },
+    {
+      "id": 901,
+      "codigo": "MT-01",
+      "especialidad": "MT",
+      "titulo": "Corte de talud: lo que cae desde arriba",
+      "porQue": "Al cortar un cerro para ensanchar la ruta, la pared que queda puede soltar piedras, bloques o tierra, sobre todo después de lluvias o heladas. Quien trabaja al pie del talud no ve lo que se suelta arriba. Un bloque pequeño cayendo desde varios metros basta para causar una lesión grave.",
+      "checklist": [
+        "Talud revisado al inicio de la jornada y después de lluvias: grietas en el coronamiento, bloques sueltos y filtraciones.",
+        "Nadie trabaja ni se detiene al pie del talud mientras hay equipos trabajando arriba; zona de caída demarcada.",
+        "Material suelto saneado (retirado de forma controlada) antes de trabajar abajo."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Qué cambió en el talud desde ayer? ¿Alguien revisó el coronamiento?"
+    },
+    {
+      "id": 902,
+      "codigo": "MT-02",
+      "especialidad": "MT",
+      "titulo": "Terraplén por capas: muchos equipos en poco espacio",
+      "porQue": "En la construcción del terraplén trabajan juntos camiones que descargan, motoniveladora que esparce, aljibe que riega y rodillo que compacta, todos avanzando y retrocediendo sobre la misma plataforma. Sin un orden de circulación, los equipos se cruzan con los puntos ciegos del otro.",
+      "checklist": [
+        "Sentido de circulación y zonas definidas: descarga, esparcido y compactación separadas y señalizadas.",
+        "Personal a pie solo en las zonas autorizadas, con contacto visual con los operadores.",
+        "Un responsable del frente coordina el ingreso de camiones y el avance de los equipos."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; procedimiento de movimiento de tierras del proyecto.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el operador antes de acercarse.",
+      "preguntaCierre": "¿Por dónde entran y salen hoy los camiones del terraplén y dónde se para el que los guía?"
+    },
+    {
+      "id": 903,
+      "codigo": "MT-03",
+      "especialidad": "MT",
+      "titulo": "Descarga en el borde: el camión no sabe dónde termina el terraplén",
+      "porQue": "Al descargar material en el borde de un terraplén o de un relleno, el camión tolva retrocede hacia un desnivel. Si no hay un tope o pretil, o si el borde está blando, el camión puede volcar hacia atrás o caer con la tolva levantada.",
+      "checklist": [
+        "Pretil o tope de material en el borde de descarga, de altura suficiente para detener la rueda.",
+        "Descarga a distancia del borde según el procedimiento; el material se empuja después con la máquina.",
+        "Retroceso guiado por un señalero ubicado fuera de la trayectoria y a la vista del conductor."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 18.290 de Tránsito; Ley 16.744 Art. 68.",
+      "reglaOro": "Ningún retroceso sin guía en zonas con desnivel.",
+      "preguntaCierre": "¿Hay pretil hoy en el punto de descarga del terraplén?"
+    },
+    {
+      "id": 904,
+      "codigo": "MT-04",
+      "especialidad": "MT",
+      "titulo": "Empréstitos: el frente de donde sale el material",
+      "porQue": "En los empréstitos se extrae material para los rellenos con excavadoras y cargadores. Los frentes de extracción pueden quedar con paredes altas y verticales que se derrumban sin aviso sobre el equipo o sobre quien camina al pie.",
+      "checklist": [
+        "Frente de extracción con altura e inclinación definidas; no socavar la base del frente.",
+        "Coronamiento del empréstito señalizado y con pretil para que nadie caiga ni se acerque con vehículos.",
+        "Accesos y zonas de carguío separados de la circulación del personal a pie."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; autorizaciones y compromisos ambientales del proyecto.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Qué altura tiene hoy el frente del empréstito y quién vigila que no se socave?"
+    },
+    {
+      "id": 905,
+      "codigo": "MT-05",
+      "especialidad": "MT",
+      "titulo": "Botaderos: vaciar con un tope y en terreno firme",
+      "porQue": "En los botaderos se descarga el material que no sirve. Igual que en el terraplén, el camión retrocede hacia un borde, pero aquí el material suelto es menos estable. Además, los botaderos crecen y cambian todos los días, y el borde de ayer no es el de hoy.",
+      "checklist": [
+        "Pretil de seguridad mantenido en el borde de vaciado y revisado cada día.",
+        "Accesos al botadero con ancho y pendiente adecuados; sin vaciar en zonas con grietas o asentamientos.",
+        "Botadero solo en las áreas autorizadas, sin afectar cauces ni terrenos vecinos."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594; autorizaciones y compromisos ambientales del proyecto.",
+      "reglaOro": "Ningún retroceso sin guía en zonas con desnivel.",
+      "preguntaCierre": "¿Dónde está hoy el borde del botadero y quién mantiene el pretil?"
+    },
+    {
+      "id": 906,
+      "codigo": "MT-06",
+      "especialidad": "MT",
+      "titulo": "Caminos internos: diseñados para los camiones más grandes",
+      "porQue": "Los caminos de servicio de la obra son usados por camiones cargados, equipos y camionetas. Si son angostos, empinados o sin pretiles en los bordes, un camión puede salirse del camino o chocar con otro vehículo en una curva sin visibilidad.",
+      "checklist": [
+        "Caminos con ancho suficiente, pretiles en los bordes con desnivel y zonas de cruce o espera.",
+        "Velocidad máxima señalizada y respetada; preferencia definida para el camión cargado en pendientes.",
+        "Mantención diaria: baches, barro, calaminas y riego para controlar el polvo."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; DS 594; Manual de Carreteras MOP, Vol. 6 (Seguridad Vial).",
+      "reglaOro": "Respeto absoluto a los límites de velocidad dentro y fuera de la obra.",
+      "preguntaCierre": "¿Qué punto del camino de servicio es el más peligroso hoy y qué hacemos con él?"
+    },
+    {
+      "id": 907,
+      "codigo": "MT-07",
+      "especialidad": "MT",
+      "titulo": "Camiones, equipos y camionetas: quién tiene preferencia en el frente",
+      "porQue": "En el frente de tierras se mezclan vehículos de tamaños muy distintos. El operador de un camión minero o de una excavadora no ve una camioneta que se acerca por un costado. Las reglas de circulación deben ser claras para que nadie tenga que adivinar.",
+      "checklist": [
+        "Vehículos livianos con baliza y pértiga con bandera cuando circulan junto a equipos grandes, si el procedimiento lo exige.",
+        "Comunicación por radio antes de acercarse a un equipo; nunca adelantar a un equipo en operación.",
+        "Estacionar los vehículos livianos en el área definida, lejos de la circulación de equipos."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; DS 594 Art. 38; procedimiento de tránsito interno del proyecto.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el operador antes de acercarse.",
+      "preguntaCierre": "¿Qué le dices por radio al operador antes de acercarte con la camioneta?"
+    },
+    {
+      "id": 908,
+      "codigo": "MT-08",
+      "especialidad": "MT",
+      "titulo": "Topógrafos en el frente: medir con los equipos alrededor",
+      "porQue": "El topógrafo y su ayudante trabajan a pie en medio de los equipos, mirando el instrumento o el prisma, muchas veces de espaldas a la máquina. Son de los trabajadores más expuestos a un atropello en el movimiento de tierras.",
+      "checklist": [
+        "Ingreso del equipo de topografía al frente coordinado con el responsable y avisado por radio a los operadores.",
+        "Ropa de alta visibilidad y, en zonas de mucho movimiento, un vigía que mire los equipos mientras se mide.",
+        "Instrumento ubicado fuera de la trayectoria de los equipos; nunca de espaldas a una máquina en operación."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el operador antes de acercarse.",
+      "preguntaCierre": "¿Quién vigila los equipos mientras el topógrafo mira por el instrumento?"
+    },
+    {
+      "id": 909,
+      "codigo": "MT-09",
+      "especialidad": "MT",
+      "titulo": "Estacas y niveletas: obstáculos que se pierden de vista",
+      "porQue": "Las estacas, fierros de replanteo y niveletas marcan cotas y ejes, pero quedan clavados en el terreno a la altura de los tobillos o de las rodillas. Entre el polvo y el barro se vuelven invisibles y provocan tropiezos, cortes y pinchazos.",
+      "checklist": [
+        "Estacas y fierros de replanteo marcados con pintura o cinta visible; fierros con protección en la punta.",
+        "Caminar por las rutas definidas, no a través de las líneas de estacado.",
+        "Retirar estacas y niveletas que ya no se usan."
+      ],
+      "normativa": "DS 594 (vías de circulación y condiciones de seguridad); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y protección de elementos punzantes en todo frente de trabajo.",
+      "preguntaCierre": "¿Hay fierros de replanteo sin protección en el frente de hoy?"
+    },
+    {
+      "id": 910,
+      "codigo": "MT-10",
+      "especialidad": "MT",
+      "titulo": "Agua en el movimiento de tierras: barro, socavones y deslizamientos",
+      "porQue": "El agua es el peor enemigo del movimiento de tierras: satura los rellenos, ablanda los caminos, socava los taludes y forma barro donde los equipos patinan. Sin drenajes, una lluvia puede destruir el trabajo de una semana y provocar un deslizamiento.",
+      "checklist": [
+        "Cunetas y drenajes provisorios del frente limpios y funcionando antes de cada lluvia.",
+        "No compactar ni circular con equipos pesados sobre material saturado sin evaluación.",
+        "Revisar socavones, grietas y asentamientos después de cada lluvia antes de reiniciar."
+      ],
+      "normativa": "Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis; especificaciones técnicas del proyecto.",
+      "reglaOro": "Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.",
+      "preguntaCierre": "¿Por dónde escurre el agua del frente si llueve esta noche?"
+    },
+    {
+      "id": 911,
+      "codigo": "MT-11",
+      "especialidad": "MT",
+      "titulo": "Despeje y escarpe de la faja: troncos, raíces y lo que se esconde",
+      "porQue": "Antes de mover tierra se limpia la faja: árboles, matorrales, raíces y la capa vegetal. Los troncos empujados por la máquina pueden rodar o saltar, las raíces que se cortan liberan tensión, y entre la vegetación hay alambrados, basura, animales y a veces servicios.",
+      "checklist": [
+        "Recorrido previo de la faja para detectar alambrados, servicios, nidos, panales y terceros.",
+        "Nadie a pie cerca del frente de despeje; troncos y raíces acopiados en lugar estable.",
+        "Material vegetal y fauna manejados según el plan ambiental del proyecto."
+      ],
+      "normativa": "Ley 16.744 Art. 68; compromisos ambientales del proyecto (RCA y permisos forestales, si corresponde).",
+      "reglaOro": "Conocer el riesgo antes de iniciar la tarea.",
+      "preguntaCierre": "¿Qué encontramos ayer en la faja que no esperábamos?"
+    },
+    {
+      "id": 912,
+      "codigo": "MT-12",
+      "especialidad": "MT",
+      "titulo": "Roca: martillo hidráulico y fragmentos proyectados",
+      "porQue": "Cuando aparece roca, se fragmenta con martillo hidráulico montado en la excavadora. Los fragmentos salen disparados en todas direcciones y pueden llegar lejos. El ruido es muy alto y el polvo contiene sílice.",
+      "checklist": [
+        "Zona de exclusión demarcada alrededor del martillo según el procedimiento; nadie a pie dentro de ella.",
+        "Cabina del equipo con protección frontal (malla o vidrio resistente) cerrada durante la operación.",
+        "Control del polvo con agua y protección auditiva y respiratoria para quienes están cerca."
+      ],
+      "normativa": "DS 594 (ruido, sílice y Art. 38); PLANESI; Protocolo PREXOR.",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "¿Hasta dónde llegan los fragmentos del martillo hoy y quién controla esa zona?"
+    },
+    {
+      "id": 913,
+      "codigo": "MT-13",
+      "especialidad": "MT",
+      "titulo": "Tronaduras (solo si el proyecto las contempla): nadie improvisa con explosivos",
+      "porQue": "Si un corte en roca requiere tronadura, se trabaja con explosivos, que solo puede manipular personal con licencia y bajo un procedimiento estricto. Para el resto de la cuadrilla, lo importante es saber qué hacer cuando se anuncia una tronadura: evacuar, esperar y no volver antes de tiempo.",
+      "checklist": [
+        "Conocer el horario de tronadura, las señales de aviso (sirena, radio) y el punto de refugio.",
+        "Evacuar el radio de seguridad definido y controlar los accesos, incluidos el tránsito y los terceros.",
+        "Nadie vuelve al frente hasta que el responsable revise y dé la autorización; tiros quedados solo los maneja el personal autorizado."
+      ],
+      "normativa": "Ley 17.798 (control de armas y explosivos) y su reglamento complementario (DS 83/2007); Ley 16.744 Art. 68; plan de tronadura del proyecto.",
+      "reglaOro": "Solo personal autorizado manipula explosivos.",
+      "preguntaCierre": "Si suena la sirena de tronadura ahora, ¿a dónde vas y quién te autoriza a volver?"
+    },
+    {
+      "id": 914,
+      "codigo": "MT-14",
+      "especialidad": "MT",
+      "titulo": "Polvo en el frente de tierras: cuando los equipos no se ven entre sí",
+      "porQue": "En días secos, cada camión que pasa levanta una nube que tapa a los demás equipos y a las personas a pie. Muchos choques y atropellos ocurren dentro de una nube de polvo. Además, respirarlo todos los días afecta los pulmones.",
+      "checklist": [
+        "Riego de caminos internos y frentes con la frecuencia necesaria, antes de que el polvo afecte la visibilidad.",
+        "Si un equipo no ve, se detiene hasta que se despeje; luces encendidas en los equipos.",
+        "Cabinas cerradas y protección respiratoria para el personal a pie en zonas de mucho polvo."
+      ],
+      "normativa": "DS 594 (contaminantes ambientales y sílice); compromisos ambientales del proyecto (control de emisiones); Ley 16.744 Art. 68.",
+      "reglaOro": "Si no hay visibilidad, no hay movimiento.",
+      "preguntaCierre": "¿Qué hace un operador cuando una nube de polvo le tapa la vista?"
+    },
+    {
+      "id": 915,
+      "codigo": "MT-15",
+      "especialidad": "MT",
+      "titulo": "Zonas de giro y descarga: diseñadas para no retroceder a ciegas",
+      "porQue": "La mayoría de los atropellos con camiones ocurren en retroceso. En el movimiento de tierras se puede reducir mucho este riesgo diseñando el frente para que los camiones giren en espacios amplios y retrocedan lo menos posible.",
+      "checklist": [
+        "Zonas de giro amplias y marcadas en el frente de carguío y de descarga.",
+        "Retrocesos cortos, siempre con alarma de retroceso operativa y con señalero cuando hay personas cerca.",
+        "Personal a pie fuera de las zonas de giro y retroceso."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 18.290 de Tránsito; Ley 16.744 Art. 68.",
+      "reglaOro": "Ningún retroceso sin guía en zonas con personas.",
+      "preguntaCierre": "¿Dónde giran hoy los camiones y cuánto tienen que retroceder?"
+    },
+    {
+      "id": 916,
+      "codigo": "MT-16",
+      "especialidad": "MT",
+      "titulo": "Carga del camión: ni sobrecargada ni sin cubrir",
+      "porQue": "Un camión sobrecargado frena peor, gasta más los neumáticos y puede perder material en el camino. El material que cae de una tolva sin cubrir golpea parabrisas de otros vehículos o queda en la calzada. El operador del cargador también es responsable de cargar bien.",
+      "checklist": [
+        "Carga dentro de la capacidad del camión y bien distribuida; sin material sobre las barandas.",
+        "Carga cubierta con lona cuando el camión sale a la ruta pública.",
+        "Neumáticos y barandas limpios de material suelto antes de salir."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (carga de vehículos); normativa de pesos máximos (MTT / Dirección de Vialidad MOP); compromisos ambientales del proyecto.",
+      "reglaOro": "Toda carga trasladada va asegurada y verificada antes de entrar a la vía.",
+      "preguntaCierre": "¿Quién revisa que los camiones salgan cubiertos a la ruta?"
+    },
+    {
+      "id": 917,
+      "codigo": "MT-17",
+      "especialidad": "MT",
+      "titulo": "Material en la calzada: el riesgo que dejamos a los demás",
+      "porQue": "Barro, piedras y tierra que caen de los camiones o que arrastran los neumáticos quedan en la ruta pública. Para un motociclista o un auto que frena, una calzada con barro o gravilla puede terminar en un accidente. Somos responsables de lo que dejamos en la vía.",
+      "checklist": [
+        "Limpieza de neumáticos o zona de lavado en las salidas de la obra cuando haya barro.",
+        "Recorrido de la calzada cercana a los accesos y barrido de material caído.",
+        "Señalizar si hay material o barro que no se pueda retirar de inmediato."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; Manual de Señalización de Tránsito, Cap. 5; compromisos ambientales del proyecto.",
+      "reglaOro": "La calzada habilitada se entrega limpia y sin trampas.",
+      "preguntaCierre": "¿Cómo quedó ayer la ruta frente a nuestro acceso?"
+    },
+    {
+      "id": 918,
+      "codigo": "MT-18",
+      "especialidad": "MT",
+      "titulo": "Rellenos junto a obras de arte: compactar sin empujar el muro ni a las personas",
+      "porQue": "Al rellenar detrás de muros, alcantarillas o estribos se trabaja con equipos pequeños, en espacios estrechos y junto a estructuras recién construidas. Un rodillo grande muy cerca puede dañar la estructura, y el personal a pie queda atrapado entre el equipo y el muro.",
+      "checklist": [
+        "Equipos de compactación del tamaño indicado para trabajar junto a la estructura; capas del espesor definido.",
+        "Nadie a pie entre el equipo y el muro o la alcantarilla mientras se compacta.",
+        "Placas o vibropisones con el operador de frente a la estructura y espacio para retirarse."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; especificaciones técnicas del proyecto.",
+      "reglaOro": "Nunca ubicarse en un punto de atrapamiento entre un equipo y una estructura.",
+      "preguntaCierre": "¿Quién trabaja hoy entre el equipo y el muro, y cómo se sale si el equipo se acerca?"
+    },
+    {
+      "id": 919,
+      "codigo": "MT-19",
+      "especialidad": "MT",
+      "titulo": "Excavación masiva: bancos y escalones en lugar de paredes verticales",
+      "porQue": "En cortes grandes y excavaciones amplias, una pared vertical alta es inestable aunque parezca firme. Hacer la excavación en bancos o escalones, o con el talud adecuado al suelo, reduce el riesgo de derrumbe sobre los equipos y las personas.",
+      "checklist": [
+        "Taludes o bancos según el diseño y el tipo de suelo; no profundizar más de lo indicado sin revisión.",
+        "Bermas o bancos con ancho suficiente para que el material que caiga se detenga en ellos.",
+        "Revisión de la excavación al inicio de cada jornada y después de lluvias."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; diseño del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar sin talud o entibación verificada.",
+      "preguntaCierre": "¿El talud de la excavación de hoy está como dice el plano o más parado?"
+    },
+    {
+      "id": 920,
+      "codigo": "MT-20",
+      "especialidad": "MT",
+      "titulo": "Hundimientos y cavidades: el terreno que no sostiene",
+      "porQue": "Al excavar o al circular con equipos pueden aparecer pozos antiguos, cámaras abandonadas, napas o zonas rellenas con material suelto. El terreno parece firme hasta que una rueda u oruga se hunde y la máquina se inclina.",
+      "checklist": [
+        "Informar de inmediato cualquier hundimiento, cavidad o salida de agua inesperada; detener los equipos cerca.",
+        "Demarcar la zona y no circular sobre ella hasta que se evalúe.",
+        "Prestar atención a señales: grietas, terreno que suena hueco o que se mueve bajo el equipo."
+      ],
+      "normativa": "Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis; NCh 349.",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "¿Qué haces si la oruga de tu máquina empieza a hundirse?"
+    },
+    {
+      "id": 921,
+      "codigo": "MT-21",
+      "especialidad": "MT",
+      "titulo": "Bulldozer: empuje, ripper y pendientes",
+      "porQue": "El bulldozer empuja grandes volúmenes de material y trabaja en pendientes, bordes y terrenos difíciles. Al empujar hacia un borde, el material puede ceder bajo la hoja; al usar el ripper, el equipo puede saltar o patinar. Su visibilidad hacia atrás y los costados es limitada.",
+      "checklist": [
+        "Trabajo en pendiente dentro de los límites del fabricante; empujar hacia bordes solo con pretil o con el material como tope.",
+        "Nadie a pie detrás ni a los costados del bulldozer en operación; zona de trabajo demarcada.",
+        "Cinturón abrochado, cabina ROPS en buen estado y alarma de retroceso operativa."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 18.290 (licencia clase D y uso del cinturón); manual del fabricante.",
+      "reglaOro": "Cinturón de seguridad siempre abrochado en vehículos y maquinaria.",
+      "preguntaCierre": "¿Hasta dónde empuja hoy el bulldozer y qué detiene la hoja en el borde?"
+    },
+    {
+      "id": 922,
+      "codigo": "MT-22",
+      "especialidad": "MT",
+      "titulo": "Comunicación en el frente: un canal, un responsable",
+      "porQue": "En un frente de tierras con muchos equipos, la radio es la herramienta de seguridad más importante. Si todos hablan a la vez, si el canal se usa para conversar o si no hay un responsable que coordine, los mensajes críticos no llegan.",
+      "checklist": [
+        "Canal de radio del frente definido y probado al inicio; todos los operadores y personal a pie con radio.",
+        "Un responsable del frente (jefe de frente o capataz) coordina el movimiento de equipos y personas.",
+        "Mensajes cortos y claros; el canal no se usa para conversaciones personales."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); procedimiento de comunicaciones del proyecto.",
+      "reglaOro": "Ante la duda, el equipo se detiene.",
+      "preguntaCierre": "¿Quién coordina hoy el frente y en qué canal?"
+    },
+    {
+      "id": 923,
+      "codigo": "MT-23",
+      "especialidad": "MT",
+      "titulo": "Revisión del frente al inicio: mirar antes de mover",
+      "porQue": "Durante la noche llueve, el terreno se asienta, un talud suelta piedras o un tercero mueve una señal. El frente de hoy no es el mismo que dejamos ayer. Unos minutos de recorrido antes de mover los equipos permiten detectar lo que cambió.",
+      "checklist": [
+        "Recorrido del capataz o responsable antes de iniciar: taludes, bordes, caminos, pretiles, drenajes y señalización.",
+        "Condiciones nuevas informadas en la charla y corregidas o demarcadas antes de trabajar.",
+        "Verificar que no haya terceros, animales o vehículos ajenos en el frente."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (identificación de peligros y evaluación de riesgos); NCh 349.",
+      "reglaOro": "Conocer el riesgo antes de iniciar la tarea.",
+      "preguntaCierre": "¿Qué encontramos hoy en el recorrido que no estaba ayer?"
+    },
+    {
+      "id": 924,
+      "codigo": "MT-24",
+      "especialidad": "MT",
+      "titulo": "Lluvia intensa: cuándo parar el movimiento de tierras",
+      "porQue": "Con lluvia intensa, los caminos se vuelven barro, los equipos patinan, los taludes se saturan y la visibilidad baja. Seguir trabajando para avanzar puede terminar en un camión volcado o en un deslizamiento. Saber de antemano cuándo se para evita discusiones en el momento.",
+      "checklist": [
+        "Criterio de suspensión definido con el supervisor (intensidad de lluvia, estado de caminos, visibilidad).",
+        "Equipos retirados a zonas firmes y alejadas de taludes y cauces al suspender.",
+        "Reinicio solo después de revisar caminos, taludes y drenajes."
+      ],
+      "normativa": "Código del Trabajo Art. 184 bis (Ley 21.012: derecho a interrumpir labores ante riesgo grave e inminente); Ley 16.744 Art. 68.",
+      "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
+      "preguntaCierre": "¿Con qué condición suspendemos hoy el movimiento de tierras y quién da la orden?"
+    },
+    {
+      "id": 925,
+      "codigo": "MT-25",
+      "especialidad": "MT",
+      "titulo": "Cierre del frente: lo que queda abierto en la noche",
+      "porQue": "Al terminar la jornada quedan zanjas abiertas, bordes de corte, acopios y equipos estacionados. De noche, un vecino, un ciclista o un animal pueden caer en una excavación o chocar con un equipo. El frente debe quedar seguro también para quienes no trabajan en él.",
+      "checklist": [
+        "Excavaciones y bordes con barrera y señalización visible de noche; zanjas tapadas o cerradas cuando sea posible.",
+        "Equipos estacionados en el área definida, con implementos abajo y llaves retiradas.",
+        "Accesos al frente cerrados o señalizados para terceros."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "La jornada termina cuando todo está seguro, no cuando suena la hora.",
+      "preguntaCierre": "¿Qué queda abierto esta noche en nuestro frente y cómo lo protegemos?"
     }
   ],
   "plan": [

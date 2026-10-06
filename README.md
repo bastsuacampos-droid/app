@@ -6,10 +6,11 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 
 ## Qué incluye
 
-- **125 charlas**, 25 por cada especialidad: Maquinaria Pesada (MP),
-  Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
-  Obras de Arte / Manuales (OA) y Riesgos Transversales / Clima (RT).
-  Cada una tiene un código (por ejemplo `MP-07`).
+- **226 charlas** en 9 especialidades, con al menos 25 cada una: Maquinaria
+  Pesada (MP), Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
+  Obras de Arte / Manuales (OA), Riesgos Transversales / Clima (RT),
+  Carpintería (CA), Enfierradura (EN), Hormigonado (HO) y Movimiento de
+  Tierra (MT). Cada una tiene un código (por ejemplo `CA-07`).
 - Cada charla trae: **título**, **el porqué** (mensaje clave), **3 puntos de
   control** marcables en terreno, **respaldo estándar** (Regla de Oro y
   normativa chilena) y una **pregunta de cierre** para la cuadrilla.
@@ -18,7 +19,7 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
   has dictado ni planificado en el mes. Cada día se puede cambiar (otra charla
   de la misma especialidad o de otra) y el plan se comparte por WhatsApp. Se
   puede planificar hasta 4 semanas hacia adelante.
-- **Temas**: eliges la especialidad y ves cuáles charlas ya usaste
+- **Temas**: eliges la especialidad en el selector y ves cuáles charlas ya usaste
   este mes y cuáles quedan disponibles. "Siguiente disponible" abre la primera
   que aún no dictas, y se pueden ocultar las ya usadas.
 - **Registro mensual**: al terminar, "Registrar charla dictada hoy" la marca

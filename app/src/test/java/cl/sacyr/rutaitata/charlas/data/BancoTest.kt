@@ -19,6 +19,14 @@ class BancoTest {
     }
 
     @Test
+    fun incluyeLasEspecialidadesDeObrasCiviles() {
+        val nombres = banco.especialidades.map { it.nombre }
+        listOf("Carpintería", "Enfierradura", "Hormigonado", "Movimiento de Tierra").forEach {
+            assertTrue("Falta $it", it in nombres)
+        }
+    }
+
+    @Test
     fun noHayTitulosRepetidos() {
         val repetidos = banco.charlas.groupBy { it.titulo.lowercase() }.filterValues { it.size > 1 }.keys
         assertEquals(emptySet<String>(), repetidos)
@@ -46,17 +54,18 @@ class BancoTest {
         for (semana in 1..4) for (dia in 1..6) {
             assertNotNull("Falta semana $semana día $dia", banco.charla(semana, dia))
         }
-        val todas = banco.especialidades.map { it.id }.toSet()
+        // Plan sugerido original: cada semana cubre las 5 especialidades base.
+        val base = setOf("MP", "CT", "AS", "OA", "RT")
         banco.plan.groupBy { it.semana }.forEach { (semana, entradas) ->
             val especialidades = entradas.mapNotNull { banco.charla(it.charlaId)?.especialidadId }.toSet()
-            assertEquals("Semana $semana", todas, especialidades)
+            assertEquals("Semana $semana", base, especialidades)
         }
     }
 
     @Test
     fun elBancoIncluidoEsValidoYTieneVersion() {
         assertEquals(emptyList<String>(), BancoParser.validar(banco))
-        assertTrue(banco.version >= 2)
+        assertTrue(banco.version >= 3)
     }
 
     @Test

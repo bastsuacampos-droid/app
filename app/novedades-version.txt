@@ -1,1 +1,1 @@
-Ahora la app se actualiza sola: cuando hay una versión nueva aparece un aviso con el botón para descargarla e instalarla, sin perder charlas, planes ni historial.
+4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra (226 charlas en total). En Temas, la especialidad se elige con un selector que siempre muestra cuál está activa.
