@@ -99,7 +99,9 @@ internal fun ControlesActualizacion(actualizador: ActualizadorApp) {
             Text(
                 when (estado) {
                     EstadoApp.Buscando -> "Buscando una versión nueva de la app…"
-                    EstadoApp.AlDia -> "Tienes la última versión de la app."
+                    EstadoApp.AlDia -> "Tienes la última versión publicada de la app."
+                    EstadoApp.SinPublicaciones ->
+                        "Todavía no hay versiones de la app publicadas en GitHub. Cuando se publique una, aparecerá aquí."
                     is EstadoApp.Error -> "${estado.mensaje}."
                     else -> "La app revisa si hay una versión nueva cada vez que se abre."
                 },

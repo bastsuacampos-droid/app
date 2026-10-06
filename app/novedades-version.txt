@@ -1,1 +1,1 @@
-4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra (226 charlas en total). En Temas, la especialidad se elige con un selector que siempre muestra cuál está activa.
+4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra (226 charlas en total). En Temas, la especialidad se elige con un selector que siempre muestra cuál está activa. Al buscar una versión nueva, la app ahora avisa si todavía no hay ninguna publicada.

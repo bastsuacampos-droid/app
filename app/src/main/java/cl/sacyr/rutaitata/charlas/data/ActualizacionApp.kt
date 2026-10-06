@@ -29,6 +29,8 @@ sealed interface EstadoApp {
     data object SinRevisar : EstadoApp
     data object Buscando : EstadoApp
     data object AlDia : EstadoApp
+    /** El repositorio todavía no tiene ninguna release de esta app. */
+    data object SinPublicaciones : EstadoApp
     data class Disponible(val version: VersionPublicada) : EstadoApp
     data class Descargando(val version: VersionPublicada, val avance: Float) : EstadoApp
     /** Descargada; falta que el capataz confirme en el instalador de Android. */
@@ -106,7 +108,7 @@ class ActualizadorApp(
         estado = try {
             val publicada = withContext(Dispatchers.IO) { leerUltima() }
             when {
-                publicada == null -> EstadoApp.AlDia
+                publicada == null -> EstadoApp.SinPublicaciones
                 Versiones.esMasNueva(publicada.version, versionActual) -> EstadoApp.Disponible(publicada)
                 else -> EstadoApp.AlDia
             }
