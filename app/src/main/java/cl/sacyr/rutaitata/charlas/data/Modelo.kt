@@ -22,6 +22,12 @@ data class Charla(
 
 data class Banco(
     val proyecto: String,
+    /** Versión del contenido; se incrementa cada vez que se publica un cambio. */
+    val version: Int,
+    /** Fecha de publicación (AAAA-MM-DD), informativa. */
+    val fecha: String,
+    /** Resumen de los cambios de esta versión, para mostrar al capataz. */
+    val novedades: String,
     val especialidades: List<Especialidad>,
     val charlas: List<Charla>,
 ) {

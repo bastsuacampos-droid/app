@@ -14,6 +14,13 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        // Banco de charlas publicado: la app lo revisa al abrirse y aplica las versiones nuevas.
+        buildConfigField(
+            "String",
+            "URL_CONTENIDO",
+            "\"https://raw.githubusercontent.com/bastsuacampos-droid/app/main/app/src/main/assets/charlas.json\"",
+        )
     }
 
     buildTypes {
@@ -32,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -40,6 +48,8 @@ dependencies {
     implementation(composeBom)
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-core")

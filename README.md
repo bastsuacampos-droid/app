@@ -18,19 +18,45 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 - Registro de charlas realizadas y avance del ciclo (se guarda en el teléfono).
 - **Compartir** la charla como texto (WhatsApp, correo).
 - Botones **A− / A+** para agrandar la letra en terreno.
-- Funciona sin conexión a internet.
+- **Recibe charlas nuevas** automáticamente al abrirse (ver más abajo) y
+  funciona sin conexión con la última versión guardada.
 
 El contenido completo también está en
 [`docs/BANCO_CHARLAS.md`](docs/BANCO_CHARLAS.md) para imprimir.
 
-## Editar las charlas
+## Actualizaciones de charlas dentro de la app
 
-El contenido vive en `app/src/main/assets/charlas.json`. Después de editarlo:
+Cada vez que se abre (o se vuelve a ella, como máximo cada 30 minutos), la app
+descarga el banco publicado en la rama `main` de este repositorio:
 
-```bash
-python3 tools/generar_banco_md.py   # regenera docs/BANCO_CHARLAS.md
-./gradlew testDebugUnitTest         # valida la estructura del banco
 ```
+https://raw.githubusercontent.com/bastsuacampos-droid/app/main/app/src/main/assets/charlas.json
+```
+
+Si su `version` es mayor que la que tiene el teléfono y pasa la validación, la
+app lo guarda, lo usa de inmediato y muestra un aviso con las `novedades`. Sin
+señal, sigue funcionando con la última versión guardada. También se puede
+buscar a mano en *Ciclo y normativa → Buscar actualizaciones*.
+
+### Publicar una actualización
+
+1. Editar `app/src/main/assets/charlas.json`.
+2. **Subir `version`** en uno (por ejemplo, de 1 a 2), poner la `fecha` y
+   escribir en `novedades` qué cambió. Si no se sube la versión, los teléfonos
+   no descargan el cambio.
+3. Regenerar el documento para imprimir y validar:
+
+   ```bash
+   python3 tools/generar_banco_md.py
+   ./gradlew testDebugUnitTest
+   ```
+
+4. Llevar el cambio a `main`. El check *Validar banco de charlas* de GitHub
+   corre las mismas pruebas; los teléfonos reciben la nueva versión la próxima
+   vez que abran la app (GitHub puede tardar unos 5 minutos en servirla).
+
+La URL se define en `app/build.gradle.kts` (`URL_CONTENIDO`) por si el banco se
+publica en otro lugar.
 
 ## Compilar
 

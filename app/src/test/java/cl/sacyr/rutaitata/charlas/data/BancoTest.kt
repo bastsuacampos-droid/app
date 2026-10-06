@@ -39,6 +39,25 @@ class BancoTest {
     }
 
     @Test
+    fun elBancoIncluidoEsValidoYTieneVersion() {
+        assertEquals(emptyList<String>(), BancoParser.validar(banco))
+        assertTrue(banco.version >= 1)
+    }
+
+    @Test
+    fun validarDetectaErroresQueRomperianLaApp() {
+        val charla = banco.charlas.first()
+        val roto = banco.copy(
+            charlas = banco.charlas + charla.copy(id = 99, especialidadId = "XX", semana = 5, checklist = emptyList()),
+        )
+        val errores = BancoParser.validar(roto)
+        assertTrue(errores.any { "especialidad desconocida" in it })
+        assertTrue(errores.any { "semana fuera de rango" in it })
+        assertTrue(errores.any { "checklist vacío" in it })
+        assertTrue(BancoParser.validar(banco.copy(charlas = banco.charlas + charla)).any { "repetido" in it })
+    }
+
+    @Test
     fun primeraCharlaEsAtropelloHombreMaquina() {
         val primera = banco.charla(1, 1)!!
         assertEquals("MP", primera.especialidadId)

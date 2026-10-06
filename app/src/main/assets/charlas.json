@@ -1,5 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
+  "version": 1,
+  "fecha": "2026-10-06",
+  "novedades": "Versión inicial: 24 charlas en 4 semanas para 5 especialidades.",
   "especialidades": [
     { "id": "MP", "nombre": "Maquinaria Pesada", "color": "#F2A900" },
     { "id": "CT", "nombre": "Control de Tránsito / Paleteros", "color": "#E4572E" },

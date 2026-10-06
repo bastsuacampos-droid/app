@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import java.time.LocalDate
 
 /** Avance del capataz: charlas realizadas, puntos verificados y preferencias. */
-class Progreso(context: Context, private val charlaIds: List<Int>) {
+class Progreso(context: Context) {
 
     private val prefs = context.getSharedPreferences("progreso", Context.MODE_PRIVATE)
 
@@ -29,18 +29,21 @@ class Progreso(context: Context, private val charlaIds: List<Int>) {
         } else {
             inicioCiclo = LocalDate.ofEpochDay(guardado)
         }
-        for (id in charlaIds) {
-            val dia = prefs.getLong(keyRealizada(id), Long.MIN_VALUE)
-            if (dia != Long.MIN_VALUE) realizadas[id] = LocalDate.ofEpochDay(dia)
-            prefs.getStringSet(keyChecks(id), null)?.let { set ->
-                verificados[id] = set.mapNotNull { it.toIntOrNull() }.toSet()
+        // Se lee todo lo guardado: el banco puede cambiar con una actualización.
+        for ((clave, valor) in prefs.all) {
+            val id = clave.substringAfter('_').toIntOrNull() ?: continue
+            when {
+                clave.startsWith(PREFIJO_REALIZADA) && valor is Long -> realizadas[id] = LocalDate.ofEpochDay(valor)
+                clave.startsWith(PREFIJO_CHECKS) && valor is Set<*> ->
+                    verificados[id] = valor.mapNotNull { (it as? String)?.toIntOrNull() }.toSet()
             }
         }
     }
 
     fun realizada(id: Int): LocalDate? = realizadas[id]
 
-    val totalRealizadas: Int get() = realizadas.size
+    /** Cuántas de [ids] están realizadas en el ciclo actual. */
+    fun totalRealizadas(ids: Collection<Int>): Int = ids.count { it in realizadas }
 
     fun marcarRealizada(id: Int, fecha: LocalDate?) {
         if (fecha == null) {
@@ -72,16 +75,20 @@ class Progreso(context: Context, private val charlaIds: List<Int>) {
         realizadas.clear()
         verificados.clear()
         val editor = prefs.edit()
-        charlaIds.forEach { editor.remove(keyRealizada(it)).remove(keyChecks(it)) }
+        prefs.all.keys
+            .filter { it.startsWith(PREFIJO_REALIZADA) || it.startsWith(PREFIJO_CHECKS) }
+            .forEach(editor::remove)
         editor.putLong(KEY_INICIO, inicioCiclo.toEpochDay()).apply()
     }
 
-    private fun keyRealizada(id: Int) = "realizada_$id"
-    private fun keyChecks(id: Int) = "checks_$id"
+    private fun keyRealizada(id: Int) = "$PREFIJO_REALIZADA$id"
+    private fun keyChecks(id: Int) = "$PREFIJO_CHECKS$id"
 
     companion object {
         private const val KEY_INICIO = "inicio_ciclo"
         private const val KEY_ESCALA = "escala_texto"
+        private const val PREFIJO_REALIZADA = "realizada_"
+        private const val PREFIJO_CHECKS = "checks_"
         const val ESCALA_MIN = 0.85f
         const val ESCALA_MAX = 1.6f
     }

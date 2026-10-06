@@ -19,6 +19,7 @@ def main() -> None:
     o = [f"# Banco Mensual de Charlas de 5 Minutos – {datos['proyecto']}", ""]
     o.append("> Archivo generado desde `app/src/main/assets/charlas.json` con "
              "`python3 tools/generar_banco_md.py`. No editar a mano.")
+    o += ["", f"**Versión {datos['version']}** · {datos.get('fecha', '')} — {datos.get('novedades', '')}"]
     o += ["", "## Planificación (4 semanas, lunes a sábado)", ""]
     o.append("| Semana | Día | Especialidad | Tema |")
     o.append("|---|---|---|---|")

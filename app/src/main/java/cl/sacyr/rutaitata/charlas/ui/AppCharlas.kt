@@ -51,6 +51,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,9 +63,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import cl.sacyr.rutaitata.charlas.data.Banco
 import cl.sacyr.rutaitata.charlas.data.Calendario
 import cl.sacyr.rutaitata.charlas.data.Charla
+import cl.sacyr.rutaitata.charlas.data.Contenido
+import cl.sacyr.rutaitata.charlas.data.EstadoActualizacion
 import cl.sacyr.rutaitata.charlas.data.Progreso
 import cl.sacyr.rutaitata.charlas.data.SEMANAS_CICLO
 import cl.sacyr.rutaitata.charlas.data.comoTexto
@@ -72,6 +77,7 @@ import cl.sacyr.rutaitata.charlas.data.nombreDia
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.launch
 
 private const val RUTA_LISTA = "lista"
 private const val RUTA_ACERCA = "acerca"
@@ -80,9 +86,15 @@ private const val PREFIJO_DETALLE = "detalle/"
 private val FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
 @Composable
-fun AppCharlas(banco: Banco, progreso: Progreso) {
+fun AppCharlas(contenido: Contenido, progreso: Progreso) {
+    val banco = contenido.banco
     var ruta by rememberSaveable { mutableStateOf(RUTA_LISTA) }
     BackHandler(enabled = ruta != RUTA_LISTA) { ruta = RUTA_LISTA }
+
+    val scope = rememberCoroutineScope()
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        scope.launch { contenido.revisarSiCorresponde() }
+    }
 
     val densidad = LocalDensity.current
     CompositionLocalProvider(
@@ -90,11 +102,13 @@ fun AppCharlas(banco: Banco, progreso: Progreso) {
     ) {
         val detalle = ruta.removePrefix(PREFIJO_DETALLE).toIntOrNull()?.let(banco::charla)
         when {
-            ruta == RUTA_ACERCA -> PantallaAcerca(banco, progreso, onVolver = { ruta = RUTA_LISTA })
+            ruta == RUTA_ACERCA -> PantallaAcerca(contenido, progreso, onVolver = { ruta = RUTA_LISTA })
             detalle != null -> PantallaDetalle(banco, detalle, progreso, onVolver = { ruta = RUTA_LISTA })
             else -> PantallaLista(
                 banco = banco,
                 progreso = progreso,
+                novedad = contenido.novedadPendiente,
+                onDescartarNovedad = contenido::descartarNovedad,
                 onAbrir = { ruta = PREFIJO_DETALLE + it.id },
                 onAcerca = { ruta = RUTA_ACERCA },
             )
@@ -109,6 +123,8 @@ fun AppCharlas(banco: Banco, progreso: Progreso) {
 private fun PantallaLista(
     banco: Banco,
     progreso: Progreso,
+    novedad: Banco?,
+    onDescartarNovedad: () -> Unit,
     onAbrir: (Charla) -> Unit,
     onAcerca: () -> Unit,
 ) {
@@ -150,6 +166,9 @@ private fun PantallaLista(
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            if (novedad != null) {
+                item { AvisoNovedad(novedad, onDescartarNovedad) }
+            }
             if (charlaHoy != null) {
                 item {
                     TarjetaHoy(
@@ -245,7 +264,7 @@ private fun TarjetaHoy(
 @Composable
 private fun ResumenAvance(banco: Banco, progreso: Progreso) {
     val total = banco.charlas.size
-    val hechas = progreso.totalRealizadas
+    val hechas = progreso.totalRealizadas(banco.charlas.map { it.id })
     Column(Modifier.padding(top = 4.dp)) {
         Text(
             "Avance del ciclo: $hechas de $total charlas realizadas",
@@ -257,6 +276,32 @@ private fun ResumenAvance(banco: Banco, progreso: Progreso) {
             modifier = Modifier.fillMaxWidth(),
             color = MaterialTheme.colorScheme.tertiary,
         )
+    }
+}
+
+@Composable
+private fun AvisoNovedad(novedad: Banco, onDescartar: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = Color.White,
+        ),
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                "BANCO DE CHARLAS ACTUALIZADO · VERSIÓN ${novedad.version}",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            if (novedad.novedades.isNotBlank()) {
+                Spacer(Modifier.height(6.dp))
+                Text(novedad.novedades, style = MaterialTheme.typography.bodyMedium)
+            }
+            TextButton(onClick = onDescartar, modifier = Modifier.align(Alignment.End)) {
+                Text("Entendido", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+        }
     }
 }
 
@@ -452,8 +497,10 @@ private fun PantallaDetalle(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PantallaAcerca(banco: Banco, progreso: Progreso, onVolver: () -> Unit) {
+private fun PantallaAcerca(contenido: Contenido, progreso: Progreso, onVolver: () -> Unit) {
+    val banco = contenido.banco
     var confirmar by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -490,6 +537,37 @@ private fun PantallaAcerca(banco: Banco, progreso: Progreso, onVolver: () -> Uni
                 Spacer(Modifier.height(8.dp))
                 Button(onClick = { confirmar = true }, modifier = Modifier.fillMaxWidth()) {
                     Text("Iniciar nuevo ciclo esta semana")
+                }
+            }
+
+            Seccion(titulo = "Actualizaciones") {
+                val fecha = runCatching { LocalDate.parse(banco.fecha).format(FORMATO_FECHA) }.getOrNull()
+                Text(
+                    "Banco de charlas versión ${banco.version}" + (fecha?.let { " · publicado el $it" } ?: ""),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (banco.novedades.isNotBlank()) {
+                    Text(banco.novedades, style = MaterialTheme.typography.bodyMedium)
+                }
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    when (val estado = contenido.estado) {
+                        EstadoActualizacion.SinRevisar -> "La app revisa si hay charlas nuevas cada vez que se abre."
+                        EstadoActualizacion.Buscando -> "Buscando actualizaciones…"
+                        EstadoActualizacion.AlDia -> "Tienes la última versión publicada."
+                        is EstadoActualizacion.Actualizado -> "Se descargó la versión ${estado.version}."
+                        is EstadoActualizacion.Error -> "${estado.mensaje}. Se mantiene la versión guardada en el teléfono."
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                )
+                Spacer(Modifier.height(8.dp))
+                OutlinedButton(
+                    onClick = { scope.launch { contenido.buscarActualizacion() } },
+                    enabled = contenido.estado != EstadoActualizacion.Buscando,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("Buscar actualizaciones")
                 }
             }
 

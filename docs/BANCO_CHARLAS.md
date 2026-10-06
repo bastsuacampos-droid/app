@@ -2,6 +2,8 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
+**Versión 1** · 2026-10-06 — Versión inicial: 24 charlas en 4 semanas para 5 especialidades.
+
 ## Planificación (4 semanas, lunes a sábado)
 
 | Semana | Día | Especialidad | Tema |
