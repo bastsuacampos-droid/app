@@ -19,6 +19,17 @@ data class Charla(
     val preguntaCierre: String,
 )
 
+/**
+ * Actividad típica de la obra, para recomendar charlas acordes a lo que hará la cuadrilla.
+ * [palabras] se buscan en el texto de las charlas y [especialidades] suman puntos extra.
+ */
+data class Actividad(
+    val id: String,
+    val nombre: String,
+    val palabras: List<String>,
+    val especialidades: List<String>,
+)
+
 /** Posición de una charla en el plan sugerido de 4 semanas (día 1 = lunes … 6 = sábado). */
 data class EntradaPlan(val semana: Int, val dia: Int, val charlaId: Int)
 
@@ -33,6 +44,7 @@ data class Banco(
     val especialidades: List<Especialidad>,
     val charlas: List<Charla>,
     val plan: List<EntradaPlan>,
+    val actividades: List<Actividad> = emptyList(),
 ) {
     private val especialidadesPorId = especialidades.associateBy { it.id }
     private val charlasPorId = charlas.associateBy { it.id }

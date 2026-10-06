@@ -82,6 +82,7 @@ internal fun PantallaInicio(
     novedad: Banco?,
     onDescartarNovedad: () -> Unit,
     onAbrir: (Charla) -> Unit,
+    onRecomendar: (LocalDate) -> Unit,
     onAcerca: () -> Unit,
 ) {
     var ocultarUsadas by rememberSaveable { mutableStateOf(false) }
@@ -129,7 +130,7 @@ internal fun PantallaInicio(
             }
             when (pestana) {
                 0 -> listaSemana(
-                    banco, progreso, LocalDate.parse(lunesSemana), { lunesSemana = it.toString() }, onAbrir,
+                    banco, progreso, LocalDate.parse(lunesSemana), { lunesSemana = it.toString() }, onAbrir, onRecomendar,
                 )
                 1 -> listaPorEspecialidad(
                     banco, progreso, especialidad, onEspecialidad,

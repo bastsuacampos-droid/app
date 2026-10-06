@@ -17,8 +17,14 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 - **Semana**: marcas las especialidades que vas a trabajar (en orden) y los
   días con charla, y la app arma el plan de lunes a sábado con charlas que no
   has dictado ni planificado en el mes. Cada día se puede cambiar (otra charla
-  de la misma especialidad o de otra) y el plan se comparte por WhatsApp. Se
+  de la misma especialidad o de otra, al azar) y el plan se comparte por WhatsApp. Se
   puede planificar hasta 4 semanas hacia adelante.
+- **¿Qué actividad harás?**: desde Semana (o el menú ⋮ de un día) eliges una
+  actividad típica de la obra o la escribes ("hormigonado del cabezal") y la app
+  recomienda charlas acordes, con opción de otra al azar; la elegida queda en el
+  plan de ese día junto con la actividad. Las actividades y sus palabras clave
+  están en `actividades` dentro de `charlas.json` y se actualizan como el resto
+  del banco.
 - **Temas**: eliges la especialidad en el selector y ves cuáles charlas ya usaste
   este mes y cuáles quedan disponibles. "Siguiente disponible" abre la primera
   que aún no dictas, y se pueden ocultar las ya usadas.

@@ -12,12 +12,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -31,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -54,8 +58,10 @@ import cl.sacyr.rutaitata.charlas.data.Progreso
 import cl.sacyr.rutaitata.charlas.data.Uso
 import cl.sacyr.rutaitata.charlas.data.Usos
 import cl.sacyr.rutaitata.charlas.data.nombreDia
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import kotlin.random.Random
 
 /** Cuántas semanas hacia adelante se pueden planificar. */
 private const val SEMANAS_FUTURAS = 4L
@@ -66,8 +72,15 @@ internal fun LazyListScope.listaSemana(
     lunes: LocalDate,
     onLunes: (LocalDate) -> Unit,
     onAbrir: (Charla) -> Unit,
+    onRecomendar: (LocalDate) -> Unit,
 ) {
-    val vigente = Calendario.semanaVigente(LocalDate.now())
+    val hoy = LocalDate.now()
+    val vigente = Calendario.semanaVigente(hoy)
+    if (lunes == vigente) {
+        // El domingo se prepara la charla del lunes.
+        val dia = if (hoy.dayOfWeek == DayOfWeek.SUNDAY) hoy.plusDays(1) else hoy
+        item(key = "actividad-hoy") { TarjetaActividad(dia, onRecomendar) }
+    }
     item(key = "selector-semana") {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             IconButton(onClick = { onLunes(lunes.minusWeeks(1)) }) {
@@ -105,9 +118,32 @@ internal fun LazyListScope.listaSemana(
     }
 
     items(plan.dias, key = { "dia-$lunes-$it" }) { dia ->
-        DiaDelPlan(banco, progreso, plan, dia, onAbrir)
+        DiaDelPlan(banco, progreso, plan, dia, onAbrir, onRecomendar)
     }
     item(key = "acciones-$lunes") { AccionesPlan(banco, progreso, plan) }
+}
+
+/** Acceso a la recomendación de charla según la actividad del día. */
+@Composable
+private fun TarjetaActividad(fecha: LocalDate, onRecomendar: (LocalDate) -> Unit) {
+    val esHoy = fecha == LocalDate.now()
+    OutlinedCard(onClick = { onRecomendar(fecha) }, modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Filled.Search, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    if (esHoy) "¿Qué actividad harás hoy?" else "¿Qué actividad harás el ${nombreDia(fecha.dayOfWeek.value).lowercase()}?",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    "Cuéntale a la app y te recomienda una charla acorde.",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
+    }
 }
 
 /** Formulario para elegir especialidades y días, y generar el plan. */
@@ -176,7 +212,14 @@ private fun ArmarSemana(banco: Banco, progreso: Progreso, lunes: LocalDate) {
 }
 
 @Composable
-private fun DiaDelPlan(banco: Banco, progreso: Progreso, plan: PlanSemanal, dia: Int, onAbrir: (Charla) -> Unit) {
+private fun DiaDelPlan(
+    banco: Banco,
+    progreso: Progreso,
+    plan: PlanSemanal,
+    dia: Int,
+    onAbrir: (Charla) -> Unit,
+    onRecomendar: (LocalDate) -> Unit,
+) {
     val context = LocalContext.current
     val fecha = plan.fecha(dia)
     val charla = plan.charlas[dia]?.let(banco::charla)
@@ -185,7 +228,7 @@ private fun DiaDelPlan(banco: Banco, progreso: Progreso, plan: PlanSemanal, dia:
 
     fun cambiarA(especialidad: String) {
         menu = false
-        val nuevo = Planificador.cambiar(banco, plan, dia, especialidad, progreso.usos, progreso.planes)
+        val nuevo = Planificador.cambiar(banco, plan, dia, especialidad, progreso.usos, progreso.planes, Random.Default)
         if (nuevo != null) {
             progreso.guardarPlan(nuevo)
         } else {
@@ -205,6 +248,9 @@ private fun DiaDelPlan(banco: Banco, progreso: Progreso, plan: PlanSemanal, dia:
             color = if (esHoy) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 6.dp, bottom = 4.dp),
         )
+        plan.actividades[dia]?.let {
+            Text("Actividad: $it", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(bottom = 4.dp))
+        }
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.weight(1f)) {
                 if (charla != null) {
@@ -230,18 +276,27 @@ private fun DiaDelPlan(banco: Banco, progreso: Progreso, plan: PlanSemanal, dia:
                     Icon(Icons.Filled.MoreVert, contentDescription = "Cambiar charla del ${nombreDia(dia)}")
                 }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                    DropdownMenuItem(
+                        text = { Text("Elegir según la actividad del día…", fontWeight = FontWeight.Bold) },
+                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                        onClick = {
+                            menu = false
+                            onRecomendar(fecha)
+                        },
+                    )
                     if (charla != null) {
                         DropdownMenuItem(
-                            text = { Text("Otra de ${banco.especialidad(charla.especialidadId).nombre}") },
+                            text = { Text("Otra al azar de ${banco.especialidad(charla.especialidadId).nombre}") },
+                            leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null) },
                             onClick = { cambiarA(charla.especialidadId) },
                         )
-                        HorizontalDivider()
                     }
+                    HorizontalDivider()
                     banco.especialidades
                         .filter { it.id != charla?.especialidadId }
                         .forEach { esp ->
                             DropdownMenuItem(
-                                text = { Text("Cambiar a ${esp.nombre}") },
+                                text = { Text("Al azar de ${esp.nombre}") },
                                 leadingIcon = { Punto(colorDe(esp.colorHex)) },
                                 onClick = { cambiarA(esp.id) },
                             )
@@ -282,7 +337,7 @@ private fun AccionesPlan(banco: Banco, progreso: Progreso, plan: PlanSemanal) {
             Text("Rehacer con otras especialidades")
         }
         Text(
-            "Toca ⋮ en un día para cambiar su charla. Al dictarla, regístrala desde su ficha.",
+            "Toca ⋮ en un día para elegir la charla según la actividad o cambiarla por otra al azar. Al dictarla, regístrala desde su ficha.",
             style = MaterialTheme.typography.bodySmall,
         )
     }

@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 3,
+  "version": 4,
   "fecha": "2026-10-06",
-  "novedades": "4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra, con al menos 25 charlas cada una (226 charlas en total).",
+  "novedades": "Lista de actividades de la obra para que la app recomiende charlas acordes a lo que hará la cuadrilla cada día.",
   "especialidades": [
     {
       "id": "MP",
@@ -3562,6 +3562,417 @@
       "semana": 4,
       "dia": 6,
       "charla": 24
+    }
+  ],
+  "actividades": [
+    {
+      "id": "zanjas",
+      "nombre": "Excavación de zanjas",
+      "palabras": [
+        "zanja",
+        "excavación",
+        "entibación",
+        "talud",
+        "derrumbe"
+      ],
+      "especialidades": [
+        "OA",
+        "MT",
+        "MP"
+      ]
+    },
+    {
+      "id": "tubos",
+      "nombre": "Instalación de tubos y alcantarillas",
+      "palabras": [
+        "tubo",
+        "alcantarilla",
+        "zanja",
+        "izaje",
+        "eslinga"
+      ],
+      "especialidades": [
+        "OA",
+        "MP"
+      ]
+    },
+    {
+      "id": "terraplen",
+      "nombre": "Terraplén y rellenos",
+      "palabras": [
+        "terraplén",
+        "relleno",
+        "camión",
+        "descarga",
+        "compactación",
+        "rodillo"
+      ],
+      "especialidades": [
+        "MT",
+        "MP"
+      ]
+    },
+    {
+      "id": "talud",
+      "nombre": "Corte de talud y roca",
+      "palabras": [
+        "talud",
+        "corte",
+        "roca",
+        "martillo",
+        "bloque"
+      ],
+      "especialidades": [
+        "MT",
+        "MP"
+      ]
+    },
+    {
+      "id": "caminos",
+      "nombre": "Tránsito de camiones y caminos internos",
+      "palabras": [
+        "camión",
+        "tolva",
+        "camino",
+        "retroceso",
+        "velocidad",
+        "polvo"
+      ],
+      "especialidades": [
+        "MT",
+        "MP",
+        "CT"
+      ]
+    },
+    {
+      "id": "asfalto",
+      "nombre": "Pavimentación asfáltica",
+      "palabras": [
+        "asfalto",
+        "mezcla",
+        "terminadora",
+        "rodillo",
+        "rastrillero",
+        "pavimentación"
+      ],
+      "especialidades": [
+        "AS"
+      ]
+    },
+    {
+      "id": "riego",
+      "nombre": "Riego de liga e imprimación",
+      "palabras": [
+        "riego",
+        "emulsión",
+        "imprimación",
+        "liga",
+        "distribuidor"
+      ],
+      "especialidades": [
+        "AS"
+      ]
+    },
+    {
+      "id": "fresado",
+      "nombre": "Fresado, bacheo y corte de pavimento",
+      "palabras": [
+        "fresado",
+        "fresadora",
+        "bacheo",
+        "cortadora",
+        "pavimento"
+      ],
+      "especialidades": [
+        "AS"
+      ]
+    },
+    {
+      "id": "demarcacion",
+      "nombre": "Demarcación vial",
+      "palabras": [
+        "demarcación",
+        "pintura",
+        "solvente"
+      ],
+      "especialidades": [
+        "AS",
+        "CT"
+      ]
+    },
+    {
+      "id": "desvio",
+      "nombre": "Instalación de desvío y paleteros",
+      "palabras": [
+        "desvío",
+        "paletero",
+        "señal",
+        "cono",
+        "tránsito"
+      ],
+      "especialidades": [
+        "CT"
+      ]
+    },
+    {
+      "id": "via",
+      "nombre": "Trabajo junto a la vía con tránsito",
+      "palabras": [
+        "tránsito",
+        "calzada",
+        "pista",
+        "vehículo",
+        "conductor",
+        "atropello"
+      ],
+      "especialidades": [
+        "CT"
+      ]
+    },
+    {
+      "id": "moldajes",
+      "nombre": "Armado y desarme de moldajes",
+      "palabras": [
+        "moldaje",
+        "panel",
+        "puntal",
+        "alzaprima",
+        "desmoldaje",
+        "madera"
+      ],
+      "especialidades": [
+        "CA"
+      ]
+    },
+    {
+      "id": "carpinteria",
+      "nombre": "Carpintería y herramientas de corte",
+      "palabras": [
+        "sierra",
+        "disco",
+        "clavo",
+        "madera",
+        "martillo",
+        "taller"
+      ],
+      "especialidades": [
+        "CA"
+      ]
+    },
+    {
+      "id": "fierro",
+      "nombre": "Enfierradura",
+      "palabras": [
+        "fierro",
+        "armadura",
+        "amarra",
+        "barra",
+        "alambre",
+        "doblado"
+      ],
+      "especialidades": [
+        "EN"
+      ]
+    },
+    {
+      "id": "hormigon",
+      "nombre": "Hormigonado",
+      "palabras": [
+        "hormigón",
+        "hormigonado",
+        "mixer",
+        "bomba",
+        "vibrador",
+        "cemento"
+      ],
+      "especialidades": [
+        "HO"
+      ]
+    },
+    {
+      "id": "altura",
+      "nombre": "Trabajo en altura",
+      "palabras": [
+        "altura",
+        "arnés",
+        "andamio",
+        "baranda",
+        "escala",
+        "caída",
+        "plataforma"
+      ],
+      "especialidades": [
+        "OA",
+        "CA",
+        "EN",
+        "RT"
+      ]
+    },
+    {
+      "id": "izaje",
+      "nombre": "Izaje de cargas",
+      "palabras": [
+        "izaje",
+        "eslinga",
+        "grúa",
+        "carga",
+        "señalero",
+        "tecle",
+        "suspendida"
+      ],
+      "especialidades": [
+        "MP",
+        "OA"
+      ]
+    },
+    {
+      "id": "soldadura",
+      "nombre": "Soldadura y corte con esmeril",
+      "palabras": [
+        "soldadura",
+        "esmeril",
+        "chispa",
+        "oxicorte",
+        "cilindro",
+        "disco"
+      ],
+      "especialidades": [
+        "OA",
+        "EN"
+      ]
+    },
+    {
+      "id": "cauces",
+      "nombre": "Obras en cauces y esteros",
+      "palabras": [
+        "cauce",
+        "estero",
+        "agua",
+        "crecida"
+      ],
+      "especialidades": [
+        "OA",
+        "MP"
+      ]
+    },
+    {
+      "id": "roce",
+      "nombre": "Roce y despeje de faja",
+      "palabras": [
+        "roce",
+        "despeje",
+        "motosierra",
+        "desbrozadora",
+        "árbol",
+        "vegetación"
+      ],
+      "especialidades": [
+        "OA",
+        "MT"
+      ]
+    },
+    {
+      "id": "defensas",
+      "nombre": "Defensas camineras y barreras",
+      "palabras": [
+        "defensa",
+        "barrera",
+        "poste",
+        "hincadora"
+      ],
+      "especialidades": [
+        "OA",
+        "HO",
+        "CT"
+      ]
+    },
+    {
+      "id": "mantencion",
+      "nombre": "Mantención y combustible de equipos",
+      "palabras": [
+        "mantención",
+        "combustible",
+        "bloqueo",
+        "hidráulica",
+        "neumático",
+        "fuga"
+      ],
+      "especialidades": [
+        "MP"
+      ]
+    },
+    {
+      "id": "traslado",
+      "nombre": "Traslado de maquinaria",
+      "palabras": [
+        "traslado",
+        "cama",
+        "rampa",
+        "cruce",
+        "maquinaria"
+      ],
+      "especialidades": [
+        "MP",
+        "CT"
+      ]
+    },
+    {
+      "id": "confinados",
+      "nombre": "Cámaras y espacios confinados",
+      "palabras": [
+        "confinado",
+        "cámara",
+        "oxígeno",
+        "gas",
+        "ventilación"
+      ],
+      "especialidades": [
+        "OA"
+      ]
+    },
+    {
+      "id": "lluvia",
+      "nombre": "Lluvia, frío, viento o neblina",
+      "palabras": [
+        "lluvia",
+        "barro",
+        "frío",
+        "helada",
+        "viento",
+        "neblina",
+        "tormenta"
+      ],
+      "especialidades": [
+        "RT"
+      ]
+    },
+    {
+      "id": "calor",
+      "nombre": "Calor y sol",
+      "palabras": [
+        "calor",
+        "sol",
+        "radiación",
+        "hidratación",
+        "agua"
+      ],
+      "especialidades": [
+        "RT",
+        "AS"
+      ]
+    },
+    {
+      "id": "nuevos",
+      "nombre": "Ingreso de personal nuevo o subcontratistas",
+      "palabras": [
+        "nuevo",
+        "inducción",
+        "subcontratista",
+        "visita"
+      ],
+      "especialidades": [
+        "RT"
+      ]
     }
   ]
 }

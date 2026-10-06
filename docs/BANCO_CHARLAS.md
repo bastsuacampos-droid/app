@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 3** · 2026-10-06 — 4 especialidades nuevas: Carpintería, Enfierradura, Hormigonado y Movimiento de Tierra, con al menos 25 charlas cada una (226 charlas en total).
+**Versión 4** · 2026-10-06 — Lista de actividades de la obra para que la app recomiende charlas acordes a lo que hará la cuadrilla cada día.
 
 ## Índice por especialidad
 

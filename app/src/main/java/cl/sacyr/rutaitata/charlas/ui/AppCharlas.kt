@@ -49,6 +49,7 @@ import cl.sacyr.rutaitata.charlas.data.Banco
 import cl.sacyr.rutaitata.charlas.data.Charla
 import cl.sacyr.rutaitata.charlas.data.Contenido
 import cl.sacyr.rutaitata.charlas.data.Progreso
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -57,6 +58,7 @@ import kotlinx.coroutines.launch
 private const val RUTA_INICIO = "inicio"
 private const val RUTA_ACERCA = "acerca"
 private const val PREFIJO_DETALLE = "detalle/"
+private const val PREFIJO_RECOMENDAR = "recomendar/"
 
 internal val FORMATO_FECHA: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 internal val FORMATO_DIA_MES: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM")
@@ -71,7 +73,10 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso, actualizador: Actualiza
     // Pestaña y especialidad elegidas se conservan al volver del detalle.
     var pestana by rememberSaveable { mutableIntStateOf(0) }
     var especialidad by rememberSaveable { mutableStateOf(banco.especialidades.first().id) }
-    BackHandler(enabled = ruta != RUTA_INICIO) { ruta = RUTA_INICIO }
+    // Pantalla desde la que se abrió la ficha de una charla, para volver a ella.
+    var origenDetalle by rememberSaveable { mutableStateOf(RUTA_INICIO) }
+    val volver = { ruta = if (ruta.startsWith(PREFIJO_DETALLE)) origenDetalle else RUTA_INICIO }
+    BackHandler(enabled = ruta != RUTA_INICIO) { volver() }
 
     val scope = rememberCoroutineScope()
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
@@ -83,14 +88,27 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso, actualizador: Actualiza
     CompositionLocalProvider(
         LocalDensity provides Density(densidad.density, densidad.fontScale * progreso.escalaTexto),
     ) {
-        val abrir: (Charla) -> Unit = { ruta = PREFIJO_DETALLE + it.id }
-        val detalle = ruta.removePrefix(PREFIJO_DETALLE).toIntOrNull()?.let(banco::charla)
+        val abrir: (Charla) -> Unit = {
+            if (!ruta.startsWith(PREFIJO_DETALLE)) origenDetalle = ruta
+            ruta = PREFIJO_DETALLE + it.id
+        }
+        val detalle = ruta.takeIf { it.startsWith(PREFIJO_DETALLE) }
+            ?.removePrefix(PREFIJO_DETALLE)?.toIntOrNull()?.let(banco::charla)
+        val fechaRecomendar = ruta.takeIf { it.startsWith(PREFIJO_RECOMENDAR) }
+            ?.removePrefix(PREFIJO_RECOMENDAR)?.toLongOrNull()?.let(LocalDate::ofEpochDay)
         when {
             ruta == RUTA_ACERCA -> PantallaAcerca(contenido, progreso, actualizador, onVolver = { ruta = RUTA_INICIO })
             detalle != null -> PantallaDetalle(
                 banco = banco,
                 charla = detalle,
                 progreso = progreso,
+                onAbrir = abrir,
+                onVolver = volver,
+            )
+            fechaRecomendar != null -> PantallaRecomendar(
+                banco = banco,
+                progreso = progreso,
+                fecha = fechaRecomendar,
                 onAbrir = abrir,
                 onVolver = { ruta = RUTA_INICIO },
             )
@@ -106,6 +124,7 @@ fun AppCharlas(contenido: Contenido, progreso: Progreso, actualizador: Actualiza
                 novedad = contenido.novedadPendiente,
                 onDescartarNovedad = contenido::descartarNovedad,
                 onAbrir = abrir,
+                onRecomendar = { ruta = PREFIJO_RECOMENDAR + it.toEpochDay() },
                 onAcerca = { ruta = RUTA_ACERCA },
             )
         }
