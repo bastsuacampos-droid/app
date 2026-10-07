@@ -6,7 +6,7 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 
 ## Qué incluye
 
-- **226 charlas** en 9 especialidades, con al menos 25 cada una: Maquinaria
+- **308 charlas** en 9 especialidades, con al menos 25 cada una: Maquinaria
   Pesada (MP), Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
   Obras de Arte / Manuales (OA), Riesgos Transversales / Clima (RT),
   Carpintería (CA), Enfierradura (EN), Hormigonado (HO) y Movimiento de
@@ -22,7 +22,9 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 - **¿Qué actividad harás?**: desde Semana (o el menú ⋮ de un día) eliges una
   actividad típica de la obra o la escribes ("hormigonado del cabezal") y la app
   recomienda charlas acordes, con opción de otra al azar; la elegida queda en el
-  plan de ese día junto con la actividad. Las actividades y sus palabras clave
+  plan de ese día junto con la actividad. Hay 40 actividades que cubren las
+  tareas de la obra, cada una con al menos 5 charlas bien enfocadas (una prueba
+  automática lo verifica). Las actividades y sus palabras clave
   están en `actividades` dentro de `charlas.json` y se actualizan como el resto
   del banco.
 - **Temas**: eliges la especialidad en el selector y ves cuáles charlas ya usaste

@@ -32,6 +32,17 @@ class RecomendadorTest {
     }
 
     @Test
+    fun cadaActividadTieneAlMenosCincoCharlasBienEnfocadas() {
+        // Cobertura completa de las tareas: cada actividad debe tener charlas que calcen de verdad
+        // (coincidencia en el título o en varias palabras, más su especialidad), no solo de pasada.
+        val faltan = banco.actividades.mapNotNull { a ->
+            val buenas = Recomendador.recomendar(banco, "", a, emptySet()).count { it.puntaje >= 6 }
+            "${a.nombre}: $buenas".takeIf { buenas < 5 }
+        }
+        assertEquals("Actividades con menos de 5 charlas bien enfocadas", emptyList<String>(), faltan)
+    }
+
+    @Test
     fun textoLibreEncuentraLaCharlaDelTema() {
         val r = Recomendador.recomendar(banco, "voy a cortar fierro con esmeril", null, emptySet())
         assertEquals("EN-12", r.first().charla.codigo)

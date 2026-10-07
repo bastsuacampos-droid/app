@@ -4,10 +4,52 @@
 Uso: python3 tools/generar_banco_md.py
 """
 import json
+import re
+import unicodedata
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 DIAS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+
+# Misma lógica que Recomendador.kt, para imprimir las charlas recomendadas por actividad.
+PALABRAS_VACIAS = {
+    "para", "por", "con", "los", "las", "del", "una", "uno", "unos", "unas", "que", "hoy", "voy",
+    "vamos", "hacer", "haremos", "hare", "dia", "obra", "faena", "trabajo", "trabajos", "trabajar",
+    "tarea", "tareas", "actividad", "cuadrilla", "esta", "este", "sobre", "entre", "desde", "como",
+    "todo", "toda", "todos", "todas", "mas", "muy", "sin", "son", "ser", "hay",
+}
+RECOMENDADAS_POR_ACTIVIDAD = 6
+
+
+def raices(texto: str) -> list[str]:
+    sin_tildes = "".join(
+        c for c in unicodedata.normalize("NFD", texto.lower()) if not unicodedata.combining(c)
+    )
+    resultado = []
+    for palabra in re.split(r"[^a-zñ0-9]+", sin_tildes):
+        if len(palabra) < 3 or palabra in PALABRAS_VACIAS:
+            continue
+        if palabra.endswith("es") and len(palabra) > 5:
+            palabra = palabra[:-2]
+        elif palabra.endswith("s") and len(palabra) > 4:
+            palabra = palabra[:-1]
+        resultado.append(palabra[:5])
+    return resultado
+
+
+def recomendar(charlas: list[dict], actividad: dict) -> list[dict]:
+    consulta = {r for p in actividad["palabras"] for r in raices(p)}
+    preferidas = set(actividad.get("especialidades", []))
+    puntuadas = []
+    for c in charlas:
+        titulo = set(raices(c["titulo"]))
+        resto = set(raices(c["porQue"] + " " + " ".join(c["checklist"])))
+        puntaje = sum(3 if r in titulo else 1 if r in resto else 0 for r in consulta)
+        if puntaje > 0 and c["especialidad"] in preferidas:
+            puntaje += 2
+        if puntaje > 0:
+            puntuadas.append((-puntaje, c["codigo"], c))
+    return [c for _, _, c in sorted(puntuadas, key=lambda t: (t[0], t[1]))]
 
 
 def main() -> None:
@@ -25,6 +67,17 @@ def main() -> None:
         propias = [c for c in datos["charlas"] if c["especialidad"] == eid]
         o += [f"### {nombre} ({len(propias)})", ""]
         o += [f"- **{c['codigo']}** {c['titulo']}" for c in propias]
+        o.append("")
+
+    if datos.get("actividades"):
+        o += ["## Charlas recomendadas por actividad", ""]
+        o.append("Las que la app propone primero en *¿Qué actividad harás?*.")
+        o.append("")
+        o.append("| Actividad | Charlas recomendadas |")
+        o.append("|---|---|")
+        for a in datos["actividades"]:
+            codigos = ", ".join(c["codigo"] for c in recomendar(datos["charlas"], a)[:RECOMENDADAS_POR_ACTIVIDAD])
+            o.append(f"| {a['nombre']} | {codigos} |")
         o.append("")
 
     o += ["## Plan sugerido (4 semanas, lunes a sábado)", ""]
