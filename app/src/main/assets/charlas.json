@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 4,
-  "fecha": "2026-10-06",
-  "novedades": "Lista de actividades de la obra para que la app recomiende charlas acordes a lo que hará la cuadrilla cada día.",
+  "version": 5,
+  "fecha": "2026-10-07",
+  "novedades": "70 charlas nuevas y 12 actividades más para cubrir todas las tareas de la obra: riego y demarcación, defensas, puentes, drenaje, topografía, espacios confinados, taludes, instalación de faena, electricidad, trabajo nocturno, conducción, emergencias y vecinos (296 charlas, 39 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -427,6 +427,96 @@
       "preguntaCierre": "¿Cómo nos enteramos si viene una crecida y cuánto tiempo necesitamos para sacar la máquina del estero?"
     },
     {
+      "id": 121,
+      "codigo": "MP-26",
+      "especialidad": "MP",
+      "titulo": "Subir y bajar equipos de la cama baja: las rampas no perdonan",
+      "porQue": "El momento más peligroso del traslado de maquinaria es cuando el equipo sube o baja por las rampas de la cama baja. Una rampa mal apoyada, una oruga desalineada o una rampa mojada pueden hacer que el equipo se deslice o vuelque hacia un costado, con el operador arriba y el señalero abajo.",
+      "checklist": [
+        "Cama baja y rampas sobre terreno firme y nivelado, rampas aseguradas y limpias de barro o escarcha.",
+        "Equipo alineado con las rampas, implementos bajos y avance lento guiado por un solo señalero ubicado fuera de la trayectoria.",
+        "Nadie a los costados ni detrás de las rampas durante la maniobra."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; manual del fabricante del equipo y de la cama baja.",
+      "reglaOro": "Ante la duda, el equipo se detiene.",
+      "preguntaCierre": "¿Dónde se ubica el señalero cuando la excavadora sube a la cama baja?"
+    },
+    {
+      "id": 122,
+      "codigo": "MP-27",
+      "especialidad": "MP",
+      "titulo": "Escolta de cargas sobredimensionadas: avisar a la ruta lo que viene",
+      "porQue": "Una cama baja con una excavadora o una viga ocupa más que una pista y avanza lento. Los conductores que vienen de frente o detrás no esperan encontrarse algo así en una curva. El vehículo escolta es el que avisa con anticipación y protege la maniobra.",
+      "checklist": [
+        "Permisos y ruta revisados antes de salir: puentes, curvas, cables, peajes y horarios autorizados.",
+        "Vehículo escolta con baliza y letrero, a la distancia indicada, en comunicación por radio con el conductor de la cama baja.",
+        "Detenerse en lugares seguros para dejar pasar el tránsito; nunca en curvas ni cuestas sin visibilidad."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; normativa de pesos y dimensiones (MTT / Dirección de Vialidad MOP) y permisos para cargas sobredimensionadas.",
+      "reglaOro": "Toda carga trasladada va asegurada y verificada antes de entrar a la vía.",
+      "preguntaCierre": "¿Por dónde va hoy la cama baja y dónde están los puntos más estrechos?"
+    },
+    {
+      "id": 123,
+      "codigo": "MP-28",
+      "especialidad": "MP",
+      "titulo": "Equipos que se trasladan por sus propios medios entre frentes",
+      "porQue": "Para distancias cortas, los equipos se mueven por sus propios medios por la berma, el desvío o caminos internos. Una motoniveladora o un rodillo que circula por la ruta es un obstáculo lento que los conductores ven tarde, y una excavadora sobre orugas daña el pavimento y puede patinar.",
+      "checklist": [
+        "Traslado solo por la ruta definida y autorizada, con baliza y luces encendidas y vehículo de apoyo si el procedimiento lo exige.",
+        "Implementos recogidos y asegurados; nunca transportar personas en el equipo.",
+        "Cruces de la calzada con el tránsito detenido por paleteros."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; Manual de Señalización de Tránsito (MTT), Cap. 5; DS 594 Art. 38.",
+      "reglaOro": "Control de tránsito: ninguna maniobra en la vía sin el tránsito controlado.",
+      "preguntaCierre": "¿Qué equipo cambia hoy de frente y por dónde va a pasar?"
+    },
+    {
+      "id": 124,
+      "codigo": "MP-29",
+      "especialidad": "MP",
+      "titulo": "Lubricación y engrase: el equipo detenido de verdad",
+      "porQue": "Engrasar pasadores y articulaciones obliga a meterse entre el brazo, el balde y el chasis de la máquina. Si alguien la mueve o el brazo baja por pérdida de presión, el que engrasa queda atrapado. Además, la grasa a presión de una engrasadora puede inyectarse en la piel.",
+      "checklist": [
+        "Equipo detenido, implementos apoyados en el suelo, llave retirada y tarjeta de bloqueo antes de engrasar.",
+        "Nunca engrasar con el brazo o el balde levantados sin calzo mecánico.",
+        "Engrasadora en buen estado; nunca dirigir la boquilla hacia la mano ni limpiar la grasa con los dedos de la punta."
+      ],
+      "normativa": "DS 594 Art. 38; Ley 16.744 Art. 68; manual de mantención del fabricante.",
+      "reglaOro": "Bloqueo de energías antes de intervenir cualquier equipo.",
+      "preguntaCierre": "¿Quién tiene la llave de la máquina mientras la engrasamos?"
+    },
+    {
+      "id": 125,
+      "codigo": "MP-30",
+      "especialidad": "MP",
+      "titulo": "Baterías de los equipos: ácido, gases y chispas al conectar",
+      "porQue": "Las baterías de plomo-ácido de los equipos liberan hidrógeno, un gas que explota con una chispa. Hacer partir un equipo con cables puente conectados en el orden equivocado o revisar una batería con el celular como linterna pueden terminar en una explosión con ácido en la cara.",
+      "checklist": [
+        "Lentes o careta y guantes al manipular baterías; sin fumar ni generar chispas cerca.",
+        "Conectar cables puente en el orden indicado por el fabricante, dejando la última conexión lejos de la batería.",
+        "Baterías dañadas o con fugas se retiran y se disponen como residuo peligroso."
+      ],
+      "normativa": "DS 594 (agentes químicos y Art. 53 sobre EPP); DS 148/2003 (residuos peligrosos); manual del fabricante.",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿En qué orden se conectan los cables para hacer partir un equipo?"
+    },
+    {
+      "id": 126,
+      "codigo": "MP-31",
+      "especialidad": "MP",
+      "titulo": "Camión lubricador y taller móvil: mantención en el frente",
+      "porQue": "El camión lubricador lleva aceites, grasas, combustible y herramientas al frente para mantener los equipos en terreno. Se estaciona junto a máquinas, trabaja con mangueras a presión y genera residuos. Si no se ordena, mezcla todos los riesgos de un taller en medio de la faena.",
+      "checklist": [
+        "Camión estacionado en terreno firme, fuera de la circulación de equipos y con calzos; zona de trabajo demarcada.",
+        "Mangueras de aceite y grasa en buen estado, enrolladas al terminar; bandejas bajo los puntos de vaciado.",
+        "Aceites usados, filtros y trapos en contenedores rotulados de residuos peligrosos; extintor y kit antiderrame en el camión."
+      ],
+      "normativa": "DS 148/2003 (residuos peligrosos); DS 160/2008 (combustibles líquidos); DS 594; compromisos ambientales del proyecto.",
+      "reglaOro": "Cada residuo en su lugar: nada se vierte al suelo ni a los cauces.",
+      "preguntaCierre": "¿Dónde quedan hoy los filtros y el aceite usado que sacamos de los equipos?"
+    },
+    {
       "id": 2,
       "codigo": "CT-01",
       "especialidad": "CT",
@@ -800,6 +890,141 @@
       "normativa": "DS 594 (agua potable, servicios higiénicos y protección ante condiciones climáticas); Ley 20.096 (radiación UV); Ley 16.744 Art. 68.",
       "reglaOro": "Nadie abandona el control de tránsito sin relevo.",
       "preguntaCierre": "¿Quién releva hoy a cada paletero y a qué hora?"
+    },
+    {
+      "id": 221,
+      "codigo": "CT-26",
+      "especialidad": "CT",
+      "titulo": "Tachas y delineadores: instalar sobre la calzada sin quedar en ella",
+      "porQue": "Instalar tachas reflectantes y delineadores obliga a agacharse sobre la calzada, de espaldas al tránsito y con la atención puesta en el adhesivo. Es un trabajo de pocos segundos por punto, repetido cientos de veces, en el que el cansancio y la rutina hacen olvidar dónde viene el vehículo.",
+      "checklist": [
+        "Instalación con faena móvil o pista cerrada según el plano, con vehículo de protección.",
+        "Un trabajador vigía mirando el tránsito mientras los demás están agachados; avisa con señal acordada.",
+        "Adhesivo y herramientas en el vehículo, no en la calzada; guantes y lentes al manipular adhesivos calientes o químicos."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594 Art. 53.",
+      "reglaOro": "Ningún trabajo en la vía sin señalización, por corto que sea.",
+      "preguntaCierre": "¿Quién hace hoy de vigía mientras instalamos las tachas?"
+    },
+    {
+      "id": 222,
+      "codigo": "CT-27",
+      "especialidad": "CT",
+      "titulo": "Defensa caminera dañada o retirada: el tramo queda sin protección",
+      "porQue": "Para trabajar en los bordes a veces se retiran tramos de defensa caminera, o una defensa queda dañada después de un choque. Ese tramo deja de proteger a los conductores de caer a un desnivel o de chocar contra un obstáculo. Mientras no se reponga, hay que advertirlo y protegerlo.",
+      "checklist": [
+        "Tramos sin defensa señalizados y protegidos con elementos de canalización o barreras provisorias según el plano.",
+        "Retirar defensa solo el tramo y el tiempo necesarios; reponerla antes de abrir el tránsito normal.",
+        "Informar de inmediato cualquier defensa dañada por un choque, aunque no sea de la obra."
+      ],
+      "normativa": "Manual de Carreteras MOP, Vol. 6 (sistemas de contención vial); Manual de Señalización de Tránsito, Cap. 5.",
+      "reglaOro": "La calzada habilitada se entrega limpia y sin trampas.",
+      "preguntaCierre": "¿Qué tramo de defensa está hoy retirado y cómo lo protegemos?"
+    },
+    {
+      "id": 223,
+      "codigo": "CT-28",
+      "especialidad": "CT",
+      "titulo": "Torres de iluminación: trasladar, levantar y cargar combustible",
+      "porQue": "Las torres de iluminación se arrastran con camioneta, se nivelan, se les levanta el mástil y se cargan con combustible, muchas veces al atardecer y junto a la ruta. Un mástil levantado cerca de una línea eléctrica, una torre mal estabilizada que se vuelca con viento o una carga de combustible con el motor caliente pueden terminar mal.",
+      "checklist": [
+        "Torre estabilizada con sus patas sobre terreno firme y nivelado antes de levantar el mástil; nunca bajo líneas eléctricas.",
+        "Mástil bajado para trasladarla y con viento fuerte; focos orientados para no encandilar a los conductores.",
+        "Carga de combustible con el motor detenido y frío, lejos de la calzada, con extintor y kit antiderrame."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71); DS 160/2008 (combustibles líquidos); Manual de Señalización de Tránsito, Cap. 5; manual del fabricante.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "¿Dónde vamos a ubicar hoy las torres y hacia dónde apuntan los focos?"
+    },
+    {
+      "id": 224,
+      "codigo": "CT-29",
+      "especialidad": "CT",
+      "titulo": "Caminos de ripio y tierra: polvo, derrapes y piedras",
+      "porQue": "Los desvíos y caminos de acceso de la obra son de ripio o tierra. Ahí una camioneta frena mucho peor, derrapa en las curvas y levanta piedras que golpean parabrisas. La velocidad que parece normal en pavimento es peligrosa en ripio.",
+      "checklist": [
+        "Velocidad reducida en ripio y tierra según la señalización del proyecto; más distancia con el vehículo de adelante.",
+        "Frenar antes de las curvas, no dentro de ellas; luces encendidas con polvo o neblina.",
+        "Neumáticos en buen estado y con la presión correcta; carga bien amarrada."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (velocidad razonable y prudente); Manual de Carreteras MOP, Vol. 6; reglamento interno del proyecto.",
+      "reglaOro": "Respeto absoluto a los límites de velocidad dentro y fuera de la obra.",
+      "preguntaCierre": "¿Cuál es el tramo de ripio donde más se nos va la camioneta?"
+    },
+    {
+      "id": 225,
+      "codigo": "CT-30",
+      "especialidad": "CT",
+      "titulo": "Retroceso de camionetas: el choque más común de los vehículos livianos",
+      "porQue": "La mayoría de los choques de camionetas en obra ocurren retrocediendo a baja velocidad: contra un poste, un equipo, otro vehículo o, peor, una persona. El conductor confía en los espejos y no ve lo que está justo detrás. Estacionar pensando en la salida evita la mayoría de estos accidentes.",
+      "checklist": [
+        "Estacionar en posición de salida (de frente), para no tener que retroceder al irse.",
+        "Antes de retroceder, dar una vuelta alrededor del vehículo o pedir apoyo de un compañero que guíe.",
+        "Nunca retroceder sobre la calzada habilitada ni en la zona de trabajo con personas a pie."
+      ],
+      "normativa": "Ley 18.290 de Tránsito; DS 594; procedimiento de tránsito interno del proyecto.",
+      "reglaOro": "Ningún retroceso sin guía en zonas con personas.",
+      "preguntaCierre": "¿Cómo dejaste estacionada hoy tu camioneta: lista para salir de frente?"
+    },
+    {
+      "id": 226,
+      "codigo": "CT-31",
+      "especialidad": "CT",
+      "titulo": "Transporte de personal: buses y camionetas con trabajadores",
+      "porQue": "Cada día la cuadrilla viaja a la obra y entre frentes en buses o camionetas. Un vehículo de transporte de personal lleva a muchas personas, así que un accidente puede afectar a varias a la vez. El conductor, el estado del vehículo y el comportamiento de los pasajeros importan.",
+      "checklist": [
+        "Conductor autorizado, con licencia vigente y descansado; vehículo con revisión técnica y check pre-uso.",
+        "Todos los pasajeros sentados y con cinturón; nunca viajar en la caja de la camioneta ni de pie.",
+        "Herramientas y materiales amarrados en el compartimiento de carga, no sueltos en la cabina con las personas."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (cinturón de seguridad y transporte de pasajeros); Ley 16.744 (accidentes de trayecto); reglamento interno del proyecto.",
+      "reglaOro": "Cinturón de seguridad siempre abrochado en vehículos y maquinaria.",
+      "preguntaCierre": "¿Alguien viajó ayer en la caja de la camioneta? Eso no se repite."
+    },
+    {
+      "id": 227,
+      "codigo": "CT-32",
+      "especialidad": "CT",
+      "titulo": "Accesos a predios y vecinos durante la obra",
+      "porQue": "Los vecinos de la ruta siguen entrando y saliendo de sus casas y campos mientras trabajamos: autos, tractores, animales y personas a pie. Si un acceso queda bloqueado o mal señalizado, el vecino buscará pasar por donde pueda, muchas veces por la zona de trabajo.",
+      "checklist": [
+        "Accesos a predios identificados y mantenidos transitables y señalizados durante la faena.",
+        "Coordinar con el vecino cuando un acceso se deba cerrar temporalmente, con una alternativa segura.",
+        "Al detectar a un vecino o un animal dentro de la zona de trabajo, detener los equipos y guiarlo con calma."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; compromisos con la comunidad del proyecto.",
+      "reglaOro": "Zona de trabajo segregada: nadie ajeno ingresa sin control.",
+      "preguntaCierre": "¿Qué acceso a un predio afecta hoy nuestro frente y cómo pasará el vecino?"
+    },
+    {
+      "id": 228,
+      "codigo": "CT-33",
+      "especialidad": "CT",
+      "titulo": "Escolares y paraderos en la zona de obras",
+      "porQue": "En la ruta hay paraderos de buses rurales y escolares que caminan a la orilla del camino a la hora de entrada y salida de clases. Los niños no reconocen los riesgos de una obra, se distraen y cruzan sin mirar. Esos horarios requieren atención especial.",
+      "checklist": [
+        "Paraderos y pasos peatonales mantenidos accesibles, señalizados y separados de la zona de trabajo.",
+        "En horarios de entrada y salida de colegios, reforzar la vigilancia y reducir el movimiento de equipos cerca de los paraderos.",
+        "Nunca dejar zanjas abiertas, acopios inestables ni equipos con llave cerca de paraderos al terminar la jornada."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (peatones); Manual de Señalización de Tránsito (MTT), Cap. 5; compromisos con la comunidad del proyecto.",
+      "reglaOro": "Zona de trabajo segregada: nadie ajeno ingresa sin control.",
+      "preguntaCierre": "¿A qué hora pasan los escolares por nuestro tramo y quién los vigila?"
+    },
+    {
+      "id": 229,
+      "codigo": "CT-34",
+      "especialidad": "CT",
+      "titulo": "Polvo, ruido y barro: cuidar a quienes viven junto a la obra",
+      "porQue": "Para los vecinos de la ruta, la obra significa meses de polvo en sus casas, ruido desde temprano y barro en sus accesos. Además de ser molestias, el polvo afecta su salud y el barro provoca caídas y accidentes de tránsito. Cuidar a la comunidad también es parte de trabajar bien y con seguridad.",
+      "checklist": [
+        "Riego de caminos y frentes cercanos a viviendas, escuelas y paraderos con la frecuencia definida.",
+        "Horarios de faenas ruidosas respetados según los compromisos del proyecto; motores apagados cuando no se usan.",
+        "Accesos de vecinos y calzada frente a ellos limpios de barro y material; reclamos de vecinos informados al supervisor."
+      ],
+      "normativa": "Compromisos ambientales y con la comunidad del proyecto (RCA o plan de manejo ambiental); DS 594; Ley 18.290 de Tránsito.",
+      "reglaOro": "La calzada habilitada se entrega limpia y sin trampas.",
+      "preguntaCierre": "¿Qué vecino está hoy más expuesto a nuestro polvo o ruido y qué hacemos para cuidarlo?"
     },
     {
       "id": 3,
@@ -1177,6 +1402,96 @@
       "preguntaCierre": "Que cada uno diga en voz alta cuál es su rol hoy y dónde va a estar."
     },
     {
+      "id": 321,
+      "codigo": "AS-26",
+      "especialidad": "AS",
+      "titulo": "Camión distribuidor de asfalto: calentar el estanque sin quemarse",
+      "porQue": "El camión distribuidor calienta el ligante en su estanque con quemadores y lo riega a presión por la barra. Abrir una escotilla caliente, revisar el nivel o destapar una boquilla tapada son momentos en que el producto caliente puede salpicar o los vapores pueden encenderse. Es un equipo que concentra calor, presión y combustible.",
+      "checklist": [
+        "Calentamiento solo por el operador capacitado, con el quemador funcionando según el fabricante y extintor operativo en el camión.",
+        "Nunca abrir escotillas ni tapas con el producto caliente y presurizado; esperar que baje la presión y usar careta, guantes térmicos y manga larga.",
+        "Boquillas tapadas se destapan con la barra sin presión y con herramientas, nunca con la mano ni soplando con aire hacia la cara."
+      ],
+      "normativa": "DS 594 (agentes químicos, prevención de incendios y Art. 53 sobre EPP); NCh 2245 (Hoja de Datos de Seguridad); manual del fabricante del equipo.",
+      "reglaOro": "Nunca intervenir un equipo con energía o presión acumulada.",
+      "preguntaCierre": "¿Quién calienta hoy el estanque del distribuidor y dónde está su extintor?"
+    },
+    {
+      "id": 322,
+      "codigo": "AS-27",
+      "especialidad": "AS",
+      "titulo": "Imprimación sobre base granular: respetar el curado antes de circular",
+      "porQue": "Después de imprimar, la superficie necesita un tiempo para que el producto penetre y cure. Si los camiones y camionetas pasan antes, el producto se pega a los neumáticos, se arrastra a la ruta y la superficie queda resbaladiza. Además, quien camina sobre ella lleva el producto a todas partes, incluso a la cabina de los equipos.",
+      "checklist": [
+        "Tramo imprimado cerrado y señalizado hasta que el responsable autorice el tránsito.",
+        "Circulación de la obra por la ruta definida, sin atajos sobre la superficie fresca.",
+        "Calzado y herramientas limpiados antes de subir a vehículos y equipos; nada de pisar el riego fresco."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; DS 594 (agentes químicos); especificaciones técnicas del proyecto.",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿Cuándo se podrá pasar sobre la imprimación de hoy y quién lo autoriza?"
+    },
+    {
+      "id": 323,
+      "codigo": "AS-28",
+      "especialidad": "AS",
+      "titulo": "Riego manual con lanza: el operador más expuesto del riego",
+      "porQue": "Donde la barra del distribuidor no llega (bordes, juntas, alrededor de cámaras) se riega con lanza manual. El operador sostiene una manguera con producto caliente a presión, muy cerca de su cuerpo y muchas veces junto al tránsito. Un acople que se suelta o un latigazo de la manguera lo baña en ligante.",
+      "checklist": [
+        "Manguera y lanza revisadas antes de usar: acoples firmes, sin grietas ni fugas.",
+        "Operador con careta facial, guantes térmicos de caña larga, ropa que cubra toda la piel y calzado apto.",
+        "Riego dirigido siempre lejos de personas y vehículos, con la zona protegida del tránsito según el plano de desvío."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP) y límites de agentes químicos; Manual de Señalización de Tránsito, Cap. 5; NCh 2245 (HDS).",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Hacia dónde queda el tránsito cuando regamos los bordes con la lanza?"
+    },
+    {
+      "id": 324,
+      "codigo": "AS-29",
+      "especialidad": "AS",
+      "titulo": "Demarcación con máquina autopropulsada: pintar con la ruta abierta",
+      "porQue": "La demarcación de líneas se hace muchas veces con el tránsito circulando por la pista contigua. La máquina avanza lento, el operador mira la línea y los vehículos que vienen detrás pueden no percibir que el equipo va casi detenido. Sin un vehículo de protección, un alcance por detrás es muy probable.",
+      "checklist": [
+        "Faena móvil con vehículo de protección detrás de la demarcadora, con flecha luminosa y la distancia definida en el plano.",
+        "Conos de protección de la pintura fresca instalados y retirados desde el lado protegido, nunca caminando por la pista abierta.",
+        "Comunicación por radio entre el operador, el vehículo de protección y el personal a pie."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5 (trabajos móviles); Manual de Carreteras MOP, Vol. 6; Ley 18.290.",
+      "reglaOro": "Ningún trabajo en la vía sin señalización, por corto que sea.",
+      "preguntaCierre": "¿A qué distancia va hoy el vehículo de protección detrás de la demarcadora?"
+    },
+    {
+      "id": 325,
+      "codigo": "AS-30",
+      "especialidad": "AS",
+      "titulo": "Borrado de demarcación antigua: agua a presión y partículas proyectadas",
+      "porQue": "Antes de cambiar el trazado de las líneas hay que borrar la demarcación antigua con hidrolavado de alta presión, granallado o fresado fino. El chorro de agua a presión puede cortar la piel, y las partículas de pintura y pavimento salen proyectadas hacia los ojos y hacia los vehículos que pasan.",
+      "checklist": [
+        "Equipo de hidrolavado o granallado operado solo por personal capacitado; nunca dirigir el chorro hacia personas ni sostener la pieza con la mano.",
+        "Careta facial, protección auditiva, guantes y ropa impermeable; zona de proyección demarcada.",
+        "Trabajo protegido del tránsito con el esquema de faena móvil; restos recogidos y dispuestos como residuo."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53 (protecciones y EPP) y límites de ruido; Manual de Señalización de Tránsito, Cap. 5; DS 148/2003 (residuos).",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "¿Hacia dónde salen hoy los restos del borrado y quién podría estar ahí?"
+    },
+    {
+      "id": 326,
+      "codigo": "AS-31",
+      "especialidad": "AS",
+      "titulo": "Pintura de demarcación y microesferas: almacenar, mezclar y cargar",
+      "porQue": "Antes de demarcar hay que preparar la pintura: abrir tambores, mezclar, agregar solventes y cargar el estanque de la demarcadora, además de manipular sacos de microesferas de vidrio. Los vapores de solventes son inflamables e irritantes, y las microesferas derramadas convierten el piso en una pista de bolitas.",
+      "checklist": [
+        "Preparación al aire libre o en lugar ventilado, lejos de fuentes de calor y con extintor; HDS de la pintura y el solvente disponibles.",
+        "Guantes químicos, lentes y protección respiratoria según la HDS al mezclar y trasvasijar.",
+        "Microesferas y pintura derramadas barridas y recogidas de inmediato; envases cerrados y rotulados."
+      ],
+      "normativa": "DS 43/2015 (almacenamiento de sustancias peligrosas); DS 57/2019 (etiquetado); DS 594 (agentes químicos y Art. 53).",
+      "reglaOro": "Conoce el producto antes de usarlo: sin HDS no hay manipulación.",
+      "preguntaCierre": "¿Dónde preparamos hoy la pintura de demarcación y qué dice su HDS sobre los vapores?"
+    },
+    {
       "id": 4,
       "codigo": "OA-01",
       "especialidad": "OA",
@@ -1552,6 +1867,336 @@
       "preguntaCierre": "¿Hacia dónde va a caer el árbol que cortamos hoy y por dónde escapa el operador?"
     },
     {
+      "id": 421,
+      "codigo": "OA-26",
+      "especialidad": "OA",
+      "titulo": "Hincadora de postes: golpes, ruido y manos atrapadas",
+      "porQue": "La hincadora clava los postes de la defensa caminera con golpes repetidos de gran fuerza. El ayudante que aplomaba el poste con las manos queda junto al cabezal, donde una mano o un dedo pueden ser aplastados. El ruido del golpeteo daña el oído de todos los que están cerca.",
+      "checklist": [
+        "Poste aplomado y guiado con el sistema del equipo; manos fuera del cabezal y del poste durante el golpe.",
+        "Operador con autorización y señal acordada con el ayudante antes de cada golpe.",
+        "Protección auditiva para el operador y el personal cercano; nadie en el radio del equipo al desplazarse."
+      ],
+      "normativa": "DS 594 Art. 38 (protección de partes móviles), límites de ruido y Art. 53; Protocolo PREXOR (MINSAL); manual del fabricante.",
+      "reglaOro": "Nunca intervenir un equipo en movimiento.",
+      "preguntaCierre": "¿Cuál es la señal entre el ayudante y el operador antes de cada golpe de la hincadora?"
+    },
+    {
+      "id": 422,
+      "codigo": "OA-27",
+      "especialidad": "OA",
+      "titulo": "Vigas de defensa caminera: bordes cortantes y pernos que no calzan",
+      "porQue": "Las vigas metálicas de la defensa son largas, pesadas y tienen bordes que cortan. Al alinearlas para apernarlas, los dedos quedan entre la viga y el poste, y cuando un perforado no calza, la tentación es forzar con las manos o con una barreta. Todo esto ocurre a centímetros del tránsito.",
+      "checklist": [
+        "Vigas transportadas y presentadas entre dos personas o con equipo, con guantes resistentes al corte.",
+        "Alinear con pasadores o herramientas, nunca metiendo los dedos en los perforados.",
+        "Pernos, tuercas y herramientas en recipientes; trabajo siempre del lado protegido del tránsito."
+      ],
+      "normativa": "Manual de Carreteras MOP, Vol. 6 (sistemas de contención vial); DS 594 Art. 53; Código del Trabajo Arts. 211-F a 211-J.",
+      "reglaOro": "Nunca ubicarse en puntos de atrapamiento.",
+      "preguntaCierre": "¿Con qué alineamos hoy los perforados de la viga sin usar los dedos?"
+    },
+    {
+      "id": 423,
+      "codigo": "OA-28",
+      "especialidad": "OA",
+      "titulo": "Terminales y amortiguadores de impacto: instalarlos en la nariz del tránsito",
+      "porQue": "Los terminales de defensa y los amortiguadores de impacto se instalan justo donde un vehículo que se sale del camino va a chocar primero. Por eso, quienes los instalan trabajan en el punto más expuesto del borde. Además, son piezas pesadas que se montan según un orden preciso del fabricante.",
+      "checklist": [
+        "Zona protegida con desvío o faena móvil y vehículo de protección antes de iniciar.",
+        "Montaje según el manual del fabricante, con las piezas en el orden indicado y el izaje con equipo.",
+        "Revisión final de pernos y anclajes antes de abrir el tránsito: un terminal mal instalado no protege."
+      ],
+      "normativa": "Manual de Carreteras MOP, Vol. 6 (sistemas de contención y terminales); Manual de Señalización de Tránsito, Cap. 5; instrucciones del fabricante.",
+      "reglaOro": "Ningún trabajo expuesto al tránsito sin protección física o control del flujo.",
+      "preguntaCierre": "¿Dónde se para hoy el vehículo de protección mientras instalamos el terminal?"
+    },
+    {
+      "id": 424,
+      "codigo": "OA-29",
+      "especialidad": "OA",
+      "titulo": "Medición de gases: el detector que avisa antes que el cuerpo",
+      "porQue": "La falta de oxígeno, el monóxido de carbono o el ácido sulfhídrico no siempre tienen olor y pueden dejar inconsciente a una persona en segundos. Antes de entrar a una cámara, una alcantarilla cajón o un pozo, solo un detector calibrado puede decir si el aire es seguro. Las sensaciones no sirven.",
+      "checklist": [
+        "Detector de gases calibrado y con prueba de funcionamiento (bump test) el mismo día, operado por personal capacitado.",
+        "Medir antes de entrar, a distintas alturas del espacio, y mantener la medición continua mientras haya personas adentro.",
+        "Si la alarma suena: salir de inmediato, no volver a entrar y avisar; ventilar y volver a medir."
+      ],
+      "normativa": "DS 594 (límites permisibles y condiciones ambientales); guías técnicas del ISP sobre espacios confinados; Ley 16.744 Art. 68.",
+      "reglaOro": "Ningún ingreso a espacios confinados sin medición, permiso y vigía.",
+      "preguntaCierre": "¿Cuándo se calibró el detector que usaremos hoy y quién sabe leerlo?"
+    },
+    {
+      "id": 425,
+      "codigo": "OA-30",
+      "especialidad": "OA",
+      "titulo": "Rescate en espacio confinado: el plan se hace antes de entrar",
+      "porQue": "Cuando alguien se desmaya dentro de una cámara, el impulso es bajar a sacarlo. Así mueren muchos rescatistas, porque el mismo aire que afectó al primero los afecta a ellos. Un rescate seguro depende de lo que se preparó antes: arnés, trípode, ventilación y saber a quién llamar.",
+      "checklist": [
+        "Plan de rescate definido antes del ingreso: equipo de rescate en el lugar (trípode, arnés, cuerda) y responsable designado.",
+        "El trabajador que entra lleva arnés conectado a la línea de rescate cuando el espacio lo permite.",
+        "Nadie entra a rescatar sin protección respiratoria adecuada; el vigía activa la emergencia y rescata desde afuera."
+      ],
+      "normativa": "Guías técnicas del ISP sobre espacios confinados; DS 594; Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Ningún ingreso a espacios confinados sin medición, permiso y vigía.",
+      "preguntaCierre": "Si el compañero se desmaya dentro de la cámara, ¿qué hace el vigía en los primeros 30 segundos?"
+    },
+    {
+      "id": 426,
+      "codigo": "OA-31",
+      "especialidad": "OA",
+      "titulo": "Trabajo dentro de alcantarillas y tubos de gran diámetro",
+      "porQue": "Inspeccionar, reparar o limpiar el interior de una alcantarilla o un tubo grande es trabajar en un espacio estrecho, oscuro, con barro y agua, y con una sola salida. Puede acumular gases, puede subir el agua con una lluvia y los animales lo usan de refugio.",
+      "checklist": [
+        "Evaluar si es espacio confinado: medición de gases, permiso, vigía y comunicación permanente con el exterior.",
+        "Iluminación adecuada (preferir equipos a batería), botas de agua y guantes; revisar el pronóstico y el nivel del cauce.",
+        "Nunca entrar solo; salida despejada y cuerda de guía en tramos largos."
+      ],
+      "normativa": "Guías técnicas del ISP sobre espacios confinados; DS 594; Código del Trabajo Art. 184 bis.",
+      "reglaOro": "Ningún ingreso a espacios confinados sin medición, permiso y vigía.",
+      "preguntaCierre": "¿Cuántos metros tiene la alcantarilla que revisamos hoy y cómo nos comunicamos con el que va adentro?"
+    },
+    {
+      "id": 427,
+      "codigo": "OA-32",
+      "especialidad": "OA",
+      "titulo": "Ataguías y desvío de cauces: contener el agua para trabajar en seco",
+      "porQue": "Para construir una alcantarilla o un muro en un estero hay que desviar el agua con ataguías de tierra, sacos o tubos. Si la ataguía no resiste o el caudal sube, el agua retenida se libera de golpe sobre quienes trabajan aguas abajo. Es una obra provisoria que hay que vigilar como una definitiva.",
+      "checklist": [
+        "Ataguía construida según lo definido, con capacidad para el caudal esperado y revisada cada día.",
+        "Vigilancia del nivel aguas arriba y del pronóstico; evacuar el cauce ante lluvia intensa o filtraciones.",
+        "Desvío autorizado y ejecutado según los permisos y compromisos ambientales del proyecto."
+      ],
+      "normativa": "Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis; autorizaciones de intervención de cauces (DGA) y compromisos ambientales del proyecto.",
+      "reglaOro": "Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.",
+      "preguntaCierre": "¿Quién revisa hoy la ataguía y qué señal nos haría salir del cauce?"
+    },
+    {
+      "id": 428,
+      "codigo": "OA-33",
+      "especialidad": "OA",
+      "titulo": "Trabajo en puentes sobre cauces: lo que cae al agua no vuelve",
+      "porQue": "En el borde de un puente sobre un estero o un río, una caída significa caer al agua desde altura, a veces con corriente. Además, una herramienta o un material que cae puede golpear a alguien abajo o contaminar el cauce. El borde del puente necesita protección contra caídas de personas y de objetos.",
+      "checklist": [
+        "Barandas provisorias completas o arnés conectado en todo el borde del tablero; rodapiés para que no caigan objetos.",
+        "Chaleco salvavidas y aro o cuerda de rescate cuando hay riesgo de caída al agua.",
+        "Nadie trabaja bajo el puente mientras hay tareas sobre él; herramientas amarradas."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594 Art. 53; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "Si alguien cae hoy del puente al estero, ¿dónde está el aro o la cuerda para rescatarlo?"
+    },
+    {
+      "id": 429,
+      "codigo": "OA-34",
+      "especialidad": "OA",
+      "titulo": "Sedimentos y derrames en el cauce: cuidar el agua mientras construimos",
+      "porQue": "Excavar en un estero, lavar herramientas en él o dejar un equipo con fugas en la orilla enturbia y contamina el agua que usan vecinos, animales y cultivos aguas abajo. Además del daño ambiental, el proyecto puede ser sancionado o detenido. Cuidar el cauce es parte de la seguridad de la obra.",
+      "checklist": [
+        "Barreras de sedimentos o mallas instaladas según el plan ambiental antes de intervenir el cauce.",
+        "Nada de lavar herramientas, mixer ni equipos en el cauce; carga de combustible fuera de la zona de protección.",
+        "Kit antiderrame en el frente y aviso inmediato ante cualquier derrame o turbidez anormal."
+      ],
+      "normativa": "Compromisos ambientales del proyecto (RCA o plan de manejo ambiental) y autorizaciones de intervención de cauces (DGA); DS 148/2003.",
+      "reglaOro": "Cada residuo en su lugar: nada se vierte al suelo ni a los cauces.",
+      "preguntaCierre": "¿Qué barrera de sedimentos tenemos hoy en el estero y quién la revisa?"
+    },
+    {
+      "id": 430,
+      "codigo": "OA-35",
+      "especialidad": "OA",
+      "titulo": "Trabajo en caliente: permiso y vigía de fuego",
+      "porQue": "Soldar, cortar con esmeril u oxicorte cerca de pasto seco, madera, combustibles o lonas puede iniciar un incendio que a veces aparece media hora después de terminar. Por eso estos trabajos se autorizan, se prepara el área y alguien vigila mientras se hacen y después.",
+      "checklist": [
+        "Permiso de trabajo en caliente cuando el procedimiento lo exige, con el área revisada y despejada de combustibles.",
+        "Extintor adecuado a mano y un vigía de fuego que observa durante el trabajo.",
+        "Vigilancia del área al menos durante el tiempo que define el procedimiento después de terminar."
+      ],
+      "normativa": "DS 594 (prevención y protección contra incendios); Ley 16.744 Art. 68; procedimiento de trabajo en caliente del proyecto.",
+      "reglaOro": "Trabajo en caliente solo con el área preparada y extintor a mano.",
+      "preguntaCierre": "¿Quién es hoy el vigía de fuego y cuánto tiempo se queda después de soldar?"
+    },
+    {
+      "id": 431,
+      "codigo": "OA-36",
+      "especialidad": "OA",
+      "titulo": "Humos de soldadura: el riesgo que se respira",
+      "porQue": "Al soldar, el metal y el electrodo se evaporan y forman humos con partículas metálicas muy finas. Respirarlos en lugares cerrados o con poco viento, como dentro de una cámara o junto a un muro, causa dolor de cabeza, fiebre del soldador y, con los años, daño pulmonar.",
+      "checklist": [
+        "Soldar en lugares ventilados o con extracción; ubicarse con el viento a la espalda para que el humo se aleje de la cara.",
+        "Protección respiratoria adecuada para humos metálicos cuando no se puede controlar la exposición.",
+        "Limpiar pinturas y galvanizados antes de soldar según el procedimiento; nunca soldar sobre piezas con solventes."
+      ],
+      "normativa": "DS 594 (límites permisibles de agentes químicos y Art. 53 sobre EPP); Ley 16.744 (enfermedades profesionales).",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "¿Dónde vamos a soldar hoy y hacia dónde se va el humo?"
+    },
+    {
+      "id": 432,
+      "codigo": "OA-37",
+      "especialidad": "OA",
+      "titulo": "Cama de apoyo y relleno de tubos: compactar dentro de la zanja",
+      "porQue": "Después de instalar el tubo hay que preparar la cama de apoyo y rellenar a sus costados compactando por capas con placas o vibropisones. El trabajador queda dentro de la zanja, con un equipo que vibra, junto al tubo y bajo la descarga de material. Es un trabajo que parece de cierre, pero mantiene todos los riesgos de la zanja.",
+      "checklist": [
+        "Zanja con talud o entibación revisada mientras haya personas adentro; retiro de entibación solo según el procedimiento.",
+        "Material descargado de a poco y de forma controlada, nunca sobre la persona que compacta.",
+        "Equipos de compactación a combustión con ventilación suficiente o eléctricos; protección auditiva y rotación del operador."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594 (vibraciones, ruido y monóxido de carbono); Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Cómo le avisamos al operador de la excavadora que pare de descargar material en la zanja?"
+    },
+    {
+      "id": 433,
+      "codigo": "OA-38",
+      "especialidad": "OA",
+      "titulo": "Limpieza de alcantarillas existentes: barro, animales y poco espacio",
+      "porQue": "Antes de prolongar o reparar alcantarillas antiguas hay que limpiarlas. Adentro hay barro, ramas, basura, a veces animales muertos y nidos de roedores o insectos. Se trabaja agachado, con poca luz y, en ocasiones, con gases acumulados.",
+      "checklist": [
+        "Evaluar si corresponde tratar la alcantarilla como espacio confinado (medición de gases, vigía, permiso).",
+        "Guantes impermeables, botas de agua, protección respiratoria si hay restos orgánicos o polvo, y lavado de manos al terminar.",
+        "Limpieza con equipo desde los extremos cuando sea posible, antes de que alguien entre."
+      ],
+      "normativa": "Guías técnicas del ISP sobre espacios confinados; recomendaciones MINSAL de prevención de hantavirus; DS 594.",
+      "reglaOro": "Conocer el riesgo antes de iniciar la tarea.",
+      "preguntaCierre": "¿Qué encontramos la última vez que limpiamos una alcantarilla y qué haremos distinto?"
+    },
+    {
+      "id": 434,
+      "codigo": "OA-39",
+      "especialidad": "OA",
+      "titulo": "Cunetas revestidas: trabajar en el borde de la calzada",
+      "porQue": "La construcción de cunetas y soleras de borde se hace justo al lado de la pista, muchas veces con la cuadrilla agachada, de espaldas al tránsito y moviendo moldajes, hormigón y herramientas. Es un trabajo largo y lineal donde la protección del desvío debe acompañar el avance.",
+      "checklist": [
+        "Canalización y señalización del desvío avanzando junto con el frente de la cuneta, sin dejar tramos sin proteger.",
+        "Materiales y herramientas del lado de la faena; nadie trabaja ni deja objetos en la pista habilitada.",
+        "Un vigía mira el tránsito cuando la cuadrilla trabaja agachada a menos de la distancia de seguridad."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594 Art. 53.",
+      "reglaOro": "La pista habilitada no se pisa.",
+      "preguntaCierre": "¿Hasta dónde llega hoy la canalización y hasta dónde avanzará la cuneta?"
+    },
+    {
+      "id": 435,
+      "codigo": "OA-40",
+      "especialidad": "OA",
+      "titulo": "Subdrenes: zanjas angostas y profundas",
+      "porQue": "Los subdrenes se construyen en zanjas angostas y a veces profundas, donde parece que no cabe un derrumbe. Pero justamente por ser estrechas, si una pared cede, el trabajador no tiene hacia dónde moverse. Además, el geotextil y el material filtrante se colocan desde adentro.",
+      "checklist": [
+        "Zanja revisada y con talud o entibación según la profundidad y el suelo; nadie entra si no se cumple.",
+        "Colocar geotextil, tubo y material filtrante desde el borde con herramientas cuando sea posible.",
+        "Material excavado y equipos alejados del borde; escala o salida cercana al punto de trabajo."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Qué profundidad tiene hoy la zanja del subdrén y cómo está protegida?"
+    },
+    {
+      "id": 436,
+      "codigo": "OA-41",
+      "especialidad": "OA",
+      "titulo": "Fosos y contrafosos: excavar junto a cercos, predios y servicios",
+      "porQue": "Los fosos y contrafosos que conducen el agua lluvia se excavan en el límite de la faja, junto a cercos, árboles, accesos de vecinos y a veces sobre servicios enterrados. La excavadora trabaja en un espacio angosto, con terceros cerca y con taludes que se saturan con la lluvia.",
+      "checklist": [
+        "Revisar interferencias (servicios, cercos, árboles, accesos) antes de excavar y coordinar con los vecinos.",
+        "Zona de trabajo de la excavadora demarcada; nadie a pie en su radio de giro.",
+        "Fosos señalizados y con protección en accesos y pasos peatonales mientras estén abiertos."
+      ],
+      "normativa": "NCh 349; DS 594 Art. 38; Manual de Señalización de Tránsito, Cap. 5; compromisos con la comunidad del proyecto.",
+      "reglaOro": "Ninguna excavación sin verificar interferencias.",
+      "preguntaCierre": "¿Qué hay junto al foso que excavamos hoy: cercos, accesos o servicios?"
+    },
+    {
+      "id": 437,
+      "codigo": "OA-42",
+      "especialidad": "OA",
+      "titulo": "Montaje de vigas de puente: un izaje crítico",
+      "porQue": "Montar una viga prefabricada de puente es levantar decenas de toneladas sobre un cauce o una ruta, a veces con dos grúas al mismo tiempo. Un error de cálculo, un estrobo mal puesto o un mal apoyo puede hacer caer la viga o volcar la grúa. Por eso es un izaje crítico con plan propio.",
+      "checklist": [
+        "Plan de izaje crítico aprobado: pesos, capacidades de las grúas, radios, estrobos y terreno de apoyo.",
+        "Reunión previa con todos los involucrados; un solo responsable da las órdenes y comunicación por radio dedicada.",
+        "Zona de exclusión bajo la viga y la pluma, con el tránsito detenido si la maniobra pasa sobre la ruta."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594; estándar de izaje del proyecto y manual del fabricante de la grúa.",
+      "reglaOro": "Nunca ubicarse bajo cargas suspendidas.",
+      "preguntaCierre": "¿Quién es el único que da las órdenes durante el montaje de la viga?"
+    },
+    {
+      "id": 438,
+      "codigo": "OA-43",
+      "especialidad": "OA",
+      "titulo": "Borde del tablero del puente: barandas, redes y objetos que caen",
+      "porQue": "Mientras se construye la losa del puente y antes de instalar las barandas definitivas, el borde del tablero queda abierto. Allí se mueven moldajes, fierros y hormigón. Una caída desde el tablero o una herramienta que cae sobre quienes trabajan abajo son riesgos graves.",
+      "checklist": [
+        "Barandas provisorias con rodapié en todo el borde del tablero o línea de vida y arnés.",
+        "Redes o protección bajo el tablero cuando hay trabajos o tránsito abajo.",
+        "Materiales acopiados lejos del borde y herramientas amarradas."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Qué tramo del borde del tablero está hoy sin baranda?"
+    },
+    {
+      "id": 439,
+      "codigo": "OA-44",
+      "especialidad": "OA",
+      "titulo": "Pilotes: perforación, camisas e izaje de armaduras",
+      "porQue": "Las fundaciones de puentes pueden requerir pilotes perforados. El equipo de perforación es alto y pesado, la perforación deja un hoyo profundo donde una persona puede caer, y la armadura del pilote se iza en vertical. Cada etapa tiene su propio riesgo grave.",
+      "checklist": [
+        "Equipo de perforación sobre plataforma firme y nivelada, con zona de exclusión alrededor.",
+        "Perforaciones abiertas cubiertas o protegidas con baranda de inmediato; nadie se acerca al borde sin protección.",
+        "Izaje de la armadura del pilote con plan de izaje y guía con cuerdas; nadie bajo la armadura."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (protección de aberturas); estándar de izaje del proyecto; manual del fabricante del equipo.",
+      "reglaOro": "Ninguna abertura en el suelo sin protección.",
+      "preguntaCierre": "¿Cómo protegemos hoy la perforación del pilote cuando se retira la herramienta?"
+    },
+    {
+      "id": 440,
+      "codigo": "OA-45",
+      "especialidad": "OA",
+      "titulo": "Extensiones y cables en terreno: electricidad con barro y agua",
+      "porQue": "En la obra los cables eléctricos se arrastran por barro, se mojan con la lluvia y los pisan camionetas y equipos. Un cable pelado o una unión hecha con cinta en un charco puede electrificar el agua y a quien la pise. La electricidad en terreno exige más cuidado que en una casa.",
+      "checklist": [
+        "Extensiones y cables sin cortes ni uniones improvisadas, con enchufes industriales y protección diferencial en el tablero.",
+        "Cables elevados o protegidos donde pasan vehículos, y fuera de charcos y zanjas con agua.",
+        "Desconectar antes de revisar o mover una herramienta; ante un cable dañado, retirarlo y avisar."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (instalaciones eléctricas, SEC); DS 594 Art. 38; Ley 16.744 Art. 68.",
+      "reglaOro": "Herramientas eléctricas siempre con protección diferencial.",
+      "preguntaCierre": "¿Por dónde pasan hoy las extensiones y qué vehículos las cruzan?"
+    },
+    {
+      "id": 441,
+      "codigo": "OA-46",
+      "especialidad": "OA",
+      "titulo": "Limpieza de cunetas y fosos con la ruta abierta",
+      "porQue": "Antes de las lluvias hay que limpiar cunetas, fosos y entradas de alcantarillas para que el agua escurra. Es un trabajo manual o con equipos pequeños que se hace caminando por el borde de la calzada, agachado y con el tránsito pasando muy cerca. Por ser rutinario, muchas veces se hace sin protección.",
+      "checklist": [
+        "Limpieza con señalización de faena móvil y vehículo de protección, avanzando junto con la cuadrilla.",
+        "Trabajadores de frente al tránsito y un vigía cuando se trabaja agachado junto a la pista.",
+        "Material retirado cargado de inmediato, sin dejar montones en la berma ni en la calzada."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5 (trabajos móviles); Manual de Carreteras MOP, Vol. 6; DS 594 Art. 53.",
+      "reglaOro": "Ningún trabajo en la vía sin señalización, por corto que sea.",
+      "preguntaCierre": "¿Qué tramo de cuneta limpiaremos hoy y cómo nos protegemos del tránsito?"
+    },
+    {
+      "id": 442,
+      "codigo": "OA-47",
+      "especialidad": "OA",
+      "titulo": "Geotextil y tuberías de drenaje: rollos pesados y zanjas angostas",
+      "porQue": "Los rollos de geotextil y las tuberías de drenaje parecen livianos, pero un rollo grande puede pesar mucho más de lo que una persona puede levantar, y se manipulan al borde de zanjas angostas. Desenrollarlos en pendiente o con viento hace que se escapen y arrastren a quien los sostiene.",
+      "checklist": [
+        "Peso del rollo conocido; sobre el límite de carga se mueve con equipo o entre varias personas.",
+        "Desenrollar desde el borde con una barra por el centro del rollo, nunca dentro de la zanja sin protección.",
+        "Con viento fuerte, lastrar el geotextil a medida que se extiende; tubos acopiados con calzos."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); NCh 349; DS 594 Art. 53.",
+      "reglaOro": "Planificar la tarea: si pesa, se usa ayuda mecánica.",
+      "preguntaCierre": "¿Cuánto pesa el rollo de geotextil de hoy y cómo lo vamos a mover?"
+    },
+    {
       "id": 5,
       "codigo": "RT-01",
       "especialidad": "RT",
@@ -1925,6 +2570,246 @@
       "normativa": "Código del Trabajo Art. 184 bis (derecho a interrumpir labores ante riesgo grave e inminente); DS 44/2024 (participación de los trabajadores en la gestión preventiva); Ley 16.744 Art. 68.",
       "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
       "preguntaCierre": "¿Quién advirtió a un compañero de un riesgo esta semana? Cuéntenos qué pasó."
+    },
+    {
+      "id": 522,
+      "codigo": "RT-26",
+      "especialidad": "RT",
+      "titulo": "Inducción en terreno: lo que el nuevo debe saber el primer día",
+      "porQue": "La inducción en la oficina entrega la información general, pero el trabajador nuevo necesita conocer el frente donde va a trabajar: por dónde se camina, dónde está la maquinaria, el punto de encuentro, el baño y a quién preguntar. Esos primeros minutos en terreno evitan muchos accidentes de la primera semana.",
+      "checklist": [
+        "Recorrido del frente con el capataz antes de empezar: rutas peatonales, zonas de equipos, desvío y punto de encuentro.",
+        "Presentación de los riesgos de la tarea específica y del EPP que corresponde, con registro firmado.",
+        "Asignación de un compañero con experiencia que lo acompañe durante los primeros días."
+      ],
+      "normativa": "DS 44/2024 (información de riesgos laborales); Código del Trabajo Art. 184; Ley 16.744 Art. 68.",
+      "reglaOro": "Nadie realiza una tarea sin conocer sus riesgos.",
+      "preguntaCierre": "Si mañana llega alguien nuevo, ¿qué es lo primero que le mostramos en el frente?"
+    },
+    {
+      "id": 523,
+      "codigo": "RT-27",
+      "especialidad": "RT",
+      "titulo": "Asegurarse de que se entendió: idioma y forma de explicar",
+      "porQue": "En las cuadrillas trabajan personas de distintos lugares y países, y no todos dominan el español o los términos de la obra. Asentir con la cabeza no significa haber entendido. Una instrucción de seguridad que no se entendió es igual a una que no se dio.",
+      "checklist": [
+        "Explicar con palabras simples, mostrando en terreno y con gestos o imágenes cuando sea necesario.",
+        "Pedir que el trabajador repita con sus palabras lo que va a hacer y qué riesgo debe evitar.",
+        "Apoyarse en un compañero que hable su idioma y en material gráfico; registrar la capacitación."
+      ],
+      "normativa": "DS 44/2024 (información de riesgos comprensible para los trabajadores); Código del Trabajo Art. 184; Ley 16.744 Art. 68.",
+      "reglaOro": "Nadie realiza una tarea sin conocer sus riesgos.",
+      "preguntaCierre": "¿Cómo comprobamos hoy que todos entendieron la charla?"
+    },
+    {
+      "id": 524,
+      "codigo": "RT-28",
+      "especialidad": "RT",
+      "titulo": "Cambio de turno: entregar la tarea con todo lo pendiente",
+      "porQue": "Cuando una tarea pasa de un turno a otro o de una cuadrilla a otra, lo que no se dice se pierde: una excavación que quedó sin entibar, un equipo con una falla, un bloqueo instalado. El siguiente turno parte creyendo que todo está normal.",
+      "checklist": [
+        "Entrega de turno en terreno o por escrito: estado de la tarea, condiciones inseguras y trabajos inconclusos.",
+        "Bloqueos, permisos y equipos fuera de servicio informados expresamente a quien recibe.",
+        "Quien recibe revisa el frente antes de continuar y pregunta lo que no está claro."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); procedimientos de permisos y bloqueo del proyecto.",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "¿Qué quedó pendiente ayer que el turno de hoy tiene que saber?"
+    },
+    {
+      "id": 525,
+      "codigo": "RT-29",
+      "especialidad": "RT",
+      "titulo": "Autorizaciones: nadie opera un equipo ni hace una tarea crítica sin estar habilitado",
+      "porQue": "Un trabajador que 'sabe manejar' una retroexcavadora o 'ha hecho izajes antes' no necesariamente está autorizado para hacerlo en esta obra. Las autorizaciones existen porque verifican que la persona tiene la capacitación, la licencia y el examen de salud que la tarea exige.",
+      "checklist": [
+        "Operadores de equipos, riggers, soldadores y trabajadores en altura con autorización vigente del proyecto.",
+        "Licencias de conducir y exámenes ocupacionales (altura física, por ejemplo) al día para la tarea asignada.",
+        "Si falta la autorización, la tarea la hace otra persona habilitada; no se improvisa por apuro."
+      ],
+      "normativa": "Ley 18.290 (licencias de conducir); Ley 16.744 Art. 68; DS 44/2024; procedimientos de autorización del proyecto.",
+      "reglaOro": "Solo personal autorizado realiza tareas críticas.",
+      "preguntaCierre": "¿Quién de la cuadrilla está autorizado hoy para operar el equipo de la faena?"
+    },
+    {
+      "id": 526,
+      "codigo": "RT-30",
+      "especialidad": "RT",
+      "titulo": "Ropa mojada: el frío que entra por la humedad",
+      "porQue": "En el sur se trabaja muchas horas con lluvia y llovizna. La ropa mojada pierde casi toda su capacidad de abrigar y el cuerpo se enfría rápido aunque la temperatura no sea tan baja. El frío produce torpeza, cansancio y errores, y en casos extremos, hipotermia.",
+      "checklist": [
+        "Ropa de agua en buen estado entregada y usada desde que empieza a llover, no cuando ya se está empapado.",
+        "Muda de ropa seca y lugar para cambiarse en la instalación de faena.",
+        "Pausas en un lugar protegido con bebidas calientes; avisar si un compañero tirita mucho o se ve confundido."
+      ],
+      "normativa": "DS 594 (exposición al frío y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Protección personal adecuada a la condición del día.",
+      "preguntaCierre": "¿Quién trae hoy ropa seca para cambiarse si se moja?"
+    },
+    {
+      "id": 527,
+      "codigo": "RT-31",
+      "especialidad": "RT",
+      "titulo": "Temporal: asegurar la faena antes de irse",
+      "porQue": "Cuando se anuncia un temporal de viento y lluvia, lo que quedó suelto en la faena se convierte en peligro: letreros y conos que vuelan a la ruta, lonas que se arrancan, contenedores que se mueven, excavaciones que se inundan. Unas horas de preparación evitan daños y accidentes, también para terceros.",
+      "checklist": [
+        "Revisar el pronóstico y, ante un temporal, asegurar o retirar materiales livianos, lonas y señalización vulnerable.",
+        "Excavaciones protegidas, drenajes despejados y equipos estacionados lejos de cauces y taludes.",
+        "Señalización del desvío reforzada para la noche; contacto de emergencia del proyecto conocido por todos."
+      ],
+      "normativa": "Código del Trabajo Art. 184 bis; Manual de Señalización de Tránsito, Cap. 5; Ley 21.364 (SENAPRED).",
+      "reglaOro": "La jornada termina cuando todo está seguro, no cuando suena la hora.",
+      "preguntaCierre": "Si esta noche hay temporal, ¿qué tenemos que asegurar antes de irnos?"
+    },
+    {
+      "id": 528,
+      "codigo": "RT-32",
+      "especialidad": "RT",
+      "titulo": "Anegamientos e inundaciones: caminos cortados y frentes bajo el agua",
+      "porQue": "Con lluvias intensas, los esteros se desbordan, los fosos se llenan y los caminos de acceso a la faena pueden quedar cortados. Intentar cruzar un camino inundado con la camioneta o seguir trabajando en un sector bajo puede terminar en un vehículo arrastrado o personas aisladas.",
+      "checklist": [
+        "Nunca cruzar caminos o badenes con agua en movimiento, aunque parezca poco profunda.",
+        "Identificar los sectores bajos de la faja y retirar personas y equipos cuando suba el agua.",
+        "Ruta alternativa de salida conocida; seguir las indicaciones del supervisor y de SENAPRED."
+      ],
+      "normativa": "Código del Trabajo Art. 184 bis; Ley 21.364 (SENAPRED); plan de emergencias del proyecto.",
+      "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
+      "preguntaCierre": "¿Qué sector de nuestro tramo se inunda primero y por dónde salimos?"
+    },
+    {
+      "id": 529,
+      "codigo": "RT-33",
+      "especialidad": "RT",
+      "titulo": "Golpe de calor: reconocerlo y actuar a tiempo",
+      "porQue": "El golpe de calor es una emergencia que puede ser mortal. Empieza con cansancio, dolor de cabeza y mareo, y puede avanzar a confusión, piel caliente y pérdida de conciencia. Quien lo sufre muchas veces no se da cuenta: son los compañeros los que lo detectan.",
+      "checklist": [
+        "Conocer las señales: mareo, náuseas, dolor de cabeza, confusión, piel caliente y roja, dejar de sudar.",
+        "Ante las señales: llevar a la sombra, aflojar la ropa, enfriar con agua y dar líquido si está consciente; activar la emergencia.",
+        "Prevenir con agua disponible, pausas a la sombra y tareas pesadas en las horas más frescas."
+      ],
+      "normativa": "DS 594 (exposición ocupacional al calor y agua potable); Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Protección personal adecuada a la condición del día.",
+      "preguntaCierre": "Si un compañero empieza a decir cosas sin sentido a mediodía, ¿qué hacemos?"
+    },
+    {
+      "id": 530,
+      "codigo": "RT-34",
+      "especialidad": "RT",
+      "titulo": "Aclimatación al calor: los primeros días son los más riesgosos",
+      "porQue": "El cuerpo necesita varios días para acostumbrarse a trabajar con calor. Los trabajadores nuevos, los que vuelven de vacaciones o de una licencia y todos en los primeros días calurosos del año son los más expuestos a sufrir un golpe de calor.",
+      "checklist": [
+        "Aumentar de forma gradual la carga de trabajo con calor para quienes recién llegan o vuelven.",
+        "Vigilar especialmente a nuevos y recién reintegrados en los primeros días de calor.",
+        "Hidratación frecuente desde el inicio de la jornada, no solo cuando hay sed."
+      ],
+      "normativa": "DS 594 (exposición ocupacional al calor); Ley 16.744 Art. 68.",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "¿Quién está en sus primeros días de trabajo con calor y quién lo acompaña?"
+    },
+    {
+      "id": 531,
+      "codigo": "RT-35",
+      "especialidad": "RT",
+      "titulo": "Instalación de faena: contenedores, bodegas y orden",
+      "porQue": "La instalación de faena (oficinas, bodegas, comedores, baños y estacionamientos) es el lugar donde todos pasamos varias veces al día. Contenedores mal nivelados, escaleras de acceso improvisadas, cables sueltos y vehículos circulando entre personas generan accidentes que nada tienen que ver con la obra vial.",
+      "checklist": [
+        "Contenedores nivelados y con escaleras o rampas firmes con pasamanos; accesos despejados.",
+        "Estacionamiento separado de las zonas peatonales; velocidad mínima dentro de la instalación.",
+        "Extintores señalizados y vigentes, vías de evacuación libres y orden en bodegas."
+      ],
+      "normativa": "DS 594 (condiciones sanitarias, ambientales y de seguridad de los lugares de trabajo); Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo en todo frente de trabajo.",
+      "preguntaCierre": "¿Qué mejorarías hoy en la instalación de faena para que sea más segura?"
+    },
+    {
+      "id": 532,
+      "codigo": "RT-36",
+      "especialidad": "RT",
+      "titulo": "Generadores y tableros provisorios: la electricidad de la obra",
+      "porQue": "Los generadores y tableros provisorios alimentan herramientas, bombas, iluminación y contenedores. Un generador sin conexión a tierra, un tablero abierto bajo la lluvia o una protección diferencial puenteada pueden electrocutar a quien solo quería enchufar una herramienta.",
+      "checklist": [
+        "Instalación provisoria hecha y revisada por personal eléctrico autorizado, con diferencial y conexión a tierra.",
+        "Tableros cerrados, rotulados y protegidos de la lluvia; nadie interviene un tablero si no está autorizado.",
+        "Generador en lugar ventilado, lejos de material combustible, con extintor y carga de combustible con el motor detenido."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (instalaciones eléctricas, SEC); DS 594; DS 160/2008 (combustibles).",
+      "reglaOro": "Herramientas eléctricas siempre con protección diferencial.",
+      "preguntaCierre": "¿Quién es el responsable eléctrico de la faena y cuándo se probó el diferencial?"
+    },
+    {
+      "id": 533,
+      "codigo": "RT-37",
+      "especialidad": "RT",
+      "titulo": "Bodega de combustibles y sustancias peligrosas",
+      "porQue": "En la faena se guardan petróleo, bencina, aceites, emulsiones, pinturas y gases. Mal almacenados, juntos y sin ventilación, pueden provocar un incendio o una explosión que alcance a toda la instalación. Cada producto tiene su lugar y su forma de guardarse.",
+      "checklist": [
+        "Bodega señalizada, ventilada, con piso impermeable y pretil o bandejas antiderrame, y extintores adecuados.",
+        "Productos incompatibles separados y todos los envases rotulados, con sus HDS disponibles.",
+        "Prohibido fumar o hacer fuego en las cercanías; acceso restringido al personal autorizado."
+      ],
+      "normativa": "DS 43/2015 (almacenamiento de sustancias peligrosas); DS 160/2008 (combustibles líquidos); DS 57/2019 (etiquetado).",
+      "reglaOro": "Ningún producto químico sin rotular ni almacenar correctamente.",
+      "preguntaCierre": "¿Qué producto de la bodega no debería estar junto a otro?"
+    },
+    {
+      "id": 534,
+      "codigo": "RT-38",
+      "especialidad": "RT",
+      "titulo": "Turno de noche: dormir de día y volver a casa de madrugada",
+      "porQue": "Quien trabaja de noche duerme de día, muchas veces mal y por menos horas. La somnolencia es mayor entre las 3 y las 6 de la mañana, justo cuando se termina el turno y hay que manejar de vuelta a casa. Muchos accidentes de trayecto ocurren en ese regreso.",
+      "checklist": [
+        "Programar el descanso antes del turno de noche: dormitorio oscuro y silencioso, sin postergar el sueño.",
+        "Pausas y alimentación liviana durante el turno; tareas más críticas en las horas de mayor alerta.",
+        "Si estás con sueño al terminar, no manejes: descansa o viaja con otro conductor o en el transporte del proyecto."
+      ],
+      "normativa": "Código del Trabajo (jornada y descansos); Ley 16.744 (accidentes de trayecto); Ley 18.290 de Tránsito.",
+      "reglaOro": "Cero alcohol y drogas, y nadie conduce con sueño.",
+      "preguntaCierre": "¿Cómo vuelves a casa después del turno de noche y qué haces si vienes con sueño?"
+    },
+    {
+      "id": 535,
+      "codigo": "RT-39",
+      "especialidad": "RT",
+      "titulo": "Hemorragias y heridas: lo que se hace en los primeros minutos",
+      "porQue": "Un corte profundo con una sierra, un esmeril o una plancha de metal puede provocar una hemorragia grave en pocos minutos, y en una obra lineal la ambulancia puede tardar. Saber presionar la herida y activar la emergencia puede salvar una vida.",
+      "checklist": [
+        "Presión directa y firme sobre la herida con un apósito o paño limpio, sin retirarlo aunque se empape; agregar más encima.",
+        "Activar la emergencia indicando el kilómetro exacto y mantener a la persona acostada y abrigada.",
+        "Botiquín del frente completo y revisado; saber quién tiene curso de primeros auxilios en la cuadrilla."
+      ],
+      "normativa": "DS 594 (elementos de primeros auxilios); Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "¿Dónde está el botiquín del frente y qué tiene para una herida grande?"
+    },
+    {
+      "id": 536,
+      "codigo": "RT-40",
+      "especialidad": "RT",
+      "titulo": "Emergencia en una obra lineal: rescatar en el kilómetro 20",
+      "porQue": "En una ruta en construcción, el lugar del accidente puede estar a muchos kilómetros de la instalación de faena y del centro asistencial. Si no se sabe exactamente dónde estamos, cómo se llega y quién conduce, se pierden minutos clave.",
+      "checklist": [
+        "Todos conocen el kilómetro y el sentido en que trabajan, y el número de emergencia del proyecto.",
+        "Vehículo disponible para traslado y conductor designado en cada frente.",
+        "Puntos de encuentro con la ambulancia definidos y accesos despejados para su llegada."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (gestión de emergencias); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "¿En qué kilómetro estamos y dónde nos encontraría la ambulancia?"
+    },
+    {
+      "id": 537,
+      "codigo": "RT-41",
+      "especialidad": "RT",
+      "titulo": "Uso del extintor: saberlo antes de necesitarlo",
+      "porQue": "Un amago de incendio en un equipo, un generador o pasto seco se puede controlar en segundos con un extintor. Pero si nadie sabe sacarlo, usarlo y a qué distancia ponerse, el fuego crece. Practicar el uso es lo que marca la diferencia.",
+      "checklist": [
+        "Conocer dónde están los extintores del frente, de los equipos y de la instalación, y revisar su carga.",
+        "Uso: retirar el seguro, apuntar a la base del fuego, apretar la manilla y barrer de lado a lado, con el viento a la espalda.",
+        "Combatir solo un amago y con una vía de escape a la espalda; si el fuego crece, alejarse y avisar."
+      ],
+      "normativa": "DS 594 (prevención y protección contra incendios: extintores y capacitación); Ley 16.744 Art. 68.",
+      "reglaOro": "Equipo con extintor operativo y personal entrenado en su uso.",
+      "preguntaCierre": "Sin mirar, ¿dónde está el extintor más cercano a este punto?"
     },
     {
       "id": 601,
@@ -3440,6 +4325,171 @@
       "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; DS 594; Ley 16.744 Art. 68.",
       "reglaOro": "La jornada termina cuando todo está seguro, no cuando suena la hora.",
       "preguntaCierre": "¿Qué queda abierto esta noche en nuestro frente y cómo lo protegemos?"
+    },
+    {
+      "id": 926,
+      "codigo": "MT-26",
+      "especialidad": "MT",
+      "titulo": "Tala de árboles grandes junto a la ruta y a líneas eléctricas",
+      "porQue": "Al ensanchar la faja hay que voltear árboles grandes que están junto a la calzada, a cercos o a líneas eléctricas. Un árbol que cae hacia el lado equivocado puede aplastar al motosierrista, cortar una línea energizada o caer sobre un vehículo que pasa.",
+      "checklist": [
+        "Dirección de caída planificada por personal capacitado; árboles cerca de líneas eléctricas solo con coordinación con la empresa eléctrica.",
+        "Tránsito detenido por paleteros si el árbol puede caer hacia la calzada.",
+        "Zona de exclusión de al menos dos veces la altura del árbol y vía de escape despejada para el motosierrista."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71); Manual de Señalización de Tránsito, Cap. 5; autorizaciones forestales (CONAF) cuando corresponda.",
+      "reglaOro": "Solo personal capacitado opera equipos de corte.",
+      "preguntaCierre": "¿Hacia dónde va a caer el árbol más grande que cortamos hoy y qué hay en esa dirección?"
+    },
+    {
+      "id": 927,
+      "codigo": "MT-27",
+      "especialidad": "MT",
+      "titulo": "Chipeadora de ramas: la máquina que no suelta",
+      "porQue": "La chipeadora tritura ramas y troncos tirándolos hacia sus cuchillas. Si un guante, una manga o una rama enganchada a la ropa entran con el material, la máquina arrastra a la persona. Por eso se alimenta desde el costado, sin ropa suelta y sin empujar con las manos.",
+      "checklist": [
+        "Barra o parada de emergencia funcionando y probada antes de iniciar.",
+        "Alimentar desde el costado de la tolva, ramas por la base; nunca empujar con manos ni pies, usar una rama larga.",
+        "Sin ropa suelta, guantes ajustados, careta y protección auditiva; zona de descarga de chips despejada."
+      ],
+      "normativa": "DS 594 Art. 38 (protección de partes móviles), ruido y Art. 53; Ley 16.744 Art. 68; manual del fabricante.",
+      "reglaOro": "Nunca intervenir un equipo en movimiento.",
+      "preguntaCierre": "¿Dónde está la parada de emergencia de la chipeadora? Probémosla."
+    },
+    {
+      "id": 928,
+      "codigo": "MT-28",
+      "especialidad": "MT",
+      "titulo": "Acopio y retiro de troncos y ramas: cargas que ruedan",
+      "porQue": "Los troncos cortados se acopian al borde de la faja antes de retirarlos. Un tronco mal acomodado rueda con facilidad, y al cargarlos en un camión se mueven de forma impredecible. Las ramas acumuladas también esconden tocones y hoyos.",
+      "checklist": [
+        "Troncos acopiados en terreno plano, calzados y en pilas bajas; nunca en pendiente sobre el camino o la faena.",
+        "Carga de troncos con equipo, nadie entre el tronco y el camión; carga amarrada antes de salir.",
+        "Acopios lejos de la calzada y de los accesos de vecinos; retiro programado para no dejar material combustible."
+      ],
+      "normativa": "DS 594 (almacenamiento); Ley 18.290 (carga de vehículos); compromisos ambientales del proyecto.",
+      "reglaOro": "Nunca ubicarse en la línea de una carga en movimiento.",
+      "preguntaCierre": "¿Hay algún tronco del acopio que podría rodar hacia el camino?"
+    },
+    {
+      "id": 929,
+      "codigo": "MT-29",
+      "especialidad": "MT",
+      "titulo": "Perfilado y saneamiento de taludes: trabajar en la pendiente",
+      "porQue": "Terminar un talud a mano, retirar bloques sueltos o instalar drenes obliga a trabajar sobre la pendiente. Un resbalón puede terminar en una caída por todo el talud, y el material que se suelta arriba cae sobre quien trabaja abajo.",
+      "checklist": [
+        "Trabajo en pendiente con línea de vida anclada arriba y arnés, cuando el procedimiento lo indique.",
+        "Saneamiento de arriba hacia abajo; nadie trabaja en dos niveles del mismo talud a la vez.",
+        "Zona al pie del talud demarcada mientras se trabaja arriba."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); NCh 349; Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Quién trabaja hoy en el talud y quién está abajo?"
+    },
+    {
+      "id": 930,
+      "codigo": "MT-30",
+      "especialidad": "MT",
+      "titulo": "Mallas y anclajes en taludes: perforar y tensar en altura",
+      "porQue": "Cuando un talud requiere mallas de contención o anclajes, se perfora la roca y se instalan barras y mallas colgando desde arriba. Se combinan trabajo en altura sobre la pendiente, polvo de perforación, equipos pesados y mallas que se tensan con fuerza.",
+      "checklist": [
+        "Plan de trabajo en altura con anclajes de cuerda independientes y personal capacitado.",
+        "Perforación con control de polvo (agua o captación) y protección respiratoria y auditiva.",
+        "Nadie en la línea de una malla o un cable mientras se tensa; zona al pie del talud cerrada."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594 (sílice y ruido); PLANESI; Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Dónde nos paramos mientras se tensa la malla del talud?"
+    },
+    {
+      "id": 931,
+      "codigo": "MT-31",
+      "especialidad": "MT",
+      "titulo": "El coronamiento del talud: lo que pasa arriba también importa",
+      "porQue": "El borde superior de un corte (coronamiento) es donde aparecen las primeras grietas cuando el talud se va a mover. También es donde se acercan camiones y equipos que, con su peso, pueden provocar el deslizamiento. Mirar arriba es tan importante como mirar el frente.",
+      "checklist": [
+        "Coronamiento recorrido al inicio de la jornada y después de lluvias, buscando grietas y asentamientos.",
+        "Equipos, acopios y caminos a la distancia del borde que define el procedimiento; pretil y señalización en el coronamiento.",
+        "Agua superficial desviada para que no escurra por la cara del talud."
+      ],
+      "normativa": "NCh 349; Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis.",
+      "reglaOro": "Conocer el riesgo antes de iniciar la tarea.",
+      "preguntaCierre": "¿Quién recorrió hoy el coronamiento del corte y qué encontró?"
+    },
+    {
+      "id": 932,
+      "codigo": "MT-32",
+      "especialidad": "MT",
+      "titulo": "Topografía junto a la ruta con tránsito",
+      "porQue": "Para replantear ejes y bordes, el topógrafo trabaja muchas veces en la berma o en la calzada, mirando por el instrumento y de espaldas a los vehículos. Un trípode en la pista o un ayudante con el prisma en el borde son difíciles de ver para un conductor.",
+      "checklist": [
+        "Trabajo topográfico en la calzada solo con señalización de faena móvil o con el tránsito controlado.",
+        "Ayudante con el prisma siempre de frente al tránsito y con ropa de alta visibilidad.",
+        "Instrumento y trípode fuera de la pista habilitada; un vigía cuando la medición obliga a acercarse a ella."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594 Art. 53.",
+      "reglaOro": "Ningún trabajo en la vía sin señalización, por corto que sea.",
+      "preguntaCierre": "¿Dónde va a medir hoy la topografía y quién la protege del tránsito?"
+    },
+    {
+      "id": 933,
+      "codigo": "MT-33",
+      "especialidad": "MT",
+      "titulo": "Miras y bastones metálicos: cuidado con las líneas eléctricas",
+      "porQue": "Las miras y bastones de topografía son largos, muchas veces metálicos o con partes conductoras, y se levantan en vertical. Cerca de una línea eléctrica, basta acercarlos para que salte el arco. Es un accidente poco conocido, pero que ha costado vidas.",
+      "checklist": [
+        "Identificar las líneas eléctricas del sector antes de medir y señalarlas al equipo de topografía.",
+        "No extender miras ni bastones bajo o junto a líneas; usar equipos no conductores cuando corresponda.",
+        "Transportar las miras recogidas y en horizontal."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71, distancias a líneas energizadas); Ley 16.744 Art. 68.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "¿Hay líneas eléctricas donde mediremos hoy y a qué altura pasan?"
+    },
+    {
+      "id": 934,
+      "codigo": "MT-34",
+      "especialidad": "MT",
+      "titulo": "Base y subbase granular: esparcir y compactar con la ruta al lado",
+      "porQue": "Al construir la base granular, los camiones descargan, la motoniveladora esparce y el rodillo compacta en franjas junto al tránsito habilitado. Los equipos avanzan y retroceden muchas veces sobre la misma franja, y el borde de la base es un desnivel para los vehículos que pasan.",
+      "checklist": [
+        "Secuencia de equipos y sentido de avance definidos; personal a pie solo con contacto visual con los operadores.",
+        "Separación con el tránsito mediante canalización continua y señalización del desnivel del borde.",
+        "Riego para controlar el polvo que afecta la visibilidad de los conductores."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; DS 594 Art. 38; especificaciones técnicas del proyecto.",
+      "reglaOro": "Interacción hombre-máquina: contacto visual con el operador antes de acercarse.",
+      "preguntaCierre": "¿Cómo se ve desde la pista el borde de la base que dejamos hoy?"
+    },
+    {
+      "id": 935,
+      "codigo": "MT-35",
+      "especialidad": "MT",
+      "titulo": "Acopios de áridos: el talud que se forma solo",
+      "porQue": "Los acopios de árido, base o arena forman taludes sueltos que se derrumban fácilmente. Si el cargador socava la base del acopio, la pared puede caer sobre el equipo o sobre alguien que camina cerca. Además, subirse a un acopio es caminar sobre material que se mueve.",
+      "checklist": [
+        "Carguío desde el pie del acopio sin socavarlo; altura del acopio limitada según el procedimiento.",
+        "Prohibido subir a los acopios o caminar por su borde; nadie al pie del acopio mientras opera el cargador.",
+        "Acopios lejos de bordes de excavaciones, de la calzada y de líneas eléctricas."
+      ],
+      "normativa": "DS 594 (almacenamiento y Art. 38); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Qué altura tiene hoy el acopio y quién vigila que no se socave?"
+    },
+    {
+      "id": 936,
+      "codigo": "MT-36",
+      "especialidad": "MT",
+      "titulo": "Topografía en taludes y bordes de excavación: medir sin caerse",
+      "porQue": "Para controlar cortes, terraplenes y excavaciones, el equipo de topografía camina por taludes, bordes y coronamientos, mirando el instrumento o el prisma y no el suelo. Un paso en falso en un borde o en un talud mojado puede terminar en una caída de varios metros.",
+      "checklist": [
+        "Planificar la ruta de medición por caminos y bermas estables, no por el borde de la excavación ni por taludes mojados.",
+        "En pendientes fuertes o bordes sin protección, medir desde un punto seguro o con línea de vida y arnés.",
+        "Comunicar al responsable del frente dónde se va a medir para detener equipos cercanos si es necesario."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); NCh 1258 (protección contra caídas); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Por dónde va a caminar hoy el topógrafo para medir el talud?"
     }
   ],
   "plan": [
@@ -3589,7 +4639,10 @@
         "alcantarilla",
         "zanja",
         "izaje",
-        "eslinga"
+        "eslinga",
+        "cama",
+        "relleno",
+        "limpieza"
       ],
       "especialidades": [
         "OA",
@@ -3620,7 +4673,12 @@
         "corte",
         "roca",
         "martillo",
-        "bloque"
+        "bloque",
+        "coronamiento",
+        "malla",
+        "anclaje",
+        "pendiente",
+        "saneamiento"
       ],
       "especialidades": [
         "MT",
@@ -3667,7 +4725,11 @@
         "emulsión",
         "imprimación",
         "liga",
-        "distribuidor"
+        "distribuidor",
+        "lanza",
+        "ligante",
+        "curado",
+        "barra"
       ],
       "especialidades": [
         "AS"
@@ -3681,7 +4743,9 @@
         "fresadora",
         "bacheo",
         "cortadora",
-        "pavimento"
+        "pavimento",
+        "polvo",
+        "sílice"
       ],
       "especialidades": [
         "AS"
@@ -3693,7 +4757,13 @@
       "palabras": [
         "demarcación",
         "pintura",
-        "solvente"
+        "solvente",
+        "demarcadora",
+        "tacha",
+        "borrado",
+        "adhesivo",
+        "móvil",
+        "termoplástica"
       ],
       "especialidades": [
         "AS",
@@ -3834,7 +4904,10 @@
         "chispa",
         "oxicorte",
         "cilindro",
-        "disco"
+        "disco",
+        "caliente",
+        "humo",
+        "vigía"
       ],
       "especialidades": [
         "OA",
@@ -3848,7 +4921,11 @@
         "cauce",
         "estero",
         "agua",
-        "crecida"
+        "crecida",
+        "ataguía",
+        "puente",
+        "sedimento",
+        "río"
       ],
       "especialidades": [
         "OA",
@@ -3864,7 +4941,11 @@
         "motosierra",
         "desbrozadora",
         "árbol",
-        "vegetación"
+        "vegetación",
+        "tala",
+        "chipeadora",
+        "tronco",
+        "rama"
       ],
       "especialidades": [
         "OA",
@@ -3878,7 +4959,11 @@
         "defensa",
         "barrera",
         "poste",
-        "hincadora"
+        "hincadora",
+        "viga",
+        "terminal",
+        "amortiguador",
+        "contención"
       ],
       "especialidades": [
         "OA",
@@ -3895,7 +4980,12 @@
         "bloqueo",
         "hidráulica",
         "neumático",
-        "fuga"
+        "fuga",
+        "lubricación",
+        "engrase",
+        "batería",
+        "lubricador",
+        "taller"
       ],
       "especialidades": [
         "MP"
@@ -3909,7 +4999,10 @@
         "cama",
         "rampa",
         "cruce",
-        "maquinaria"
+        "maquinaria",
+        "escolta",
+        "sobredimensionada",
+        "propios"
       ],
       "especialidades": [
         "MP",
@@ -3924,7 +5017,11 @@
         "cámara",
         "oxígeno",
         "gas",
-        "ventilación"
+        "ventilación",
+        "detector",
+        "rescate",
+        "alcantarilla",
+        "medición"
       ],
       "especialidades": [
         "OA"
@@ -3940,7 +5037,12 @@
         "helada",
         "viento",
         "neblina",
-        "tormenta"
+        "tormenta",
+        "temporal",
+        "inundación",
+        "anegamiento",
+        "mojada",
+        "hipotermia"
       ],
       "especialidades": [
         "RT"
@@ -3954,7 +5056,11 @@
         "sol",
         "radiación",
         "hidratación",
-        "agua"
+        "agua",
+        "golpe",
+        "aclimatación",
+        "deshidratación",
+        "sombra"
       ],
       "especialidades": [
         "RT",
@@ -3968,10 +5074,239 @@
         "nuevo",
         "inducción",
         "subcontratista",
-        "visita"
+        "visita",
+        "turno",
+        "autorización",
+        "idioma",
+        "experiencia",
+        "capacitación"
       ],
       "especialidades": [
         "RT"
+      ]
+    },
+    {
+      "id": "topografia",
+      "nombre": "Topografía y replanteo",
+      "palabras": [
+        "topografía",
+        "topógrafo",
+        "replanteo",
+        "estaca",
+        "prisma",
+        "mira",
+        "instrumento",
+        "niveleta",
+        "nivel",
+        "medición"
+      ],
+      "especialidades": [
+        "MT"
+      ]
+    },
+    {
+      "id": "base",
+      "nombre": "Base y subbase granular",
+      "palabras": [
+        "base",
+        "subbase",
+        "granular",
+        "esparcido",
+        "compactación",
+        "árido",
+        "acopio",
+        "terraplén",
+        "rodillo",
+        "capa",
+        "motoniveladora"
+      ],
+      "especialidades": [
+        "MT",
+        "MP"
+      ]
+    },
+    {
+      "id": "drenaje",
+      "nombre": "Cunetas, subdrenes y fosos",
+      "palabras": [
+        "cuneta",
+        "subdrén",
+        "drenaje",
+        "foso",
+        "contrafoso",
+        "geotextil",
+        "revestida",
+        "alcantarilla",
+        "escurrimiento"
+      ],
+      "especialidades": [
+        "OA",
+        "MT"
+      ]
+    },
+    {
+      "id": "puentes",
+      "nombre": "Puentes: vigas, tablero y pilotes",
+      "palabras": [
+        "puente",
+        "viga",
+        "tablero",
+        "estribo",
+        "pilote",
+        "losa"
+      ],
+      "especialidades": [
+        "OA",
+        "EN",
+        "HO",
+        "CA"
+      ]
+    },
+    {
+      "id": "senalizacion",
+      "nombre": "Señalización vertical, tachas y delineadores",
+      "palabras": [
+        "letrero",
+        "señalización",
+        "poste",
+        "delineador",
+        "tacha",
+        "cono",
+        "advertencia",
+        "lastre"
+      ],
+      "especialidades": [
+        "OA",
+        "CT"
+      ]
+    },
+    {
+      "id": "faena",
+      "nombre": "Instalación de faena y bodegas",
+      "palabras": [
+        "instalación",
+        "contenedor",
+        "bodega",
+        "faena",
+        "generador",
+        "extintor"
+      ],
+      "especialidades": [
+        "RT"
+      ]
+    },
+    {
+      "id": "electricidad",
+      "nombre": "Electricidad provisoria y generadores",
+      "palabras": [
+        "eléctrica",
+        "electricidad",
+        "tablero",
+        "generador",
+        "extensión",
+        "cable",
+        "diferencial"
+      ],
+      "especialidades": [
+        "OA",
+        "RT"
+      ]
+    },
+    {
+      "id": "nocturno",
+      "nombre": "Trabajo nocturno",
+      "palabras": [
+        "noche",
+        "nocturno",
+        "iluminación",
+        "torre",
+        "sueño",
+        "fatiga"
+      ],
+      "especialidades": [
+        "CT",
+        "RT",
+        "HO"
+      ]
+    },
+    {
+      "id": "vehiculos",
+      "nombre": "Conducción de camionetas y transporte de personal",
+      "palabras": [
+        "camioneta",
+        "conducción",
+        "conductor",
+        "vehículo",
+        "trayecto",
+        "cinturón",
+        "ripio",
+        "pasajero"
+      ],
+      "especialidades": [
+        "CT",
+        "RT"
+      ]
+    },
+    {
+      "id": "emergencias",
+      "nombre": "Emergencias y primeros auxilios",
+      "palabras": [
+        "emergencia",
+        "auxilios",
+        "botiquín",
+        "extintor",
+        "evacuación",
+        "herida",
+        "rescate",
+        "ambulancia",
+        "accidente",
+        "incendio",
+        "sismo",
+        "primeros"
+      ],
+      "especialidades": [
+        "RT"
+      ]
+    },
+    {
+      "id": "comunidad",
+      "nombre": "Vecinos, escolares y terceros",
+      "palabras": [
+        "vecino",
+        "predio",
+        "peatón",
+        "escolar",
+        "paradero",
+        "ciclista",
+        "comunidad",
+        "animal",
+        "tercero",
+        "cerco",
+        "residuo",
+        "polvo",
+        "ruido",
+        "barro"
+      ],
+      "especialidades": [
+        "CT"
+      ]
+    },
+    {
+      "id": "quimicos",
+      "nombre": "Sustancias químicas y combustibles",
+      "palabras": [
+        "químico",
+        "producto",
+        "etiqueta",
+        "HDS",
+        "solvente",
+        "emulsión",
+        "combustible",
+        "bodega"
+      ],
+      "especialidades": [
+        "RT",
+        "AS"
       ]
     }
   ]
