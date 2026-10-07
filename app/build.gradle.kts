@@ -19,8 +19,8 @@ android {
         targetSdk = 35
         // Para publicar una versión nueva: subir ambos números, escribir app/novedades-version.txt
         // y llevar el cambio a main (ver .github/workflows/publicar-app.yml).
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         // Banco de charlas publicado: la app lo revisa al abrirse y aplica las versiones nuevas.
         buildConfigField(

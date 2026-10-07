@@ -33,6 +33,15 @@ object BancoParser {
         val plan = raiz.optJSONArray("plan")?.objetos().orEmpty().map {
             EntradaPlan(semana = it.getInt("semana"), dia = it.getInt("dia"), charlaId = it.getInt("charla"))
         }.sortedWith(compareBy({ it.semana }, { it.dia }))
+        val actividades = raiz.optJSONArray("actividades")?.objetos().orEmpty().map {
+            Actividad(
+                id = it.getString("id"),
+                nombre = it.getString("nombre"),
+                palabras = it.getJSONArray("palabras").let { arr -> List(arr.length()) { i -> arr.getString(i) } },
+                especialidades = it.optJSONArray("especialidades")
+                    ?.let { arr -> List(arr.length()) { i -> arr.getString(i) } }.orEmpty(),
+            )
+        }
         return Banco(
             proyecto = raiz.getString("proyecto"),
             version = raiz.getInt("version"),
@@ -41,6 +50,7 @@ object BancoParser {
             especialidades = especialidades,
             charlas = charlas,
             plan = plan,
+            actividades = actividades,
         )
     }
 
@@ -75,6 +85,15 @@ object BancoParser {
             if (e.semana !in 1..SEMANAS_CICLO) errores += "$ref: semana fuera de rango (1-$SEMANAS_CICLO)"
             if (e.dia !in 1..NOMBRES_DIA.size) errores += "$ref: día fuera de rango (1-${NOMBRES_DIA.size})"
             if (e.charlaId !in ids) errores += "$ref: charla ${e.charlaId} no existe"
+        }
+        banco.actividades.groupBy { it.id }.filterValues { it.size > 1 }.keys.forEach {
+            errores += "Id de actividad repetido: $it"
+        }
+        banco.actividades.forEach { a ->
+            if (a.nombre.isBlank() || a.palabras.none { it.isNotBlank() }) errores += "Actividad ${a.id}: sin nombre o sin palabras"
+            a.especialidades.filter { it !in especialidades }.forEach {
+                errores += "Actividad ${a.id}: especialidad desconocida '$it'"
+            }
         }
         banco.especialidades.forEach {
             if (!Regex("#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})").matches(it.colorHex)) errores += "Especialidad ${it.id}: color inválido"
