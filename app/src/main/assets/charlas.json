@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 5,
+  "version": 6,
   "fecha": "2026-10-07",
-  "novedades": "70 charlas nuevas y 12 actividades más para cubrir todas las tareas de la obra: riego y demarcación, defensas, puentes, drenaje, topografía, espacios confinados, taludes, instalación de faena, electricidad, trabajo nocturno, conducción, emergencias y vecinos (296 charlas, 39 actividades).",
+  "novedades": "12 charlas nuevas sobre excavación manual (pala, chuzo, calicatas, hoyos, servicios enterrados, estructuras existentes, hallazgos) y la actividad 'Excavación manual' (308 charlas, 40 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -2195,6 +2195,186 @@
       "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); NCh 349; DS 594 Art. 53.",
       "reglaOro": "Planificar la tarea: si pesa, se usa ayuda mecánica.",
       "preguntaCierre": "¿Cuánto pesa el rollo de geotextil de hoy y cómo lo vamos a mover?"
+    },
+    {
+      "id": 443,
+      "codigo": "OA-48",
+      "especialidad": "OA",
+      "titulo": "Excavación manual junto a cables y tuberías: destapar con cuidado",
+      "porQue": "Cuando hay servicios enterrados (cables eléctricos, fibra, agua o gas), la máquina se detiene a cierta distancia y el resto se excava a mano para ubicarlos sin dañarlos. Pero un golpe de chuzo o de pala sobre un cable energizado puede electrocutar a quien lo da. Excavar a mano no significa excavar sin riesgo: se hace con método.",
+      "checklist": [
+        "Trazado de los servicios marcado en terreno y conocido por la cuadrilla antes de empezar; profundidad aproximada informada.",
+        "Cerca del servicio, usar pala (no chuzo ni picota) y excavar con golpes suaves desde el costado, nunca clavando la herramienta hacia abajo sobre la marca.",
+        "Al aparecer la cinta de advertencia, el ducto o el cable: detener, avisar al supervisor y no seguir hasta que se confirme qué es y si está energizado."
+      ],
+      "normativa": "Normativa eléctrica y de gas SEC; NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de interferencias del proyecto.",
+      "reglaOro": "Ninguna excavación sin verificar interferencias.",
+      "preguntaCierre": "¿Qué servicio pasa bajo el tramo que excavamos hoy a mano y con qué herramienta nos acercamos?"
+    },
+    {
+      "id": 444,
+      "codigo": "OA-49",
+      "especialidad": "OA",
+      "titulo": "Palear sin lesionarse: técnica, ritmo y rotación",
+      "porQue": "Una jornada de excavación manual son cientos de paladas. Cada pala con tierra mojada puede pesar varios kilos y, si se lanza girando la espalda o con los brazos estirados, el daño se acumula en la zona lumbar y en los hombros. Las lesiones de espalda son la principal causa de días perdidos en este trabajo.",
+      "checklist": [
+        "Pala del largo adecuado a la altura del trabajador y con mango en buen estado; cargar la pala a medias si el material está mojado.",
+        "Técnica: pies separados, flectar las rodillas, la pala cerca del cuerpo y girar con los pies, no con la cintura; no lanzar el material lejos ni por sobre el hombro.",
+        "Ritmo parejo, pausas y rotación de tareas entre excavar, palear y retirar material."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); Guía Técnica para la Evaluación y Control de Riesgos asociados al Manejo o Manipulación Manual de Carga; Ley 16.744 Art. 68.",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "Muéstrame cómo giras con la pala llena sin torcer la espalda."
+    },
+    {
+      "id": 445,
+      "codigo": "OA-50",
+      "especialidad": "OA",
+      "titulo": "Calicatas y pozos de inspección: hoyos que parecen chicos",
+      "porQue": "Las calicatas para revisar el suelo o ubicar servicios suelen hacerse a mano y parecen pequeñas. Pero un pozo de un metro y medio, con paredes verticales y tierra suelta, puede derrumbarse sobre quien está agachado adentro. Y cuando se deja abierto, es una trampa para personas, animales y vehículos.",
+      "checklist": [
+        "Antes de profundizar, definir hasta dónde se puede excavar sin talud ni entibación según el procedimiento y el tipo de suelo; no superar ese límite.",
+        "Nunca trabajar agachado o acostado dentro de un pozo profundo sin protección; muestras y mediciones desde el borde cuando sea posible.",
+        "Pozo cercado y señalizado mientras esté abierto, y tapado o rellenado al terminar."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594 (protección de aberturas); Ley 16.744 Art. 68.",
+      "reglaOro": "Ninguna abertura en el suelo sin protección.",
+      "preguntaCierre": "¿Qué profundidad tendrá la calicata de hoy y cómo la dejamos al irnos?"
+    },
+    {
+      "id": 446,
+      "codigo": "OA-51",
+      "especialidad": "OA",
+      "titulo": "Hoyos para postes y fundaciones pequeñas en la berma",
+      "porQue": "Para postes de señales, defensas o cercos se excavan hoyos angostos y profundos, muchas veces en la berma junto al tránsito. El trabajador queda agachado, con la cabeza a la altura de los vehículos que pasan, y el hoyo abierto queda en el camino de quien se baje de un auto o camine por la orilla.",
+      "checklist": [
+        "Faena protegida con la señalización de faena móvil o desvío según el plano, y trabajadores de frente al tránsito.",
+        "Usar herramientas de mango largo (pala hoyadora, barreno manual) para no meter el cuerpo en el hoyo; material excavado lejos de la calzada.",
+        "Hoyos tapados, cercados o rellenados apenas se instala el poste; nunca dejarlos abiertos de noche."
+      ],
+      "normativa": "Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594.",
+      "reglaOro": "Ningún trabajo en la vía sin señalización, por corto que sea.",
+      "preguntaCierre": "¿Cuántos hoyos quedarán hoy abiertos en la berma y cómo los protegemos?"
+    },
+    {
+      "id": 447,
+      "codigo": "OA-52",
+      "especialidad": "OA",
+      "titulo": "El material excavado: dónde dejarlo para que no vuelva a la zanja",
+      "porQue": "La tierra que sacamos a mano la dejamos casi siempre al lado, en el borde. Ese montón carga el borde de la excavación, puede deslizarse de vuelta sobre quien trabaja adentro y tapa la vista del borde. Si queda en la calzada o en un acceso, se convierte en obstáculo para terceros.",
+      "checklist": [
+        "Material acopiado a la distancia del borde que define el procedimiento, en un solo lado y con una altura que no lo haga inestable.",
+        "Piedras y bolones retirados del borde para que no rueden hacia adentro.",
+        "Nada de material sobre la calzada, accesos de vecinos ni cunetas; retiro programado si no se usará para el relleno."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿A qué distancia del borde quedó ayer la tierra que sacamos?"
+    },
+    {
+      "id": 448,
+      "codigo": "OA-53",
+      "especialidad": "OA",
+      "titulo": "Excavar junto a estructuras existentes: no socavar lo que sostiene",
+      "porQue": "Al excavar a mano junto a muros, cabezales de alcantarillas, postes o bordes de pavimento existentes, es fácil sacar tierra por debajo de su base. La estructura pierde apoyo y puede inclinarse o caer sobre quien está excavando. El peligro no está en la tierra, sino en lo que está encima.",
+      "checklist": [
+        "Revisar qué estructura hay junto a la excavación y hasta dónde llega su fundación antes de empezar.",
+        "No excavar bajo el nivel de la base de una estructura sin la indicación del responsable técnico (apuntalamiento o excavación por tramos).",
+        "Ante grietas, inclinación o asentamientos en la estructura: salir de la excavación y avisar."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis.",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "¿Qué estructura está hoy junto a la excavación y hasta dónde llega su base?"
+    },
+    {
+      "id": 449,
+      "codigo": "OA-54",
+      "especialidad": "OA",
+      "titulo": "Agua en la excavación manual: barro que ablanda las paredes",
+      "porQue": "Cuando aparece agua de napa o de lluvia, la excavación se llena de barro, las paredes se ablandan y las botas se hunden. El suelo saturado puede derrumbarse aunque la excavación sea poco profunda, y trabajar con barro hasta las rodillas aumenta el esfuerzo y el riesgo de caídas.",
+      "checklist": [
+        "Si aparece agua, detener la excavación y evaluar con el supervisor: agotamiento, talud o entibación antes de seguir.",
+        "Bombas eléctricas con protección diferencial y motobombas fuera de la excavación.",
+        "Botas de agua y ropa impermeable; no trabajar solo dentro de una excavación con agua."
+      ],
+      "normativa": "NCh 349; DS 8/2019 (instalaciones eléctricas); DS 594 (Art. 53 sobre EPP); Código del Trabajo Art. 184 bis.",
+      "reglaOro": "Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.",
+      "preguntaCierre": "Si mañana aparece agua en el pozo, ¿quién decide si seguimos?"
+    },
+    {
+      "id": 450,
+      "codigo": "OA-55",
+      "especialidad": "OA",
+      "titulo": "Terreno duro y roca: chuzo, picota y martillo sin lesionarse",
+      "porQue": "Cuando el terreno es duro o aparece roca, la excavación manual se hace con chuzo, picota o martillo eléctrico. Cada golpe puede lanzar fragmentos a los ojos, rebotar la herramienta hacia las piernas o lastimar las muñecas. Con el martillo se suman la vibración, el ruido y el polvo.",
+      "checklist": [
+        "Lentes de seguridad siempre; con martillo, además protección auditiva y respiratoria y humedecer el material.",
+        "Herramienta con mango firme y cabeza bien fija; pies separados y fuera de la trayectoria del golpe.",
+        "Rotar al trabajador en el martillo y no forzar: si el terreno no cede, pedir apoyo de equipo."
+      ],
+      "normativa": "DS 594 (ruido, vibraciones, sílice y Art. 53); Protocolo PREXOR; PLANESI.",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Quién usa hoy el chuzo y a qué distancia debe estar el compañero?"
+    },
+    {
+      "id": 451,
+      "codigo": "OA-56",
+      "especialidad": "OA",
+      "titulo": "Excavar en pareja: la distancia que evita el golpe al compañero",
+      "porQue": "Cuando dos o más personas excavan a mano en el mismo pozo o zanja, el chuzo, la picota o la pala de uno pasa muy cerca del otro. Un golpe en la cabeza, en la mano o en el pie del compañero es un accidente frecuente en excavaciones estrechas, sobre todo cuando ambos están concentrados en su parte.",
+      "checklist": [
+        "Distancia mínima entre trabajadores igual o mayor al largo de la herramienta más el brazo; en espacios estrechos, trabajar por turnos.",
+        "Avisar antes de levantar el chuzo o la picota y mirar dónde está el compañero.",
+        "Casco con barbiquejo y calzado de seguridad con puntera para quienes están dentro."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "¿Cuántas personas caben trabajando seguras en el pozo de hoy?"
+    },
+    {
+      "id": 452,
+      "codigo": "OA-57",
+      "especialidad": "OA",
+      "titulo": "La zanja 'poco profunda' también atrapa",
+      "porQue": "Muchas zanjas manuales empiezan bajas y se van profundizando de a poco, sin que nadie se detenga a revisar cuándo pasaron el límite seguro. Un derrumbe que te cubre hasta la cintura ya puede impedirte respirar o salir, y los rescatistas improvisados pueden provocar un segundo derrumbe.",
+      "checklist": [
+        "Medir la profundidad durante la excavación y detenerse al llegar al límite definido para trabajar sin talud ni entibación.",
+        "Al superar ese límite: talud o entibación antes de que alguien vuelva a entrar.",
+        "Si ocurre un derrumbe con alguien atrapado: activar la emergencia de inmediato y no entrar sin asegurar las paredes."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Hasta qué profundidad podemos excavar hoy sin protección y quién lo controla?"
+    },
+    {
+      "id": 453,
+      "codigo": "OA-58",
+      "especialidad": "OA",
+      "titulo": "Hallazgos durante la excavación: detener, proteger y avisar",
+      "porQue": "Al excavar a mano pueden aparecer objetos inesperados: restos arqueológicos, huesos, cerámica, tambores enterrados, residuos con olor extraño o tuberías antiguas. Seguir excavando puede destruir un patrimonio protegido por ley, liberar sustancias peligrosas o romper un servicio desconocido.",
+      "checklist": [
+        "Ante cualquier hallazgo: detener la excavación en ese punto, no mover ni retirar nada y demarcar el área.",
+        "Avisar de inmediato al supervisor, quien informa al área ambiental o patrimonial del proyecto.",
+        "No tocar residuos desconocidos ni olerlos de cerca; alejarse si hay olores fuertes o líquidos."
+      ],
+      "normativa": "Ley 17.288 de Monumentos Nacionales (hallazgos arqueológicos); DS 148/2003 (residuos peligrosos); compromisos ambientales del proyecto.",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "Si mañana aparece un hueso o una vasija al excavar, ¿qué es lo primero que haces?"
+    },
+    {
+      "id": 454,
+      "codigo": "OA-59",
+      "especialidad": "OA",
+      "titulo": "Relleno y compactación manual con pisón",
+      "porQue": "Después de excavar a mano, el relleno también suele hacerse a mano, por capas y apisonando con pisón manual o vibropisón. Es un trabajo repetitivo, con golpes que cargan los hombros y la espalda, muchas veces dentro de la misma zanja y con material que se descarga desde arriba.",
+      "checklist": [
+        "Relleno por capas delgadas según lo indicado; pisón en buen estado y del peso adecuado.",
+        "Postura erguida al apisonar, sin levantar el pisón más de lo necesario; rotación y pausas.",
+        "Nadie dentro de la zanja mientras se descarga material desde el borde o con equipo."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J; DS 594 (vibraciones y Art. 53); NCh 349.",
+      "reglaOro": "Planificar la tarea para reducir el esfuerzo.",
+      "preguntaCierre": "¿Cómo nos vamos a turnar hoy para apisonar el relleno?"
     },
     {
       "id": 5,
@@ -4629,6 +4809,27 @@
         "OA",
         "MT",
         "MP"
+      ]
+    },
+    {
+      "id": "excavacion_manual",
+      "nombre": "Excavación manual",
+      "palabras": [
+        "excavación",
+        "manual",
+        "pala",
+        "chuzo",
+        "picota",
+        "calicata",
+        "pozo",
+        "hoyo",
+        "zanja",
+        "interferencia",
+        "relleno"
+      ],
+      "especialidades": [
+        "OA",
+        "MT"
       ]
     },
     {

@@ -65,8 +65,8 @@ class BancoTest {
     @Test
     fun elBancoIncluidoEsValidoYTieneVersion() {
         assertEquals(emptyList<String>(), BancoParser.validar(banco))
-        assertTrue(banco.version >= 5)
-        assertTrue(banco.actividades.size >= 39)
+        assertTrue(banco.version >= 6)
+        assertTrue(banco.actividades.size >= 40)
     }
 
     @Test
