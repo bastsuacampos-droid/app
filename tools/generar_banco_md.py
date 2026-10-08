@@ -37,6 +37,12 @@ def raices(texto: str) -> list[str]:
     return resultado
 
 
+def orden_codigo(c: dict) -> tuple[str, int]:
+    """Como Charla.numero en Kotlin: OA-100 va después de OA-99, no de OA-10."""
+    prefijo, _, numero = c["codigo"].rpartition("-")
+    return prefijo, int(numero)
+
+
 def recomendar(charlas: list[dict], actividad: dict) -> list[dict]:
     consulta = {r for p in actividad["palabras"] for r in raices(p)}
     preferidas = set(actividad.get("especialidades", []))
@@ -48,7 +54,7 @@ def recomendar(charlas: list[dict], actividad: dict) -> list[dict]:
         if puntaje > 0 and c["especialidad"] in preferidas:
             puntaje += 2
         if puntaje > 0:
-            puntuadas.append((-puntaje, c["codigo"], c))
+            puntuadas.append((-puntaje, orden_codigo(c), c))
     return [c for _, _, c in sorted(puntuadas, key=lambda t: (t[0], t[1]))]
 
 

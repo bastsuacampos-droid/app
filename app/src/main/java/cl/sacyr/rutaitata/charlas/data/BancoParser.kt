@@ -29,7 +29,7 @@ object BancoParser {
                 reglaOro = it.getString("reglaOro"),
                 preguntaCierre = it.getString("preguntaCierre"),
             )
-        }.sortedWith(compareBy({ orden[it.especialidadId] ?: Int.MAX_VALUE }, { it.codigo }))
+        }.sortedWith(compareBy({ orden[it.especialidadId] ?: Int.MAX_VALUE }, { it.numero }, { it.codigo }))
         val plan = raiz.optJSONArray("plan")?.objetos().orEmpty().map {
             EntradaPlan(semana = it.getInt("semana"), dia = it.getInt("dia"), charlaId = it.getInt("charla"))
         }.sortedWith(compareBy({ it.semana }, { it.dia }))
