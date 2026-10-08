@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 10,
+  "version": 11,
   "fecha": "2026-10-08",
-  "novedades": "13 charlas nuevas de izaje de cargas (plan de izaje, tabla de carga, peso y centro de gravedad, eslingas y ángulos, inspección de accesorios, grilletes y ganchos, estabilización de la grúa, rigger, cuerdas guía, viento, excavadora habilitada, camión pluma y depositar la carga) (360 charlas, 40 actividades).",
+  "novedades": "21 charlas nuevas para completar la cobertura del proyecto: ART y permiso de trabajo, investigación de accidentes, Comité Paritario, Reglamento Interno, ruido, sílice, protección respiratoria, manos, protección ocular, exámenes ocupacionales, salud mental, RCP y primeros auxilios, celular, trabajo aislado, línea de fuego, herramientas neumáticas, minicargador, amarre de carga y tubos de asbesto-cemento. Dos actividades nuevas para el recomendador (381 charlas, 42 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -710,6 +710,51 @@
       "normativa": "Estándar de izaje del proyecto; DS 594 Art. 38; Ley 16.744 Art. 68.",
       "reglaOro": "Nunca ubicarse en puntos de atrapamiento.",
       "preguntaCierre": "¿Dónde vamos a apoyar la carga hoy y cómo sacaremos las eslingas?"
+    },
+    {
+      "id": 140,
+      "codigo": "MP-45",
+      "especialidad": "MP",
+      "titulo": "Compresor y herramientas neumáticas: el aire también golpea",
+      "porQue": "El aire comprimido mueve martillos neumáticos, perforadoras y sopladores. Una manguera que se suelta latiguea con fuerza, un acople mal conectado salta, y el aire dirigido a la piel puede entrar al cuerpo y causar lesiones graves. Además, los martillos neumáticos producen ruido y vibración muy altos.",
+      "checklist": [
+        "Mangueras y acoples revisados, con seguros o cadenas antilatigazo en las uniones; cerrar el aire antes de conectar o desconectar.",
+        "Nunca usar aire comprimido para limpiar la ropa, el cuerpo o para jugar; ni apuntar la manguera a una persona.",
+        "Protección auditiva, ocular y guantes antivibración al usar martillos; rotar al operador."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53 (protecciones, EPP), límites de ruido y vibraciones; Protocolo PREXOR; manual del fabricante.",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "¿Tienen hoy las uniones de las mangueras de aire su seguro antilatigazo?"
+    },
+    {
+      "id": 141,
+      "codigo": "MP-46",
+      "especialidad": "MP",
+      "titulo": "Minicargador: compacto, rápido y con puntos ciegos",
+      "porQue": "El minicargador se usa para limpiar, mover material y cargar en espacios reducidos. Gira sobre sí mismo en un instante, tiene poca visibilidad hacia atrás y sus brazos pueden aplastar a quien se apoya en ellos o al operador si sale de la cabina con el balde levantado.",
+      "checklist": [
+        "Operador autorizado, con cinturón y barra de seguridad baja; nadie a pie en su radio de giro.",
+        "Nunca salir de la cabina ni meterse bajo los brazos con el balde levantado sin el soporte de seguridad puesto.",
+        "Prohibido transportar personas en el balde o usarlo como plataforma de trabajo."
+      ],
+      "normativa": "Ley 18.290 (licencia clase D); DS 594 Art. 38; manual del fabricante del equipo.",
+      "reglaOro": "Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.",
+      "preguntaCierre": "¿Dónde está el soporte de seguridad de los brazos del minicargador?"
+    },
+    {
+      "id": 142,
+      "codigo": "MP-47",
+      "especialidad": "MP",
+      "titulo": "Amarre de carga en camiones: cadenas, eslingas y tensores",
+      "porQue": "Tubos, fierros, prefabricados o equipos mal amarrados se desplazan en una frenada o una curva y pueden caer a la ruta o aplastar la cabina. Además, al soltar las amarras de una carga que se movió, la carga puede caer sobre quien está junto al camión.",
+      "checklist": [
+        "Amarras (cadenas, eslingas o tensores) en buen estado y de la capacidad adecuada, en cantidad suficiente y en los puntos de amarre del camión.",
+        "Revisar las amarras antes de salir y después de los primeros kilómetros o de un tramo de ripio.",
+        "Antes de soltar las amarras, revisar si la carga se desplazó; soltar parado a un costado, fuera de la caída de la carga."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (carga de vehículos asegurada); Ley 16.744 Art. 68; procedimiento del proyecto.",
+      "reglaOro": "Toda carga trasladada va asegurada y verificada antes de entrar a la vía.",
+      "preguntaCierre": "¿Quién revisó hoy las amarras del camión antes de salir a la ruta?"
     },
     {
       "id": 2,
@@ -2962,6 +3007,21 @@
       "preguntaCierre": "¿Hay alguna conexión improvisada en nuestro frente que debamos retirar hoy?"
     },
     {
+      "id": 481,
+      "codigo": "OA-86",
+      "especialidad": "OA",
+      "titulo": "Tubos antiguos de asbesto-cemento: no cortarlos ni romperlos sin procedimiento",
+      "porQue": "En alcantarillas y redes antiguas pueden aparecer tubos o planchas de asbesto-cemento. Mientras están enteros son poco peligrosos, pero al cortarlos, romperlos o esmerilarlos liberan fibras que, respiradas, pueden causar enfermedades graves años después. Su retiro tiene reglas especiales.",
+      "checklist": [
+        "Ante tubos o planchas que podrían ser de asbesto-cemento: no cortar, romper ni esmerilar; detener la tarea y avisar al supervisor.",
+        "El retiro lo hace solo personal o empresa especializada, según el procedimiento y lo que exija la autoridad sanitaria.",
+        "Los restos se manejan como residuo peligroso, mojados y embolsados, nunca mezclados con escombros comunes."
+      ],
+      "normativa": "DS 656/2000 (prohibición del uso de asbesto); DS 594 (límites permisibles); DS 148/2003 (residuos peligrosos); autoridad sanitaria (SEREMI de Salud).",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "Si al demoler la alcantarilla vieja aparece un tubo gris y liviano, ¿qué hacemos?"
+    },
+    {
       "id": 5,
       "codigo": "RT-01",
       "especialidad": "RT",
@@ -3770,6 +3830,261 @@
       "normativa": "NCh 1258; NCh 351 (escalas portátiles); DS 594; Ley 16.744 Art. 68.",
       "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
       "preguntaCierre": "¿Quién subió el último mes al techo de un contenedor y cómo lo hizo?"
+    },
+    {
+      "id": 551,
+      "codigo": "RT-55",
+      "especialidad": "RT",
+      "titulo": "Análisis de riesgo de la tarea (ART): pensar antes de hacer",
+      "porQue": "La mayoría de los accidentes ocurren en tareas que 'siempre hacemos así'. El análisis de riesgo de la tarea obliga a detenerse unos minutos antes de empezar para revisar paso a paso qué puede salir mal y cómo evitarlo. No es un papel para la carpeta: es la conversación que evita el accidente.",
+      "checklist": [
+        "Antes de iniciar, la cuadrilla revisa en terreno los pasos de la tarea, sus peligros y las medidas de control, y firma el ART.",
+        "Si cambia algo (el lugar, el equipo, el clima, una persona), se detiene y se actualiza el análisis.",
+        "Todos pueden aportar un riesgo que no se consideró; el capataz lo agrega antes de seguir."
+      ],
+      "normativa": "DS 44/2024 (identificación de peligros y evaluación de riesgos); Ley 16.744 Art. 68; procedimientos del proyecto.",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "¿Qué riesgo de la tarea de hoy no estaba en el ART de ayer?"
+    },
+    {
+      "id": 552,
+      "codigo": "RT-56",
+      "especialidad": "RT",
+      "titulo": "Permiso de trabajo: cuándo se necesita y qué asegura",
+      "porQue": "Algunas tareas son tan peligrosas que no basta con saber hacerlas: trabajo en caliente, en altura, en espacios confinados, eléctricos o izajes críticos. El permiso de trabajo asegura que alguien con autoridad revisó las condiciones, que las medidas están instaladas y que todos saben qué hacer si algo falla.",
+      "checklist": [
+        "Conocer qué tareas del frente requieren permiso según el procedimiento del proyecto.",
+        "El permiso se revisa en terreno, con las medidas ya instaladas, y queda visible en el lugar mientras dura la tarea.",
+        "Si las condiciones cambian o termina el turno, el permiso se cierra o se renueva; nunca se 'hereda' un permiso de otro día."
+      ],
+      "normativa": "DS 44/2024 (gestión preventiva); Ley 16.744 Art. 68; procedimiento de permisos de trabajo del proyecto.",
+      "reglaOro": "Solo personal autorizado realiza tareas críticas.",
+      "preguntaCierre": "¿Qué tarea de esta semana necesita permiso de trabajo y quién lo firma?"
+    },
+    {
+      "id": 553,
+      "codigo": "RT-57",
+      "especialidad": "RT",
+      "titulo": "Investigar un accidente: para aprender, no para culpar",
+      "porQue": "Después de un accidente o un casi accidente, la pregunta no es '¿quién tuvo la culpa?', sino '¿qué falló y cómo evitamos que se repita?'. Si las personas temen ser castigadas, ocultan información y el mismo accidente vuelve a ocurrir. Contar lo que pasó con honestidad protege a los compañeros.",
+      "checklist": [
+        "Ante un accidente grave o fatal: suspender la faena afectada, proteger el lugar y avisar de inmediato al supervisor, que informa a las autoridades que corresponde.",
+        "Participar en la investigación contando lo que se vio y se hizo, sin modificar el lugar antes de que se revise.",
+        "Conocer y aplicar las medidas que salen de la investigación; se comparten en la charla."
+      ],
+      "normativa": "Ley 16.744 (Art. 76, denuncia y aviso de accidentes graves y fatales); DS 44/2024 (investigación de accidentes); instrucciones de la SUSESO.",
+      "reglaOro": "Todo accidente e incidente se informa el mismo día.",
+      "preguntaCierre": "¿Qué aprendimos del último incidente del proyecto y qué cambiamos?"
+    },
+    {
+      "id": 554,
+      "codigo": "RT-58",
+      "especialidad": "RT",
+      "titulo": "Comité Paritario y Departamento de Prevención: para qué existen",
+      "porQue": "En el proyecto existen un Comité Paritario, con representantes de los trabajadores y de la empresa, y un Departamento de Prevención de Riesgos. Ambos tienen la misión de detectar peligros, investigar accidentes y proponer mejoras. Conocerlos y acudir a ellos es una forma de participar en tu propia seguridad.",
+      "checklist": [
+        "Saber quiénes son los representantes de los trabajadores en el Comité Paritario y cómo contactarlos.",
+        "Informar al Comité o a Prevención las condiciones inseguras que no se resuelven en el frente.",
+        "Participar en las elecciones del Comité y en las inspecciones o capacitaciones que organice."
+      ],
+      "normativa": "Ley 16.744 Art. 66 (Comités Paritarios y Departamentos de Prevención de Riesgos); DS 44/2024 (que reemplazó a los DS 40 y DS 54).",
+      "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
+      "preguntaCierre": "¿Quién nos representa en el Comité Paritario de la obra?"
+    },
+    {
+      "id": 555,
+      "codigo": "RT-59",
+      "especialidad": "RT",
+      "titulo": "Reglamento Interno: derechos y obligaciones de todos",
+      "porQue": "El Reglamento Interno de Orden, Higiene y Seguridad establece las reglas de la obra: qué EPP es obligatorio, qué está prohibido, cómo se reportan los accidentes y cuáles son las sanciones. También establece tus derechos. Lo recibiste al ingresar, pero pocas personas lo leen.",
+      "checklist": [
+        "Conocer las principales obligaciones y prohibiciones de seguridad del Reglamento Interno.",
+        "Saber dónde está disponible y pedir que se explique lo que no se entiende.",
+        "Recordar que el Reglamento también protege: canales de denuncia, derecho a saber y a interrumpir labores ante riesgo grave."
+      ],
+      "normativa": "Ley 16.744 Art. 67 (reglamento de higiene y seguridad); Código del Trabajo Arts. 153 y siguientes; Ley 21.643.",
+      "reglaOro": "Las reglas de seguridad son para todos.",
+      "preguntaCierre": "¿Qué dice el Reglamento Interno sobre el uso del celular en terreno?"
+    },
+    {
+      "id": 556,
+      "codigo": "RT-60",
+      "especialidad": "RT",
+      "titulo": "Ruido: la sordera que no tiene vuelta atrás",
+      "porQue": "Rodillos, martillos, cortadoras, compresores y hincadoras producen ruido sobre los límites seguros. El daño al oído es lento, no duele y es permanente: un día cuesta seguir una conversación o se escucha un pitido constante. Los tapones sirven solo si están bien puestos todo el tiempo de exposición.",
+      "checklist": [
+        "Usar protección auditiva en zonas señalizadas y junto a equipos ruidosos: si hay que gritar para hablar a un metro, se necesita protección.",
+        "Tapones insertados correctamente (con las manos limpias, tirando la oreja hacia arriba y atrás) o fonos bien ajustados.",
+        "No retirarlos 'un ratito' en medio del ruido; cumplir los exámenes de audiometría cuando corresponda."
+      ],
+      "normativa": "DS 594 (límites de exposición a ruido); Protocolo de Exposición Ocupacional a Ruido (PREXOR, MINSAL); DS 18/1982.",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "Muéstrame cómo te pones los tapones para que queden bien insertados."
+    },
+    {
+      "id": 557,
+      "codigo": "RT-61",
+      "especialidad": "RT",
+      "titulo": "Sílice: el polvo que se queda en los pulmones",
+      "porQue": "Cortar hormigón, perforar roca, picar pavimento o barrer en seco libera sílice cristalina, un polvo tan fino que no se ve y llega al fondo de los pulmones. Con los años produce silicosis, una enfermedad sin cura. La forma más efectiva de evitarla es no levantar el polvo, no solo usar mascarilla.",
+      "checklist": [
+        "Trabajar en húmedo o con aspiración al cortar, perforar, picar o barrer materiales con sílice.",
+        "Respirador adecuado y bien ajustado cuando el polvo no se puede controlar en la fuente.",
+        "No limpiar la ropa ni el cuerpo con aire comprimido ni sacudiéndola; lavarse antes de comer."
+      ],
+      "normativa": "DS 594 (límite permisible de sílice); Plan Nacional de Erradicación de la Silicosis (PLANESI); Ley 16.744 (enfermedades profesionales).",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "¿Qué tarea de hoy levanta polvo y cómo lo vamos a controlar con agua?"
+    },
+    {
+      "id": 558,
+      "codigo": "RT-62",
+      "especialidad": "RT",
+      "titulo": "Protección respiratoria: el respirador que no sella no protege",
+      "porQue": "Una mascarilla puesta sobre la barba, con el elástico suelto o con filtros vencidos deja pasar el aire contaminado por los bordes. Cada contaminante necesita un tipo de respirador y filtro distinto: el que sirve para polvo no protege de vapores de solventes.",
+      "checklist": [
+        "Usar el respirador y el filtro indicados para el contaminante (polvo, humos, vapores) según la HDS o el procedimiento.",
+        "Hacer la prueba de sello cada vez que se pone: tapar y aspirar o soplar para comprobar que no entra aire por los bordes; cara afeitada en la zona de sello.",
+        "Cambiar los filtros según el fabricante o cuando cueste respirar; guardar el respirador limpio y protegido."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP) y límites permisibles; DS 18/1982 (certificación de EPP); guía del ISP para la selección y control de protección respiratoria.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Cómo haces la prueba de sello de tu respirador?"
+    },
+    {
+      "id": 559,
+      "codigo": "RT-63",
+      "especialidad": "RT",
+      "titulo": "Manos: las herramientas que no se reemplazan",
+      "porQue": "Las manos son la parte del cuerpo que más se lesiona en la construcción: cortes, aplastamientos, atrapamientos y quemaduras. Casi siempre la lesión ocurre por poner la mano donde no debía estar: entre dos piezas, bajo una carga, cerca de un disco o de una parte que se mueve.",
+      "checklist": [
+        "Antes de tocar, mirar dónde quedan los dedos: lejos de puntos de pellizco, bordes, discos y piezas en movimiento.",
+        "Usar el guante adecuado a la tarea (corte, impacto, químicos, calor) y cambiarlo cuando esté roto.",
+        "Usar herramientas para guiar, alinear o empujar piezas en lugar de las manos."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53; DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse en puntos de atrapamiento.",
+      "preguntaCierre": "¿En qué momento de la tarea de hoy tus manos estarán más cerca del peligro?"
+    },
+    {
+      "id": 560,
+      "codigo": "RT-64",
+      "especialidad": "RT",
+      "titulo": "Lentes y protección facial: usarlos de verdad",
+      "porQue": "Una esquirla de esmeril, una gota de cemento o una salpicadura de asfalto bastan para dañar un ojo para siempre. Muchas lesiones ocurren porque los lentes estaban en el casco, colgando del cuello o tan rayados que nadie los usaba. Un lente que no está puesto no protege.",
+      "checklist": [
+        "Lentes de seguridad puestos en todo el frente; careta facial además de los lentes al esmerilar, cortar o picar.",
+        "Lentes limpios, sin rayas y con antiempañante si hace frío; pedir reposición cuando estén dañados.",
+        "Ante una partícula o un químico en el ojo: no frotarlo y lavar con abundante agua limpia; avisar y consultar."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Dónde están ahora mismo tus lentes de seguridad?"
+    },
+    {
+      "id": 561,
+      "codigo": "RT-65",
+      "especialidad": "RT",
+      "titulo": "Exámenes ocupacionales: por qué te los piden",
+      "porQue": "Los exámenes preocupacionales y de vigilancia (audiometría, radiografía de tórax, altura física, entre otros) no son un trámite: detectan a tiempo el daño que causan el ruido, la sílice u otros agentes, y verifican que estés en condiciones para tareas de riesgo. Si no te los haces, una enfermedad puede avanzar sin que nadie lo note.",
+      "checklist": [
+        "Asistir a los exámenes ocupacionales cuando se programen, en el organismo administrador.",
+        "Conocer y preguntar los resultados; informar síntomas como pitido en los oídos, tos persistente o mareos.",
+        "No asignarse tareas que requieren examen vigente (altura, conducción, equipos) si no se tiene."
+      ],
+      "normativa": "Ley 16.744 (enfermedades profesionales); protocolos de vigilancia del MINSAL (PREXOR, PLANESI); evaluaciones del organismo administrador.",
+      "reglaOro": "Cuidar el cuerpo es parte de la tarea.",
+      "preguntaCierre": "¿Cuándo fue tu último examen de vigilancia y conoces el resultado?"
+    },
+    {
+      "id": 562,
+      "codigo": "RT-66",
+      "especialidad": "RT",
+      "titulo": "Estrés y salud mental: hablarlo también es seguridad",
+      "porQue": "Las deudas, los problemas familiares, la distancia de la casa o la presión del trabajo afectan la concentración tanto como el cansancio. Una persona agobiada se distrae, se arriesga más o se aísla. Hablarlo a tiempo, con un compañero, el capataz o los canales de apoyo, también previene accidentes.",
+      "checklist": [
+        "Fijarse en los compañeros: cambios de ánimo, aislamiento, irritabilidad o descuido poco habitual; preguntar con respeto.",
+        "Conocer los canales de apoyo disponibles (organismo administrador, programas de la empresa) y cómo acceder a ellos.",
+        "Si no estás en condiciones de concentrarte en una tarea crítica, avisar al capataz para reasignarla."
+      ],
+      "normativa": "Protocolo de Vigilancia de Riesgos Psicosociales en el Trabajo (MINSAL); Ley 21.643 (Ley Karin); Ley 16.744 Art. 68.",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿A quién podrías acudir si un problema personal no te deja concentrarte?"
+    },
+    {
+      "id": 563,
+      "codigo": "RT-67",
+      "especialidad": "RT",
+      "titulo": "RCP y desfibrilador: los minutos que salvan una vida",
+      "porQue": "Cuando el corazón se detiene, por un infarto, una descarga eléctrica o un golpe, cada minuto sin reanimación reduce mucho la posibilidad de sobrevivir. En una obra lineal la ambulancia puede tardar. Saber iniciar la reanimación cardiopulmonar y usar un desfibrilador, si lo hay, puede salvar a un compañero.",
+      "checklist": [
+        "Si una persona no responde y no respira con normalidad: activar la emergencia y comenzar compresiones en el centro del pecho, fuertes y rápidas.",
+        "Si hay desfibrilador (DEA), encenderlo y seguir sus instrucciones de voz; no tocar a la persona cuando lo indique.",
+        "Saber quién de la cuadrilla tiene curso de primeros auxilios y dónde está el desfibrilador más cercano, si existe."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (primeros auxilios); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "¿Quién en la cuadrilla sabe hacer RCP y dónde está el desfibrilador más cercano?"
+    },
+    {
+      "id": 564,
+      "codigo": "RT-68",
+      "especialidad": "RT",
+      "titulo": "Quemaduras, fracturas y golpes en la cabeza: primeros auxilios básicos",
+      "porQue": "En la obra pueden ocurrir quemaduras con asfalto o soldadura, fracturas por caídas o aplastamientos y golpes en la cabeza. Lo que se hace en los primeros minutos puede evitar que la lesión empeore. También es importante saber lo que no se debe hacer.",
+      "checklist": [
+        "Quemaduras: enfriar con agua limpia al menos 20 minutos; no reventar ampollas ni aplicar pasta, aceite ni hielo; no retirar asfalto pegado.",
+        "Fracturas: no mover la zona lesionada ni intentar enderezarla; inmovilizar solo si se sabe hacerlo y activar la emergencia.",
+        "Golpe en la cabeza o caída de altura: no mover a la persona salvo peligro inmediato, mantenerla abrigada y vigilar si se adormece, vomita o se confunde."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (elementos de primeros auxilios); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "Si alguien se cae del andamio y no se mueve, ¿qué hacemos y qué no hacemos?"
+    },
+    {
+      "id": 565,
+      "codigo": "RT-69",
+      "especialidad": "RT",
+      "titulo": "Celular en terreno: la distracción que llevamos en el bolsillo",
+      "porQue": "Mirar el celular mientras se camina por la faena, se opera un equipo o se hace de paletero quita la atención justo en el segundo en que un camión retrocede o un vehículo no frena. Las distracciones con el celular están detrás de muchos atropellos, tropiezos y choques.",
+      "checklist": [
+        "No usar el celular al operar equipos, conducir, hacer de paletero o señalero, ni al caminar por zonas con maquinaria.",
+        "Para contestar, detenerse en un lugar seguro, fuera de la circulación de equipos y vehículos.",
+        "Usar la radio para las comunicaciones de trabajo según el procedimiento."
+      ],
+      "normativa": "Ley 18.290 de Tránsito (prohibición de usar el celular al conducir); Reglamento Interno del proyecto; Ley 16.744 Art. 68.",
+      "reglaOro": "Caminar por vías seguras, sin correr ni distraerse.",
+      "preguntaCierre": "¿En qué momentos del día te cuesta más dejar el celular guardado?"
+    },
+    {
+      "id": 566,
+      "codigo": "RT-70",
+      "especialidad": "RT",
+      "titulo": "Trabajo aislado: nadie solo y sin comunicación",
+      "porQue": "En una ruta larga hay tareas que se hacen lejos del resto de la cuadrilla: un paletero en el extremo del desvío, un operador en un empréstito o un vigilante de noche. Si esa persona sufre un accidente o se descompensa, puede pasar mucho tiempo antes de que alguien lo note.",
+      "checklist": [
+        "Toda persona que trabaja alejada tiene radio o celular con señal y un contacto que la llama a intervalos definidos.",
+        "Evitar que una sola persona haga tareas de alto riesgo (espacios confinados, altura, trabajos eléctricos) sin compañía.",
+        "Al terminar la jornada, el capataz confirma que todos salieron del frente antes de retirarse."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "¿Quién trabaja hoy más alejado de la cuadrilla y cada cuánto lo llamamos?"
+    },
+    {
+      "id": 567,
+      "codigo": "RT-71",
+      "especialidad": "RT",
+      "titulo": "La línea de fuego: dónde no ponerse",
+      "porQue": "La línea de fuego es cualquier lugar donde una energía puede alcanzarte si algo falla: la trayectoria de un equipo que retrocede, bajo una carga, frente a una manguera presurizada, junto a un cable que se tensa o entre dos piezas que se mueven. Muchos accidentes graves se evitan solo con elegir bien dónde pararse.",
+      "checklist": [
+        "Antes de iniciar, identificar las líneas de fuego de la tarea: movimiento, presión, tensión, caída y atrapamiento.",
+        "Ubicarse fuera de ellas y usar herramientas, cuerdas o controles a distancia en lugar del cuerpo.",
+        "Avisar a un compañero cuando lo veas en la línea de fuego; ante la duda, detener la maniobra."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594; DS 44/2024 (identificación de peligros).",
+      "reglaOro": "Nunca ubicarse en la línea de fuego de una energía acumulada.",
+      "preguntaCierre": "¿Cuál es la línea de fuego más peligrosa de la tarea de hoy?"
     },
     {
       "id": 601,
@@ -6323,6 +6638,42 @@
         "emulsión",
         "combustible",
         "bodega"
+      ],
+      "especialidades": [
+        "RT",
+        "AS"
+      ]
+    },
+    {
+      "id": "planificacion",
+      "nombre": "Planificación de la tarea y gestión preventiva",
+      "palabras": [
+        "análisis",
+        "permiso",
+        "planificar",
+        "procedimiento",
+        "comité",
+        "reglamento",
+        "investigar",
+        "accidente",
+        "regla"
+      ],
+      "especialidades": [
+        "RT"
+      ]
+    },
+    {
+      "id": "salud",
+      "nombre": "Salud ocupacional: ruido, polvo y químicos",
+      "palabras": [
+        "ruido",
+        "sílice",
+        "polvo",
+        "respiratoria",
+        "auditiva",
+        "examen",
+        "vibración",
+        "humo"
       ],
       "especialidades": [
         "RT",
