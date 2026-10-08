@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 6,
-  "fecha": "2026-10-07",
-  "novedades": "12 charlas nuevas sobre excavación manual (pala, chuzo, calicatas, hoyos, servicios enterrados, estructuras existentes, hallazgos) y la actividad 'Excavación manual' (308 charlas, 40 actividades).",
+  "version": 7,
+  "fecha": "2026-10-08",
+  "novedades": "13 charlas nuevas de soldadura y oxicorte (soldadora al arco, radiación del arco, EPP del soldador, encendido del soplete, válvulas antirretorno, transporte de cilindros, tambores con combustible, galvanizados, altura, oxígeno en lugares cerrados, piezas calientes, motosoldadora y escoria) (321 charlas, 40 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -2375,6 +2375,201 @@
       "normativa": "Código del Trabajo Arts. 211-F a 211-J; DS 594 (vibraciones y Art. 53); NCh 349.",
       "reglaOro": "Planificar la tarea para reducir el esfuerzo.",
       "preguntaCierre": "¿Cómo nos vamos a turnar hoy para apisonar el relleno?"
+    },
+    {
+      "id": 455,
+      "codigo": "OA-60",
+      "especialidad": "OA",
+      "titulo": "Soldadora al arco: cables, pinza y masa en buen estado",
+      "porQue": "La soldadora al arco trabaja con corriente suficiente para electrocutar, sobre todo cuando el soldador está mojado, sudado o apoyado en metal. Un cable con la aislación rota, una pinza porta electrodo dañada o una masa mal conectada hacen que la corriente busque otro camino, y ese camino puede ser el cuerpo.",
+      "checklist": [
+        "Revisar antes de partir cables, conectores, pinza porta electrodo y masa: sin aislación rota, sin uniones con cinta y bien apretados.",
+        "Masa conectada lo más cerca posible de la soldadura, sobre metal limpio; nunca usar estructuras, cañerías o barandas como camino de retorno.",
+        "No soldar con guantes o ropa mojados ni parado en agua; cambiar el electrodo con guantes secos y la pinza apoyada en un lugar aislado."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (instalaciones eléctricas, SEC); DS 594 Arts. 38 y 53; manual del fabricante del equipo.",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Dónde conectamos hoy la masa y qué pasa si la ponemos en la baranda?"
+    },
+    {
+      "id": 456,
+      "codigo": "OA-61",
+      "especialidad": "OA",
+      "titulo": "Radiación del arco: los ojos del soldador y de los que miran",
+      "porQue": "El arco eléctrico emite luz ultravioleta e infrarroja muy intensa. Mirarlo unos segundos sin protección produce la 'quemadura de arco' en los ojos: horas después aparecen dolor intenso, lagrimeo y sensación de arena. Les pasa sobre todo a los ayudantes y a los que pasan cerca, porque el soldador tiene su careta.",
+      "checklist": [
+        "Biombos o pantallas alrededor del punto de soldadura cuando hay personas trabajando o transitando cerca.",
+        "Ayudantes con lentes con filtro adecuado o careta; nunca mirar el arco 'solo un momento' sin protección.",
+        "Avisar antes de encender el arco ('¡ojo, arco!') y no soldar de frente a la ruta o a los paleteros."
+      ],
+      "normativa": "DS 594 (radiaciones no ionizantes y Art. 53 sobre EPP); DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Quién va a estar cerca del soldador hoy y qué protección usa para los ojos?"
+    },
+    {
+      "id": 457,
+      "codigo": "OA-62",
+      "especialidad": "OA",
+      "titulo": "El equipo del soldador: careta, coleto y ropa que no se derrite",
+      "porQue": "Las chispas y la escoria a más de mil grados encuentran cualquier abertura: un bolsillo abierto, una basta doblada o una polera sintética que se derrite sobre la piel. El equipo del soldador no es un uniforme: cada pieza protege de una forma distinta de quemadura.",
+      "checklist": [
+        "Careta con el filtro del tono adecuado al proceso (o fotosensible funcionando), coleto, polainas y guantes de cuero de caña larga.",
+        "Ropa de algodón o ignífuga, sin grasa ni combustible, con bolsillos cerrados y pantalón por fuera del calzado; nada de ropa sintética.",
+        "Lentes de seguridad bajo la careta para el picado de escoria y el esmerilado."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); DS 18/1982 (certificación de calidad de EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Qué parte de tu ropa podría encenderse con una chispa hoy?"
+    },
+    {
+      "id": 458,
+      "codigo": "OA-63",
+      "especialidad": "OA",
+      "titulo": "Oxicorte: encender y apagar el soplete en el orden correcto",
+      "porQue": "El soplete de oxicorte mezcla oxígeno y un gas combustible. Si se enciende o apaga en el orden equivocado, si se usa un encendedor de bolsillo o si la llama se mete hacia adentro (retroceso de llama), puede producirse una explosión en el soplete, las mangueras o incluso el cilindro.",
+      "checklist": [
+        "Seguir la secuencia de encendido y apagado del fabricante y del procedimiento; encender con chispero, nunca con encendedor ni fósforos.",
+        "Presiones de trabajo reguladas según la boquilla; boquilla limpia y apretada.",
+        "Ante un silbido, chasquidos o llama que se mete en el soplete: cerrar las válvulas de inmediato según el procedimiento y no reutilizar hasta revisar."
+      ],
+      "normativa": "DS 594 (prevención de incendios y Art. 53); DS 43/2015 (gases comprimidos); manual del fabricante del equipo de oxicorte.",
+      "reglaOro": "Trabajo en caliente solo con el área preparada y extintor a mano.",
+      "preguntaCierre": "¿Qué válvula se cierra primero al apagar el soplete según nuestro procedimiento?"
+    },
+    {
+      "id": 459,
+      "codigo": "OA-64",
+      "especialidad": "OA",
+      "titulo": "Mangueras, reguladores y válvulas antirretorno",
+      "porQue": "Una fuga de gas combustible en una manguera puede acumularse y encenderse con la primera chispa, y una fuga de oxígeno hace que la ropa arda con violencia. Las válvulas antirretorno y los arrestallamas impiden que una llama o una mezcla de gases viaje hacia el cilindro. Sin ellos, un retroceso de llama puede terminar en explosión.",
+      "checklist": [
+        "Mangueras sin cortes, quemaduras ni uniones improvisadas; abrazaderas adecuadas y del color que corresponde a cada gas.",
+        "Válvulas antirretorno o arrestallamas instaladas según el procedimiento; reguladores en buen estado y con manómetros legibles.",
+        "Buscar fugas con agua jabonosa con el sistema presurizado, nunca con llama; mangueras protegidas de chispas, escoria y tránsito de vehículos."
+      ],
+      "normativa": "DS 43/2015 (almacenamiento y uso de gases comprimidos); DS 594 (prevención de incendios); manual del fabricante.",
+      "reglaOro": "Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.",
+      "preguntaCierre": "¿Tiene hoy nuestro equipo de oxicorte las válvulas antirretorno instaladas?"
+    },
+    {
+      "id": 460,
+      "codigo": "OA-65",
+      "especialidad": "OA",
+      "titulo": "Transporte de cilindros en camioneta: verticales, amarrados y ventilados",
+      "porQue": "Llevar cilindros de oxígeno y acetileno o gas en la camioneta es común, pero un cilindro acostado y suelto puede golpearse, romper su válvula y convertirse en un proyectil, y uno que fuga dentro de una cabina cerrada puede explotar o asfixiar. El traslado también es parte del trabajo de oxicorte.",
+      "checklist": [
+        "Cilindros siempre en la caja abierta, de pie, amarrados y con el capuchón puesto; nunca dentro de la cabina.",
+        "Reguladores retirados y válvulas cerradas durante el traslado; cilindros vacíos marcados y tratados igual que los llenos.",
+        "Carga y descarga sin arrastrar ni dejar caer los cilindros; nunca levantarlos de la válvula o el capuchón."
+      ],
+      "normativa": "DS 43/2015 (sustancias peligrosas, gases comprimidos); Ley 18.290 de Tránsito (carga de vehículos); DS 594.",
+      "reglaOro": "Toda carga trasladada va asegurada y verificada antes de entrar a la vía.",
+      "preguntaCierre": "¿Cómo viajaron hoy los cilindros en la camioneta?"
+    },
+    {
+      "id": 461,
+      "codigo": "OA-66",
+      "especialidad": "OA",
+      "titulo": "Nunca cortar un tambor 'vacío' sin limpiarlo",
+      "porQue": "Un tambor, un estanque o una tubería que contuvo petróleo, bencina, aceite o emulsión nunca está realmente vacío: quedan vapores que explotan con la llama del soplete o el arco de la soldadora. Muchos soldadores han muerto cortando 'un tambor viejo' para hacer un basurero o un brasero.",
+      "checklist": [
+        "No soldar ni cortar envases, estanques o cañerías que contuvieron combustibles o químicos sin un procedimiento de limpieza y la autorización del supervisor.",
+        "Ante la duda sobre lo que contuvo una pieza, tratarla como si tuviera combustible.",
+        "Abrir tapas y venteos antes de cualquier trabajo en caliente autorizado y mantener extintor y vigía."
+      ],
+      "normativa": "DS 594 (prevención y protección contra incendios); DS 160/2008 (combustibles líquidos); procedimiento de trabajo en caliente del proyecto.",
+      "reglaOro": "Trabajo en caliente solo con el área preparada y extintor a mano.",
+      "preguntaCierre": "¿Qué tambor o estanque de la faena nunca debería tocar un soplete?"
+    },
+    {
+      "id": 462,
+      "codigo": "OA-67",
+      "especialidad": "OA",
+      "titulo": "Galvanizados y piezas pintadas: humos que enferman",
+      "porQue": "Las defensas camineras, postes y barandas suelen estar galvanizados, y muchas piezas viejas tienen pinturas que pueden contener plomo. Al cortarlos o soldarlos se liberan humos de zinc o de plomo. El zinc produce la 'fiebre del soldador' (escalofríos y malestar como una gripe) y el plomo se acumula en el cuerpo.",
+      "checklist": [
+        "Identificar si la pieza está galvanizada o pintada antes de soldar o cortar; retirar el recubrimiento en la zona de trabajo según el procedimiento.",
+        "Trabajar al aire libre o con extracción, con el viento a la espalda, y con la protección respiratoria indicada.",
+        "Informar síntomas como fiebre, escalofríos o dolor de cabeza después de soldar; no comer ni fumar sin lavarse las manos."
+      ],
+      "normativa": "DS 594 (límites permisibles de agentes químicos, incluido el plomo, y Art. 53); Ley 16.744 (enfermedades profesionales).",
+      "reglaOro": "Protección personal adecuada al riesgo higiénico de la tarea.",
+      "preguntaCierre": "¿La pieza que soldaremos hoy está galvanizada o pintada?"
+    },
+    {
+      "id": 463,
+      "codigo": "OA-68",
+      "especialidad": "OA",
+      "titulo": "Soldar en altura: las chispas caen lejos y el arnés también se quema",
+      "porQue": "Al soldar en barandas de puentes, estructuras o andamios, las chispas y la escoria caen varios metros y pueden quemar a quien está abajo o encender pasto, madera o combustibles. Además, una chispa puede dañar la cola del arnés o la cuerda de la línea de vida, justo lo que te sostiene.",
+      "checklist": [
+        "Zona inferior demarcada y despejada de personas y material combustible; mantas ignífugas para contener chispas cuando sea posible.",
+        "Arnés y cola protegidos de las chispas y del calor; anclaje lejos del punto de soldadura y del recorrido de la escoria.",
+        "Revisar la cola, la cuerda y el arnés después del trabajo; cualquier quemadura los deja fuera de uso."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 594 (prevención de incendios y Art. 53); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Hasta dónde llegan hoy las chispas de la soldadura en el puente y qué hay abajo?"
+    },
+    {
+      "id": 464,
+      "codigo": "OA-69",
+      "especialidad": "OA",
+      "titulo": "Oxígeno en lugares cerrados: el aire que hace arder todo",
+      "porQue": "Una fuga de oxígeno en una cámara, una alcantarilla o una zanja aumenta el oxígeno del aire. En esa atmósfera, la ropa, el pelo y la grasa se encienden con una chispa y arden con violencia. Por eso el oxígeno nunca se usa para 'ventilar' ni para limpiar la ropa del polvo.",
+      "checklist": [
+        "Nunca usar oxígeno para ventilar un espacio, sacudir la ropa o refrescarse; cilindros y reguladores fuera de los espacios cerrados.",
+        "Cerrar las válvulas de los cilindros al terminar o al hacer pausas, no solo la del soplete.",
+        "En espacios cerrados, medir oxígeno y gases antes y durante el trabajo en caliente, con el permiso correspondiente."
+      ],
+      "normativa": "Guías técnicas del ISP sobre espacios confinados; DS 43/2015 (gases comprimidos); DS 594 (prevención de incendios).",
+      "reglaOro": "Ningún ingreso a espacios confinados sin medición, permiso y vigía.",
+      "preguntaCierre": "¿Por qué nunca debemos sacudirnos la ropa con el oxígeno del equipo de corte?"
+    },
+    {
+      "id": 465,
+      "codigo": "OA-70",
+      "especialidad": "OA",
+      "titulo": "Piezas calientes después de soldar o cortar: el metal no avisa",
+      "porQue": "Una pieza recién soldada o cortada se ve igual que una fría, pero puede estar a cientos de grados durante varios minutos. Quien la toma sin guantes, se apoya en ella o la deja sobre pasto seco o madera, se quema o inicia un incendio. También queda caliente la escoria que cae al suelo.",
+      "checklist": [
+        "Marcar las piezas calientes (por ejemplo con tiza) y avisar a la cuadrilla.",
+        "Manipularlas con guantes de cuero o herramientas; dejarlas enfriar sobre superficies no combustibles.",
+        "Revisar el área al terminar por escoria o restos calientes en pasto, madera o cerca de combustibles."
+      ],
+      "normativa": "DS 594 (prevención de incendios y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Trabajo en caliente solo con el área preparada y extintor a mano.",
+      "preguntaCierre": "¿Cómo avisamos hoy cuáles piezas todavía están calientes?"
+    },
+    {
+      "id": 466,
+      "codigo": "OA-71",
+      "especialidad": "OA",
+      "titulo": "Motosoldadora en terreno: combustible, escape y conexión a tierra",
+      "porQue": "En la ruta se suele soldar con motosoldadoras que generan su propia electricidad con un motor a combustión. Suman los riesgos de un generador (combustible, gases de escape, ruido) a los de la soldadura. Mal ubicada, puede llenar de monóxido una zanja o una cámara donde está el soldador.",
+      "checklist": [
+        "Equipo en terreno firme, ventilado y fuera de zanjas, cámaras y espacios cerrados; escape dirigido lejos de las personas.",
+        "Carga de combustible con el motor detenido y frío, lejos del punto de soldadura, con extintor a mano.",
+        "Conexión a tierra y cables según el fabricante; protección auditiva cerca del equipo."
+      ],
+      "normativa": "DS 594 (monóxido de carbono, ruido y prevención de incendios); DS 160/2008 (combustibles líquidos); DS 8/2019 (instalaciones eléctricas).",
+      "reglaOro": "Herramientas en buen estado y usadas para su fin.",
+      "preguntaCierre": "¿Dónde dejamos hoy la motosoldadora y hacia dónde va su escape?"
+    },
+    {
+      "id": 467,
+      "codigo": "OA-72",
+      "especialidad": "OA",
+      "titulo": "Picado de escoria y esmerilado de cordones: lo que salta a los ojos",
+      "porQue": "Después de soldar se pica la escoria con piqueta y se esmerila el cordón. La escoria salta caliente y en trozos filosos, y muchos soldadores levantan la careta justo para ver mejor. Las lesiones en los ojos por escoria y partículas de esmerilado son de las más frecuentes del oficio.",
+      "checklist": [
+        "Lentes de seguridad siempre bajo la careta; careta facial al esmerilar.",
+        "Picar la escoria con golpes dirigidos lejos de la cara y de los compañeros; esperar que se enfríe un poco.",
+        "Esmeril con guarda y disco adecuado; chispas dirigidas lejos de personas, cilindros y material combustible."
+      ],
+      "normativa": "DS 594 Arts. 38 y 53 (protecciones y EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Quién levantó ayer la careta para picar la escoria sin lentes debajo?"
     },
     {
       "id": 5,
@@ -5098,7 +5293,7 @@
     },
     {
       "id": "soldadura",
-      "nombre": "Soldadura y corte con esmeril",
+      "nombre": "Soldadura, oxicorte y esmeril",
       "palabras": [
         "soldadura",
         "esmeril",
@@ -5108,7 +5303,17 @@
         "disco",
         "caliente",
         "humo",
-        "vigía"
+        "vigía",
+        "soldadora",
+        "soplete",
+        "arco",
+        "escoria",
+        "careta",
+        "acetileno",
+        "oxígeno",
+        "galvanizado",
+        "motosoldadora",
+        "electrodo"
       ],
       "especialidades": [
         "OA",

@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 6** · 2026-10-07 — 12 charlas nuevas sobre excavación manual (pala, chuzo, calicatas, hoyos, servicios enterrados, estructuras existentes, hallazgos) y la actividad 'Excavación manual' (308 charlas, 40 actividades).
+**Versión 7** · 2026-10-08 — 13 charlas nuevas de soldadura y oxicorte (soldadora al arco, radiación del arco, EPP del soldador, encendido del soplete, válvulas antirretorno, transporte de cilindros, tambores con combustible, galvanizados, altura, oxígeno en lugares cerrados, piezas calientes, motosoldadora y escoria) (321 charlas, 40 actividades).
 
 ## Índice por especialidad
 
@@ -111,7 +111,7 @@
 - **AS-30** Borrado de demarcación antigua: agua a presión y partículas proyectadas
 - **AS-31** Pintura de demarcación y microesferas: almacenar, mezclar y cargar
 
-### Obras de Arte / Manuales (59)
+### Obras de Arte / Manuales (72)
 
 - **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
@@ -172,6 +172,19 @@
 - **OA-57** La zanja 'poco profunda' también atrapa
 - **OA-58** Hallazgos durante la excavación: detener, proteger y avisar
 - **OA-59** Relleno y compactación manual con pisón
+- **OA-60** Soldadora al arco: cables, pinza y masa en buen estado
+- **OA-61** Radiación del arco: los ojos del soldador y de los que miran
+- **OA-62** El equipo del soldador: careta, coleto y ropa que no se derrite
+- **OA-63** Oxicorte: encender y apagar el soplete en el orden correcto
+- **OA-64** Mangueras, reguladores y válvulas antirretorno
+- **OA-65** Transporte de cilindros en camioneta: verticales, amarrados y ventilados
+- **OA-66** Nunca cortar un tambor 'vacío' sin limpiarlo
+- **OA-67** Galvanizados y piezas pintadas: humos que enferman
+- **OA-68** Soldar en altura: las chispas caen lejos y el arnés también se quema
+- **OA-69** Oxígeno en lugares cerrados: el aire que hace arder todo
+- **OA-70** Piezas calientes después de soldar o cortar: el metal no avisa
+- **OA-71** Motosoldadora en terreno: combustible, escape y conexión a tierra
+- **OA-72** Picado de escoria y esmerilado de cordones: lo que salta a los ojos
 
 ### Riesgos Transversales / Clima (41)
 
@@ -363,15 +376,15 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Carpintería y herramientas de corte | CA-01, CA-04, CA-02, CA-15, CA-25, CA-03 |
 | Enfierradura | EN-04, EN-08, EN-06, EN-11, EN-18, EN-20 |
 | Hormigonado | HO-23, HO-08, OA-07, HO-02, HO-09, HO-14 |
-| Trabajo en altura | EN-17, CA-20, OA-05, CA-09, CA-10, HO-08 |
+| Trabajo en altura | EN-17, CA-20, OA-05, OA-68, CA-09, CA-10 |
 | Izaje de cargas | MP-05, OA-24, EN-08, MP-11, MP-17, OA-02 |
-| Soldadura y corte con esmeril | OA-15, EN-12, OA-35, OA-36, OA-04, OA-16 |
+| Soldadura, oxicorte y esmeril | OA-15, OA-72, EN-12, OA-16, OA-35, OA-62 |
 | Obras en cauces y esteros | OA-34, OA-33, OA-09, OA-32, MP-25, OA-42 |
-| Roce y despeje de faja | OA-25, MT-11, MT-26, MT-27, MT-28, OA-02 |
+| Roce y despeje de faja | OA-25, MT-11, MT-26, MT-27, MT-28, OA-71 |
 | Defensas camineras y barreras | OA-12, OA-27, OA-28, OA-26, CT-27, CT-09 |
 | Mantención y combustible de equipos | MP-31, MP-09, MP-29, MP-02, MP-10, MP-30 |
 | Traslado de maquinaria | MP-11, MP-26, MP-27, MP-28, MP-23, CT-28 |
-| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-16, OA-31, OA-38 |
+| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-69, OA-16, OA-31 |
 | Lluvia, frío, viento o neblina | RT-01, RT-30, HO-17, RT-05, RT-32, RT-31 |
 | Calor y sol | AS-20, RT-03, RT-33, RT-34, AS-09, AS-16 |
 | Ingreso de personal nuevo o subcontratistas | RT-18, RT-22, RT-26, RT-27, RT-29, RT-28 |
@@ -3059,6 +3072,227 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: Código del Trabajo Arts. 211-F a 211-J; DS 594 (vibraciones y Art. 53); NCh 349.
 
 **Pregunta de cierre:** ¿Cómo nos vamos a turnar hoy para apisonar el relleno?
+
+### OA-60 · Soldadora al arco: cables, pinza y masa en buen estado
+
+**El porqué (mensaje clave):** La soldadora al arco trabaja con corriente suficiente para electrocutar, sobre todo cuando el soldador está mojado, sudado o apoyado en metal. Un cable con la aislación rota, una pinza porta electrodo dañada o una masa mal conectada hacen que la corriente busque otro camino, y ese camino puede ser el cuerpo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar antes de partir cables, conectores, pinza porta electrodo y masa: sin aislación rota, sin uniones con cinta y bien apretados.
+2. [ ] Masa conectada lo más cerca posible de la soldadura, sobre metal limpio; nunca usar estructuras, cañerías o barandas como camino de retorno.
+3. [ ] No soldar con guantes o ropa mojados ni parado en agua; cambiar el electrodo con guantes secos y la pinza apoyada en un lugar aislado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramientas en buen estado y usadas para su fin.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (instalaciones eléctricas, SEC); DS 594 Arts. 38 y 53; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Dónde conectamos hoy la masa y qué pasa si la ponemos en la baranda?
+
+### OA-61 · Radiación del arco: los ojos del soldador y de los que miran
+
+**El porqué (mensaje clave):** El arco eléctrico emite luz ultravioleta e infrarroja muy intensa. Mirarlo unos segundos sin protección produce la 'quemadura de arco' en los ojos: horas después aparecen dolor intenso, lagrimeo y sensación de arena. Les pasa sobre todo a los ayudantes y a los que pasan cerca, porque el soldador tiene su careta.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Biombos o pantallas alrededor del punto de soldadura cuando hay personas trabajando o transitando cerca.
+2. [ ] Ayudantes con lentes con filtro adecuado o careta; nunca mirar el arco 'solo un momento' sin protección.
+3. [ ] Avisar antes de encender el arco ('¡ojo, arco!') y no soldar de frente a la ruta o a los paleteros.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 (radiaciones no ionizantes y Art. 53 sobre EPP); DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién va a estar cerca del soldador hoy y qué protección usa para los ojos?
+
+### OA-62 · El equipo del soldador: careta, coleto y ropa que no se derrite
+
+**El porqué (mensaje clave):** Las chispas y la escoria a más de mil grados encuentran cualquier abertura: un bolsillo abierto, una basta doblada o una polera sintética que se derrite sobre la piel. El equipo del soldador no es un uniforme: cada pieza protege de una forma distinta de quemadura.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Careta con el filtro del tono adecuado al proceso (o fotosensible funcionando), coleto, polainas y guantes de cuero de caña larga.
+2. [ ] Ropa de algodón o ignífuga, sin grasa ni combustible, con bolsillos cerrados y pantalón por fuera del calzado; nada de ropa sintética.
+3. [ ] Lentes de seguridad bajo la careta para el picado de escoria y el esmerilado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 Art. 53 (EPP); DS 18/1982 (certificación de calidad de EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué parte de tu ropa podría encenderse con una chispa hoy?
+
+### OA-63 · Oxicorte: encender y apagar el soplete en el orden correcto
+
+**El porqué (mensaje clave):** El soplete de oxicorte mezcla oxígeno y un gas combustible. Si se enciende o apaga en el orden equivocado, si se usa un encendedor de bolsillo o si la llama se mete hacia adentro (retroceso de llama), puede producirse una explosión en el soplete, las mangueras o incluso el cilindro.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Seguir la secuencia de encendido y apagado del fabricante y del procedimiento; encender con chispero, nunca con encendedor ni fósforos.
+2. [ ] Presiones de trabajo reguladas según la boquilla; boquilla limpia y apretada.
+3. [ ] Ante un silbido, chasquidos o llama que se mete en el soplete: cerrar las válvulas de inmediato según el procedimiento y no reutilizar hasta revisar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en caliente solo con el área preparada y extintor a mano.
+- Normativa: DS 594 (prevención de incendios y Art. 53); DS 43/2015 (gases comprimidos); manual del fabricante del equipo de oxicorte.
+
+**Pregunta de cierre:** ¿Qué válvula se cierra primero al apagar el soplete según nuestro procedimiento?
+
+### OA-64 · Mangueras, reguladores y válvulas antirretorno
+
+**El porqué (mensaje clave):** Una fuga de gas combustible en una manguera puede acumularse y encenderse con la primera chispa, y una fuga de oxígeno hace que la ropa arda con violencia. Las válvulas antirretorno y los arrestallamas impiden que una llama o una mezcla de gases viaje hacia el cilindro. Sin ellos, un retroceso de llama puede terminar en explosión.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Mangueras sin cortes, quemaduras ni uniones improvisadas; abrazaderas adecuadas y del color que corresponde a cada gas.
+2. [ ] Válvulas antirretorno o arrestallamas instaladas según el procedimiento; reguladores en buen estado y con manómetros legibles.
+3. [ ] Buscar fugas con agua jabonosa con el sistema presurizado, nunca con llama; mangueras protegidas de chispas, escoria y tránsito de vehículos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.
+- Normativa: DS 43/2015 (almacenamiento y uso de gases comprimidos); DS 594 (prevención de incendios); manual del fabricante.
+
+**Pregunta de cierre:** ¿Tiene hoy nuestro equipo de oxicorte las válvulas antirretorno instaladas?
+
+### OA-65 · Transporte de cilindros en camioneta: verticales, amarrados y ventilados
+
+**El porqué (mensaje clave):** Llevar cilindros de oxígeno y acetileno o gas en la camioneta es común, pero un cilindro acostado y suelto puede golpearse, romper su válvula y convertirse en un proyectil, y uno que fuga dentro de una cabina cerrada puede explotar o asfixiar. El traslado también es parte del trabajo de oxicorte.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Cilindros siempre en la caja abierta, de pie, amarrados y con el capuchón puesto; nunca dentro de la cabina.
+2. [ ] Reguladores retirados y válvulas cerradas durante el traslado; cilindros vacíos marcados y tratados igual que los llenos.
+3. [ ] Carga y descarga sin arrastrar ni dejar caer los cilindros; nunca levantarlos de la válvula o el capuchón.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Toda carga trasladada va asegurada y verificada antes de entrar a la vía.
+- Normativa: DS 43/2015 (sustancias peligrosas, gases comprimidos); Ley 18.290 de Tránsito (carga de vehículos); DS 594.
+
+**Pregunta de cierre:** ¿Cómo viajaron hoy los cilindros en la camioneta?
+
+### OA-66 · Nunca cortar un tambor 'vacío' sin limpiarlo
+
+**El porqué (mensaje clave):** Un tambor, un estanque o una tubería que contuvo petróleo, bencina, aceite o emulsión nunca está realmente vacío: quedan vapores que explotan con la llama del soplete o el arco de la soldadora. Muchos soldadores han muerto cortando 'un tambor viejo' para hacer un basurero o un brasero.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] No soldar ni cortar envases, estanques o cañerías que contuvieron combustibles o químicos sin un procedimiento de limpieza y la autorización del supervisor.
+2. [ ] Ante la duda sobre lo que contuvo una pieza, tratarla como si tuviera combustible.
+3. [ ] Abrir tapas y venteos antes de cualquier trabajo en caliente autorizado y mantener extintor y vigía.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en caliente solo con el área preparada y extintor a mano.
+- Normativa: DS 594 (prevención y protección contra incendios); DS 160/2008 (combustibles líquidos); procedimiento de trabajo en caliente del proyecto.
+
+**Pregunta de cierre:** ¿Qué tambor o estanque de la faena nunca debería tocar un soplete?
+
+### OA-67 · Galvanizados y piezas pintadas: humos que enferman
+
+**El porqué (mensaje clave):** Las defensas camineras, postes y barandas suelen estar galvanizados, y muchas piezas viejas tienen pinturas que pueden contener plomo. Al cortarlos o soldarlos se liberan humos de zinc o de plomo. El zinc produce la 'fiebre del soldador' (escalofríos y malestar como una gripe) y el plomo se acumula en el cuerpo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar si la pieza está galvanizada o pintada antes de soldar o cortar; retirar el recubrimiento en la zona de trabajo según el procedimiento.
+2. [ ] Trabajar al aire libre o con extracción, con el viento a la espalda, y con la protección respiratoria indicada.
+3. [ ] Informar síntomas como fiebre, escalofríos o dolor de cabeza después de soldar; no comer ni fumar sin lavarse las manos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Protección personal adecuada al riesgo higiénico de la tarea.
+- Normativa: DS 594 (límites permisibles de agentes químicos, incluido el plomo, y Art. 53); Ley 16.744 (enfermedades profesionales).
+
+**Pregunta de cierre:** ¿La pieza que soldaremos hoy está galvanizada o pintada?
+
+### OA-68 · Soldar en altura: las chispas caen lejos y el arnés también se quema
+
+**El porqué (mensaje clave):** Al soldar en barandas de puentes, estructuras o andamios, las chispas y la escoria caen varios metros y pueden quemar a quien está abajo o encender pasto, madera o combustibles. Además, una chispa puede dañar la cola del arnés o la cuerda de la línea de vida, justo lo que te sostiene.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Zona inferior demarcada y despejada de personas y material combustible; mantas ignífugas para contener chispas cuando sea posible.
+2. [ ] Arnés y cola protegidos de las chispas y del calor; anclaje lejos del punto de soldadura y del recorrido de la escoria.
+3. [ ] Revisar la cola, la cuerda y el arnés después del trabajo; cualquier quemadura los deja fuera de uso.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); DS 594 (prevención de incendios y Art. 53); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Hasta dónde llegan hoy las chispas de la soldadura en el puente y qué hay abajo?
+
+### OA-69 · Oxígeno en lugares cerrados: el aire que hace arder todo
+
+**El porqué (mensaje clave):** Una fuga de oxígeno en una cámara, una alcantarilla o una zanja aumenta el oxígeno del aire. En esa atmósfera, la ropa, el pelo y la grasa se encienden con una chispa y arden con violencia. Por eso el oxígeno nunca se usa para 'ventilar' ni para limpiar la ropa del polvo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Nunca usar oxígeno para ventilar un espacio, sacudir la ropa o refrescarse; cilindros y reguladores fuera de los espacios cerrados.
+2. [ ] Cerrar las válvulas de los cilindros al terminar o al hacer pausas, no solo la del soplete.
+3. [ ] En espacios cerrados, medir oxígeno y gases antes y durante el trabajo en caliente, con el permiso correspondiente.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ningún ingreso a espacios confinados sin medición, permiso y vigía.
+- Normativa: Guías técnicas del ISP sobre espacios confinados; DS 43/2015 (gases comprimidos); DS 594 (prevención de incendios).
+
+**Pregunta de cierre:** ¿Por qué nunca debemos sacudirnos la ropa con el oxígeno del equipo de corte?
+
+### OA-70 · Piezas calientes después de soldar o cortar: el metal no avisa
+
+**El porqué (mensaje clave):** Una pieza recién soldada o cortada se ve igual que una fría, pero puede estar a cientos de grados durante varios minutos. Quien la toma sin guantes, se apoya en ella o la deja sobre pasto seco o madera, se quema o inicia un incendio. También queda caliente la escoria que cae al suelo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Marcar las piezas calientes (por ejemplo con tiza) y avisar a la cuadrilla.
+2. [ ] Manipularlas con guantes de cuero o herramientas; dejarlas enfriar sobre superficies no combustibles.
+3. [ ] Revisar el área al terminar por escoria o restos calientes en pasto, madera o cerca de combustibles.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en caliente solo con el área preparada y extintor a mano.
+- Normativa: DS 594 (prevención de incendios y Art. 53 sobre EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cómo avisamos hoy cuáles piezas todavía están calientes?
+
+### OA-71 · Motosoldadora en terreno: combustible, escape y conexión a tierra
+
+**El porqué (mensaje clave):** En la ruta se suele soldar con motosoldadoras que generan su propia electricidad con un motor a combustión. Suman los riesgos de un generador (combustible, gases de escape, ruido) a los de la soldadura. Mal ubicada, puede llenar de monóxido una zanja o una cámara donde está el soldador.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Equipo en terreno firme, ventilado y fuera de zanjas, cámaras y espacios cerrados; escape dirigido lejos de las personas.
+2. [ ] Carga de combustible con el motor detenido y frío, lejos del punto de soldadura, con extintor a mano.
+3. [ ] Conexión a tierra y cables según el fabricante; protección auditiva cerca del equipo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramientas en buen estado y usadas para su fin.
+- Normativa: DS 594 (monóxido de carbono, ruido y prevención de incendios); DS 160/2008 (combustibles líquidos); DS 8/2019 (instalaciones eléctricas).
+
+**Pregunta de cierre:** ¿Dónde dejamos hoy la motosoldadora y hacia dónde va su escape?
+
+### OA-72 · Picado de escoria y esmerilado de cordones: lo que salta a los ojos
+
+**El porqué (mensaje clave):** Después de soldar se pica la escoria con piqueta y se esmerila el cordón. La escoria salta caliente y en trozos filosos, y muchos soldadores levantan la careta justo para ver mejor. Las lesiones en los ojos por escoria y partículas de esmerilado son de las más frecuentes del oficio.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Lentes de seguridad siempre bajo la careta; careta facial al esmerilar.
+2. [ ] Picar la escoria con golpes dirigidos lejos de la cara y de los compañeros; esperar que se enfríe un poco.
+3. [ ] Esmeril con guarda y disco adecuado; chispas dirigidas lejos de personas, cilindros y material combustible.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 Arts. 38 y 53 (protecciones y EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién levantó ayer la careta para picar la escoria sin lentes debajo?
 
 ## Riesgos Transversales / Clima
 
