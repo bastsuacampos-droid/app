@@ -2,11 +2,11 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 10** · 2026-10-08 — 13 charlas nuevas de izaje de cargas (plan de izaje, tabla de carga, peso y centro de gravedad, eslingas y ángulos, inspección de accesorios, grilletes y ganchos, estabilización de la grúa, rigger, cuerdas guía, viento, excavadora habilitada, camión pluma y depositar la carga) (360 charlas, 40 actividades).
+**Versión 11** · 2026-10-08 — 21 charlas nuevas para completar la cobertura del proyecto: ART y permiso de trabajo, investigación de accidentes, Comité Paritario, Reglamento Interno, ruido, sílice, protección respiratoria, manos, protección ocular, exámenes ocupacionales, salud mental, RCP y primeros auxilios, celular, trabajo aislado, línea de fuego, herramientas neumáticas, minicargador, amarre de carga y tubos de asbesto-cemento. Dos actividades nuevas para el recomendador (381 charlas, 42 actividades).
 
 ## Índice por especialidad
 
-### Maquinaria Pesada (44)
+### Maquinaria Pesada (47)
 
 - **MP-01** Si no te veo, no existes: zona de exclusión alrededor de la maquinaria
 - **MP-02** Check pre-uso: 10 minutos que salvan el día
@@ -52,6 +52,9 @@
 - **MP-42** Excavadora como grúa: solo si está habilitada para izar
 - **MP-43** Camión pluma: estabilizadores, control remoto y líneas eléctricas
 - **MP-44** Depositar la carga: el izaje termina cuando la carga está estable
+- **MP-45** Compresor y herramientas neumáticas: el aire también golpea
+- **MP-46** Minicargador: compacto, rápido y con puntos ciegos
+- **MP-47** Amarre de carga en camiones: cadenas, eslingas y tensores
 
 ### Control de Tránsito / Paleteros (34)
 
@@ -124,7 +127,7 @@
 - **AS-30** Borrado de demarcación antigua: agua a presión y partículas proyectadas
 - **AS-31** Pintura de demarcación y microesferas: almacenar, mezclar y cargar
 
-### Obras de Arte / Manuales (85)
+### Obras de Arte / Manuales (86)
 
 - **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
@@ -211,8 +214,9 @@
 - **OA-83** Guantes dieléctricos y herramientas aisladas: revisarlos antes de usar
 - **OA-84** Trabajos eléctricos con lluvia: cuándo parar
 - **OA-85** Conexiones improvisadas: nunca 'colgarse' de la red
+- **OA-86** Tubos antiguos de asbesto-cemento: no cortarlos ni romperlos sin procedimiento
 
-### Riesgos Transversales / Clima (54)
+### Riesgos Transversales / Clima (71)
 
 - **RT-01** Lluvia, barro y neblina: el clima del sur cambia las reglas
 - **RT-02** Fatiga y tolerancia cero: llegar despierto y sobrio
@@ -268,6 +272,23 @@
 - **RT-52** Caída de objetos desde altura: lo que se suelta arriba golpea abajo
 - **RT-53** Aptitud para trabajar en altura: no todos los días ni todas las personas
 - **RT-54** Techos de contenedores y bodegas: altura en la instalación de faena
+- **RT-55** Análisis de riesgo de la tarea (ART): pensar antes de hacer
+- **RT-56** Permiso de trabajo: cuándo se necesita y qué asegura
+- **RT-57** Investigar un accidente: para aprender, no para culpar
+- **RT-58** Comité Paritario y Departamento de Prevención: para qué existen
+- **RT-59** Reglamento Interno: derechos y obligaciones de todos
+- **RT-60** Ruido: la sordera que no tiene vuelta atrás
+- **RT-61** Sílice: el polvo que se queda en los pulmones
+- **RT-62** Protección respiratoria: el respirador que no sella no protege
+- **RT-63** Manos: las herramientas que no se reemplazan
+- **RT-64** Lentes y protección facial: usarlos de verdad
+- **RT-65** Exámenes ocupacionales: por qué te los piden
+- **RT-66** Estrés y salud mental: hablarlo también es seguridad
+- **RT-67** RCP y desfibrilador: los minutos que salvan una vida
+- **RT-68** Quemaduras, fracturas y golpes en la cabeza: primeros auxilios básicos
+- **RT-69** Celular en terreno: la distracción que llevamos en el bolsillo
+- **RT-70** Trabajo aislado: nadie solo y sin comunicación
+- **RT-71** La línea de fuego: dónde no ponerse
 
 ### Carpintería (25)
 
@@ -407,7 +428,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Tránsito de camiones y caminos internos | CT-04, CT-29, MT-06, CT-30, MP-04, MP-22 |
 | Pavimentación asfáltica | AS-03, AS-09, AS-25, AS-01, AS-06, AS-08 |
 | Riego de liga e imprimación | AS-02, AS-28, AS-27, AS-26, EN-09, AS-11 |
-| Fresado, bacheo y corte de pavimento | AS-22, AS-05, AS-10, AS-12, OA-11, AS-03 |
+| Fresado, bacheo y corte de pavimento | AS-22, AS-05, AS-10, RT-61, AS-12, OA-11 |
 | Demarcación vial | AS-14, AS-30, AS-31, AS-29, CT-26, AS-19 |
 | Instalación de desvío y paleteros | CT-23, CT-02, CT-06, CT-07, CT-08, CT-15 |
 | Trabajo junto a la vía con tránsito | CT-21, CT-24, CT-26, CT-06, CT-09, CT-13 |
@@ -436,9 +457,11 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Trabajos eléctricos, tableros y generadores | OA-80, OA-76, RT-36, OA-45, OA-04, OA-78 |
 | Trabajo nocturno | CT-10, CT-03, HO-16, CT-28, RT-02, RT-38 |
 | Conducción de camionetas y transporte de personal | RT-16, CT-30, CT-31, CT-04, CT-15, CT-09 |
-| Emergencias y primeros auxilios | RT-39, RT-40, CT-17, RT-11, CT-19, RT-08 |
+| Emergencias y primeros auxilios | RT-39, RT-40, CT-17, RT-11, RT-68, CT-19 |
 | Vecinos, escolares y terceros | CT-05, CT-34, CT-32, CT-33, OA-41, OA-38 |
 | Sustancias químicas y combustibles | RT-19, AS-21, RT-37, AS-02, AS-19, AS-14 |
+| Planificación de la tarea y gestión preventiva | RT-57, RT-22, RT-58, RT-55, RT-56, RT-59 |
+| Salud ocupacional: ruido, polvo y químicos | AS-05, AS-22, HO-20, RT-61, RT-60, RT-62 |
 
 ## Plan sugerido (4 semanas, lunes a sábado)
 
@@ -1218,6 +1241,57 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: Estándar de izaje del proyecto; DS 594 Art. 38; Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** ¿Dónde vamos a apoyar la carga hoy y cómo sacaremos las eslingas?
+
+### MP-45 · Compresor y herramientas neumáticas: el aire también golpea
+
+**El porqué (mensaje clave):** El aire comprimido mueve martillos neumáticos, perforadoras y sopladores. Una manguera que se suelta latiguea con fuerza, un acople mal conectado salta, y el aire dirigido a la piel puede entrar al cuerpo y causar lesiones graves. Además, los martillos neumáticos producen ruido y vibración muy altos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Mangueras y acoples revisados, con seguros o cadenas antilatigazo en las uniones; cerrar el aire antes de conectar o desconectar.
+2. [ ] Nunca usar aire comprimido para limpiar la ropa, el cuerpo o para jugar; ni apuntar la manguera a una persona.
+3. [ ] Protección auditiva, ocular y guantes antivibración al usar martillos; rotar al operador.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse en la línea de fuego de una energía acumulada.
+- Normativa: DS 594 Arts. 38 y 53 (protecciones, EPP), límites de ruido y vibraciones; Protocolo PREXOR; manual del fabricante.
+
+**Pregunta de cierre:** ¿Tienen hoy las uniones de las mangueras de aire su seguro antilatigazo?
+
+### MP-46 · Minicargador: compacto, rápido y con puntos ciegos
+
+**El porqué (mensaje clave):** El minicargador se usa para limpiar, mover material y cargar en espacios reducidos. Gira sobre sí mismo en un instante, tiene poca visibilidad hacia atrás y sus brazos pueden aplastar a quien se apoya en ellos o al operador si sale de la cabina con el balde levantado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Operador autorizado, con cinturón y barra de seguridad baja; nadie a pie en su radio de giro.
+2. [ ] Nunca salir de la cabina ni meterse bajo los brazos con el balde levantado sin el soporte de seguridad puesto.
+3. [ ] Prohibido transportar personas en el balde o usarlo como plataforma de trabajo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.
+- Normativa: Ley 18.290 (licencia clase D); DS 594 Art. 38; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Dónde está el soporte de seguridad de los brazos del minicargador?
+
+### MP-47 · Amarre de carga en camiones: cadenas, eslingas y tensores
+
+**El porqué (mensaje clave):** Tubos, fierros, prefabricados o equipos mal amarrados se desplazan en una frenada o una curva y pueden caer a la ruta o aplastar la cabina. Además, al soltar las amarras de una carga que se movió, la carga puede caer sobre quien está junto al camión.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Amarras (cadenas, eslingas o tensores) en buen estado y de la capacidad adecuada, en cantidad suficiente y en los puntos de amarre del camión.
+2. [ ] Revisar las amarras antes de salir y después de los primeros kilómetros o de un tramo de ripio.
+3. [ ] Antes de soltar las amarras, revisar si la carga se desplazó; soltar parado a un costado, fuera de la caída de la carga.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Toda carga trasladada va asegurada y verificada antes de entrar a la vía.
+- Normativa: Ley 18.290 de Tránsito (carga de vehículos asegurada); Ley 16.744 Art. 68; procedimiento del proyecto.
+
+**Pregunta de cierre:** ¿Quién revisó hoy las amarras del camión antes de salir a la ruta?
 
 ## Control de Tránsito / Paleteros
 
@@ -3775,6 +3849,23 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Hay alguna conexión improvisada en nuestro frente que debamos retirar hoy?
 
+### OA-86 · Tubos antiguos de asbesto-cemento: no cortarlos ni romperlos sin procedimiento
+
+**El porqué (mensaje clave):** En alcantarillas y redes antiguas pueden aparecer tubos o planchas de asbesto-cemento. Mientras están enteros son poco peligrosos, pero al cortarlos, romperlos o esmerilarlos liberan fibras que, respiradas, pueden causar enfermedades graves años después. Su retiro tiene reglas especiales.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Ante tubos o planchas que podrían ser de asbesto-cemento: no cortar, romper ni esmerilar; detener la tarea y avisar al supervisor.
+2. [ ] El retiro lo hace solo personal o empresa especializada, según el procedimiento y lo que exija la autoridad sanitaria.
+3. [ ] Los restos se manejan como residuo peligroso, mojados y embolsados, nunca mezclados con escombros comunes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ante la duda, el trabajo se detiene.
+- Normativa: DS 656/2000 (prohibición del uso de asbesto); DS 594 (límites permisibles); DS 148/2003 (residuos peligrosos); autoridad sanitaria (SEREMI de Salud).
+
+**Pregunta de cierre:** Si al demoler la alcantarilla vieja aparece un tubo gris y liviano, ¿qué hacemos?
+
 ## Riesgos Transversales / Clima
 
 ### RT-01 · Lluvia, barro y neblina: el clima del sur cambia las reglas
@@ -4694,6 +4785,295 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: NCh 1258; NCh 351 (escalas portátiles); DS 594; Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** ¿Quién subió el último mes al techo de un contenedor y cómo lo hizo?
+
+### RT-55 · Análisis de riesgo de la tarea (ART): pensar antes de hacer
+
+**El porqué (mensaje clave):** La mayoría de los accidentes ocurren en tareas que 'siempre hacemos así'. El análisis de riesgo de la tarea obliga a detenerse unos minutos antes de empezar para revisar paso a paso qué puede salir mal y cómo evitarlo. No es un papel para la carpeta: es la conversación que evita el accidente.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de iniciar, la cuadrilla revisa en terreno los pasos de la tarea, sus peligros y las medidas de control, y firma el ART.
+2. [ ] Si cambia algo (el lugar, el equipo, el clima, una persona), se detiene y se actualiza el análisis.
+3. [ ] Todos pueden aportar un riesgo que no se consideró; el capataz lo agrega antes de seguir.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Planificar la tarea: cada persona sabe qué hace y dónde está.
+- Normativa: DS 44/2024 (identificación de peligros y evaluación de riesgos); Ley 16.744 Art. 68; procedimientos del proyecto.
+
+**Pregunta de cierre:** ¿Qué riesgo de la tarea de hoy no estaba en el ART de ayer?
+
+### RT-56 · Permiso de trabajo: cuándo se necesita y qué asegura
+
+**El porqué (mensaje clave):** Algunas tareas son tan peligrosas que no basta con saber hacerlas: trabajo en caliente, en altura, en espacios confinados, eléctricos o izajes críticos. El permiso de trabajo asegura que alguien con autoridad revisó las condiciones, que las medidas están instaladas y que todos saben qué hacer si algo falla.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Conocer qué tareas del frente requieren permiso según el procedimiento del proyecto.
+2. [ ] El permiso se revisa en terreno, con las medidas ya instaladas, y queda visible en el lugar mientras dura la tarea.
+3. [ ] Si las condiciones cambian o termina el turno, el permiso se cierra o se renueva; nunca se 'hereda' un permiso de otro día.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal autorizado realiza tareas críticas.
+- Normativa: DS 44/2024 (gestión preventiva); Ley 16.744 Art. 68; procedimiento de permisos de trabajo del proyecto.
+
+**Pregunta de cierre:** ¿Qué tarea de esta semana necesita permiso de trabajo y quién lo firma?
+
+### RT-57 · Investigar un accidente: para aprender, no para culpar
+
+**El porqué (mensaje clave):** Después de un accidente o un casi accidente, la pregunta no es '¿quién tuvo la culpa?', sino '¿qué falló y cómo evitamos que se repita?'. Si las personas temen ser castigadas, ocultan información y el mismo accidente vuelve a ocurrir. Contar lo que pasó con honestidad protege a los compañeros.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Ante un accidente grave o fatal: suspender la faena afectada, proteger el lugar y avisar de inmediato al supervisor, que informa a las autoridades que corresponde.
+2. [ ] Participar en la investigación contando lo que se vio y se hizo, sin modificar el lugar antes de que se revise.
+3. [ ] Conocer y aplicar las medidas que salen de la investigación; se comparten en la charla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo accidente e incidente se informa el mismo día.
+- Normativa: Ley 16.744 (Art. 76, denuncia y aviso de accidentes graves y fatales); DS 44/2024 (investigación de accidentes); instrucciones de la SUSESO.
+
+**Pregunta de cierre:** ¿Qué aprendimos del último incidente del proyecto y qué cambiamos?
+
+### RT-58 · Comité Paritario y Departamento de Prevención: para qué existen
+
+**El porqué (mensaje clave):** En el proyecto existen un Comité Paritario, con representantes de los trabajadores y de la empresa, y un Departamento de Prevención de Riesgos. Ambos tienen la misión de detectar peligros, investigar accidentes y proponer mejoras. Conocerlos y acudir a ellos es una forma de participar en tu propia seguridad.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Saber quiénes son los representantes de los trabajadores en el Comité Paritario y cómo contactarlos.
+2. [ ] Informar al Comité o a Prevención las condiciones inseguras que no se resuelven en el frente.
+3. [ ] Participar en las elecciones del Comité y en las inspecciones o capacitaciones que organice.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si no es seguro, no se hace: cualquier persona puede detener el trabajo.
+- Normativa: Ley 16.744 Art. 66 (Comités Paritarios y Departamentos de Prevención de Riesgos); DS 44/2024 (que reemplazó a los DS 40 y DS 54).
+
+**Pregunta de cierre:** ¿Quién nos representa en el Comité Paritario de la obra?
+
+### RT-59 · Reglamento Interno: derechos y obligaciones de todos
+
+**El porqué (mensaje clave):** El Reglamento Interno de Orden, Higiene y Seguridad establece las reglas de la obra: qué EPP es obligatorio, qué está prohibido, cómo se reportan los accidentes y cuáles son las sanciones. También establece tus derechos. Lo recibiste al ingresar, pero pocas personas lo leen.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Conocer las principales obligaciones y prohibiciones de seguridad del Reglamento Interno.
+2. [ ] Saber dónde está disponible y pedir que se explique lo que no se entiende.
+3. [ ] Recordar que el Reglamento también protege: canales de denuncia, derecho a saber y a interrumpir labores ante riesgo grave.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Las reglas de seguridad son para todos.
+- Normativa: Ley 16.744 Art. 67 (reglamento de higiene y seguridad); Código del Trabajo Arts. 153 y siguientes; Ley 21.643.
+
+**Pregunta de cierre:** ¿Qué dice el Reglamento Interno sobre el uso del celular en terreno?
+
+### RT-60 · Ruido: la sordera que no tiene vuelta atrás
+
+**El porqué (mensaje clave):** Rodillos, martillos, cortadoras, compresores y hincadoras producen ruido sobre los límites seguros. El daño al oído es lento, no duele y es permanente: un día cuesta seguir una conversación o se escucha un pitido constante. Los tapones sirven solo si están bien puestos todo el tiempo de exposición.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar protección auditiva en zonas señalizadas y junto a equipos ruidosos: si hay que gritar para hablar a un metro, se necesita protección.
+2. [ ] Tapones insertados correctamente (con las manos limpias, tirando la oreja hacia arriba y atrás) o fonos bien ajustados.
+3. [ ] No retirarlos 'un ratito' en medio del ruido; cumplir los exámenes de audiometría cuando corresponda.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Protección personal adecuada al riesgo higiénico de la tarea.
+- Normativa: DS 594 (límites de exposición a ruido); Protocolo de Exposición Ocupacional a Ruido (PREXOR, MINSAL); DS 18/1982.
+
+**Pregunta de cierre:** Muéstrame cómo te pones los tapones para que queden bien insertados.
+
+### RT-61 · Sílice: el polvo que se queda en los pulmones
+
+**El porqué (mensaje clave):** Cortar hormigón, perforar roca, picar pavimento o barrer en seco libera sílice cristalina, un polvo tan fino que no se ve y llega al fondo de los pulmones. Con los años produce silicosis, una enfermedad sin cura. La forma más efectiva de evitarla es no levantar el polvo, no solo usar mascarilla.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Trabajar en húmedo o con aspiración al cortar, perforar, picar o barrer materiales con sílice.
+2. [ ] Respirador adecuado y bien ajustado cuando el polvo no se puede controlar en la fuente.
+3. [ ] No limpiar la ropa ni el cuerpo con aire comprimido ni sacudiéndola; lavarse antes de comer.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Protección personal adecuada al riesgo higiénico de la tarea.
+- Normativa: DS 594 (límite permisible de sílice); Plan Nacional de Erradicación de la Silicosis (PLANESI); Ley 16.744 (enfermedades profesionales).
+
+**Pregunta de cierre:** ¿Qué tarea de hoy levanta polvo y cómo lo vamos a controlar con agua?
+
+### RT-62 · Protección respiratoria: el respirador que no sella no protege
+
+**El porqué (mensaje clave):** Una mascarilla puesta sobre la barba, con el elástico suelto o con filtros vencidos deja pasar el aire contaminado por los bordes. Cada contaminante necesita un tipo de respirador y filtro distinto: el que sirve para polvo no protege de vapores de solventes.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar el respirador y el filtro indicados para el contaminante (polvo, humos, vapores) según la HDS o el procedimiento.
+2. [ ] Hacer la prueba de sello cada vez que se pone: tapar y aspirar o soplar para comprobar que no entra aire por los bordes; cara afeitada en la zona de sello.
+3. [ ] Cambiar los filtros según el fabricante o cuando cueste respirar; guardar el respirador limpio y protegido.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 Art. 53 (EPP) y límites permisibles; DS 18/1982 (certificación de EPP); guía del ISP para la selección y control de protección respiratoria.
+
+**Pregunta de cierre:** ¿Cómo haces la prueba de sello de tu respirador?
+
+### RT-63 · Manos: las herramientas que no se reemplazan
+
+**El porqué (mensaje clave):** Las manos son la parte del cuerpo que más se lesiona en la construcción: cortes, aplastamientos, atrapamientos y quemaduras. Casi siempre la lesión ocurre por poner la mano donde no debía estar: entre dos piezas, bajo una carga, cerca de un disco o de una parte que se mueve.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de tocar, mirar dónde quedan los dedos: lejos de puntos de pellizco, bordes, discos y piezas en movimiento.
+2. [ ] Usar el guante adecuado a la tarea (corte, impacto, químicos, calor) y cambiarlo cuando esté roto.
+3. [ ] Usar herramientas para guiar, alinear o empujar piezas en lugar de las manos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse en puntos de atrapamiento.
+- Normativa: DS 594 Arts. 38 y 53; DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿En qué momento de la tarea de hoy tus manos estarán más cerca del peligro?
+
+### RT-64 · Lentes y protección facial: usarlos de verdad
+
+**El porqué (mensaje clave):** Una esquirla de esmeril, una gota de cemento o una salpicadura de asfalto bastan para dañar un ojo para siempre. Muchas lesiones ocurren porque los lentes estaban en el casco, colgando del cuello o tan rayados que nadie los usaba. Un lente que no está puesto no protege.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Lentes de seguridad puestos en todo el frente; careta facial además de los lentes al esmerilar, cortar o picar.
+2. [ ] Lentes limpios, sin rayas y con antiempañante si hace frío; pedir reposición cuando estén dañados.
+3. [ ] Ante una partícula o un químico en el ojo: no frotarlo y lavar con abundante agua limpia; avisar y consultar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde están ahora mismo tus lentes de seguridad?
+
+### RT-65 · Exámenes ocupacionales: por qué te los piden
+
+**El porqué (mensaje clave):** Los exámenes preocupacionales y de vigilancia (audiometría, radiografía de tórax, altura física, entre otros) no son un trámite: detectan a tiempo el daño que causan el ruido, la sílice u otros agentes, y verifican que estés en condiciones para tareas de riesgo. Si no te los haces, una enfermedad puede avanzar sin que nadie lo note.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Asistir a los exámenes ocupacionales cuando se programen, en el organismo administrador.
+2. [ ] Conocer y preguntar los resultados; informar síntomas como pitido en los oídos, tos persistente o mareos.
+3. [ ] No asignarse tareas que requieren examen vigente (altura, conducción, equipos) si no se tiene.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuidar el cuerpo es parte de la tarea.
+- Normativa: Ley 16.744 (enfermedades profesionales); protocolos de vigilancia del MINSAL (PREXOR, PLANESI); evaluaciones del organismo administrador.
+
+**Pregunta de cierre:** ¿Cuándo fue tu último examen de vigilancia y conoces el resultado?
+
+### RT-66 · Estrés y salud mental: hablarlo también es seguridad
+
+**El porqué (mensaje clave):** Las deudas, los problemas familiares, la distancia de la casa o la presión del trabajo afectan la concentración tanto como el cansancio. Una persona agobiada se distrae, se arriesga más o se aísla. Hablarlo a tiempo, con un compañero, el capataz o los canales de apoyo, también previene accidentes.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Fijarse en los compañeros: cambios de ánimo, aislamiento, irritabilidad o descuido poco habitual; preguntar con respeto.
+2. [ ] Conocer los canales de apoyo disponibles (organismo administrador, programas de la empresa) y cómo acceder a ellos.
+3. [ ] Si no estás en condiciones de concentrarte en una tarea crítica, avisar al capataz para reasignarla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuídate y cuida a tu compañero.
+- Normativa: Protocolo de Vigilancia de Riesgos Psicosociales en el Trabajo (MINSAL); Ley 21.643 (Ley Karin); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿A quién podrías acudir si un problema personal no te deja concentrarte?
+
+### RT-67 · RCP y desfibrilador: los minutos que salvan una vida
+
+**El porqué (mensaje clave):** Cuando el corazón se detiene, por un infarto, una descarga eléctrica o un golpe, cada minuto sin reanimación reduce mucho la posibilidad de sobrevivir. En una obra lineal la ambulancia puede tardar. Saber iniciar la reanimación cardiopulmonar y usar un desfibrilador, si lo hay, puede salvar a un compañero.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Si una persona no responde y no respira con normalidad: activar la emergencia y comenzar compresiones en el centro del pecho, fuertes y rápidas.
+2. [ ] Si hay desfibrilador (DEA), encenderlo y seguir sus instrucciones de voz; no tocar a la persona cuando lo indique.
+3. [ ] Saber quién de la cuadrilla tiene curso de primeros auxilios y dónde está el desfibrilador más cercano, si existe.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: Ley 16.744 Art. 68; DS 594 (primeros auxilios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Quién en la cuadrilla sabe hacer RCP y dónde está el desfibrilador más cercano?
+
+### RT-68 · Quemaduras, fracturas y golpes en la cabeza: primeros auxilios básicos
+
+**El porqué (mensaje clave):** En la obra pueden ocurrir quemaduras con asfalto o soldadura, fracturas por caídas o aplastamientos y golpes en la cabeza. Lo que se hace en los primeros minutos puede evitar que la lesión empeore. También es importante saber lo que no se debe hacer.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Quemaduras: enfriar con agua limpia al menos 20 minutos; no reventar ampollas ni aplicar pasta, aceite ni hielo; no retirar asfalto pegado.
+2. [ ] Fracturas: no mover la zona lesionada ni intentar enderezarla; inmovilizar solo si se sabe hacerlo y activar la emergencia.
+3. [ ] Golpe en la cabeza o caída de altura: no mover a la persona salvo peligro inmediato, mantenerla abrigada y vigilar si se adormece, vomita o se confunde.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: Ley 16.744 Art. 68; DS 594 (elementos de primeros auxilios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** Si alguien se cae del andamio y no se mueve, ¿qué hacemos y qué no hacemos?
+
+### RT-69 · Celular en terreno: la distracción que llevamos en el bolsillo
+
+**El porqué (mensaje clave):** Mirar el celular mientras se camina por la faena, se opera un equipo o se hace de paletero quita la atención justo en el segundo en que un camión retrocede o un vehículo no frena. Las distracciones con el celular están detrás de muchos atropellos, tropiezos y choques.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] No usar el celular al operar equipos, conducir, hacer de paletero o señalero, ni al caminar por zonas con maquinaria.
+2. [ ] Para contestar, detenerse en un lugar seguro, fuera de la circulación de equipos y vehículos.
+3. [ ] Usar la radio para las comunicaciones de trabajo según el procedimiento.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Caminar por vías seguras, sin correr ni distraerse.
+- Normativa: Ley 18.290 de Tránsito (prohibición de usar el celular al conducir); Reglamento Interno del proyecto; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿En qué momentos del día te cuesta más dejar el celular guardado?
+
+### RT-70 · Trabajo aislado: nadie solo y sin comunicación
+
+**El porqué (mensaje clave):** En una ruta larga hay tareas que se hacen lejos del resto de la cuadrilla: un paletero en el extremo del desvío, un operador en un empréstito o un vigilante de noche. Si esa persona sufre un accidente o se descompensa, puede pasar mucho tiempo antes de que alguien lo note.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Toda persona que trabaja alejada tiene radio o celular con señal y un contacto que la llama a intervalos definidos.
+2. [ ] Evitar que una sola persona haga tareas de alto riesgo (espacios confinados, altura, trabajos eléctricos) sin compañía.
+3. [ ] Al terminar la jornada, el capataz confirma que todos salieron del frente antes de retirarse.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Quién trabaja hoy más alejado de la cuadrilla y cada cuánto lo llamamos?
+
+### RT-71 · La línea de fuego: dónde no ponerse
+
+**El porqué (mensaje clave):** La línea de fuego es cualquier lugar donde una energía puede alcanzarte si algo falla: la trayectoria de un equipo que retrocede, bajo una carga, frente a una manguera presurizada, junto a un cable que se tensa o entre dos piezas que se mueven. Muchos accidentes graves se evitan solo con elegir bien dónde pararse.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de iniciar, identificar las líneas de fuego de la tarea: movimiento, presión, tensión, caída y atrapamiento.
+2. [ ] Ubicarse fuera de ellas y usar herramientas, cuerdas o controles a distancia en lugar del cuerpo.
+3. [ ] Avisar a un compañero cuando lo veas en la línea de fuego; ante la duda, detener la maniobra.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse en la línea de fuego de una energía acumulada.
+- Normativa: Ley 16.744 Art. 68; DS 594; DS 44/2024 (identificación de peligros).
+
+**Pregunta de cierre:** ¿Cuál es la línea de fuego más peligrosa de la tarea de hoy?
 
 ## Carpintería
 
