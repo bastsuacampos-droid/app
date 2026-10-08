@@ -128,6 +128,25 @@ Para compilar una versión firmada a mano:
 FIRMA_KEYSTORE=/ruta/charlas-ruta-itata.jks FIRMA_CLAVE='…' ./gradlew assembleRelease
 ```
 
+## Trabajar desde tu computador con Claude Code
+
+1. Instala Claude Code y entra con tu cuenta de claude.ai (`claude auth login`).
+2. Clona el repositorio y abre Claude Code en la carpeta:
+
+   ```bash
+   git clone https://github.com/bastsuacampos-droid/app.git charlas-ruta-itata
+   cd charlas-ruta-itata
+   claude
+   ```
+
+   Claude Code lee `CLAUDE.md`, que explica la estructura, cómo editar las charlas y cómo
+   publicar versiones.
+3. Para seguir una conversación iniciada en la nube con todo su historial, desde esa
+   carpeta: `claude --teleport` (elige la sesión) o `claude --teleport <id-de-sesión>`.
+4. Para compilar en tu equipo necesitas JDK 17+ y el Android SDK con la plataforma 35 (lo
+   instala Android Studio). Indica la ruta del SDK en `local.properties`:
+   `sdk.dir=/ruta/al/Android/Sdk`.
+
 ## Compilar
 
 Requiere JDK 17+ y el Android SDK (API 35). Abrir el proyecto en Android
