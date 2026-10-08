@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 12,
+  "version": 13,
   "fecha": "2026-10-08",
-  "novedades": "45 charlas nuevas en todas las especialidades: grúa horquilla, martillo hidráulico, rescate de máquinas atascadas, plantas de áridos y de asfalto, animales y ciclistas en el desvío, camiones forestales, radio entre paleteros, sellado de grietas, pavimentación nocturna, anclajes químicos, gatas hidráulicas, cuasi accidentes, bloqueo de energías, infarto y ACV, simulacros, protección de la maternidad, tablero de puente, estabilización con cal y más. Tres actividades nuevas para el recomendador (426 charlas, 45 actividades).",
+  "novedades": "10 charlas nuevas de excavación manual: entibación, entrar y salir de la zanja, perfilar junto a la excavadora, excavación abierta al final del día, compañero atrapado en un derrumbe, revisión diaria de la zanja, talud y escalonado, pasarelas para cruzar, excavar junto a la calzada y suelos de relleno o saturados (436 charlas, 45 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -3350,6 +3350,156 @@
       "normativa": "Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6; Ley 18.290 de Tránsito.",
       "reglaOro": "La zona de obras protege también a quien pasa por ella.",
       "preguntaCierre": "¿Dónde espera hoy el bus la gente del paradero que estamos interviniendo?"
+    },
+    {
+      "id": 488,
+      "codigo": "OA-93",
+      "especialidad": "OA",
+      "titulo": "Entibación: se instala antes de entrar y se retira desde afuera",
+      "porQue": "La entibación (paneles, tablones y codales) sostiene las paredes de la zanja, pero solo protege si está puesta antes de que alguien baje. Muchos derrumbes ocurren al instalarla desde adentro, al sacar un codal para pasar un tubo o al retirarla al final, cuando la zanja se considera 'terminada'.",
+      "checklist": [
+        "Instalar la entibación desde el borde o avanzando bajo la parte ya protegida; nadie trabaja delante de ella.",
+        "No retirar ni mover codales para pasar tubos o herramientas sin autorización y sin un reemplazo provisorio.",
+        "Retirar la entibación de abajo hacia arriba a medida que se rellena, operando desde afuera o desde la zona ya rellena."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68; procedimiento de excavaciones del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Quién autoriza sacar un codal y qué se pone en su lugar?"
+    },
+    {
+      "id": 489,
+      "codigo": "OA-94",
+      "especialidad": "OA",
+      "titulo": "Entrar y salir de la zanja: escala, no paredes ni baldes",
+      "porQue": "Salir de una zanja trepando por la pared o colgándose del balde de la excavadora derrumba el borde y causa caídas. En una emergencia, si la escala está lejos, los segundos que tardas en llegar a ella pueden ser los que faltan.",
+      "checklist": [
+        "Escala amarrada, apoyada en fondo firme y que sobresalga del borde, a poca distancia de cada persona que trabaja dentro.",
+        "Subir y bajar de frente a la escala, con las manos libres; las herramientas se pasan o se bajan con cuerda.",
+        "Prohibido usar el balde, los codales o la tubería como escala."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); NCh 351 (escalas portátiles); Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Cuántos pasos hay desde donde trabajas hasta la escala más cercana?"
+    },
+    {
+      "id": 490,
+      "codigo": "OA-95",
+      "especialidad": "OA",
+      "titulo": "Perfilar a mano junto a la excavadora",
+      "porQue": "Es común que la excavadora haga el grueso y un trabajador perfile el fondo o los bordes a mano. Ese trabajador queda en el radio de giro del balde, bajo la carga y dentro de los puntos ciegos del operador, en el peor lugar de la obra.",
+      "checklist": [
+        "Nadie dentro de la zanja ni en el radio de giro mientras la excavadora excava o carga; se trabaja por turnos.",
+        "La máquina se detiene, apoya el balde en el suelo y el operador lo confirma antes de que el trabajador entre a perfilar.",
+        "Un señalero o el capataz coordina con el operador por radio o señales acordadas."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594 Art. 38; Ley 16.744 Art. 68.",
+      "reglaOro": "Contacto visual con el operador antes de acercarse a cualquier equipo.",
+      "preguntaCierre": "¿Qué señal da el operador para que puedas bajar a perfilar?"
+    },
+    {
+      "id": 491,
+      "codigo": "OA-96",
+      "especialidad": "OA",
+      "titulo": "Excavación abierta al final del día: cerrarla y señalizarla",
+      "porQue": "Una zanja o pozo que queda abierto de noche es una trampa para vecinos, niños, animales, ciclistas y para el mismo turno al día siguiente. Con lluvia se llena de agua y no se ve su profundidad.",
+      "checklist": [
+        "Antes de irse, cerrar la excavación con barrera rígida o malla y señalización, o taparla con planchas resistentes y fijas.",
+        "Luces o elementos reflectantes si queda cerca de la ruta, un acceso o un camino de vecinos.",
+        "Pozos pequeños para postes o calicatas se tapan o se rellenan; nunca quedan abiertos sin protección."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.",
+      "reglaOro": "La zona de obras protege también a quien pasa por ella.",
+      "preguntaCierre": "¿Qué excavación del frente queda abierta esta noche y cómo la protegemos?"
+    },
+    {
+      "id": 492,
+      "codigo": "OA-97",
+      "especialidad": "OA",
+      "titulo": "Compañero atrapado en un derrumbe: qué hacer y qué no",
+      "porQue": "Cuando alguien queda atrapado, el instinto es saltar a sacarlo con las manos o con la máquina. Así suele ocurrir el segundo derrumbe, que atrapa también al rescatista, y la excavadora puede herir a quien está bajo la tierra.",
+      "checklist": [
+        "Dar la alarma, llamar a emergencias (bomberos 132, SAMU 131) y avisar al supervisor; detener la maquinaria cercana.",
+        "Nadie entra a la zanja hasta que las paredes estén aseguradas; mantener la carga y las personas lejos del borde.",
+        "Liberar la cabeza y el pecho primero, con herramientas manuales y nunca con la máquina sobre el atrapado."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 44/2024 (preparación y respuesta ante emergencias); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "Si se derrumba la zanja con alguien adentro, ¿qué es lo primero que hacemos y qué no hacemos?"
+    },
+    {
+      "id": 493,
+      "codigo": "OA-98",
+      "especialidad": "OA",
+      "titulo": "Revisar la zanja cada día: grietas, agua y vibraciones",
+      "porQue": "Las paredes cambian de un día para otro: la lluvia, una helada, el paso de camiones o una filtración las debilitan sin que se note a simple vista. Las grietas paralelas al borde, la tierra que se desprende o el agua que aflora avisan antes del derrumbe.",
+      "checklist": [
+        "Una persona competente revisa paredes, bordes, entibación y fondo antes de que alguien entre, al inicio del turno.",
+        "Revisar otra vez después de lluvia, sismo, paso de maquinaria pesada o cualquier cambio en el terreno.",
+        "Si aparecen grietas, desprendimientos o agua, nadie entra hasta corregir; se informa al supervisor."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; procedimiento de excavaciones del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Qué señal en la pared te haría salir de inmediato de la zanja?"
+    },
+    {
+      "id": 494,
+      "codigo": "OA-99",
+      "especialidad": "OA",
+      "titulo": "Talud y escalonado: darle a la pared la inclinación que necesita",
+      "porQue": "Cuando no se entiba, la pared de la excavación debe tener la inclinación o los escalones que el tipo de suelo necesita. Una pared vertical en suelo blando se sostiene un rato y luego cae entera. Ahorrar espacio cortando vertical es la causa más común de derrumbe.",
+      "checklist": [
+        "Excavar con el talud o los escalones que define el procedimiento para el suelo del lugar; si hay duda, consultar antes de seguir.",
+        "Si no hay espacio para dar talud, se entiba; nunca se trabaja con pared vertical por falta de espacio.",
+        "Cuidar que el talud no se socave al fondo con agua ni con el pisón."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; especificaciones técnicas del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Qué talud corresponde al suelo de la zanja de hoy?"
+    },
+    {
+      "id": 495,
+      "codigo": "OA-100",
+      "especialidad": "OA",
+      "titulo": "Cruzar la zanja: pasarelas, no saltos",
+      "porQue": "Para llegar al otro lado de una zanja se tienden tablones sueltos o se salta. El borde cede con el peso, el tablón se corre y la caída es al fondo de la excavación, a veces sobre tubos, fierros o herramientas.",
+      "checklist": [
+        "Pasarela firme, ancha y con barandas para cruzar zanjas, fijada en ambos lados y lejos del borde debilitado.",
+        "Para vecinos o accesos a predios, pasarela o planchas resistentes señalizadas y revisadas a diario.",
+        "Prohibido saltar la zanja o cruzar por los codales o la tubería."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Orden y aseo: un frente ordenado es un frente seguro.",
+      "preguntaCierre": "¿Por dónde cruzan hoy los vecinos la zanja frente a su acceso?"
+    },
+    {
+      "id": 496,
+      "codigo": "OA-101",
+      "especialidad": "OA",
+      "titulo": "Excavar a mano junto a la calzada con tránsito",
+      "porQue": "Las excavaciones manuales en la berma, para cunetas, postes, cámaras o tuberías, ponen al trabajador agachado y de espaldas al tránsito. La vibración de los camiones afecta el borde de la excavación, y el material excavado puede invadir la pista.",
+      "checklist": [
+        "Señalizar la zona de trabajo y cerrar la pista o la berma según el Cap. 5 antes de empezar a excavar.",
+        "Excavar mirando hacia el tránsito cuando sea posible, con un vigía si se trabaja muy cerca de la pista.",
+        "Material y herramientas del lado contrario a la calzada; revisar el borde después de que pasen camiones pesados."
+      ],
+      "normativa": "Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6; NCh 349 (seguridad en excavación).",
+      "reglaOro": "Tu integridad está primero: nadie enfrenta a un vehículo.",
+      "preguntaCierre": "¿Quién vigila el tránsito mientras excavamos agachados en la berma?"
+    },
+    {
+      "id": 497,
+      "codigo": "OA-102",
+      "especialidad": "OA",
+      "titulo": "Suelos de relleno, arena y barro: los más traicioneros",
+      "porQue": "No todos los suelos se comportan igual. Los rellenos antiguos, la arena seca o saturada y el barro de las lluvias se desmoronan con facilidad, aunque la zanja sea poco profunda. Donde ya se excavó antes (tuberías, cables o alcantarillas antiguas), el suelo está suelto.",
+      "checklist": [
+        "Identificar el tipo de suelo antes de excavar e informar al supervisor si cambia durante la excavación.",
+        "En relleno, arena o suelo saturado, aumentar el talud o entibar aunque la zanja sea baja.",
+        "Desviar el agua lejos del borde y no excavar en suelos saturados sin una evaluación previa."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; especificaciones técnicas del proyecto.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿El suelo de nuestra zanja es natural o es un relleno antiguo?"
     },
     {
       "id": 5,

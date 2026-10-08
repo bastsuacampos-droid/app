@@ -59,7 +59,8 @@ object Recomendador {
                 Recomendacion(charla, puntaje, charla.id in ocupadas)
             }
             .filter { it.puntaje > 0 }
-            .sortedWith(compareBy<Recomendacion> { it.ocupada }.thenByDescending { it.puntaje }.thenBy { it.charla.codigo })
+            .sortedWith(compareBy<Recomendacion> { it.ocupada }.thenByDescending { it.puntaje }
+                .thenBy { it.charla.codigo.substringBeforeLast('-') }.thenBy { it.charla.numero })
     }
 
     /** Charlas dictadas en [mes]; para recomendar sin un plan semanal. */

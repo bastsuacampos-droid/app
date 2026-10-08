@@ -17,7 +17,10 @@ data class Charla(
     val normativa: String,
     val reglaOro: String,
     val preguntaCierre: String,
-)
+) {
+    /** Número del código ("OA-07" → 7), para que OA-100 quede después de OA-99 y no de OA-10. */
+    val numero: Int get() = codigo.substringAfterLast('-').toIntOrNull() ?: Int.MAX_VALUE
+}
 
 /**
  * Actividad típica de la obra, para recomendar charlas acordes a lo que hará la cuadrilla.
