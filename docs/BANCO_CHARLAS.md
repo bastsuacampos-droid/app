@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 8** · 2026-10-08 — 13 charlas nuevas de trabajos eléctricos (personal autorizado, cinco reglas de oro, verificar ausencia de tensión, arco eléctrico, diferencial, puesta a tierra, líneas de la ruta, alumbrado en altura, cámaras eléctricas, rescate de un electrocutado, EPP dieléctrico, lluvia y conexiones improvisadas) (334 charlas, 40 actividades).
+**Versión 9** · 2026-10-08 — 13 charlas nuevas de trabajo en altura (ajuste e inspección del arnés, puntos de anclaje, distancia libre de caída, líneas de vida, rescate de un trabajador suspendido, andamios, aberturas, plataformas de tijera, caída de objetos, aptitud y techos de contenedores) (347 charlas, 40 actividades).
 
 ## Índice por especialidad
 
@@ -199,7 +199,7 @@
 - **OA-84** Trabajos eléctricos con lluvia: cuándo parar
 - **OA-85** Conexiones improvisadas: nunca 'colgarse' de la red
 
-### Riesgos Transversales / Clima (41)
+### Riesgos Transversales / Clima (54)
 
 - **RT-01** Lluvia, barro y neblina: el clima del sur cambia las reglas
 - **RT-02** Fatiga y tolerancia cero: llegar despierto y sobrio
@@ -242,6 +242,19 @@
 - **RT-39** Hemorragias y heridas: lo que se hace en los primeros minutos
 - **RT-40** Emergencia en una obra lineal: rescatar en el kilómetro 20
 - **RT-41** Uso del extintor: saberlo antes de necesitarlo
+- **RT-42** Arnés bien puesto: un arnés suelto no sostiene
+- **RT-43** Inspección del arnés y la cola antes de cada uso
+- **RT-44** Punto de anclaje: no todo lo que está firme resiste una caída
+- **RT-45** Distancia libre de caída: el absorbedor necesita espacio para frenar
+- **RT-46** Líneas de vida: instaladas por un competente y usadas como se diseñaron
+- **RT-47** Trabajador suspendido en el arnés: el rescate es urgente
+- **RT-48** Andamios: armados por competentes y con tarjeta
+- **RT-49** Usar bien el andamio: subir por dentro y no sobrecargarlo
+- **RT-50** Aberturas en losas, tableros y cámaras: tapadas, fijas y señalizadas
+- **RT-51** Plataformas elevadoras de tijera: la baranda no es una escalera
+- **RT-52** Caída de objetos desde altura: lo que se suelta arriba golpea abajo
+- **RT-53** Aptitud para trabajar en altura: no todos los días ni todas las personas
+- **RT-54** Techos de contenedores y bodegas: altura en la instalación de faena
 
 ### Carpintería (25)
 
@@ -389,7 +402,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Carpintería y herramientas de corte | CA-01, CA-04, CA-02, CA-15, CA-25, CA-03 |
 | Enfierradura | EN-04, EN-08, EN-06, EN-11, EN-18, EN-20 |
 | Hormigonado | HO-23, HO-08, OA-07, HO-02, HO-09, HO-14 |
-| Trabajo en altura | EN-17, CA-20, OA-05, OA-68, CA-09, CA-10 |
+| Trabajo en altura | RT-51, OA-05, CA-20, OA-68, RT-47, EN-17 |
 | Izaje de cargas | MP-05, OA-24, EN-08, MP-11, MP-17, OA-02 |
 | Soldadura, oxicorte y esmeril | OA-15, OA-72, EN-12, OA-16, OA-35, OA-62 |
 | Obras en cauces y esteros | OA-34, OA-33, OA-09, OA-32, MP-25, OA-42 |
@@ -404,9 +417,9 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Topografía y replanteo | MT-09, MT-32, MT-36, MT-08, MT-33, CT-20 |
 | Base y subbase granular | MT-34, MT-02, MP-21, MT-35, MT-18, AS-27 |
 | Cunetas, subdrenes y fosos | OA-46, OA-39, OA-41, OA-47, OA-40, OA-06 |
-| Puentes: vigas, tablero y pilotes | OA-43, CA-06, OA-42, OA-33, OA-44, EN-17 |
+| Puentes: vigas, tablero y pilotes | OA-43, CA-06, OA-42, RT-50, OA-33, OA-44 |
 | Señalización vertical, tachas y delineadores | CT-23, CT-07, CT-26, OA-13, CT-02, CT-03 |
-| Instalación de faena y bodegas | RT-35, RT-36, RT-37, RT-41, RT-23, AS-23 |
+| Instalación de faena y bodegas | RT-35, RT-54, RT-36, RT-37, RT-41, RT-23 |
 | Trabajos eléctricos, tableros y generadores | OA-80, OA-76, RT-36, OA-45, OA-04, OA-78 |
 | Trabajo nocturno | CT-10, CT-03, HO-16, CT-28, RT-02, RT-38 |
 | Conducción de camionetas y transporte de personal | RT-16, CT-30, CT-31, CT-04, CT-15, CT-09 |
@@ -4226,6 +4239,227 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 594 (prevención y protección contra incendios: extintores y capacitación); Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** Sin mirar, ¿dónde está el extintor más cercano a este punto?
+
+### RT-42 · Arnés bien puesto: un arnés suelto no sostiene
+
+**El porqué (mensaje clave):** Un arnés de cuerpo completo puesto suelto, con las perneras flojas o la argolla dorsal fuera de lugar, puede hacer que el trabajador se deslice o se lesione gravemente al detener una caída. El arnés solo protege si está ajustado al cuerpo de quien lo usa.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Argolla dorsal entre los omóplatos; correas de hombros y pecho ajustadas sin quedar sueltas.
+2. [ ] Perneras ajustadas de modo que quepa la mano plana entre la correa y la pierna, no el puño.
+3. [ ] Hebillas cerradas y correas sobrantes guardadas en sus pasadores para que no se enganchen.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (equipos de protección personal para trabajos con riesgo de caída); DS 594 Art. 53; DS 18/1982 (certificación de EPP).
+
+**Pregunta de cierre:** Revisemos el arnés del compañero de al lado: ¿le cabe el puño bajo la pernera?
+
+### RT-43 · Inspección del arnés y la cola antes de cada uso
+
+**El porqué (mensaje clave):** Un arnés con una costura cortada, una cinta quemada por una chispa o un mosquetón que no cierra solo se ve igual de lejos que uno nuevo. La única forma de saber si va a resistir una caída es revisarlo con las manos antes de subir, cada vez.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar cintas, costuras, argollas, hebillas, mosquetones (cierre y seguro automático) y el absorbedor de impacto.
+2. [ ] Retirar de uso cualquier equipo con cortes, quemaduras, desgaste, deformaciones, contacto con químicos o absorbedor abierto.
+3. [ ] Todo equipo que detuvo una caída queda fuera de servicio de inmediato, aunque se vea bien.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: NCh 1258 (equipos de protección contra caídas); DS 594 Art. 53; DS 18/1982; instrucciones del fabricante.
+
+**Pregunta de cierre:** ¿Qué revisas primero en tu arnés antes de subir?
+
+### RT-44 · Punto de anclaje: no todo lo que está firme resiste una caída
+
+**El porqué (mensaje clave):** Al detener una caída, el anclaje recibe una fuerza muy superior al peso del trabajador. Una baranda provisoria, una tubería, una barra de armadura o el canto de un moldaje pueden parecer firmes y ceder con el tirón. Elegir dónde anclarse es tan importante como usar el arnés.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Anclarse solo a puntos diseñados o evaluados por una persona competente para detener caídas.
+2. [ ] Nunca anclarse a barandas, tuberías, conduits, escalas, cables eléctricos ni a la misma pieza que se está izando.
+3. [ ] Anclaje ubicado preferentemente sobre la cabeza y en línea con el trabajo, para reducir la caída y el péndulo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); Ley 16.744 Art. 68; procedimiento de trabajo en altura del proyecto.
+
+**Pregunta de cierre:** ¿A qué nos vamos a anclar hoy y quién confirmó que resiste?
+
+### RT-45 · Distancia libre de caída: el absorbedor necesita espacio para frenar
+
+**El porqué (mensaje clave):** La cola con absorbedor no detiene la caída de inmediato: el trabajador cae el largo de la cola, más lo que se abre el absorbedor, más su propia estatura. Si debajo hay poco espacio, la persona golpea el suelo o una estructura antes de quedar detenida, aunque todo el equipo esté bien puesto.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Calcular la distancia libre necesaria según el fabricante antes de usar una cola con absorbedor a baja altura.
+2. [ ] Si no hay espacio suficiente, usar un retráctil, una cola más corta o un anclaje más alto, según lo defina el procedimiento.
+3. [ ] Revisar qué hay bajo el punto de trabajo: estructuras, barandas, fierros o maquinaria que se pueden golpear en la caída.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); instrucciones del fabricante del equipo; procedimiento de trabajo en altura del proyecto.
+
+**Pregunta de cierre:** Si caes desde donde trabajarás hoy, ¿alcanza el espacio para que el absorbedor te frene?
+
+### RT-46 · Líneas de vida: instaladas por un competente y usadas como se diseñaron
+
+**El porqué (mensaje clave):** Las líneas de vida horizontales permiten moverse por un borde estando siempre conectado. Pero una línea mal tensada, mal anclada o con más personas de las que soporta puede fallar justo cuando más se necesita, o dejar caer al trabajador más de lo esperado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Líneas de vida instaladas por personal competente según diseño, con anclajes extremos firmes y tensión correcta.
+2. [ ] Respetar el número máximo de personas conectadas por tramo indicado en el diseño.
+3. [ ] Mantenerse siempre conectado al desplazarse; usar doble cola para pasar de un tramo a otro sin desconectarse.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); Ley 16.744 Art. 68; diseño y procedimiento del proyecto.
+
+**Pregunta de cierre:** ¿Cuántas personas pueden ir conectadas hoy a la línea de vida del puente?
+
+### RT-47 · Trabajador suspendido en el arnés: el rescate es urgente
+
+**El porqué (mensaje clave):** Que el arnés detenga una caída no termina la emergencia. Una persona colgando inmóvil en su arnés puede sufrir en pocos minutos un trauma por suspensión: la sangre se acumula en las piernas y puede perder la conciencia. Por eso el rescate se planifica antes de subir, no cuando alguien ya está colgando.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Plan de rescate definido antes de trabajar en altura: quién rescata, con qué equipo y cómo se baja a la persona.
+2. [ ] Si quedas suspendido: mover las piernas y usar los estribos o cintas de alivio del arnés si los tiene.
+3. [ ] Activar la emergencia de inmediato; nadie sube a rescatar sin protección contra caídas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: NCh 1258 (protección contra caídas); Ley 16.744 Art. 68; plan de emergencias del proyecto.
+
+**Pregunta de cierre:** Si un compañero queda colgando hoy del arnés, ¿quién lo baja y con qué?
+
+### RT-48 · Andamios: armados por competentes y con tarjeta
+
+**El porqué (mensaje clave):** Un andamio mal armado, sin diagonales, con bases sobre tierra blanda o sin barandas completas puede desplomarse con varias personas arriba. Por eso los arma personal competente y cada día se verifica con una tarjeta que dice si se puede usar o no.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Andamio armado según el fabricante: bases y placas sobre terreno firme, nivelado, con diagonales y arriostrado o anclado cuando corresponde.
+2. [ ] Plataformas completas, barandas con pasamanos, intermedio y rodapié en todos los lados expuestos.
+3. [ ] Revisar la tarjeta antes de subir: verde se usa, roja no se usa; nadie modifica el andamio si no es competente.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ninguna estructura temporal se carga sin ser revisada y aprobada.
+- Normativa: NCh 2501 (andamios); NCh 1258; DS 594; instrucciones del fabricante.
+
+**Pregunta de cierre:** ¿Qué color tiene hoy la tarjeta del andamio y quién lo revisó?
+
+### RT-49 · Usar bien el andamio: subir por dentro y no sobrecargarlo
+
+**El porqué (mensaje clave):** Muchas caídas desde andamios ocurren al subir trepando por las crucetas o por fuera, al inclinarse sobre la baranda para alcanzar algo o al acumular materiales sobre la plataforma. El andamio está bien hecho, pero se usa mal.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Subir y bajar solo por la escalera interior o el acceso del andamio, con tres puntos de apoyo y las manos libres.
+2. [ ] No sobrecargar la plataforma con materiales; no pararse sobre barandas, baldes ni escalas encima del andamio.
+3. [ ] Andamios con ruedas: frenos puestos al trabajar y nadie arriba al moverlos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 2501 (andamios); NCh 1258; DS 594 Art. 53.
+
+**Pregunta de cierre:** ¿Por dónde subiste la última vez al andamio?
+
+### RT-50 · Aberturas en losas, tableros y cámaras: tapadas, fijas y señalizadas
+
+**El porqué (mensaje clave):** Un hoyo en la losa de un puente, una cámara sin tapa o una abertura cubierta con una plancha suelta pueden pasar desapercibidos, sobre todo cargando material o con poca luz. Quien pisa una tapa que se mueve cae por la abertura en un instante.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Toda abertura con tapa resistente y fija para que no se desplace, o con baranda perimetral.
+2. [ ] Tapas señalizadas con la leyenda o color que indica el procedimiento.
+3. [ ] Nadie retira una tapa sin autorización y sin proteger la abertura de otra forma mientras está abierta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ninguna abertura en el suelo sin protección.
+- Normativa: DS 594 (protección de aberturas en pisos); NCh 1258; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué abertura del frente está hoy tapada con algo que se podría mover?
+
+### RT-51 · Plataformas elevadoras de tijera: la baranda no es una escalera
+
+**El porqué (mensaje clave):** Las plataformas de tijera permiten trabajar en altura con barandas, pero se vuelven peligrosas cuando se usan sobre terreno inclinado, cuando el trabajador se sube a la baranda para alcanzar más alto o cuando se mueven con la plataforma levantada cerca de bordes y huecos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Operador capacitado y autorizado; check pre-uso de controles, parada de emergencia y barandas.
+2. [ ] Usar solo sobre terreno firme y nivelado, lejos de bordes, zanjas y líneas eléctricas; nunca subirse a la baranda.
+3. [ ] Usar arnés si el fabricante o el procedimiento lo exige; no exceder la carga indicada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal autorizado opera equipos.
+- Normativa: NCh 1258; DS 594 Art. 38; normativa eléctrica SEC (distancias a líneas); manual del fabricante.
+
+**Pregunta de cierre:** ¿El terreno donde subiremos la plataforma hoy está nivelado y firme?
+
+### RT-52 · Caída de objetos desde altura: lo que se suelta arriba golpea abajo
+
+**El porqué (mensaje clave):** Una llave, un perno o un trozo de madera que cae desde un andamio o un puente puede herir gravemente a quien está abajo, aunque use casco. Los objetos que caen desde altura son un riesgo para todos los que trabajan o pasan bajo la faena.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Herramientas amarradas o en cinturón portaherramientas; materiales sueltos en recipientes, nunca al borde.
+2. [ ] Rodapiés en plataformas y bordes; redes o mallas cuando hay trabajo o tránsito debajo.
+3. [ ] Zona inferior demarcada y sin personas mientras se trabaja arriba; nunca lanzar objetos hacia abajo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse bajo cargas o materiales que puedan caer.
+- Normativa: DS 594 (condiciones de seguridad y Art. 53); NCh 1258; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué herramienta que usarás hoy en altura todavía no tiene cordón?
+
+### RT-53 · Aptitud para trabajar en altura: no todos los días ni todas las personas
+
+**El porqué (mensaje clave):** Trabajar en altura exige estar en buenas condiciones físicas. El vértigo, la presión alta, algunos medicamentos, el alcohol de la noche anterior o haber dormido mal aumentan el riesgo de perder el equilibrio. El examen de altura física y el autoreporte del día existen para que nadie suba sin estar en condiciones.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Trabajadores en altura con examen de salud vigente para altura física y capacitación en protección contra caídas.
+2. [ ] Autoevaluación antes de subir: mareos, malestar, medicamentos, sueño; si no estás bien, avisa y no subas.
+3. [ ] Permiso de trabajo en altura cuando el procedimiento lo exige, con los riesgos y el plan de rescate revisados.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal autorizado realiza tareas críticas.
+- Normativa: Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); evaluaciones de salud ocupacional del organismo administrador; NCh 1258.
+
+**Pregunta de cierre:** ¿Quién tiene vigente su examen de altura física en la cuadrilla de hoy?
+
+### RT-54 · Techos de contenedores y bodegas: altura en la instalación de faena
+
+**El porqué (mensaje clave):** Subir al techo de un contenedor para instalar una antena, limpiar una canaleta o reparar una filtración parece una tarea menor y rápida. Pero son superficies resbaladizas, sin barandas y a más de dos metros, y muchas veces se sube con una escala mal apoyada. Las caídas desde techos de faena son más comunes de lo que parece.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Planificar la tarea como trabajo en altura: escala adecuada amarrada, punto de anclaje o protección perimetral.
+2. [ ] No subir con lluvia, escarcha o viento fuerte; no pisar planchas traslúcidas ni zonas dañadas.
+3. [ ] Siempre con un compañero abajo que sujete la escala y pueda pedir ayuda.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258; NCh 351 (escalas portátiles); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién subió el último mes al techo de un contenedor y cómo lo hizo?
 
 ## Carpintería
 
