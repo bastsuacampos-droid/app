@@ -2,11 +2,11 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 11** · 2026-10-08 — 21 charlas nuevas para completar la cobertura del proyecto: ART y permiso de trabajo, investigación de accidentes, Comité Paritario, Reglamento Interno, ruido, sílice, protección respiratoria, manos, protección ocular, exámenes ocupacionales, salud mental, RCP y primeros auxilios, celular, trabajo aislado, línea de fuego, herramientas neumáticas, minicargador, amarre de carga y tubos de asbesto-cemento. Dos actividades nuevas para el recomendador (381 charlas, 42 actividades).
+**Versión 12** · 2026-10-08 — 45 charlas nuevas en todas las especialidades: grúa horquilla, martillo hidráulico, rescate de máquinas atascadas, plantas de áridos y de asfalto, animales y ciclistas en el desvío, camiones forestales, radio entre paleteros, sellado de grietas, pavimentación nocturna, anclajes químicos, gatas hidráulicas, cuasi accidentes, bloqueo de energías, infarto y ACV, simulacros, protección de la maternidad, tablero de puente, estabilización con cal y más. Tres actividades nuevas para el recomendador (426 charlas, 45 actividades).
 
 ## Índice por especialidad
 
-### Maquinaria Pesada (47)
+### Maquinaria Pesada (53)
 
 - **MP-01** Si no te veo, no existes: zona de exclusión alrededor de la maquinaria
 - **MP-02** Check pre-uso: 10 minutos que salvan el día
@@ -55,8 +55,14 @@
 - **MP-45** Compresor y herramientas neumáticas: el aire también golpea
 - **MP-46** Minicargador: compacto, rápido y con puntos ciegos
 - **MP-47** Amarre de carga en camiones: cadenas, eslingas y tensores
+- **MP-48** Grúa horquilla: la carga arriba tapa la vista
+- **MP-49** Martillo hidráulico: esquirlas, ruido y vibración
+- **MP-50** Máquina atascada o empantanada: rescatarla sin improvisar
+- **MP-51** Alarma de retroceso, cámaras y espejos: ayudas, no reemplazos
+- **MP-52** Planta de chancado y áridos: correas, poleas y polvo
+- **MP-53** Hidrolavadora: el chorro que corta la piel
 
-### Control de Tránsito / Paleteros (34)
+### Control de Tránsito / Paleteros (40)
 
 - **CT-01** Paletero: tu posición te protege… o te expone
 - **CT-02** Instalar y retirar el desvío: el momento más expuesto
@@ -92,8 +98,14 @@
 - **CT-32** Accesos a predios y vecinos durante la obra
 - **CT-33** Escolares y paraderos en la zona de obras
 - **CT-34** Polvo, ruido y barro: cuidar a quienes viven junto a la obra
+- **CT-35** Animales sueltos en la ruta: el riesgo del campo
+- **CT-36** Ciclistas y peatones en el desvío
+- **CT-37** Camiones forestales y cargas largas en la zona de obras
+- **CT-38** Radio entre paleteros: hablar claro y confirmar
+- **CT-39** Vehículo en pana o detenido en la zona de obras
+- **CT-40** El paletero también se cansa: rotación y pausas
 
-### Cuadrillas de Asfalto (31)
+### Cuadrillas de Asfalto (35)
 
 - **AS-01** Asfalto caliente: 150 °C que no perdonan
 - **AS-02** Riego de liga e imprimación: el químico que no se ve
@@ -126,8 +138,12 @@
 - **AS-29** Demarcación con máquina autopropulsada: pintar con la ruta abierta
 - **AS-30** Borrado de demarcación antigua: agua a presión y partículas proyectadas
 - **AS-31** Pintura de demarcación y microesferas: almacenar, mezclar y cargar
+- **AS-32** Sellado de grietas: asfalto caliente con lanza
+- **AS-33** Lechada asfáltica y microaglomerado: emulsión, áridos y tránsito
+- **AS-34** Planta asfáltica: tolvas, secador y estanques calientes
+- **AS-35** Pavimentar de noche: luz, visibilidad y cansancio
 
-### Obras de Arte / Manuales (86)
+### Obras de Arte / Manuales (92)
 
 - **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
@@ -215,8 +231,14 @@
 - **OA-84** Trabajos eléctricos con lluvia: cuándo parar
 - **OA-85** Conexiones improvisadas: nunca 'colgarse' de la red
 - **OA-86** Tubos antiguos de asbesto-cemento: no cortarlos ni romperlos sin procedimiento
+- **OA-87** Anclajes químicos y resinas epóxicas
+- **OA-88** Rotomartillo y perforación en hormigón
+- **OA-89** Muros de contención y tierra armada: el terreno detrás empuja
+- **OA-90** Pintura anticorrosiva y solventes en estructuras metálicas
+- **OA-91** Gatas hidráulicas: nunca bajo una carga sin calzas
+- **OA-92** Paraderos y refugios peatonales: obra chica junto al tránsito
 
-### Riesgos Transversales / Clima (71)
+### Riesgos Transversales / Clima (81)
 
 - **RT-01** Lluvia, barro y neblina: el clima del sur cambia las reglas
 - **RT-02** Fatiga y tolerancia cero: llegar despierto y sobrio
@@ -289,8 +311,18 @@
 - **RT-69** Celular en terreno: la distracción que llevamos en el bolsillo
 - **RT-70** Trabajo aislado: nadie solo y sin comunicación
 - **RT-71** La línea de fuego: dónde no ponerse
+- **RT-72** Cuasi accidente: el aviso que sale gratis
+- **RT-73** Bloqueo y etiquetado: todas las energías, no solo la eléctrica
+- **RT-74** Infarto y ACV: reconocer los síntomas a tiempo
+- **RT-75** Simulacros: practicar antes de necesitarlo
+- **RT-76** Inspección de herramientas y equipos: el color del mes
+- **RT-77** Señales de seguridad: leerlas y respetarlas
+- **RT-78** Trabajadora embarazada: protección de la maternidad
+- **RT-79** Influenza y enfermedades respiratorias en invierno
+- **RT-80** Compañeros que hablan otro idioma: que todos entiendan
+- **RT-81** Derecho a saber: conocer los riesgos de tu trabajo
 
-### Carpintería (25)
+### Carpintería (28)
 
 - **CA-01** Sierra circular de banco: disco, cuchillo divisor y empujador
 - **CA-02** Sierra circular manual: el retroceso que no avisa
@@ -317,8 +349,11 @@
 - **CA-23** Caballetes y bancos de trabajo: estables y a la altura justa
 - **CA-24** El cuerpo del carpintero: rodillas, espalda y hombros
 - **CA-25** Desclavar y reutilizar madera: el trabajo después del trabajo
+- **CA-26** Acopio y traslado de madera: tablas, vigas y paneles
+- **CA-27** Polvo de madera y aserrín
+- **CA-28** Moldaje de cepas, pilas y cabezales de puente
 
-### Enfierradura (25)
+### Enfierradura (28)
 
 - **EN-01** Descarga de fierro: paquetes pesados que ruedan
 - **EN-02** Acopio de fierro: ordenado, separado del suelo y a baja altura
@@ -345,8 +380,11 @@
 - **EN-23** Entre barras y moldajes: la cabeza también se golpea
 - **EN-24** Recepción de armadura antes del hormigonado: revisar sin caerse
 - **EN-25** Herramientas del enfierrador: tenaza, gancho y tijera en buen estado
+- **EN-26** Mallas electrosoldadas: rollos, puntas y cortes
+- **EN-27** Canastillos de pilotes: armar, izar y bajar
+- **EN-28** Dobladora y cortadora eléctrica de fierro
 
-### Hormigonado (26)
+### Hormigonado (29)
 
 - **HO-01** Dermatitis por cemento: el daño que llega de a poco
 - **HO-02** Planificar el hormigonado: nadie improvisa con el camión esperando
@@ -374,8 +412,11 @@
 - **HO-24** Acopio de prefabricados de hormigón: piezas que ruedan y se vuelcan
 - **HO-25** Barreras de hormigón junto al tránsito: instalar la protección sin desprotegerse
 - **HO-26** Terminación de superficies: rodillas, espalda y bordes
+- **HO-27** Hormigonado del tablero del puente
+- **HO-28** Grout y morteros de reparación
+- **HO-29** Dumper y carretilla motorizada
 
-### Movimiento de Tierra (36)
+### Movimiento de Tierra (40)
 
 - **MT-01** Corte de talud: lo que cae desde arriba
 - **MT-02** Terraplén por capas: muchos equipos en poco espacio
@@ -413,6 +454,10 @@
 - **MT-34** Base y subbase granular: esparcir y compactar con la ruta al lado
 - **MT-35** Acopios de áridos: el talud que se forma solo
 - **MT-36** Topografía en taludes y bordes de excavación: medir sin caerse
+- **MT-37** Tolva levantada y líneas eléctricas
+- **MT-38** Estabilización de suelos con cal o cemento
+- **MT-39** Pendientes con camión cargado: frenos y marcha
+- **MT-40** Laboratorio de suelos en el frente: densidades y muestras
 
 ## Charlas recomendadas por actividad
 
@@ -427,14 +472,14 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Corte de talud y roca | MT-29, MT-30, MT-01, MT-12, MT-31, MT-36 |
 | Tránsito de camiones y caminos internos | CT-04, CT-29, MT-06, CT-30, MP-04, MP-22 |
 | Pavimentación asfáltica | AS-03, AS-09, AS-25, AS-01, AS-06, AS-08 |
-| Riego de liga e imprimación | AS-02, AS-28, AS-27, AS-26, EN-09, AS-11 |
+| Riego de liga e imprimación | AS-02, AS-28, AS-27, AS-26, AS-33, EN-09 |
 | Fresado, bacheo y corte de pavimento | AS-22, AS-05, AS-10, RT-61, AS-12, OA-11 |
-| Demarcación vial | AS-14, AS-30, AS-31, AS-29, CT-26, AS-19 |
+| Demarcación vial | AS-14, AS-30, AS-31, AS-29, CT-26, OA-90 |
 | Instalación de desvío y paleteros | CT-23, CT-02, CT-06, CT-07, CT-08, CT-15 |
-| Trabajo junto a la vía con tránsito | CT-21, CT-24, CT-26, CT-06, CT-09, CT-13 |
-| Armado y desarme de moldajes | CA-05, CA-08, CA-14, CA-06, CA-07, CA-03 |
+| Trabajo junto a la vía con tránsito | CT-21, CT-24, CT-26, CT-39, CT-06, CT-09 |
+| Armado y desarme de moldajes | CA-05, CA-08, CA-14, CA-26, CA-06, CA-07 |
 | Carpintería y herramientas de corte | CA-01, CA-04, CA-02, CA-15, CA-25, CA-03 |
-| Enfierradura | EN-04, EN-08, EN-06, EN-11, EN-18, EN-20 |
+| Enfierradura | EN-04, EN-28, EN-08, EN-06, EN-11, EN-18 |
 | Hormigonado | HO-23, HO-08, OA-07, HO-02, HO-09, HO-14 |
 | Trabajo en altura | RT-51, OA-05, CA-20, OA-68, RT-47, EN-17 |
 | Izaje de cargas | MP-05, MP-33, MP-41, MP-40, MP-38, MP-42 |
@@ -451,17 +496,20 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Topografía y replanteo | MT-09, MT-32, MT-36, MT-08, MT-33, CT-20 |
 | Base y subbase granular | MT-34, MT-02, MP-21, MT-35, MT-18, AS-27 |
 | Cunetas, subdrenes y fosos | OA-46, OA-39, OA-41, OA-47, OA-40, OA-06 |
-| Puentes: vigas, tablero y pilotes | OA-43, CA-06, OA-42, RT-50, OA-33, OA-44 |
+| Puentes: vigas, tablero y pilotes | OA-43, CA-06, HO-27, OA-42, RT-50, OA-33 |
 | Señalización vertical, tachas y delineadores | CT-23, CT-07, CT-26, OA-13, CT-02, CT-03 |
 | Instalación de faena y bodegas | RT-35, RT-54, RT-36, RT-37, RT-41, RT-23 |
-| Trabajos eléctricos, tableros y generadores | OA-80, OA-76, RT-36, OA-45, OA-04, OA-78 |
+| Trabajos eléctricos, tableros y generadores | OA-80, OA-76, RT-36, OA-45, RT-73, OA-04 |
 | Trabajo nocturno | CT-10, CT-03, HO-16, CT-28, RT-02, RT-38 |
 | Conducción de camionetas y transporte de personal | RT-16, CT-30, CT-31, CT-04, CT-15, CT-09 |
-| Emergencias y primeros auxilios | RT-39, RT-40, CT-17, RT-11, RT-68, CT-19 |
-| Vecinos, escolares y terceros | CT-05, CT-34, CT-32, CT-33, OA-41, OA-38 |
+| Emergencias y primeros auxilios | RT-39, RT-40, CT-17, RT-11, RT-68, RT-75 |
+| Vecinos, escolares y terceros | CT-05, CT-34, CT-36, CT-32, CT-33, OA-41 |
 | Sustancias químicas y combustibles | RT-19, AS-21, RT-37, AS-02, AS-19, AS-14 |
 | Planificación de la tarea y gestión preventiva | RT-57, RT-22, RT-58, RT-55, RT-56, RT-59 |
-| Salud ocupacional: ruido, polvo y químicos | AS-05, AS-22, HO-20, RT-61, RT-60, RT-62 |
+| Salud ocupacional: ruido, polvo y químicos | AS-05, AS-22, HO-20, MP-49, RT-61, RT-60 |
+| Carga, descarga y acopio de materiales | MP-47, MP-43, MP-48, EN-20, MP-04, MP-14 |
+| Plantas de áridos y de asfalto | MP-52, AS-34, AS-33, AS-01, AS-04, AS-08 |
+| Demolición, picado y perforación de hormigón | HO-20, MP-49, OA-88, MT-30, OA-22, OA-87 |
 
 ## Plan sugerido (4 semanas, lunes a sábado)
 
@@ -1293,6 +1341,108 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién revisó hoy las amarras del camión antes de salir a la ruta?
 
+### MP-48 · Grúa horquilla: la carga arriba tapa la vista
+
+**El porqué (mensaje clave):** La grúa horquilla se usa en bodegas, patios de acopio y en la descarga de materiales. Es angosta y pesada atrás, por lo que se vuelca hacia el lado al girar rápido o con la carga en alto, y atropella a quien camina en el patio porque el operador no ve por delante cuando la carga es voluminosa.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Operador autorizado y con cinturón; la carga se traslada baja, inclinada hacia el mástil y nunca sobre la capacidad de la placa.
+2. [ ] Si la carga tapa la vista, se circula en retroceso o con un señalero; peatones fuera de los pasillos de la grúa.
+3. [ ] Prohibido elevar personas en las horquillas o en un pallet; al dejarla, horquillas en el suelo, freno puesto y llave retirada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.
+- Normativa: DS 594 Art. 38; Ley 18.290 de Tránsito (licencia clase D si circula por la vía); manual del fabricante y placa de capacidad del equipo.
+
+**Pregunta de cierre:** ¿Qué capacidad dice la placa de la grúa horquilla y a qué altura de carga corresponde?
+
+### MP-49 · Martillo hidráulico: esquirlas, ruido y vibración
+
+**El porqué (mensaje clave):** El martillo picador montado en excavadora o retroexcavadora rompe roca, hormigón y pavimento. Cada golpe lanza fragmentos a varios metros, genera polvo con sílice y un ruido que daña el oído de quienes trabajan cerca, y su peso cambia la estabilidad de la máquina.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Zona de exclusión marcada alrededor del martillo; nadie a pie dentro mientras golpea.
+2. [ ] Cabina cerrada o con protección frontal, y el puntero apoyado en ángulo correcto: no hacer palanca con el martillo.
+3. [ ] Humectar el material para bajar el polvo y usar protección auditiva quien trabaje cerca.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Mantener distancia segura de los equipos en operación.
+- Normativa: DS 594 (ruido, vibraciones y sílice); Protocolo PREXOR; PLANESI; manual del fabricante del martillo y de la máquina portadora.
+
+**Pregunta de cierre:** ¿Hasta dónde llegan las esquirlas del martillo y quién marca esa zona?
+
+### MP-50 · Máquina atascada o empantanada: rescatarla sin improvisar
+
+**El porqué (mensaje clave):** Una máquina enterrada en barro o atascada en un cauce invita a sacarla 'como sea' con otra máquina, una cadena vieja o una eslinga cualquiera. Cuando el elemento se corta, latiguea con una fuerza que mata, y la máquina que tira también puede deslizarse o volcarse.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Detener el trabajo, avisar al supervisor y planificar el rescate: qué equipo tira, con qué elemento y por dónde.
+2. [ ] Usar solo cables, cadenas o eslingas certificados para tiro, unidos a puntos de arrastre del fabricante, nunca a ejes ni brazos.
+3. [ ] Nadie en la línea del tiro ni a menos de una vez y media el largo del cable mientras se tensa.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si no es seguro, no se hace: cualquier persona puede detener el trabajo.
+- Normativa: DS 594 Art. 38; Ley 16.744 Art. 68; manual del fabricante (puntos de arrastre y remolque).
+
+**Pregunta de cierre:** ¿Dónde están los puntos de arrastre de la máquina que más usas?
+
+### MP-51 · Alarma de retroceso, cámaras y espejos: ayudas, no reemplazos
+
+**El porqué (mensaje clave):** Las alarmas de retroceso, cámaras y espejos ayudan al operador, pero con el tiempo la gente deja de escuchar la alarma, la cámara se ensucia con barro y el espejo se desajusta. Muchos atropellos ocurren con todo funcionando, porque alguien confió en que el otro lo había visto.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar en el pre-uso que alarma, cámara, espejos y luces funcionen y estén limpios.
+2. [ ] Antes de retroceder, mirar directamente y por los espejos; si hay duda, bajar o pedir un señalero.
+3. [ ] Quien está a pie nunca asume que el operador lo vio: hace contacto visual o se aleja.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Contacto visual con el operador antes de acercarse a cualquier equipo.
+- Normativa: DS 594 Art. 38; Ley 18.290 de Tránsito; manual de Seguridad Vial (Manual de Carreteras MOP, Vol. 6) para el tránsito de equipos en la faja.
+
+**Pregunta de cierre:** ¿Cuándo fue la última vez que limpiaste la cámara de retroceso de tu equipo?
+
+### MP-52 · Planta de chancado y áridos: correas, poleas y polvo
+
+**El porqué (mensaje clave):** Las plantas de chancado y harnero tienen correas transportadoras, poleas, tolvas y chancadores que atrapan una mano, una manga o un cuerpo entero en segundos. La mayoría de los accidentes ocurre al limpiar o destrabar material con la planta en movimiento.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Todas las poleas, rodillos de cola y transmisiones con su protección; nadie la retira para trabajar más rápido.
+2. [ ] Para limpiar, destrabar o ajustar: detener, bloquear con candado propio y verificar que no arranque.
+3. [ ] Conocer la ubicación de las paradas de emergencia y cordones de tiro, y no subir a la tolva ni al chancador en operación.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 594 Art. 38 (protección de partes móviles); PLANESI y Protocolo PREXOR; Ley 16.744 Art. 68; manual del fabricante de la planta.
+
+**Pregunta de cierre:** ¿Dónde está la parada de emergencia más cercana a la correa en que trabajas?
+
+### MP-53 · Hidrolavadora: el chorro que corta la piel
+
+**El porqué (mensaje clave):** La hidrolavadora se usa para limpiar maquinaria, moldajes y herramientas. El chorro a alta presión puede cortar la piel, inyectar agua y suciedad bajo ella y lanzar piedras o barro a la cara. La herida parece pequeña, pero puede infectarse gravemente si no se atiende.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar manguera, lanza y gatillo antes de usar; nunca bloquear el gatillo abierto.
+2. [ ] Usar lentes o careta, guantes y botas; nunca apuntar el chorro a una persona ni a la propia mano.
+3. [ ] Cualquier herida por el chorro, aunque se vea pequeña, se informa y se atiende de inmediato.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (elementos de protección personal); Ley 16.744 Art. 68; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Por qué una herida de hidrolavadora debe verla un médico aunque parezca un rasguño?
+
 ## Control de Tránsito / Paleteros
 
 ### CT-01 · Paletero: tu posición te protege… o te expone
@@ -1873,6 +2023,108 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué vecino está hoy más expuesto a nuestro polvo o ruido y qué hacemos para cuidarlo?
 
+### CT-35 · Animales sueltos en la ruta: el riesgo del campo
+
+**El porqué (mensaje clave):** En las rutas rurales de la zona es común ver vacas, caballos o perros sueltos cruzando la calzada, y el desvío puede alterar sus pasos habituales. Un conductor que esquiva un animal puede terminar sobre la cuadrilla, y un paletero que intenta arrear un animal queda expuesto al tránsito.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Si hay animales en la zona de obras, avisar por radio y detener o lentificar el tránsito desde los extremos.
+2. [ ] No correr detrás de los animales ni salir a la calzada a arrearlos; informar al supervisor para contactar al dueño o a Carabineros.
+3. [ ] Revisar al inicio del día cercos y portones intervenidos por la obra para que los animales no salgan a la ruta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Tu integridad está primero: nadie enfrenta a un vehículo.
+- Normativa: Ley 18.290 de Tránsito; Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6.
+
+**Pregunta de cierre:** ¿Qué cercos tocó la obra esta semana y quién los revisó?
+
+### CT-36 · Ciclistas y peatones en el desvío
+
+**El porqué (mensaje clave):** Los desvíos se diseñan pensando en autos y camiones, pero también pasan ciclistas, personas a pie, adultos mayores y escolares. Si el desvío no tiene un paso seguro para ellos, terminan caminando por la calzada angosta o entre la maquinaria.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar que el desvío tenga un paso peatonal y para ciclistas señalizado, separado del tránsito y de los equipos.
+2. [ ] El paletero detiene el tránsito para dejar pasar a peatones lentos o con dificultad; no los apura.
+3. [ ] Mantener el paso libre de barro, material y hoyos, sobre todo al anochecer y con lluvia.
+
+**Respaldo estándar:**
+
+- Regla de Oro: La zona de obras protege también a quien pasa por ella.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (dispositivos para peatones y ciclistas en zonas de trabajo); Ley 18.290 de Tránsito; Manual de Carreteras MOP, Vol. 6.
+
+**Pregunta de cierre:** ¿Por dónde pasa hoy un ciclista que cruza nuestro desvío?
+
+### CT-37 · Camiones forestales y cargas largas en la zona de obras
+
+**El porqué (mensaje clave):** Por la zona circulan muchos camiones forestales y de carga larga. Necesitan más espacio para frenar y para girar, su carga sobresale y en curvas su parte trasera barre hacia el interior. Un desvío pensado para autos puede no servirles, y el paletero queda dentro de su barrido.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Conocer qué camiones largos pasan por el desvío y revisar que el trazado les permita girar sin invadir la zona de trabajo.
+2. [ ] El paletero se ubica fuera del barrido del camión en curvas y nunca entre el camión y la obra.
+3. [ ] Dar más distancia de aviso y detención a los camiones cargados, sobre todo en bajadas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Tu integridad está primero: nadie enfrenta a un vehículo.
+- Normativa: Ley 18.290 de Tránsito; Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6.
+
+**Pregunta de cierre:** ¿En qué punto del desvío un camión forestal puede pasar más cerca de la cuadrilla?
+
+### CT-38 · Radio entre paleteros: hablar claro y confirmar
+
+**El porqué (mensaje clave):** En el tránsito alternado, los paleteros de cada extremo se coordinan por radio. Un mensaje cortado, una batería agotada o un 'ya' mal entendido pueden dejar pasar tránsito desde los dos lados a la vez, de frente sobre una sola pista.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Al inicio, probar las radios y llevar batería cargada o de repuesto; canal acordado y sin conversaciones ajenas.
+2. [ ] Usar frases cortas y fijas ('paso cerrado', 'último vehículo, camión blanco') y esperar confirmación antes de habilitar.
+3. [ ] Si se pierde la comunicación, ambos extremos mantienen el PARE hasta restablecerla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Sin comunicación confirmada, nadie da paso.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (tránsito alternado con banderilleros); Manual de Carreteras MOP, Vol. 6.
+
+**Pregunta de cierre:** ¿Qué hacemos si se cae la radio con un vehículo dentro del tramo?
+
+### CT-39 · Vehículo en pana o detenido en la zona de obras
+
+**El porqué (mensaje clave):** Un auto en pana, un camión sin frenos o un conductor que se detiene a preguntar dentro del desvío se convierte en un obstáculo para el resto del tránsito y atrae a trabajadores que se acercan a ayudar parados en la calzada.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Avisar por radio, reforzar la señalización aguas arriba y lentificar o detener el tránsito.
+2. [ ] Ayudar desde fuera de la calzada; si hay que empujar o remolcar, coordinarlo con el supervisor y con el tránsito detenido.
+3. [ ] Si hay heridos o riesgo de incendio, activar el plan de emergencia y llamar a Carabineros o bomberos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Tu integridad está primero: nadie enfrenta a un vehículo.
+- Normativa: Ley 18.290 de Tránsito; Manual de Señalización de Tránsito, Cap. 5; plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Quién avisa a los extremos del desvío si un vehículo queda detenido dentro?
+
+### CT-40 · El paletero también se cansa: rotación y pausas
+
+**El porqué (mensaje clave):** El paletero pasa horas de pie, al sol, al frío o a la lluvia, atento a cada vehículo. Con el cansancio baja la atención, aparecen el celular o la silla mal ubicada, y un segundo de distracción basta para no ver un vehículo que no se detiene.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Turnos de paletero con rotación y pausas planificadas; nadie deja la paleta sin que llegue su reemplazo.
+2. [ ] Agua, protector solar y ropa para lluvia o frío al alcance; quitasol o refugio fuera de la calzada.
+3. [ ] Prohibido el celular en el puesto; si te sientes mal o mareado, avisar por radio de inmediato.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Atención total en el puesto: el paletero protege a toda la cuadrilla.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5; DS 594 (condiciones ambientales y agua potable); Ley 20.096 (radiación UV).
+
+**Pregunta de cierre:** ¿Cada cuánto rota hoy el paletero y quién lo reemplaza?
+
 ## Cuadrillas de Asfalto
 
 ### AS-01 · Asfalto caliente: 150 °C que no perdonan
@@ -2401,6 +2653,74 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 43/2015 (almacenamiento de sustancias peligrosas); DS 57/2019 (etiquetado); DS 594 (agentes químicos y Art. 53).
 
 **Pregunta de cierre:** ¿Dónde preparamos hoy la pintura de demarcación y qué dice su HDS sobre los vapores?
+
+### AS-32 · Sellado de grietas: asfalto caliente con lanza
+
+**El porqué (mensaje clave):** El sellado de grietas se hace con equipos que calientan el sellante y lo aplican con lanza, muchas veces en faenas móviles con tránsito al lado. Las quemaduras por salpicaduras, el aire comprimido para soplar la grieta y el tránsito son los riesgos principales.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Faena móvil señalizada con vehículo de protección antes de comenzar a sellar.
+2. [ ] Mangas largas, guantes térmicos, lentes y careta al aplicar sellante caliente; nunca apuntar la lanza ni el soplador a otra persona.
+3. [ ] Revisar el calentador y sus quemadores antes de encender, con extintor a mano.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (faenas móviles); DS 594 Art. 53; hoja de datos de seguridad del sellante (NCh 2245).
+
+**Pregunta de cierre:** ¿Qué haces si te salpica sellante caliente en la piel?
+
+### AS-33 · Lechada asfáltica y microaglomerado: emulsión, áridos y tránsito
+
+**El porqué (mensaje clave):** La lechada asfáltica y el microaglomerado se aplican con un equipo que mezcla emulsión, árido fino, cemento y agua sobre la marcha. El equipo avanza lento con camiones de abastecimiento alrededor, la emulsión irrita la piel y los ojos, y el tránsito pasa al lado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Coordinar las maniobras de abastecimiento del equipo con un señalero; nadie entre el camión y la máquina.
+2. [ ] Guantes, lentes y ropa de manga larga al manipular emulsión y aditivos; conocer su hoja de datos de seguridad.
+3. [ ] Respetar el tiempo de curado antes de abrir el tránsito, con señalización hasta entonces.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: Hoja de datos de seguridad de la emulsión (NCh 2245); DS 57/2019 (etiquetado SGA); Manual de Señalización de Tránsito, Cap. 5.
+
+**Pregunta de cierre:** ¿Cuánto tiempo debe pasar antes de abrir al tránsito una pista con lechada?
+
+### AS-34 · Planta asfáltica: tolvas, secador y estanques calientes
+
+**El porqué (mensaje clave):** La planta asfáltica combina fuego en el secador, estanques de asfalto y combustible calientes, correas transportadoras, tolvas en altura y tránsito constante de camiones. Un mantenimiento sin bloqueo o una fuga de asfalto caliente pueden causar lesiones graves.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Para limpiar o mantener correas, tolvas o el tambor: detener la planta, bloquear y verificar.
+2. [ ] Accesos a tolvas y estanques con barandas; nadie sube a un estanque sin permiso ni protección contra caídas.
+3. [ ] Ordenar el tránsito de camiones en la planta: un sentido de circulación y zona de espera fuera del área de carga.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 594 Art. 38 (protección de partes móviles); DS 594 (sustancias peligrosas y combustibles); manual del fabricante de la planta.
+
+**Pregunta de cierre:** ¿Quién bloquea la planta antes de que alguien limpie la correa?
+
+### AS-35 · Pavimentar de noche: luz, visibilidad y cansancio
+
+**El porqué (mensaje clave):** Para no cortar el tránsito de día, algunos recapados se hacen de noche. La luz artificial deja sombras donde no se ve a los rastrilleros, los conductores llegan cansados o rápidos, y la cuadrilla trabaja contra el sueño en la hora más difícil.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Iluminar el tren de pavimentación y la zona de rastrilleros sin encandilar a los conductores ni a los operadores.
+2. [ ] Ropa reflectante clase alta para todos y luces en todos los equipos; nadie a pie fuera de la zona señalizada.
+3. [ ] Pausas y hidratación planificadas; quien sienta sueño lo dice antes de que ocurra un error.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Que te vean: de noche, alta visibilidad siempre.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (trabajos nocturnos); Manual de Carreteras MOP, Vol. 6; DS 594 (iluminación).
+
+**Pregunta de cierre:** ¿Desde qué punto del tren de pavimentación un rodillo no ve al rastrillero de noche?
 
 ## Obras de Arte / Manuales
 
@@ -3866,6 +4186,108 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** Si al demoler la alcantarilla vieja aparece un tubo gris y liviano, ¿qué hacemos?
 
+### OA-87 · Anclajes químicos y resinas epóxicas
+
+**El porqué (mensaje clave):** Las resinas epóxicas y los anclajes químicos se usan para fijar barras, pernos y barandas al hormigón existente. Sus componentes irritan la piel y los ojos, y algunos producen alergias que aparecen después de varios usos y ya no se van.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Leer la hoja de datos de seguridad antes de usar; guantes de nitrilo y lentes, nunca a mano desnuda.
+2. [ ] Limpiar la perforación con bomba o aire y lentes puestos; el polvo del hoyo tiene sílice.
+3. [ ] Envases, cartuchos y restos van a residuos peligrosos, no a la basura común ni al cauce.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: DS 57/2019 (etiquetado SGA); NCh 2245 (Hoja de Datos de Seguridad); DS 148 (residuos peligrosos).
+
+**Pregunta de cierre:** ¿Dónde está la hoja de datos de la resina que usamos y qué EPP exige?
+
+### OA-88 · Rotomartillo y perforación en hormigón
+
+**El porqué (mensaje clave):** Perforar hormigón con rotomartillo levanta polvo con sílice, vibra en las manos y los brazos, y la broca puede trabarse en un fierro y torcer la muñeca. Perforar sin saber qué hay dentro puede cortar un cable o una tubería.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar planos o detectar fierros, cables y tuberías antes de perforar.
+2. [ ] Usar la empuñadura lateral, con el embrague de seguridad funcionando, y afirmarse bien, sobre todo en altura.
+3. [ ] Controlar el polvo con aspiración o agua, con respirador y lentes puestos; pausas para reducir la vibración.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramienta en buen estado y con sus protecciones.
+- Normativa: PLANESI (sílice); DS 594 (vibraciones y ruido); Ley 16.744 Art. 68; manual del fabricante.
+
+**Pregunta de cierre:** ¿Qué haces si la broca se traba en un fierro?
+
+### OA-89 · Muros de contención y tierra armada: el terreno detrás empuja
+
+**El porqué (mensaje clave):** Los muros de contención, de tierra armada o de gaviones sostienen terreno que quiere caer. Mientras se construyen, la excavación al pie y el relleno detrás crean riesgos de derrumbe, de caída de placas durante el montaje y de compactación pegada al muro.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar el talud y la excavación al pie del muro antes de entrar; nada de acopios en el borde.
+2. [ ] Las placas o bloques se montan con izaje planificado y nadie bajo la carga ni entre la placa y el talud.
+3. [ ] El relleno se compacta por capas según el proyecto; nada de maquinaria pesada pegada al muro si el diseño no lo permite.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca bajo cargas suspendidas.
+- Normativa: DS 594; Ley 16.744 Art. 68; especificaciones técnicas del proyecto y Manual de Carreteras MOP.
+
+**Pregunta de cierre:** ¿Qué parte del muro en construcción tiene hoy más riesgo de derrumbe?
+
+### OA-90 · Pintura anticorrosiva y solventes en estructuras metálicas
+
+**El porqué (mensaje clave):** Barandas, vigas metálicas y elementos de puentes se protegen con anticorrosivos y pinturas que contienen solventes. Los vapores marean, irritan y son inflamables, y la preparación con escobilla o esmeril levanta polvo y partículas a los ojos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Leer la hoja de datos; pintar con ventilación y respirador con filtro para vapores orgánicos si la HDS lo pide.
+2. [ ] Nada de fuego, esmeril ni cigarros cerca de pinturas o solventes; extintor a mano.
+3. [ ] Envases cerrados y bien rotulados; restos y huaipes contaminados van a residuos peligrosos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: DS 594 (límites permisibles de sustancias en el aire); NCh 2245 (Hoja de Datos de Seguridad); DS 57/2019; DS 148 (residuos peligrosos).
+
+**Pregunta de cierre:** ¿Qué filtro de respirador pide la hoja de datos de la pintura que usamos?
+
+### OA-91 · Gatas hidráulicas: nunca bajo una carga sin calzas
+
+**El porqué (mensaje clave):** Las gatas hidráulicas se usan para levantar vigas, cambiar apoyos de puentes o alinear piezas pesadas. Una gata puede perder presión, deslizarse o ceder en un apoyo blando, y quien tiene una mano o el cuerpo bajo la carga queda aplastado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Gata de capacidad adecuada, apoyada en base firme y nivelada, centrada bajo la carga.
+2. [ ] A medida que se levanta, se colocan calzas o apoyos de seguridad; nunca se trabaja bajo una carga sostenida solo por la gata.
+3. [ ] Levantar de a poco y en coordinación si son varias gatas, con una sola persona dando las órdenes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca bajo cargas suspendidas.
+- Normativa: Ley 16.744 Art. 68; manual del fabricante de la gata; procedimiento de trabajo del proyecto.
+
+**Pregunta de cierre:** ¿Qué calzas o apoyos tenemos para dejar segura una viga levantada?
+
+### OA-92 · Paraderos y refugios peatonales: obra chica junto al tránsito
+
+**El porqué (mensaje clave):** Construir o reponer paraderos parece un trabajo menor, pero se hace en la berma, con personas esperando el bus, escolares y vehículos que se detienen. La cuadrilla queda entre el tránsito y los peatones.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Señalizar la zona de trabajo y dejar un lugar seguro y visible para que la gente espere el bus.
+2. [ ] Coordinar con el supervisor si el paradero debe trasladarse temporalmente y avisar a los vecinos.
+3. [ ] Materiales y herramientas dentro del área cerrada; nada en la vereda ni en la calzada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: La zona de obras protege también a quien pasa por ella.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6; Ley 18.290 de Tránsito.
+
+**Pregunta de cierre:** ¿Dónde espera hoy el bus la gente del paradero que estamos interviniendo?
+
 ## Riesgos Transversales / Clima
 
 ### RT-01 · Lluvia, barro y neblina: el clima del sur cambia las reglas
@@ -5075,6 +5497,176 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cuál es la línea de fuego más peligrosa de la tarea de hoy?
 
+### RT-72 · Cuasi accidente: el aviso que sale gratis
+
+**El porqué (mensaje clave):** Por cada accidente grave hay muchos casi accidentes que nadie informó: la carga que se balanceó, el camión que retrocedió sin mirar, la herramienta que cayó al lado de alguien. Contarlos no es acusar a nadie; es la oportunidad de corregir antes de que la próxima vez sí haya un herido.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Informar al supervisor o al prevencionista todo casi accidente el mismo día, aunque no haya pasado nada.
+2. [ ] Contar qué pasó y qué condición lo provocó, sin buscar culpables.
+3. [ ] Revisar en la charla siguiente qué se corrigió, para que la cuadrilla vea que avisar sirve.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si no es seguro, no se hace: cualquier persona puede detener el trabajo.
+- Normativa: DS 44/2024 (gestión preventiva y participación de los trabajadores); Ley 16.744; procedimiento de reporte de incidentes del proyecto.
+
+**Pregunta de cierre:** ¿Qué casi accidente vimos esta semana que todavía no hemos informado?
+
+### RT-73 · Bloqueo y etiquetado: todas las energías, no solo la eléctrica
+
+**El porqué (mensaje clave):** Antes de reparar, limpiar o destrabar un equipo hay que dejarlo sin ninguna energía: eléctrica, hidráulica, neumática, mecánica o por gravedad. Una pluma que baja, un cilindro con presión o una correa que alguien enciende sin saber causan atrapamientos y amputaciones.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar todas las energías del equipo y cortarlas: apagar, retirar la llave, liberar presión y bajar o calzar lo que pueda caer.
+2. [ ] Cada persona que interviene pone su propio candado y tarjeta con su nombre; nadie retira el candado de otro.
+3. [ ] Probar que el equipo no arranca antes de meter las manos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 594 Art. 38 (protección de partes móviles); Ley 16.744 Art. 68; procedimiento de bloqueo del proyecto y manual del fabricante.
+
+**Pregunta de cierre:** ¿Qué energía queda en una excavadora apagada con el balde arriba?
+
+### RT-74 · Infarto y ACV: reconocer los síntomas a tiempo
+
+**El porqué (mensaje clave):** En obra trabajan muchas personas con presión alta, diabetes, tabaquismo o sobrepeso sin control. Un infarto o un accidente cerebrovascular en terreno se puede salvar si alguien reconoce los síntomas y pide ayuda de inmediato; cada minuto de demora daña más el corazón o el cerebro.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Infarto: dolor u opresión en el pecho que puede ir al brazo, cuello o mandíbula, sudor frío, falta de aire o náuseas.
+2. [ ] ACV: cara caída hacia un lado, brazo débil y habla enredada; anotar la hora en que empezó.
+3. [ ] Ante cualquiera de estos síntomas: detener el trabajo, llamar al SAMU (131) y activar el plan de emergencia; nunca dejar que la persona se vaya sola a su casa.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuídate y cuida a tu compañero.
+- Normativa: Ley 16.744; DS 594 (elementos de primeros auxilios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Cuáles son las tres señales de un ACV y a qué número llamamos?
+
+### RT-75 · Simulacros: practicar antes de necesitarlo
+
+**El porqué (mensaje clave):** En una emergencia real nadie lee el plan: cada uno hace lo que practicó. Los simulacros muestran si las radios funcionan, si el botiquín está completo, si la camioneta de emergencia está disponible y si todos saben a qué kilómetro llamar.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Participar en los simulacros programados de incendio, accidente, sismo o rescate como si fueran reales.
+2. [ ] Saber cuál es el punto de encuentro del frente y quién da la alarma.
+3. [ ] Después del simulacro, decir qué falló: eso es lo que se corrige.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: DS 44/2024 (preparación y respuesta ante emergencias); DS 594 (extintores y primeros auxilios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Cuál es el punto de encuentro de nuestro frente hoy?
+
+### RT-76 · Inspección de herramientas y equipos: el color del mes
+
+**El porqué (mensaje clave):** Una galletera sin protección, una extensión parchada o una eslinga cortada siguen dando vueltas en la obra si nadie las revisa. La inspección periódica, marcada con el color del mes, separa lo que está en condiciones de lo que debe salir de circulación.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar solo herramientas y equipos con la marca de inspección vigente del mes.
+2. [ ] Revisar antes de cada uso cables, carcasas, protecciones y gatillos; si está dañada, no se usa.
+3. [ ] Herramienta dañada se etiqueta 'fuera de servicio' y se entrega a bodega; no se guarda en la camioneta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramienta en buen estado y con sus protecciones.
+- Normativa: DS 594 Art. 38; Ley 16.744 Art. 68; programa de inspecciones del proyecto.
+
+**Pregunta de cierre:** ¿Qué color de inspección corresponde este mes?
+
+### RT-77 · Señales de seguridad: leerlas y respetarlas
+
+**El porqué (mensaje clave):** La faena está llena de señales: prohibido, obligatorio, advertencia, salida y emergencia. Cada forma y color tiene un significado; si nadie las mira, o están sucias, caídas o tapadas, dejan de proteger.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Rojo es prohibición o equipo contra incendio, azul es obligación, amarillo es advertencia y verde es salida o primeros auxilios.
+2. [ ] Avisar si una señal está caída, tapada o ya no corresponde al riesgo del lugar.
+3. [ ] No mover ni retirar señales sin autorización del supervisor.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar la señalización y las zonas restringidas.
+- Normativa: DS 594 (señalización de zonas de peligro y vías de escape); NCh 1411 (señales de seguridad).
+
+**Pregunta de cierre:** ¿Qué significa una señal circular azul?
+
+### RT-78 · Trabajadora embarazada: protección de la maternidad
+
+**El porqué (mensaje clave):** Algunas tareas de la obra pueden dañar a una trabajadora embarazada o a su hijo: cargar peso, estar mucho tiempo de pie, vibraciones, ruido, calor o ciertas sustancias químicas. La ley protege su salud y su empleo, y la cuadrilla también debe apoyarla.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] La trabajadora puede informar su embarazo al supervisor o a prevención para evaluar su puesto, con reserva.
+2. [ ] Si su trabajo es perjudicial para el embarazo, debe ser trasladada a otro sin bajar su remuneración.
+3. [ ] Respeto y apoyo de la cuadrilla: nadie la presiona para hacer tareas que no le corresponden.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respeto y buen trato: la seguridad también es cuidar a cada persona.
+- Normativa: Código del Trabajo Art. 202 (traslado de la trabajadora embarazada desde trabajos perjudiciales) y Art. 201 (fuero maternal); Ley 16.744.
+
+**Pregunta de cierre:** ¿Qué tareas de nuestro frente no debería hacer una trabajadora embarazada?
+
+### RT-79 · Influenza y enfermedades respiratorias en invierno
+
+**El porqué (mensaje clave):** En invierno, la influenza y otros virus respiratorios se contagian rápido entre quienes comparten camionetas, comedores y contenedores. Una persona con fiebre que igual va a trabajar contagia a su cuadrilla, y trabajar enfermo baja la atención y aumenta los accidentes.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Vacunarse contra la influenza cuando corresponda a la campaña del año.
+2. [ ] Lavarse las manos antes de comer, ventilar comedores y camionetas, y toser en el antebrazo.
+3. [ ] Con fiebre o malestar, avisar al supervisor y consultar al médico, no ir a trabajar 'igual'.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuídate y cuida a tu compañero.
+- Normativa: DS 594 (servicios higiénicos, comedores y agua potable); campaña de vacunación del Ministerio de Salud.
+
+**Pregunta de cierre:** ¿Dónde nos lavamos las manos antes de la colación en este frente?
+
+### RT-80 · Compañeros que hablan otro idioma: que todos entiendan
+
+**El porqué (mensaje clave):** En la obra trabajan personas de distintos países, y algunas aún no dominan el español. Si una charla, una instrucción o una señal no se entiende, el riesgo es el mismo que si no se hubiera dado. Asentir con la cabeza no siempre significa que se entendió.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Explicar con palabras simples, mostrando en terreno y con gestos; pedir que la persona repita o muestre lo que entendió.
+2. [ ] Apoyarse en un compañero que hable su idioma y en material con dibujos o traducido.
+3. [ ] Enseñar primero las palabras clave de seguridad: ¡alto!, cuidado, peligro, ayuda.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Asegurarse de que se entendió: una instrucción no entendida no protege.
+- Normativa: DS 44/2024 (deber de informar los riesgos laborales); Ley 16.744 Art. 68; Código del Trabajo Art. 2 (no discriminación).
+
+**Pregunta de cierre:** ¿Cómo comprobamos hoy que todos entendieron la charla?
+
+### RT-81 · Derecho a saber: conocer los riesgos de tu trabajo
+
+**El porqué (mensaje clave):** Todo trabajador tiene derecho a que se le informe, antes de empezar, qué riesgos tiene su tarea, cómo controlarlos y qué hacer si algo sale mal. Esto aplica también cuando cambias de tarea, de frente o de equipo, no solo el primer día.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de una tarea nueva, preguntar qué riesgos tiene, qué medidas usar y qué procedimiento seguir.
+2. [ ] Firmar solo lo que se explicó y se entendió; si no quedó claro, pedir que se explique otra vez.
+3. [ ] El supervisor informa los riesgos al asignar la tarea y responde las dudas de la cuadrilla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie empieza una tarea sin conocer sus riesgos.
+- Normativa: DS 44/2024 (deber de informar los riesgos laborales); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Qué riesgo de tu tarea de hoy te gustaría que te explicaran mejor?
+
 ## Carpintería
 
 ### CA-01 · Sierra circular de banco: disco, cuchillo divisor y empujador
@@ -5502,6 +6094,57 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué tablas de las que desclavamos ayer no deberían volver a usarse en una plataforma?
 
+### CA-26 · Acopio y traslado de madera: tablas, vigas y paneles
+
+**El porqué (mensaje clave):** La madera se acopia en pilas que pueden caer si están mal apoyadas, y se traslada a hombro por terreno irregular. Una tabla larga al hombro golpea a otros al girar, y una pila mal armada puede aplastar un pie o una pierna.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Acopiar sobre durmientes, en terreno firme y nivelado, con pilas de altura estable y trabadas.
+2. [ ] Las tablas y vigas largas se trasladan entre dos personas, mirando a los lados al girar.
+3. [ ] Retirar o doblar clavos de la madera usada antes de acopiarla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Orden y aseo: un frente ordenado es un frente seguro.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué pila de madera del frente tiene hoy más riesgo de caerse?
+
+### CA-27 · Polvo de madera y aserrín
+
+**El porqué (mensaje clave):** Cortar, cepillar y lijar madera levanta polvo fino que irrita los ojos y la nariz, y que con años de exposición puede dañar los pulmones. La madera impregnada y los tableros con resinas agregan químicos al polvo, y el aserrín acumulado es combustible.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Cortar en lugar ventilado, con aspiración o al aire libre; usar lentes y mascarilla para polvo.
+2. [ ] Con madera impregnada o tableros, usar el respirador que indica la hoja de datos.
+3. [ ] Barrer o aspirar el aserrín a diario; no soplarlo con aire comprimido ni acumularlo junto a fuentes de calor.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 (límites permisibles de polvo en el aire y EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué mascarilla usamos para cortar madera impregnada?
+
+### CA-28 · Moldaje de cepas, pilas y cabezales de puente
+
+**El porqué (mensaje clave):** Las cepas, pilas y cabezales de puente se moldean en altura, muchas veces sobre el cauce o en una excavación. El carpintero arma paneles pesados que deben quedar aplomados y apuntalados antes de soltar la grúa, y trabaja junto a bordes sin protección.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Plataformas de trabajo con barandas o protección contra caídas antes de armar el moldaje en altura.
+2. [ ] Cada panel izado se apuntala y asegura antes de soltar el gancho; nadie bajo el panel suspendido.
+3. [ ] Revisar el apuntalamiento y los anclajes antes del hormigonado, junto al jefe de obra.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); DS 594; Ley 16.744 Art. 68; procedimiento de izaje del proyecto.
+
+**Pregunta de cierre:** ¿En qué momento se puede soltar el gancho de un panel de moldaje?
+
 ## Enfierradura
 
 ### EN-01 · Descarga de fierro: paquetes pesados que ruedan
@@ -5928,6 +6571,57 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 594 Art. 53; Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).
 
 **Pregunta de cierre:** ¿Tu tenaza corta bien o tienes que apretar el doble? Hay que cambiarla.
+
+### EN-26 · Mallas electrosoldadas: rollos, puntas y cortes
+
+**El porqué (mensaje clave):** Las mallas electrosoldadas vienen en paneles o rollos que, al soltar las amarras, se abren con fuerza. Sus puntas cortan las manos y las piernas, y cortarlas con napoleón o esmeril deja extremos filosos donde la gente camina.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Abrir los rollos sujetando el extremo, entre dos personas y sin pararse delante.
+2. [ ] Guantes, lentes y protección de piernas al manipular y cortar mallas.
+3. [ ] Doblar o proteger los extremos cortados y no caminar sobre la malla suelta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: Ley 16.744 Art. 68; DS 594 Art. 53 (EPP); Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga).
+
+**Pregunta de cierre:** ¿Cómo abrimos un rollo de malla sin que nos golpee?
+
+### EN-27 · Canastillos de pilotes: armar, izar y bajar
+
+**El porqué (mensaje clave):** Los canastillos de enfierradura de pilotes son largos, pesados y flexibles. Al izarlos pueden doblarse o soltarse si no se rigidizan, y al bajarlos en la perforación los enfierradores quedan junto a un hoyo abierto y bajo la carga.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Rigidizar el canastillo con anillos y amarras según el procedimiento, y usar los puntos de izaje definidos.
+2. [ ] Izaje con plan, rigger y cuerdas guía; nadie bajo el canastillo ni con las manos entre barras durante el giro.
+3. [ ] Perforación tapada o protegida cuando no se está trabajando; nadie se asoma sin protección contra caídas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca bajo cargas suspendidas.
+- Normativa: DS 594; Ley 16.744 Art. 68; plan de izaje del proyecto; NCh 1258 (protección contra caídas).
+
+**Pregunta de cierre:** ¿Quién da las órdenes al bajar el canastillo en la perforación?
+
+### EN-28 · Dobladora y cortadora eléctrica de fierro
+
+**El porqué (mensaje clave):** La dobladora y la cortadora eléctrica tienen mucha fuerza y atrapan los dedos entre la barra y el perno o la cuchilla. La barra que gira al doblarse golpea a quien está cerca, y el pedal se puede pisar sin querer.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Solo personal capacitado; manos lejos del perno y la cuchilla, y la barra sujeta lejos del punto de doblado.
+2. [ ] Nadie en el radio de giro de la barra; pedal con protección y equipo con su conexión a tierra.
+3. [ ] Desconectar antes de cambiar pernos, limpiar o ajustar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 594 Art. 38 (protección de partes móviles); Ley 16.744 Art. 68; manual del fabricante.
+
+**Pregunta de cierre:** ¿Dónde debe estar el ayudante cuando la dobladora gira una barra larga?
 
 ## Hormigonado
 
@@ -6372,6 +7066,57 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: Protocolo TMERT-EESS (MINSAL); NCh 1258 (protección contra caídas); Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** ¿Hacia dónde avanzamos hoy al reglar para no quedar de espaldas al borde?
+
+### HO-27 · Hormigonado del tablero del puente
+
+**El porqué (mensaje clave):** El hormigonado del tablero reúne casi todos los riesgos: altura sobre el cauce, borde abierto, bomba o capacho, vibradores, mucha gente concentrada y, a veces, tránsito al lado. Una falla de la obra falsa durante el vaciado puede ser catastrófica.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Barandas y protección de borde instaladas antes del vaciado; arnés anclado donde no haya baranda.
+2. [ ] Obra falsa y moldaje revisados y aprobados antes de empezar; alguien vigila bajo el tablero durante el vaciado, fuera de la zona de caída.
+3. [ ] Vaciar en el orden y velocidad del procedimiento, sin acumular hormigón en un solo punto.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); DS 594; Ley 16.744 Art. 68; procedimiento de hormigonado del proyecto.
+
+**Pregunta de cierre:** ¿Quién vigila la obra falsa durante el vaciado y qué hace si ve algo raro?
+
+### HO-28 · Grout y morteros de reparación
+
+**El porqué (mensaje clave):** Los grout y morteros de reparación vienen en sacos con cemento y aditivos que queman la piel igual que el hormigón, y al mezclarlos levantan mucho polvo. Se usan en apoyos de puentes, anclajes y reparaciones, muchas veces en lugares estrechos o en altura.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Mezclar con guantes, lentes y mascarilla, en lugar ventilado y vaciando el saco con cuidado.
+2. [ ] Leer la hoja de datos del producto y respetar la cantidad de agua y el tiempo de uso.
+3. [ ] Lavar de inmediato la piel que tuvo contacto y no arrodillarse sobre mortero fresco sin protección.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: NCh 2245 (Hoja de Datos de Seguridad); DS 594 (EPP y sustancias); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Por qué el grout quema la piel aunque no se sienta caliente?
+
+### HO-29 · Dumper y carretilla motorizada
+
+**El porqué (mensaje clave):** El dumper y la carretilla motorizada mueven hormigón y materiales por terreno irregular. Con la tolva cargada se vuelcan en pendientes y bordes, y su operador suele ver poco hacia adelante.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Solo operadores autorizados; nadie viaja en la tolva ni como acompañante.
+2. [ ] Circular a baja velocidad, subir y bajar pendientes de frente y no acercarse a bordes de zanjas ni taludes.
+3. [ ] Descargar en zonas con tope o calzo, y con freno puesto al dejar el equipo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.
+- Normativa: DS 594 Art. 38; Ley 16.744 Art. 68; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Qué borde del recorrido del dumper necesita un tope hoy?
 
 ## Movimiento de Tierra
 
@@ -6986,3 +7731,71 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: NCh 349 (seguridad en excavación); NCh 1258 (protección contra caídas); Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** ¿Por dónde va a caminar hoy el topógrafo para medir el talud?
+
+### MT-37 · Tolva levantada y líneas eléctricas
+
+**El porqué (mensaje clave):** Un camión tolva que descarga con la tolva arriba puede alcanzar una línea eléctrica que pasa sobre la faja. El operador no la ve desde la cabina, y la descarga eléctrica puede matar al chofer o a quien toca el camión desde el suelo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar y señalizar en terreno las líneas que cruzan la faja, con gálibo o banderines donde se descargue.
+2. [ ] Nunca levantar la tolva bajo una línea ni avanzar con la tolva arriba.
+3. [ ] Si el camión toca una línea: el chofer no se baja salvo incendio, y si debe hacerlo salta con los pies juntos; nadie toca el camión.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar las distancias a líneas energizadas.
+- Normativa: Normativa eléctrica SEC (NSEG 5 E.n.71, distancias a líneas energizadas); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Dónde cruzan líneas eléctricas sobre la zona de descarga de hoy?
+
+### MT-38 · Estabilización de suelos con cal o cemento
+
+**El porqué (mensaje clave):** Estabilizar el suelo con cal o cemento implica esparcir polvo muy alcalino que quema la piel, los ojos y las vías respiratorias. El viento lo lleva a la cuadrilla y a los vecinos, y la cal viva reacciona con el agua generando calor.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Leer la hoja de datos; lentes herméticos, respirador, guantes y ropa cerrada para quien está cerca del esparcido.
+2. [ ] No esparcir con viento fuerte hacia la cuadrilla, la ruta o las casas; humectar según el procedimiento.
+3. [ ] Tener agua limpia para lavado de ojos en el frente y lavar de inmediato cualquier contacto.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: NCh 2245 (Hoja de Datos de Seguridad); DS 594 (sustancias peligrosas, EPP y límites permisibles); especificaciones técnicas del proyecto.
+
+**Pregunta de cierre:** ¿Qué hacemos si a alguien le entra cal en los ojos?
+
+### MT-39 · Pendientes con camión cargado: frenos y marcha
+
+**El porqué (mensaje clave):** Los camiones cargados que bajan por caminos internos o empréstitos en pendiente pueden quedarse sin frenos si los usan todo el tiempo. Subiendo, un camión que patina o se detiene puede retroceder sin control.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Bajar en una marcha corta y con freno motor; no bajar en neutro ni solo con el freno de servicio.
+2. [ ] Revisar frenos en el pre-uso y respetar la velocidad y la carga máxima del camino.
+3. [ ] Si un camión pierde frenos, usar la zona de escape o el talud de corte según el plan; nadie se ubica abajo en la pendiente.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar los límites de velocidad y las reglas de tránsito internas.
+- Normativa: Ley 18.290 de Tránsito; DS 594; reglas de tránsito de caminos internos del proyecto.
+
+**Pregunta de cierre:** ¿En qué marcha bajamos la pendiente del empréstito?
+
+### MT-40 · Laboratorio de suelos en el frente: densidades y muestras
+
+**El porqué (mensaje clave):** El laboratorista toma densidades y muestras agachado en la capa recién compactada, con rodillos, motoniveladoras y camiones circulando a su alrededor. Concentrado en el ensayo, deja de mirar a la maquinaria.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Avisar al capataz y a los operadores dónde se hará el ensayo y delimitar el punto con conos.
+2. [ ] Ropa de alta visibilidad y contacto visual con los operadores antes de agacharse.
+3. [ ] Si se usa el densímetro nuclear, solo personal autorizado y respetando la distancia de seguridad.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Contacto visual con el operador antes de acercarse a cualquier equipo.
+- Normativa: DS 594; Ley 16.744 Art. 68; DS 3/1985 (protección radiológica) para el densímetro nuclear.
+
+**Pregunta de cierre:** ¿Cómo sabe el operador del rodillo dónde está el laboratorista?
