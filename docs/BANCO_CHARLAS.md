@@ -2,11 +2,11 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 9** · 2026-10-08 — 13 charlas nuevas de trabajo en altura (ajuste e inspección del arnés, puntos de anclaje, distancia libre de caída, líneas de vida, rescate de un trabajador suspendido, andamios, aberturas, plataformas de tijera, caída de objetos, aptitud y techos de contenedores) (347 charlas, 40 actividades).
+**Versión 10** · 2026-10-08 — 13 charlas nuevas de izaje de cargas (plan de izaje, tabla de carga, peso y centro de gravedad, eslingas y ángulos, inspección de accesorios, grilletes y ganchos, estabilización de la grúa, rigger, cuerdas guía, viento, excavadora habilitada, camión pluma y depositar la carga) (360 charlas, 40 actividades).
 
 ## Índice por especialidad
 
-### Maquinaria Pesada (31)
+### Maquinaria Pesada (44)
 
 - **MP-01** Si no te veo, no existes: zona de exclusión alrededor de la maquinaria
 - **MP-02** Check pre-uso: 10 minutos que salvan el día
@@ -39,6 +39,19 @@
 - **MP-29** Lubricación y engrase: el equipo detenido de verdad
 - **MP-30** Baterías de los equipos: ácido, gases y chispas al conectar
 - **MP-31** Camión lubricador y taller móvil: mantención en el frente
+- **MP-32** Plan de izaje: cuándo una maniobra es crítica
+- **MP-33** La tabla de carga: la grúa levanta menos de lo que dice su nombre
+- **MP-34** Peso y centro de gravedad: no adivinar la carga
+- **MP-35** Eslingas y ángulos: más abiertas, más carga sobre cada rama
+- **MP-36** Inspección de accesorios de izaje: código de color y retiro inmediato
+- **MP-37** Grilletes y ganchos: el pasador correcto y el seguro puesto
+- **MP-38** Estabilizar la grúa: el terreno también levanta la carga
+- **MP-39** El rigger: quien prepara la carga y dirige la maniobra
+- **MP-40** Cuerdas guía (vientos): controlar la carga sin ponerse debajo
+- **MP-41** Viento e izaje: cargas grandes como velas
+- **MP-42** Excavadora como grúa: solo si está habilitada para izar
+- **MP-43** Camión pluma: estabilizadores, control remoto y líneas eléctricas
+- **MP-44** Depositar la carga: el izaje termina cuando la carga está estable
 
 ### Control de Tránsito / Paleteros (34)
 
@@ -403,7 +416,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Enfierradura | EN-04, EN-08, EN-06, EN-11, EN-18, EN-20 |
 | Hormigonado | HO-23, HO-08, OA-07, HO-02, HO-09, HO-14 |
 | Trabajo en altura | RT-51, OA-05, CA-20, OA-68, RT-47, EN-17 |
-| Izaje de cargas | MP-05, OA-24, EN-08, MP-11, MP-17, OA-02 |
+| Izaje de cargas | MP-05, MP-33, MP-41, MP-40, MP-38, MP-42 |
 | Soldadura, oxicorte y esmeril | OA-15, OA-72, EN-12, OA-16, OA-35, OA-62 |
 | Obras en cauces y esteros | OA-34, OA-33, OA-09, OA-32, MP-25, OA-42 |
 | Roce y despeje de faja | OA-25, MT-11, MT-26, MT-27, MT-28, OA-71 |
@@ -984,6 +997,227 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 148/2003 (residuos peligrosos); DS 160/2008 (combustibles líquidos); DS 594; compromisos ambientales del proyecto.
 
 **Pregunta de cierre:** ¿Dónde quedan hoy los filtros y el aceite usado que sacamos de los equipos?
+
+### MP-32 · Plan de izaje: cuándo una maniobra es crítica
+
+**El porqué (mensaje clave):** No todos los izajes son iguales. Levantar un saco de cemento no es lo mismo que montar una viga cerca de una línea eléctrica o sobre la ruta. Cuando la carga se acerca a la capacidad de la grúa, se usan dos equipos, se iza sobre personas, tránsito o líneas, la maniobra es crítica y necesita un plan escrito y aprobado antes de empezar.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Clasificar cada maniobra según el procedimiento del proyecto (rutinaria o crítica) antes de iniciarla.
+2. [ ] Maniobras críticas con plan de izaje aprobado: peso, equipo, radio, accesorios, terreno, zona de exclusión y responsables.
+3. [ ] Reunión previa con todos los participantes; si algo cambia en terreno (peso, posición, clima), se detiene y se revisa el plan.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Planificar la tarea: cada persona sabe qué hace y dónde está.
+- Normativa: Ley 16.744 Art. 68; DS 44/2024 (gestión preventiva); estándar de izaje del proyecto y manual del fabricante de la grúa.
+
+**Pregunta de cierre:** ¿Qué izaje de esta semana es crítico y dónde está su plan?
+
+### MP-33 · La tabla de carga: la grúa levanta menos de lo que dice su nombre
+
+**El porqué (mensaje clave):** Una grúa 'de 50 toneladas' solo levanta eso con la pluma corta y muy cerca de su centro. A medida que la carga se aleja, su capacidad baja mucho. Muchos volcamientos de grúas ocurren porque la carga cabía en la capacidad nominal, pero no en la tabla para ese radio.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar la tabla de carga del equipo para el radio, el largo de pluma y la configuración reales de la maniobra.
+2. [ ] Sumar al peso de la carga el de los accesorios de izaje (eslingas, grilletes, balancín, gancho).
+3. [ ] Dejar un margen bajo la capacidad de la tabla según el procedimiento; nunca anular el limitador de carga.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.
+- Normativa: Manual del fabricante y tabla de carga del equipo; DS 594 Art. 38; estándar de izaje del proyecto.
+
+**Pregunta de cierre:** ¿Cuánto levanta nuestra grúa al radio de la maniobra de hoy?
+
+### MP-34 · Peso y centro de gravedad: no adivinar la carga
+
+**El porqué (mensaje clave):** Calcular el peso 'a ojo' es una de las causas más comunes de accidentes de izaje. Además, si la carga se engancha lejos de su centro de gravedad, se inclina al despegar del suelo y puede soltarse de las eslingas o golpear a quien la guía.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Obtener el peso de la carga desde el plano, la guía de despacho o la marca del fabricante; si no se conoce, calcularlo o consultarlo antes de izar.
+2. [ ] Ubicar el centro de gravedad y enganchar de modo que el gancho quede sobre él.
+3. [ ] Levantar unos centímetros y detenerse para comprobar que la carga está equilibrada antes de continuar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conocer el riesgo antes de iniciar la tarea.
+- Normativa: Estándar de izaje del proyecto; manual del fabricante; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿De dónde sacamos el peso de la carga que izaremos hoy?
+
+### MP-35 · Eslingas y ángulos: más abiertas, más carga sobre cada rama
+
+**El porqué (mensaje clave):** Cuando una carga se iza con dos o más ramas de eslinga, la fuerza en cada una aumenta a medida que el ángulo se abre. Con ramas muy abiertas, una eslinga que 'aguanta de sobra' puede cortarse. Además, un canto vivo de la carga corta una eslinga sintética como un cuchillo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Elegir el tipo de eslinga (cadena, cable o sintética) y su capacidad según la carga, el tipo de enganche y el ángulo entre ramas.
+2. [ ] Evitar ángulos muy abiertos; usar eslingas más largas o un balancín cuando el procedimiento lo indique.
+3. [ ] Proteger las eslingas en los cantos vivos con cantoneras o protectores; nunca anudarlas ni acortarlas con nudos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse bajo cargas suspendidas.
+- Normativa: Estándar de izaje del proyecto; instrucciones del fabricante de los accesorios de izaje; DS 594.
+
+**Pregunta de cierre:** ¿Qué ángulo tendrán hoy las ramas de la eslinga y qué protege los cantos de la carga?
+
+### MP-36 · Inspección de accesorios de izaje: código de color y retiro inmediato
+
+**El porqué (mensaje clave):** Una eslinga cortada, un cable con alambres rotos o una cadena con un eslabón estirado pueden ceder sin aviso con la carga en el aire. Por eso cada accesorio se revisa antes de usarlo y se marca con el código de color del período, que indica que fue inspeccionado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar antes de cada uso: cortes, quemaduras y costuras en sintéticas; alambres rotos y aplastamientos en cables; deformaciones y desgaste en cadenas y ganchos.
+2. [ ] Usar solo accesorios con etiqueta legible de capacidad y con el código de color vigente.
+3. [ ] Accesorios dañados se retiran, se marcan y se inutilizan para que nadie los vuelva a usar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramientas en buen estado y usadas para su fin.
+- Normativa: Estándar de izaje del proyecto; instrucciones del fabricante; DS 594 Art. 38; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué color corresponde este mes y todos nuestros accesorios lo tienen?
+
+### MP-37 · Grilletes y ganchos: el pasador correcto y el seguro puesto
+
+**El porqué (mensaje clave):** Un grillete con un perno cambiado por uno cualquiera, un gancho sin su seguro o una carga apoyada en la punta del gancho pueden soltar la carga en pleno izaje. Son piezas pequeñas de las que depende toda la maniobra.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Grilletes con su perno original, apretado (o asegurado con chaveta) y con la capacidad marcada.
+2. [ ] Ganchos con seguro (lengüeta) funcionando y la carga apoyada en el fondo del gancho, nunca en la punta.
+3. [ ] No cargar el grillete de costado ni meter varias eslingas en un mismo gancho si el procedimiento no lo permite.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.
+- Normativa: Estándar de izaje del proyecto; instrucciones del fabricante; DS 594 Art. 38.
+
+**Pregunta de cierre:** ¿El gancho de la grúa de hoy tiene su seguro funcionando?
+
+### MP-38 · Estabilizar la grúa: el terreno también levanta la carga
+
+**El porqué (mensaje clave):** Toda la carga y el peso de la grúa bajan al suelo por los estabilizadores. Si uno de ellos se apoya sobre un relleno reciente, una cámara, una cuneta o el borde de una excavación, el terreno cede y la grúa vuelca. Muchos volcamientos empiezan bajo los estabilizadores, no en la pluma.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Estabilizadores totalmente extendidos según el fabricante, sobre placas de reparto del tamaño adecuado.
+2. [ ] Revisar el terreno bajo cada estabilizador: lejos de bordes de excavación, cámaras, ductos y rellenos sin compactar.
+3. [ ] Grúa nivelada antes de izar; revisar de nuevo los apoyos si llueve o si se mueve la grúa.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ninguna estructura temporal se carga sin ser revisada y aprobada.
+- Normativa: Manual del fabricante del equipo; NCh 349 (bordes de excavación); estándar de izaje del proyecto.
+
+**Pregunta de cierre:** ¿Qué hay bajo los estabilizadores de la grúa hoy?
+
+### MP-39 · El rigger: quien prepara la carga y dirige la maniobra
+
+**El porqué (mensaje clave):** El operador de la grúa no ve bien la carga ni sabe cómo quedó enganchada. El rigger es quien elige los accesorios, engancha la carga, verifica el equilibrio y da las señales. Si nadie cumple ese rol, cada uno hace su parte y nadie mira la maniobra completa.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Designar un rigger capacitado para cada maniobra; es el único que da las señales al operador.
+2. [ ] El rigger revisa accesorios, enganche y zona de exclusión antes de autorizar el levante.
+3. [ ] Comunicación por radio o señales estandarizadas acordadas antes de empezar; ante una señal de parada de cualquier persona, el operador se detiene.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ante la duda, el equipo se detiene.
+- Normativa: Estándar de izaje del proyecto; Ley 16.744 Art. 68; DS 44/2024.
+
+**Pregunta de cierre:** ¿Quién es el rigger del izaje de hoy?
+
+### MP-40 · Cuerdas guía (vientos): controlar la carga sin ponerse debajo
+
+**El porqué (mensaje clave):** Una carga suspendida gira y se balancea con el viento o al moverse la pluma. La tentación es atajarla con las manos, quedando bajo ella o entre la carga y una estructura. Las cuerdas guía permiten controlarla desde una distancia segura.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Instalar cuerdas guía en cargas largas o voluminosas antes de levantarlas, del largo suficiente para mantenerse fuera del radio de caída.
+2. [ ] Nunca enrollar la cuerda en la mano ni en el cuerpo; soltarla si la carga tira con fuerza.
+3. [ ] Tocar la carga con las manos solo cuando esté a la altura final, casi apoyada y con la señal del rigger.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse bajo cargas suspendidas.
+- Normativa: Estándar de izaje del proyecto; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué carga de hoy necesita cuerdas guía y quién las maneja?
+
+### MP-41 · Viento e izaje: cargas grandes como velas
+
+**El porqué (mensaje clave):** Paneles de moldaje, letreros, vigas y tubos grandes ofrecen mucha superficie al viento. Una ráfaga puede hacerlos girar, golpear a quien guía o sobrecargar la grúa más allá de su tabla. Cada equipo tiene una velocidad máxima de viento para operar, y hay cargas que se suspenden con mucho menos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Conocer el límite de viento del equipo y del procedimiento, y medirlo o consultar el pronóstico antes de maniobras grandes.
+2. [ ] Suspender los izajes de cargas con mucha superficie cuando el viento supera el límite o aparecen ráfagas.
+3. [ ] Con tormenta eléctrica, detener todo izaje y bajar la pluma según el fabricante.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.
+- Normativa: Manual del fabricante del equipo; Código del Trabajo Art. 184 bis; estándar de izaje del proyecto.
+
+**Pregunta de cierre:** ¿Con cuánto viento suspendemos hoy el izaje de los paneles?
+
+### MP-42 · Excavadora como grúa: solo si está habilitada para izar
+
+**El porqué (mensaje clave):** Usar la excavadora para levantar tubos o cámaras es habitual en obras viales, pero no todas están preparadas para eso. Sin un punto de izaje certificado, una tabla de carga para izaje y las válvulas de seguridad, una manguera que falla deja caer la carga de golpe.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Izar solo con excavadoras habilitadas: punto de izaje certificado, tabla de carga de izaje y dispositivos de seguridad exigidos por el fabricante.
+2. [ ] Nunca colgar la carga de los dientes del balde ni de eslingas pasadas alrededor del balde.
+3. [ ] Trasladar la carga baja y despacio, con el operador autorizado y un rigger guiando.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.
+- Normativa: Manual del fabricante de la excavadora; DS 594 Art. 38; estándar de izaje del proyecto.
+
+**Pregunta de cierre:** ¿Nuestra excavadora tiene punto de izaje certificado y tabla para izar?
+
+### MP-43 · Camión pluma: estabilizadores, control remoto y líneas eléctricas
+
+**El porqué (mensaje clave):** El camión pluma (grúa articulada) es muy usado para descargar soleras, tubos y materiales. Se instala rápido y por eso se instala mal: estabilizadores a medio extender, el operador manejando el control remoto mientras guía la carga, y la pluma subiendo cerca de líneas eléctricas.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Estabilizadores totalmente extendidos y apoyados sobre placas en terreno firme antes de desplegar la pluma.
+2. [ ] El operador con control remoto se ubica donde ve la carga y queda fuera de su recorrido; no guía y opera a la vez si no es seguro.
+3. [ ] Revisar líneas eléctricas antes de desplegar la pluma y respetar la distancia de seguridad.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar las distancias a líneas energizadas.
+- Normativa: Manual del fabricante del equipo; normativa eléctrica SEC (NSEG 5 E.n.71); Ley 18.290 (licencia del conductor).
+
+**Pregunta de cierre:** ¿Dónde se para el operador del camión pluma mientras descarga las soleras?
+
+### MP-44 · Depositar la carga: el izaje termina cuando la carga está estable
+
+**El porqué (mensaje clave):** Muchos accidentes de izaje ocurren al final: al bajar la carga sobre calzos y meter las manos debajo, al soltar las eslingas antes de que la carga esté estable o al tirar de una eslinga atrapada usando la grúa. La maniobra no termina cuando la carga toca el suelo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Preparar antes el lugar de apoyo: terreno firme, calzos o durmientes en posición y espacio para retirar las eslingas.
+2. [ ] Bajar despacio y nunca poner manos o pies bajo la carga; ajustar la posición con herramientas o cuerdas.
+3. [ ] Soltar las eslingas solo con la carga estable; nunca tirar de una eslinga atrapada con la grúa.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse en puntos de atrapamiento.
+- Normativa: Estándar de izaje del proyecto; DS 594 Art. 38; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde vamos a apoyar la carga hoy y cómo sacaremos las eslingas?
 
 ## Control de Tránsito / Paleteros
 
