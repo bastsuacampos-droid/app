@@ -71,6 +71,12 @@ android {
     }
 }
 
+// Las pruebas leen src/main/assets/charlas.json directamente: declararlo como entrada para que
+// Gradle vuelva a ejecutarlas cuando cambia el banco de charlas.
+tasks.withType<Test>().configureEach {
+    inputs.dir("src/main/assets")
+}
+
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2025.05.01")
     implementation(composeBom)
