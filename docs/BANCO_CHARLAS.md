@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 7** · 2026-10-08 — 13 charlas nuevas de soldadura y oxicorte (soldadora al arco, radiación del arco, EPP del soldador, encendido del soplete, válvulas antirretorno, transporte de cilindros, tambores con combustible, galvanizados, altura, oxígeno en lugares cerrados, piezas calientes, motosoldadora y escoria) (321 charlas, 40 actividades).
+**Versión 8** · 2026-10-08 — 13 charlas nuevas de trabajos eléctricos (personal autorizado, cinco reglas de oro, verificar ausencia de tensión, arco eléctrico, diferencial, puesta a tierra, líneas de la ruta, alumbrado en altura, cámaras eléctricas, rescate de un electrocutado, EPP dieléctrico, lluvia y conexiones improvisadas) (334 charlas, 40 actividades).
 
 ## Índice por especialidad
 
@@ -111,7 +111,7 @@
 - **AS-30** Borrado de demarcación antigua: agua a presión y partículas proyectadas
 - **AS-31** Pintura de demarcación y microesferas: almacenar, mezclar y cargar
 
-### Obras de Arte / Manuales (72)
+### Obras de Arte / Manuales (85)
 
 - **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
@@ -185,6 +185,19 @@
 - **OA-70** Piezas calientes después de soldar o cortar: el metal no avisa
 - **OA-71** Motosoldadora en terreno: combustible, escape y conexión a tierra
 - **OA-72** Picado de escoria y esmerilado de cordones: lo que salta a los ojos
+- **OA-73** ¿Quién puede intervenir una instalación eléctrica? Solo el autorizado
+- **OA-74** Las cinco reglas de oro antes de trabajar sin tensión
+- **OA-75** Verificar ausencia de tensión: probar, medir y volver a probar
+- **OA-76** Arco eléctrico en tableros: una explosión de luz y calor
+- **OA-77** Protección diferencial: probarla también es seguridad
+- **OA-78** Puesta a tierra: el camino que protege cuando algo falla
+- **OA-79** Líneas eléctricas de la ruta: los cambios los hace la empresa eléctrica
+- **OA-80** Alumbrado vial en altura: camión canastillo y luminarias
+- **OA-81** Canalizaciones y cámaras eléctricas: electricidad bajo tierra
+- **OA-82** Si alguien se electrocuta: no tocarlo hasta cortar la energía
+- **OA-83** Guantes dieléctricos y herramientas aisladas: revisarlos antes de usar
+- **OA-84** Trabajos eléctricos con lluvia: cuándo parar
+- **OA-85** Conexiones improvisadas: nunca 'colgarse' de la red
 
 ### Riesgos Transversales / Clima (41)
 
@@ -384,7 +397,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Defensas camineras y barreras | OA-12, OA-27, OA-28, OA-26, CT-27, CT-09 |
 | Mantención y combustible de equipos | MP-31, MP-09, MP-29, MP-02, MP-10, MP-30 |
 | Traslado de maquinaria | MP-11, MP-26, MP-27, MP-28, MP-23, CT-28 |
-| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-69, OA-16, OA-31 |
+| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-69, OA-81, OA-16 |
 | Lluvia, frío, viento o neblina | RT-01, RT-30, HO-17, RT-05, RT-32, RT-31 |
 | Calor y sol | AS-20, RT-03, RT-33, RT-34, AS-09, AS-16 |
 | Ingreso de personal nuevo o subcontratistas | RT-18, RT-22, RT-26, RT-27, RT-29, RT-28 |
@@ -394,7 +407,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Puentes: vigas, tablero y pilotes | OA-43, CA-06, OA-42, OA-33, OA-44, EN-17 |
 | Señalización vertical, tachas y delineadores | CT-23, CT-07, CT-26, OA-13, CT-02, CT-03 |
 | Instalación de faena y bodegas | RT-35, RT-36, RT-37, RT-41, RT-23, AS-23 |
-| Electricidad provisoria y generadores | RT-36, OA-45, OA-04, OA-08, OA-18, CA-15 |
+| Trabajos eléctricos, tableros y generadores | OA-80, OA-76, RT-36, OA-45, OA-04, OA-78 |
 | Trabajo nocturno | CT-10, CT-03, HO-16, CT-28, RT-02, RT-38 |
 | Conducción de camionetas y transporte de personal | RT-16, CT-30, CT-31, CT-04, CT-15, CT-09 |
 | Emergencias y primeros auxilios | RT-39, RT-40, CT-17, RT-11, CT-19, RT-08 |
@@ -3293,6 +3306,227 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 594 Arts. 38 y 53 (protecciones y EPP); Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** ¿Quién levantó ayer la careta para picar la escoria sin lentes debajo?
+
+### OA-73 · ¿Quién puede intervenir una instalación eléctrica? Solo el autorizado
+
+**El porqué (mensaje clave):** Cambiar un enchufe, abrir un tablero o 'arreglar' una extensión parecen tareas simples, y por eso muchos lo hacen sin ser electricistas. Pero una conexión mal hecha puede electrocutar a quien la hace o, días después, a un compañero que solo enchufa una herramienta. En la obra, la electricidad la intervienen solo quienes están capacitados y autorizados.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Conocer quién es el electricista autorizado del frente o de la faena y llamarlo ante cualquier falla eléctrica.
+2. [ ] Nadie abre tableros, cambia enchufes, empalma cables ni conecta equipos a la red sin autorización.
+3. [ ] Las instalaciones provisorias se hacen y modifican según el proyecto eléctrico y quedan registradas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal autorizado realiza tareas críticas.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (instalaciones de consumo, SEC); DS 92/1983 (licencias de instaladores eléctricos); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién es hoy el electricista autorizado de nuestro frente y cómo lo llamamos?
+
+### OA-74 · Las cinco reglas de oro antes de trabajar sin tensión
+
+**El porqué (mensaje clave):** La mayoría de los accidentes eléctricos graves ocurren en instalaciones que se creían desenergizadas. Alguien cortó el interruptor equivocado, otro lo volvió a subir sin saber, o quedaba energía de otra fuente. Las cinco reglas de oro existen para que 'creo que está cortado' nunca sea suficiente.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] 1) Cortar todas las fuentes de energía, y 2) bloquear los interruptores con candado y tarjeta personal para que nadie los reponga.
+2. [ ] 3) Verificar la ausencia de tensión con un instrumento adecuado, y 4) poner a tierra y en cortocircuito cuando el procedimiento lo indique.
+3. [ ] 5) Señalizar y delimitar la zona de trabajo; solo quien puso el candado lo retira al terminar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 38; Ley 16.744 Art. 68; procedimiento de bloqueo del proyecto.
+
+**Pregunta de cierre:** ¿Cuáles son las cinco reglas de oro y cuál se salta con más frecuencia?
+
+### OA-75 · Verificar ausencia de tensión: probar, medir y volver a probar
+
+**El porqué (mensaje clave):** Un instrumento con la batería agotada o en la escala equivocada marca cero aunque el circuito esté energizado. Por eso no basta con medir: hay que comprobar que el instrumento funciona antes y después de la medición, en una fuente que sabemos que tiene tensión.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar un detector o multímetro de la categoría adecuada a la instalación, con puntas y cables en buen estado.
+2. [ ] Probar el instrumento en una fuente con tensión conocida, medir el circuito en todos sus conductores y volver a probar el instrumento.
+3. [ ] Medir con guantes dieléctricos y lentes; si hay cualquier duda, tratar el circuito como energizado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ante la duda, el trabajo se detiene.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP).
+
+**Pregunta de cierre:** ¿Dónde probamos hoy el detector de tensión antes de usarlo?
+
+### OA-76 · Arco eléctrico en tableros: una explosión de luz y calor
+
+**El porqué (mensaje clave):** Al operar un interruptor con falla, al meter una herramienta en un tablero energizado o al conectar mal un equipo, puede producirse un arco eléctrico: un destello de miles de grados que quema la piel y los ojos y proyecta metal fundido. Ocurre en milisegundos, sin tiempo para retirarse.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] No abrir ni trabajar en tableros energizados salvo que sea indispensable, esté autorizado y se use el EPP para arco eléctrico definido.
+2. [ ] Al operar interruptores, pararse a un costado del tablero, con la puerta cerrada si el equipo lo permite, y con ropa sin material sintético.
+3. [ ] Tableros con tapas y puertas completas, sin partes vivas expuestas ni herramientas olvidadas en su interior.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca intervenir un equipo con energía conectada.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 53 (EPP); DS 18/1982.
+
+**Pregunta de cierre:** ¿Dónde te paras cuando subes un interruptor del tablero de la faena?
+
+### OA-77 · Protección diferencial: probarla también es seguridad
+
+**El porqué (mensaje clave):** El protector diferencial corta la energía cuando detecta que la corriente se está escapando, por ejemplo a través de una persona. Es lo que salva a quien toca una herramienta con un cable dañado. Pero se puede averiar sin que nadie lo note, y solo apretando su botón de prueba sabemos si funciona.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Probar el diferencial de cada tablero provisorio con su botón de prueba al inicio de la jornada (o con la frecuencia del procedimiento) y registrarlo.
+2. [ ] Si el diferencial salta, no reponerlo una y otra vez: desconectar los equipos y avisar al electricista para encontrar la falla.
+3. [ ] Nunca puentear ni retirar un diferencial porque 'salta mucho'.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (protección diferencial en instalaciones provisorias de faena); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién probó hoy el diferencial del tablero y qué pasó al apretar el botón?
+
+### OA-78 · Puesta a tierra: el camino que protege cuando algo falla
+
+**El porqué (mensaje clave):** Cuando un cable interno se suelta y toca la carcasa metálica de un generador, un tablero o una máquina, esa carcasa queda energizada. La puesta a tierra le da a la corriente un camino seguro y hace actuar las protecciones. Sin ella, el camino es la persona que toca el equipo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Generadores, tableros, contenedores metálicos y equipos eléctricos fijos con su conexión a tierra según el proyecto.
+2. [ ] Revisar que el conductor de tierra esté conectado, sin cortes ni corrosión; no usar enchufes ni adaptadores que eliminen la tierra.
+3. [ ] Medición de la puesta a tierra por personal autorizado, con la frecuencia que define el procedimiento.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramientas eléctricas siempre con protección diferencial.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (puesta a tierra, SEC); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde está la barra de tierra del generador de la faena y quién la revisó?
+
+### OA-79 · Líneas eléctricas de la ruta: los cambios los hace la empresa eléctrica
+
+**El porqué (mensaje clave):** Ensanchar la ruta obliga muchas veces a trasladar postes y líneas de distribución. Esas líneas pertenecen a la empresa eléctrica y pueden estar energizadas aunque parezcan abandonadas. Ningún trabajador de la obra debe tocarlas, cortarlas ni trepar a sus postes: los traslados y cortes los coordina y ejecuta la distribuidora.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar todas las líneas del tramo y tratarlas siempre como energizadas.
+2. [ ] Traslados, cortes programados y trabajos cerca de líneas coordinados por escrito con la empresa eléctrica, con fecha y hora confirmadas.
+3. [ ] Respetar la distancia de seguridad definida; con equipos cerca de líneas, un vigía dedicado que avise al operador.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar las distancias a líneas energizadas.
+- Normativa: Normativa eléctrica SEC (NSEG 5 E.n.71, instalaciones de corrientes fuertes y distancias de seguridad); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Qué línea de nuestro tramo se va a trasladar y quién confirmó el corte?
+
+### OA-80 · Alumbrado vial en altura: camión canastillo y luminarias
+
+**El porqué (mensaje clave):** Instalar o mantener luminarias en postes obliga a trabajar en altura desde un camión canastillo, junto a la calzada y a veces cerca de otras líneas. Se juntan el riesgo de caída, el de contacto eléctrico y el del tránsito que pasa bajo el brazo del equipo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Canastillo operado por personal autorizado, sobre terreno firme y con estabilizadores; arnés conectado al punto de anclaje del canastillo.
+2. [ ] Circuito de alumbrado desenergizado y bloqueado antes de intervenir la luminaria, con verificación de ausencia de tensión.
+3. [ ] Zona bajo el brazo y alrededor del camión protegida del tránsito con la señalización de faena móvil.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); DS 8/2019 (SEC); Manual de Señalización de Tránsito (MTT), Cap. 5; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Quién bloqueó hoy el circuito de la luminaria antes de subir al canastillo?
+
+### OA-81 · Canalizaciones y cámaras eléctricas: electricidad bajo tierra
+
+**El porqué (mensaje clave):** Al construir canalizaciones para el alumbrado o los semáforos, o al intervenir cámaras eléctricas existentes, se trabaja en zanjas y cámaras donde pueden pasar cables energizados. A eso se suman el agua acumulada y los gases que se juntan en las cámaras cerradas.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar los cables existentes en la cámara o zanja y tratarlos como energizados hasta que el autorizado confirme lo contrario.
+2. [ ] Cámaras eléctricas evaluadas como espacio confinado (medición de gases, ventilación y vigía) antes de entrar.
+3. [ ] Agua achicada con bombas protegidas por diferencial; nadie trabaja en una cámara inundada con cables energizados.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ningún ingreso a espacios confinados sin medición, permiso y vigía.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (canalizaciones, SEC); guías técnicas del ISP sobre espacios confinados; NCh 349.
+
+**Pregunta de cierre:** ¿Qué cables pasan por la cámara que abriremos hoy y quién confirmó su estado?
+
+### OA-82 · Si alguien se electrocuta: no tocarlo hasta cortar la energía
+
+**El porqué (mensaje clave):** Cuando una persona queda pegada a un cable o a un equipo energizado, el impulso es tomarla para sacarla, y así el rescatista también recibe la descarga. Los primeros segundos deciden: cortar la energía, separar a la víctima de forma segura y empezar la reanimación si no respira.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Primero cortar la energía (interruptor o desenchufar); si no se puede, separar a la víctima con un objeto seco no conductor, sin tocarla.
+2. [ ] Activar la emergencia indicando el kilómetro exacto; si no respira, iniciar la reanimación (RCP) si se está capacitado.
+3. [ ] Toda persona que recibió una descarga, aunque se sienta bien, debe ser evaluada en el centro asistencial.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: Ley 16.744 Art. 68; DS 594 (elementos de primeros auxilios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** Si un compañero queda pegado a la bomba eléctrica, ¿qué es lo primero que haces?
+
+### OA-83 · Guantes dieléctricos y herramientas aisladas: revisarlos antes de usar
+
+**El porqué (mensaje clave):** Los guantes dieléctricos y las herramientas aisladas protegen solo si están en perfecto estado. Un pinchazo pequeño en el guante o una aislación agrietada en el destornillador dejan pasar la corriente. Por eso se revisan cada vez, se guardan protegidos y se usan solo para el voltaje que indican.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar guantes dieléctricos de la clase adecuada al voltaje y con su ensayo vigente; inflarlos o enrollarlos para detectar perforaciones antes de usarlos.
+2. [ ] Herramientas aisladas certificadas, sin grietas ni cortes en la aislación; nunca 'aislarlas' con cinta.
+3. [ ] Guardar guantes y herramientas en su bolsa o caja, lejos del sol, grasas y objetos cortantes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: EPP específico para la tarea: siempre puesto y en buen estado.
+- Normativa: DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP); DS 8/2019 (SEC).
+
+**Pregunta de cierre:** ¿Cuándo fue el último ensayo de los guantes dieléctricos que usamos?
+
+### OA-84 · Trabajos eléctricos con lluvia: cuándo parar
+
+**El porqué (mensaje clave):** El agua convierte una falla menor en un accidente grave: moja tableros, conecta cables pelados con el suelo y deja las manos y la ropa conductoras. Muchos trabajos eléctricos a la intemperie simplemente no deben hacerse con lluvia, aunque la tarea esté atrasada.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Suspender las conexiones, empalmes y trabajos en tableros a la intemperie mientras llueve, salvo los autorizados con protección adecuada.
+2. [ ] Tableros y enchufes provisorios con el grado de protección para exterior, cerrados y elevados del suelo.
+3. [ ] Después de la lluvia, revisar tableros, extensiones y equipos antes de energizar; secar y avisar si hay agua en su interior.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (instalaciones a la intemperie); Código del Trabajo Art. 184 bis; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** Si empieza a llover mientras conectamos el tablero, ¿qué hacemos?
+
+### OA-85 · Conexiones improvisadas: nunca 'colgarse' de la red
+
+**El porqué (mensaje clave):** Conectar un equipo directamente a una línea o a un empalme vecino, unir cables con cinta o enchufar varias zapatillas en cadena son atajos que se ven a menudo en obras. Sobrecargan los cables, saltan las protecciones y provocan incendios y electrocuciones. Además, conectarse a la red sin autorización es ilegal.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Toda energía de la faena sale de tableros o generadores autorizados; prohibido conectarse a líneas, empalmes o casas vecinas.
+2. [ ] Nada de uniones con cinta, alambres pelados ni zapatillas en cadena; si falta un enchufe, se pide al electricista.
+3. [ ] Retirar y reportar cualquier conexión improvisada que se encuentre en el frente.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal autorizado realiza tareas críticas.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (SEC); normativa de la distribuidora eléctrica; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Hay alguna conexión improvisada en nuestro frente que debamos retirar hoy?
 
 ## Riesgos Transversales / Clima
 

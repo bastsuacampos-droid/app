@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 7,
+  "version": 8,
   "fecha": "2026-10-08",
-  "novedades": "13 charlas nuevas de soldadura y oxicorte (soldadora al arco, radiación del arco, EPP del soldador, encendido del soplete, válvulas antirretorno, transporte de cilindros, tambores con combustible, galvanizados, altura, oxígeno en lugares cerrados, piezas calientes, motosoldadora y escoria) (321 charlas, 40 actividades).",
+  "novedades": "13 charlas nuevas de trabajos eléctricos (personal autorizado, cinco reglas de oro, verificar ausencia de tensión, arco eléctrico, diferencial, puesta a tierra, líneas de la ruta, alumbrado en altura, cámaras eléctricas, rescate de un electrocutado, EPP dieléctrico, lluvia y conexiones improvisadas) (334 charlas, 40 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -2570,6 +2570,201 @@
       "normativa": "DS 594 Arts. 38 y 53 (protecciones y EPP); Ley 16.744 Art. 68.",
       "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
       "preguntaCierre": "¿Quién levantó ayer la careta para picar la escoria sin lentes debajo?"
+    },
+    {
+      "id": 468,
+      "codigo": "OA-73",
+      "especialidad": "OA",
+      "titulo": "¿Quién puede intervenir una instalación eléctrica? Solo el autorizado",
+      "porQue": "Cambiar un enchufe, abrir un tablero o 'arreglar' una extensión parecen tareas simples, y por eso muchos lo hacen sin ser electricistas. Pero una conexión mal hecha puede electrocutar a quien la hace o, días después, a un compañero que solo enchufa una herramienta. En la obra, la electricidad la intervienen solo quienes están capacitados y autorizados.",
+      "checklist": [
+        "Conocer quién es el electricista autorizado del frente o de la faena y llamarlo ante cualquier falla eléctrica.",
+        "Nadie abre tableros, cambia enchufes, empalma cables ni conecta equipos a la red sin autorización.",
+        "Las instalaciones provisorias se hacen y modifican según el proyecto eléctrico y quedan registradas."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (instalaciones de consumo, SEC); DS 92/1983 (licencias de instaladores eléctricos); Ley 16.744 Art. 68.",
+      "reglaOro": "Solo personal autorizado realiza tareas críticas.",
+      "preguntaCierre": "¿Quién es hoy el electricista autorizado de nuestro frente y cómo lo llamamos?"
+    },
+    {
+      "id": 469,
+      "codigo": "OA-74",
+      "especialidad": "OA",
+      "titulo": "Las cinco reglas de oro antes de trabajar sin tensión",
+      "porQue": "La mayoría de los accidentes eléctricos graves ocurren en instalaciones que se creían desenergizadas. Alguien cortó el interruptor equivocado, otro lo volvió a subir sin saber, o quedaba energía de otra fuente. Las cinco reglas de oro existen para que 'creo que está cortado' nunca sea suficiente.",
+      "checklist": [
+        "1) Cortar todas las fuentes de energía, y 2) bloquear los interruptores con candado y tarjeta personal para que nadie los reponga.",
+        "3) Verificar la ausencia de tensión con un instrumento adecuado, y 4) poner a tierra y en cortocircuito cuando el procedimiento lo indique.",
+        "5) Señalizar y delimitar la zona de trabajo; solo quien puso el candado lo retira al terminar."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 38; Ley 16.744 Art. 68; procedimiento de bloqueo del proyecto.",
+      "reglaOro": "Bloqueo de energías antes de intervenir cualquier equipo.",
+      "preguntaCierre": "¿Cuáles son las cinco reglas de oro y cuál se salta con más frecuencia?"
+    },
+    {
+      "id": 470,
+      "codigo": "OA-75",
+      "especialidad": "OA",
+      "titulo": "Verificar ausencia de tensión: probar, medir y volver a probar",
+      "porQue": "Un instrumento con la batería agotada o en la escala equivocada marca cero aunque el circuito esté energizado. Por eso no basta con medir: hay que comprobar que el instrumento funciona antes y después de la medición, en una fuente que sabemos que tiene tensión.",
+      "checklist": [
+        "Usar un detector o multímetro de la categoría adecuada a la instalación, con puntas y cables en buen estado.",
+        "Probar el instrumento en una fuente con tensión conocida, medir el circuito en todos sus conductores y volver a probar el instrumento.",
+        "Medir con guantes dieléctricos y lentes; si hay cualquier duda, tratar el circuito como energizado."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP).",
+      "reglaOro": "Ante la duda, el trabajo se detiene.",
+      "preguntaCierre": "¿Dónde probamos hoy el detector de tensión antes de usarlo?"
+    },
+    {
+      "id": 471,
+      "codigo": "OA-76",
+      "especialidad": "OA",
+      "titulo": "Arco eléctrico en tableros: una explosión de luz y calor",
+      "porQue": "Al operar un interruptor con falla, al meter una herramienta en un tablero energizado o al conectar mal un equipo, puede producirse un arco eléctrico: un destello de miles de grados que quema la piel y los ojos y proyecta metal fundido. Ocurre en milisegundos, sin tiempo para retirarse.",
+      "checklist": [
+        "No abrir ni trabajar en tableros energizados salvo que sea indispensable, esté autorizado y se use el EPP para arco eléctrico definido.",
+        "Al operar interruptores, pararse a un costado del tablero, con la puerta cerrada si el equipo lo permite, y con ropa sin material sintético.",
+        "Tableros con tapas y puertas completas, sin partes vivas expuestas ni herramientas olvidadas en su interior."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (SEC); DS 594 Art. 53 (EPP); DS 18/1982.",
+      "reglaOro": "Nunca intervenir un equipo con energía conectada.",
+      "preguntaCierre": "¿Dónde te paras cuando subes un interruptor del tablero de la faena?"
+    },
+    {
+      "id": 472,
+      "codigo": "OA-77",
+      "especialidad": "OA",
+      "titulo": "Protección diferencial: probarla también es seguridad",
+      "porQue": "El protector diferencial corta la energía cuando detecta que la corriente se está escapando, por ejemplo a través de una persona. Es lo que salva a quien toca una herramienta con un cable dañado. Pero se puede averiar sin que nadie lo note, y solo apretando su botón de prueba sabemos si funciona.",
+      "checklist": [
+        "Probar el diferencial de cada tablero provisorio con su botón de prueba al inicio de la jornada (o con la frecuencia del procedimiento) y registrarlo.",
+        "Si el diferencial salta, no reponerlo una y otra vez: desconectar los equipos y avisar al electricista para encontrar la falla.",
+        "Nunca puentear ni retirar un diferencial porque 'salta mucho'."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (protección diferencial en instalaciones provisorias de faena); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca operar un equipo con dispositivos de seguridad anulados o defectuosos.",
+      "preguntaCierre": "¿Quién probó hoy el diferencial del tablero y qué pasó al apretar el botón?"
+    },
+    {
+      "id": 473,
+      "codigo": "OA-78",
+      "especialidad": "OA",
+      "titulo": "Puesta a tierra: el camino que protege cuando algo falla",
+      "porQue": "Cuando un cable interno se suelta y toca la carcasa metálica de un generador, un tablero o una máquina, esa carcasa queda energizada. La puesta a tierra le da a la corriente un camino seguro y hace actuar las protecciones. Sin ella, el camino es la persona que toca el equipo.",
+      "checklist": [
+        "Generadores, tableros, contenedores metálicos y equipos eléctricos fijos con su conexión a tierra según el proyecto.",
+        "Revisar que el conductor de tierra esté conectado, sin cortes ni corrosión; no usar enchufes ni adaptadores que eliminen la tierra.",
+        "Medición de la puesta a tierra por personal autorizado, con la frecuencia que define el procedimiento."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (puesta a tierra, SEC); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Herramientas eléctricas siempre con protección diferencial.",
+      "preguntaCierre": "¿Dónde está la barra de tierra del generador de la faena y quién la revisó?"
+    },
+    {
+      "id": 474,
+      "codigo": "OA-79",
+      "especialidad": "OA",
+      "titulo": "Líneas eléctricas de la ruta: los cambios los hace la empresa eléctrica",
+      "porQue": "Ensanchar la ruta obliga muchas veces a trasladar postes y líneas de distribución. Esas líneas pertenecen a la empresa eléctrica y pueden estar energizadas aunque parezcan abandonadas. Ningún trabajador de la obra debe tocarlas, cortarlas ni trepar a sus postes: los traslados y cortes los coordina y ejecuta la distribuidora.",
+      "checklist": [
+        "Identificar todas las líneas del tramo y tratarlas siempre como energizadas.",
+        "Traslados, cortes programados y trabajos cerca de líneas coordinados por escrito con la empresa eléctrica, con fecha y hora confirmadas.",
+        "Respetar la distancia de seguridad definida; con equipos cerca de líneas, un vigía dedicado que avise al operador."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71, instalaciones de corrientes fuertes y distancias de seguridad); Ley 16.744 Art. 68; Código del Trabajo Art. 184.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "¿Qué línea de nuestro tramo se va a trasladar y quién confirmó el corte?"
+    },
+    {
+      "id": 475,
+      "codigo": "OA-80",
+      "especialidad": "OA",
+      "titulo": "Alumbrado vial en altura: camión canastillo y luminarias",
+      "porQue": "Instalar o mantener luminarias en postes obliga a trabajar en altura desde un camión canastillo, junto a la calzada y a veces cerca de otras líneas. Se juntan el riesgo de caída, el de contacto eléctrico y el del tránsito que pasa bajo el brazo del equipo.",
+      "checklist": [
+        "Canastillo operado por personal autorizado, sobre terreno firme y con estabilizadores; arnés conectado al punto de anclaje del canastillo.",
+        "Circuito de alumbrado desenergizado y bloqueado antes de intervenir la luminaria, con verificación de ausencia de tensión.",
+        "Zona bajo el brazo y alrededor del camión protegida del tránsito con la señalización de faena móvil."
+      ],
+      "normativa": "NCh 1258 (protección contra caídas); DS 8/2019 (SEC); Manual de Señalización de Tránsito (MTT), Cap. 5; manual del fabricante del equipo.",
+      "reglaOro": "Trabajo en altura siempre con protección contra caídas.",
+      "preguntaCierre": "¿Quién bloqueó hoy el circuito de la luminaria antes de subir al canastillo?"
+    },
+    {
+      "id": 476,
+      "codigo": "OA-81",
+      "especialidad": "OA",
+      "titulo": "Canalizaciones y cámaras eléctricas: electricidad bajo tierra",
+      "porQue": "Al construir canalizaciones para el alumbrado o los semáforos, o al intervenir cámaras eléctricas existentes, se trabaja en zanjas y cámaras donde pueden pasar cables energizados. A eso se suman el agua acumulada y los gases que se juntan en las cámaras cerradas.",
+      "checklist": [
+        "Identificar los cables existentes en la cámara o zanja y tratarlos como energizados hasta que el autorizado confirme lo contrario.",
+        "Cámaras eléctricas evaluadas como espacio confinado (medición de gases, ventilación y vigía) antes de entrar.",
+        "Agua achicada con bombas protegidas por diferencial; nadie trabaja en una cámara inundada con cables energizados."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (canalizaciones, SEC); guías técnicas del ISP sobre espacios confinados; NCh 349.",
+      "reglaOro": "Ningún ingreso a espacios confinados sin medición, permiso y vigía.",
+      "preguntaCierre": "¿Qué cables pasan por la cámara que abriremos hoy y quién confirmó su estado?"
+    },
+    {
+      "id": 477,
+      "codigo": "OA-82",
+      "especialidad": "OA",
+      "titulo": "Si alguien se electrocuta: no tocarlo hasta cortar la energía",
+      "porQue": "Cuando una persona queda pegada a un cable o a un equipo energizado, el impulso es tomarla para sacarla, y así el rescatista también recibe la descarga. Los primeros segundos deciden: cortar la energía, separar a la víctima de forma segura y empezar la reanimación si no respira.",
+      "checklist": [
+        "Primero cortar la energía (interruptor o desenchufar); si no se puede, separar a la víctima con un objeto seco no conductor, sin tocarla.",
+        "Activar la emergencia indicando el kilómetro exacto; si no respira, iniciar la reanimación (RCP) si se está capacitado.",
+        "Toda persona que recibió una descarga, aunque se sienta bien, debe ser evaluada en el centro asistencial."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (elementos de primeros auxilios); plan de emergencias del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "Si un compañero queda pegado a la bomba eléctrica, ¿qué es lo primero que haces?"
+    },
+    {
+      "id": 478,
+      "codigo": "OA-83",
+      "especialidad": "OA",
+      "titulo": "Guantes dieléctricos y herramientas aisladas: revisarlos antes de usar",
+      "porQue": "Los guantes dieléctricos y las herramientas aisladas protegen solo si están en perfecto estado. Un pinchazo pequeño en el guante o una aislación agrietada en el destornillador dejan pasar la corriente. Por eso se revisan cada vez, se guardan protegidos y se usan solo para el voltaje que indican.",
+      "checklist": [
+        "Usar guantes dieléctricos de la clase adecuada al voltaje y con su ensayo vigente; inflarlos o enrollarlos para detectar perforaciones antes de usarlos.",
+        "Herramientas aisladas certificadas, sin grietas ni cortes en la aislación; nunca 'aislarlas' con cinta.",
+        "Guardar guantes y herramientas en su bolsa o caja, lejos del sol, grasas y objetos cortantes."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); DS 18/1982 (certificación de EPP); DS 8/2019 (SEC).",
+      "reglaOro": "EPP específico para la tarea: siempre puesto y en buen estado.",
+      "preguntaCierre": "¿Cuándo fue el último ensayo de los guantes dieléctricos que usamos?"
+    },
+    {
+      "id": 479,
+      "codigo": "OA-84",
+      "especialidad": "OA",
+      "titulo": "Trabajos eléctricos con lluvia: cuándo parar",
+      "porQue": "El agua convierte una falla menor en un accidente grave: moja tableros, conecta cables pelados con el suelo y deja las manos y la ropa conductoras. Muchos trabajos eléctricos a la intemperie simplemente no deben hacerse con lluvia, aunque la tarea esté atrasada.",
+      "checklist": [
+        "Suspender las conexiones, empalmes y trabajos en tableros a la intemperie mientras llueve, salvo los autorizados con protección adecuada.",
+        "Tableros y enchufes provisorios con el grado de protección para exterior, cerrados y elevados del suelo.",
+        "Después de la lluvia, revisar tableros, extensiones y equipos antes de energizar; secar y avisar si hay agua en su interior."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (instalaciones a la intemperie); Código del Trabajo Art. 184 bis; Ley 16.744 Art. 68.",
+      "reglaOro": "Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.",
+      "preguntaCierre": "Si empieza a llover mientras conectamos el tablero, ¿qué hacemos?"
+    },
+    {
+      "id": 480,
+      "codigo": "OA-85",
+      "especialidad": "OA",
+      "titulo": "Conexiones improvisadas: nunca 'colgarse' de la red",
+      "porQue": "Conectar un equipo directamente a una línea o a un empalme vecino, unir cables con cinta o enchufar varias zapatillas en cadena son atajos que se ven a menudo en obras. Sobrecargan los cables, saltan las protecciones y provocan incendios y electrocuciones. Además, conectarse a la red sin autorización es ilegal.",
+      "checklist": [
+        "Toda energía de la faena sale de tableros o generadores autorizados; prohibido conectarse a líneas, empalmes o casas vecinas.",
+        "Nada de uniones con cinta, alambres pelados ni zapatillas en cadena; si falta un enchufe, se pide al electricista.",
+        "Retirar y reportar cualquier conexión improvisada que se encuentre en el frente."
+      ],
+      "normativa": "DS 8/2019 y pliegos técnicos RIC (SEC); normativa de la distribuidora eléctrica; Ley 16.744 Art. 68.",
+      "reglaOro": "Solo personal autorizado realiza tareas críticas.",
+      "preguntaCierre": "¿Hay alguna conexión improvisada en nuestro frente que debamos retirar hoy?"
     },
     {
       "id": 5,
@@ -5603,7 +5798,7 @@
     },
     {
       "id": "electricidad",
-      "nombre": "Electricidad provisoria y generadores",
+      "nombre": "Trabajos eléctricos, tableros y generadores",
       "palabras": [
         "eléctrica",
         "electricidad",
@@ -5611,7 +5806,19 @@
         "generador",
         "extensión",
         "cable",
-        "diferencial"
+        "diferencial",
+        "tensión",
+        "energizado",
+        "bloqueo",
+        "electricista",
+        "luminaria",
+        "alumbrado",
+        "canastillo",
+        "puesta",
+        "dieléctrico",
+        "arco",
+        "electrocutado",
+        "empalme"
       ],
       "especialidades": [
         "OA",
