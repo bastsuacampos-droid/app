@@ -8,6 +8,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
@@ -34,12 +36,23 @@ class TiposExcavacionTest {
 
     private val app get() = compose.activity.application as AppExcavaciones
 
-    private fun esperarTexto(texto: String) = compose.waitUntil(5_000) {
+    private fun esperarTexto(texto: String) = esperar("aparezca \"$texto\"") {
         compose.onAllNodesWithText(texto, substring = true).fetchSemanticsNodes().isNotEmpty()
     }
 
-    private fun esperarQueSeCierre(titulo: String) = compose.waitUntil(5_000) {
+    private fun esperarQueSeCierre(titulo: String) = esperar("se cierre \"$titulo\"") {
         compose.onAllNodesWithText(titulo).fetchSemanticsNodes().isEmpty()
+    }
+
+    /**
+     * Si la espera vence, deja la pantalla completa en el registro (en el CI es la única pista:
+     * por ejemplo, si el diálogo mostró un error en vez de cerrarse).
+     */
+    private fun esperar(que: String, condicion: () -> Boolean) = try {
+        compose.waitUntil(5_000, condicion)
+    } catch (e: androidx.compose.ui.test.ComposeTimeoutException) {
+        println("No se cumplió que $que. Pantalla:\n" + compose.onRoot(useUnmergedTree = true).printToString())
+        throw e
     }
 
     private fun abrirNueva() {
