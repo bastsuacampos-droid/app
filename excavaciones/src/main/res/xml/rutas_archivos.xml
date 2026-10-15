@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Reportes generados por GeneradorReportePdf. -->
+    <files-path name="reportes" path="reportes/" />
+    <!-- Fotos de las excavaciones (cámara: la app entrega una Uri de aquí a la app de cámara). -->
+    <files-path name="fotos" path="fotos/" />
+</paths>

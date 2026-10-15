@@ -56,7 +56,8 @@ jobs:
         if: steps.version.outputs.publicar == 'true'
         run: |
           echo "$FIRMA_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/firma.jks"
-          FIRMA_KEYSTORE="$RUNNER_TEMP/firma.jks" ./gradlew testDebugUnitTest assembleRelease
+          # Solo la app de charlas: el módulo excavaciones no se publica por aquí.
+          FIRMA_KEYSTORE="$RUNNER_TEMP/firma.jks" ./gradlew :app:testDebugUnitTest :app:assembleRelease
           rm "$RUNNER_TEMP/firma.jks"
 
       - name: Verificar la firma

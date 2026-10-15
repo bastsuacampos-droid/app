@@ -74,6 +74,17 @@ Cuidados:
   responsable del proyecto. Si se pierde, los teléfonos no podrán actualizarse encima.
 - Un cambio solo de contenido no necesita versión nueva de la app.
 
+## Módulo `excavaciones` (otra app)
+
+`excavaciones/` es una app aparte (`cl.sacyr.rutaitata.excavaciones`) para el control diario de
+excavaciones con reporte PDF. Ver `excavaciones/README.md`. Reglas:
+- Room con esquema exportado en `excavaciones/schemas/`: un cambio de entidades sube la versión
+  de `BaseDatos` con su `Migration`; nunca migración destructiva.
+- Los `codigo` de `Lado` y `Sentido` se guardan en la base: no cambiarlos.
+- La maquetación del PDF (`MaquetadorReporte`) es Kotlin puro y se prueba en la JVM; el
+  dibujo con `PdfDocument` queda en `GeneradorReportePdf`.
+- `publicar-app.yml` compila solo `:app`; esta app aún no se publica.
+
 ## Convenciones
 
 - Rama de trabajo, PR a `main`; el check *Validar banco de charlas* debe pasar.
