@@ -20,6 +20,11 @@ class Preferencias(context: Context) {
         get() = prefs.getBoolean(INCLUIR_FOTOS, true)
         set(valor) = prefs.edit { putBoolean(INCLUIR_FOTOS, valor) }
 
+    /** Cuándo se guardó el último respaldo completo (epoch ms), o null si nunca. */
+    var ultimoRespaldo: Long?
+        get() = prefs.getLong(ULTIMO_RESPALDO, -1).takeIf { it > 0 }
+        set(valor) = prefs.edit { putLong(ULTIMO_RESPALDO, valor ?: -1) }
+
     /** Último tipo de excavación elegido: se aplica solo al abrir una excavación nueva. */
     var ultimoTipoExcavacion: Long?
         get() = prefs.getLong(TIPO_EXCAVACION, -1).takeIf { it > 0 }
@@ -47,5 +52,6 @@ class Preferencias(context: Context) {
         const val SENTIDO = "ultimo_sentido"
         const val TIPO = "ultimo_tipo_terreno"
         const val TIPO_EXCAVACION = "ultimo_tipo_excavacion"
+        const val ULTIMO_RESPALDO = "ultimo_respaldo"
     }
 }

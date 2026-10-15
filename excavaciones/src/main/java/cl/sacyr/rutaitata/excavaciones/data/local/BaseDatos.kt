@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.ExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FotoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FrenteDao
+import cl.sacyr.rutaitata.excavaciones.data.local.dao.RespaldoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.SectorDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoTerrenoDao
@@ -46,6 +47,7 @@ abstract class BaseDatos : RoomDatabase() {
     abstract fun excavaciones(): ExcavacionDao
     abstract fun fotos(): FotoDao
     abstract fun tiposExcavacion(): TipoExcavacionDao
+    abstract fun respaldo(): RespaldoDao
 
     companion object {
         const val NOMBRE = "excavaciones.db"

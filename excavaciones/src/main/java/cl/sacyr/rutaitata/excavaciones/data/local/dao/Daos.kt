@@ -146,3 +146,30 @@ interface FotoDao {
     @Insert
     suspend fun insertar(fotos: List<FotoEntity>)
 }
+
+/** Lectura y reemplazo de todo el contenido, para el respaldo completo (ver Respaldo). */
+@Dao
+interface RespaldoDao {
+    @Query("SELECT * FROM tipos_terreno ORDER BY id") suspend fun tiposTerreno(): List<TipoTerrenoEntity>
+    @Query("SELECT * FROM sectores ORDER BY id") suspend fun sectores(): List<SectorEntity>
+    @Query("SELECT * FROM frentes ORDER BY id") suspend fun frentes(): List<FrenteEntity>
+    @Query("SELECT * FROM tipos_excavacion ORDER BY id") suspend fun tiposExcavacion(): List<TipoExcavacionEntity>
+    @Query("SELECT * FROM excavaciones ORDER BY id") suspend fun excavaciones(): List<ExcavacionEntity>
+    @Query("SELECT * FROM fotos ORDER BY id") suspend fun fotos(): List<FotoEntity>
+
+    @Query("SELECT COUNT(*) FROM excavaciones") fun observarCantidad(): Flow<Int>
+
+    @Query("DELETE FROM fotos") suspend fun borrarFotos()
+    @Query("DELETE FROM excavaciones") suspend fun borrarExcavaciones()
+    @Query("DELETE FROM tipos_excavacion") suspend fun borrarTiposExcavacion()
+    @Query("DELETE FROM frentes") suspend fun borrarFrentes()
+    @Query("DELETE FROM sectores") suspend fun borrarSectores()
+    @Query("DELETE FROM tipos_terreno") suspend fun borrarTiposTerreno()
+
+    @Insert suspend fun insertarTiposTerreno(l: List<TipoTerrenoEntity>)
+    @Insert suspend fun insertarSectores(l: List<SectorEntity>)
+    @Insert suspend fun insertarFrentes(l: List<FrenteEntity>)
+    @Insert suspend fun insertarTiposExcavacion(l: List<TipoExcavacionEntity>)
+    @Insert suspend fun insertarExcavaciones(l: List<ExcavacionEntity>)
+    @Insert suspend fun insertarFotos(l: List<FotoEntity>)
+}

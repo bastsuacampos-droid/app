@@ -102,6 +102,7 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
     val incluirFotos by vm.incluirFotos.collectAsStateWithLifecycle()
     val previa by vm.previa.collectAsStateWithLifecycle()
     val generacion by vm.generacion.collectAsStateWithLifecycle()
+    val planilla by vm.planilla.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -113,6 +114,16 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
             scope.launch {
                 val ok = withContext(Dispatchers.IO) { runCatching { CompartirReporte.copiar(context, listo.archivo, uri) }.isSuccess }
                 avisos.showSnackbar(if (ok) "Copia guardada" else "No se pudo guardar la copia")
+            }
+        }
+    }
+
+    val guardarPlanilla = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(CompartirReporte.TIPO_CSV)) { uri ->
+        val archivo = planilla
+        if (uri != null && archivo != null) {
+            scope.launch {
+                val ok = withContext(Dispatchers.IO) { runCatching { CompartirReporte.copiar(context, archivo, uri) }.isSuccess }
+                avisos.showSnackbar(if (ok) "Planilla guardada" else "No se pudo guardar la planilla")
             }
         }
     }
@@ -240,6 +251,29 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                     }
                 }
                 else -> Unit
+            }
+
+            // Planilla para la oficina técnica: mismos filtros, sin fotos.
+            OutlinedButton(onClick = vm::exportarPlanilla, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+                Text("Exportar planilla para Excel (.csv)")
+            }
+            planilla?.let { archivo ->
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("Planilla lista: ${archivo.name}", style = MaterialTheme.typography.bodySmall)
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            FilledTonalButton(
+                                onClick = {
+                                    context.startActivity(CompartirReporte.intentCompartir(context, archivo, tipo = CompartirReporte.TIPO_CSV))
+                                },
+                                modifier = Modifier.weight(1f),
+                            ) { Text("Compartir") }
+                            OutlinedButton(onClick = { guardarPlanilla.launch(archivo.name) }, modifier = Modifier.weight(1f)) {
+                                Text("Guardar copia…")
+                            }
+                        }
+                    }
+                }
             }
         }
     }

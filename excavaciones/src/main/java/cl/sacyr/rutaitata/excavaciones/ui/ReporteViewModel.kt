@@ -7,6 +7,7 @@ import cl.sacyr.rutaitata.excavaciones.AppExcavaciones
 import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
 import cl.sacyr.rutaitata.excavaciones.reporte.DatosReporte
 import cl.sacyr.rutaitata.excavaciones.reporte.FotoReporte
+import cl.sacyr.rutaitata.excavaciones.reporte.Planilla
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,11 +64,13 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
         guardado[DESDE] = minOf(desde, hasta).toEpochDay()
         guardado[HASTA] = maxOf(desde, hasta).toEpochDay()
         _generacion.value = EstadoGeneracion.Inactivo
+        _planilla.value = null
     }
 
     fun sector(id: Long?) {
         guardado[SECTOR] = id ?: -1L
         _generacion.value = EstadoGeneracion.Inactivo
+        _planilla.value = null
     }
 
     fun responsable(nombre: String) {
@@ -108,6 +111,25 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
                 onSuccess = { EstadoGeneracion.Listo(it.archivo, it.paginas) },
                 onFailure = { EstadoGeneracion.Fallo(it.message ?: it.javaClass.simpleName) },
             )
+        }
+    }
+
+    private val _planilla = MutableStateFlow<File?>(null)
+    /** Última planilla CSV exportada con los filtros actuales. */
+    val planilla: StateFlow<File?> = _planilla
+
+    /** Exporta la planilla (CSV para Excel) del período y sector elegidos. */
+    fun exportarPlanilla() {
+        val d = LocalDate.ofEpochDay(desde.value)
+        val h = LocalDate.ofEpochDay(hasta.value)
+        val s = sectorId.value.takeIf { it > 0 }
+        viewModelScope.launch {
+            _planilla.value = runCatching {
+                withContext(Dispatchers.IO) {
+                    val carpeta = File(app.filesDir, "reportes").apply { mkdirs() }
+                    File(carpeta, Planilla.nombreArchivo(d, h)).apply { writeText(Planilla.csv(repo.paraReporte(d, h, s))) }
+                }
+            }.getOrNull()
         }
     }
 

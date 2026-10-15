@@ -108,6 +108,7 @@ fun PantallaInicio(
     onReporte: (LocalDate) -> Unit,
     onTiposTerreno: () -> Unit,
     onTiposExcavacion: () -> Unit,
+    onRespaldo: () -> Unit,
 ) {
     val vm = vistaModelo { app, estado -> InicioViewModel(app.repositorio, estado) }
     val fecha = LocalDate.ofEpochDay(vm.fecha.collectAsStateWithLifecycle().value)
@@ -126,7 +127,11 @@ fun PantallaInicio(
     val app = appExcavaciones()
     val scope = rememberCoroutineScope()
     // Al abrir o volver a la app (como máximo cada 30 min) revisa si hay una versión nueva publicada.
+    // Se relee al volver (por ejemplo, desde la pantalla de respaldo).
+    var ultimoRespaldo by remember { mutableStateOf(app.preferencias.ultimoRespaldo) }
+    val totalExcavaciones by remember(app) { app.baseDatos.respaldo().observarCantidad() }.collectAsStateWithLifecycle(0)
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        ultimoRespaldo = app.preferencias.ultimoRespaldo
         if (app.buscaActualizaciones) scope.launch { app.actualizador.revisarSiCorresponde() }
     }
     var elegirFecha by rememberSaveable { mutableStateOf(false) }
@@ -156,6 +161,7 @@ fun PantallaInicio(
                         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
                             DropdownMenuItem(text = { Text("Tipos de excavación") }, onClick = { menu = false; onTiposExcavacion() })
                             DropdownMenuItem(text = { Text("Tipos de terreno") }, onClick = { menu = false; onTiposTerreno() })
+                            DropdownMenuItem(text = { Text("Respaldo de datos") }, onClick = { menu = false; onRespaldo() })
                             DropdownMenuItem(text = { Text("Versión de la app") }, onClick = { menu = false; verVersion = true })
                         }
                     }
@@ -183,6 +189,12 @@ fun PantallaInicio(
         ) {
             item {
                 Box(Modifier.padding(horizontal = 12.dp).padding(top = 8.dp)) { AvisoVersionApp(app.actualizador) }
+            }
+            val dias = diasSinRespaldo(ultimoRespaldo)
+            if (totalExcavaciones > 0 && (dias == null || dias >= DIAS_AVISO_RESPALDO)) {
+                item {
+                    AvisoRespaldo(dias, onRespaldo)
+                }
             }
             item { SelectorDia(fecha, onCambiar = vm::elegirFecha, onElegir = { elegirFecha = true }) }
             item { Indicadores(resumen) }
@@ -227,6 +239,33 @@ fun PantallaInicio(
             },
             confirmButton = { TextButton(onClick = { verVersion = false }) { Text("Cerrar") } },
         )
+    }
+}
+
+/** Recordatorio de respaldo: los registros viven solo en el teléfono. */
+@Composable
+private fun AvisoRespaldo(dias: Long?, onRespaldo: () -> Unit) {
+    Card(
+        onClick = onRespaldo,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).padding(top = 8.dp),
+    ) {
+        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(
+                    if (dias == null) "Aún no hay respaldo" else "Sin respaldo hace $dias días",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                )
+                Text(
+                    "Los registros viven solo en este teléfono.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                )
+            }
+            Text("Respaldar", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onErrorContainer)
+        }
     }
 }
 

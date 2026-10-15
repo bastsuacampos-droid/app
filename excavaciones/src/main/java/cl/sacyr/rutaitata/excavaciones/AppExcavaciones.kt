@@ -6,6 +6,7 @@ import cl.sacyr.rutaitata.excavaciones.data.ArchivosFotos
 import cl.sacyr.rutaitata.excavaciones.data.Preferencias
 import cl.sacyr.rutaitata.excavaciones.data.ProveedorUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.RepositorioExcavaciones
+import cl.sacyr.rutaitata.excavaciones.data.Respaldo
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
 import cl.sacyr.rutaitata.excavaciones.reporte.GeneradorReportePdf
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +23,7 @@ class AppExcavaciones : Application() {
     val ubicacion: ProveedorUbicacion by lazy { ProveedorUbicacion(this) }
     val preferencias: Preferencias by lazy { Preferencias(this) }
     val generadorPdf: GeneradorReportePdf by lazy { GeneradorReportePdf(File(filesDir, "reportes")) }
+    val respaldo: Respaldo by lazy { Respaldo(baseDatos, fotos) }
     val actualizador: ActualizadorApp by lazy { ActualizadorApp(this, BuildConfig.URL_VERSIONES, BuildConfig.VERSION_NAME) }
 
     /**

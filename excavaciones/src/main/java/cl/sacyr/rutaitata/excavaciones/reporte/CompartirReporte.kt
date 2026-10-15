@@ -26,17 +26,24 @@ object CompartirReporte {
     fun uri(context: Context, archivo: File): Uri =
         FileProvider.getUriForFile(context, "${context.packageName}.archivos", archivo)
 
-    fun intentCompartir(context: Context, archivo: File, asunto: String = archivo.nameWithoutExtension.replace('_', ' ')): Intent {
+    const val TIPO_CSV = "text/csv"
+
+    fun intentCompartir(
+        context: Context,
+        archivo: File,
+        asunto: String = archivo.nameWithoutExtension.replace('_', ' '),
+        tipo: String = TIPO_PDF,
+    ): Intent {
         val uri = uri(context, archivo)
         val envio = Intent(Intent.ACTION_SEND).apply {
-            type = TIPO_PDF
+            type = tipo
             putExtra(Intent.EXTRA_STREAM, uri)
             putExtra(Intent.EXTRA_SUBJECT, asunto)
             // ClipData: sin ella algunas apps no reciben el permiso de lectura a través del selector.
             clipData = ClipData.newRawUri(archivo.name, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        return Intent.createChooser(envio, "Compartir reporte")
+        return Intent.createChooser(envio, "Compartir")
     }
 
     fun intentVisualizar(context: Context, archivo: File): Intent =

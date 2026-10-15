@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Respaldo automático de Android en Google (Android 6 a 11). Solo la base y las preferencias:
+     el respaldo de Google tiene un tope de 25 MB y, si las fotos lo superan, deja de respaldar
+     todo. Las fotos van en el respaldo completo (.zip) que se guarda desde la app. -->
+<full-backup-content>
+    <include domain="database" path="." />
+    <include domain="sharedpref" path="." />
+</full-backup-content>

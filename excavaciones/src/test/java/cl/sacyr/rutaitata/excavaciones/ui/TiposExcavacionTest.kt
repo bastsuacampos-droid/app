@@ -25,6 +25,7 @@ import org.robolectric.RobolectricTestRunner
 import java.time.LocalDate
 
 /** Tipos de excavación preestablecidos: se eligen una vez y la siguiente excavación nueva ya viene llena. */
+// Tamaño por defecto a propósito: con "qualifiers", Robolectric no deja inactivo un diálogo con campos de texto.
 @RunWith(RobolectricTestRunner::class)
 class TiposExcavacionTest {
 

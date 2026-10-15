@@ -17,9 +17,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.LocalDate
 
 /** Recorre la app como en terreno: dashboard → nueva excavación → guardar → aparece en el día. */
+// Pantalla de un teléfono común: en la mínima de Robolectric (320×470 dp) la lista no alcanza a verse.
+@Config(qualifiers = "w392dp-h850dp")
 @RunWith(RobolectricTestRunner::class)
 class FlujoRegistroTest {
 
@@ -58,6 +61,8 @@ class FlujoRegistroTest {
         compose.onNodeWithText("01").assertExists()
         assertEquals(2, compose.onAllNodesWithText("7,20 m³").fetchSemanticsNodes().size) // indicador del día y fila
         compose.onNodeWithText("Sin foto").assertExists()
+        // Con registros y sin respaldo, el dashboard lo recuerda.
+        compose.onNodeWithText("Aún no hay respaldo").assertExists()
 
         val app = compose.activity.application as AppExcavaciones
         val guardada = runBlocking { app.repositorio.resumenDelDia(LocalDate.now()).first() }.excavaciones.single()

@@ -24,8 +24,22 @@ charlas.
    anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
    dentro de la app), **Compartir** (WhatsApp, correo…) o **Guardar copia** donde se elija.
 4. **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
+5. **Respaldo de datos** (menú ⋮): guarda un .zip con todos los registros y fotos donde se elija
+   (Drive, Descargas) y lo restaura en otro teléfono. El dashboard lo recuerda si pasan 7 días
+   sin respaldo. En la pantalla de reporte, **Exportar planilla para Excel** genera un CSV del
+   período y sector elegidos para la oficina técnica.
 
-Todo funciona sin señal; los datos y fotos quedan solo en el teléfono.
+Todo funciona sin señal; los datos y fotos quedan solo en el teléfono, por eso el respaldo.
+
+### Respaldo
+
+- `Respaldo.kt`: ZIP con `respaldo.json` (todas las tablas, formato lógico versionado con
+  `FORMATO`) y `fotos/`. Restaurar reemplaza todo y no toca nada si el archivo está dañado;
+  ignora rutas peligrosas dentro del ZIP. Un campo nuevo en una tabla debe agregarse al JSON
+  (leerlo como opcional) y a `RespaldoTest`.
+- Respaldo automático de Android (`res/xml/respaldo_android.xml`, `extraccion_datos.xml`): solo
+  base y preferencias, porque con fotos se pasaría del tope de 25 MB de Google y dejaría de
+  respaldar todo. En el traspaso directo entre teléfonos sí van las fotos.
 
 ## Estructura
 

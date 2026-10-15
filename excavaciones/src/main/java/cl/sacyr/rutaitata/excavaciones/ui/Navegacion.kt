@@ -45,6 +45,7 @@ fun AppNavegacion() {
                 onReporte = { fecha -> nav.navigate("reporte?fecha=${fecha.toEpochDay()}") },
                 onTiposTerreno = { nav.navigate("tipos") },
                 onTiposExcavacion = { nav.navigate("tiposExcavacion") },
+                onRespaldo = { nav.navigate("respaldo") },
             )
         }
         composable(
@@ -75,6 +76,9 @@ fun AppNavegacion() {
         }
         composable("visor?ruta={ruta}", arguments = listOf(navArgument("ruta") { type = NavType.StringType })) { entrada ->
             PantallaVisorPdf(File(entrada.arguments?.getString("ruta").orEmpty()), onVolver = { nav.popBackStack() })
+        }
+        composable("respaldo") {
+            PantallaRespaldo(onVolver = { nav.popBackStack() })
         }
         composable("tiposExcavacion") {
             PantallaTiposExcavacion(onVolver = { nav.popBackStack() })

@@ -88,7 +88,9 @@ excavaciones con reporte PDF. Ver `excavaciones/README.md`. Reglas:
 - Fotos por `TakePicture`/`PickVisualMedia`: no declarar el permiso `CAMERA`.
 - Pantallas: Compose + ViewModel (`SavedStateHandle` para sobrevivir al cierre de la app con la
   cámara abierta). `FlujoRegistroTest` recorre la app con Robolectric; ahí los botones bajo la
-  barra fija de "Guardar" necesitan `performScrollTo()` antes del clic.
+  barra fija de "Guardar" necesitan `performScrollTo()` antes del clic. Con `@Config(qualifiers=…)`,
+  Robolectric nunca deja inactivo un `AlertDialog` con campos de texto (AppNotIdleException): las
+  pruebas que abren esos diálogos van con el tamaño de pantalla por defecto.
 - `publicar-app.yml` compila solo `:app`. Excavaciones se publica con
   `publicar-excavaciones.yml`: subir `versionCode`/`versionName` en `excavaciones/build.gradle.kts`,
   escribir `excavaciones/novedades-version.txt` y llevar a `main`. Tags `excavaciones-v*`, APK
