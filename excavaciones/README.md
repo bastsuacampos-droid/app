@@ -24,6 +24,11 @@ charlas.
    anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
    dentro de la app), **Compartir** (WhatsApp, correo…) o **Guardar copia** donde se elija.
 4. **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
+   **Sectores** (menú ⋮): corregir el nombre de un sector; si se cambia al de otro existente, se
+   ofrece unirlos (las excavaciones pasan con su lado y sentido; si un número ya está usado, la
+   que se mueve toma el siguiente libre y se avisa). Un sector vacío se puede borrar. Al
+   escribir un sector nuevo casi igual a uno existente ("Sectro A"), el formulario ofrece el
+   existente para no crear un duplicado (`dominio/Sectores.kt`).
 5. **Respaldo de datos** (menú ⋮): guarda un .zip con todos los registros y fotos donde se elija
    (Drive, Descargas) y lo restaura en otro teléfono. El dashboard lo recuerda si pasan 7 días
    sin respaldo. En la pantalla de reporte, **Exportar planilla para Excel** genera un CSV del

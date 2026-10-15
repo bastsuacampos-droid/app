@@ -92,6 +92,7 @@ import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.MAX_FOTOS
 import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
+import cl.sacyr.rutaitata.excavaciones.dominio.Sectores
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
 import java.time.Instant
 import java.time.LocalDate
@@ -517,6 +518,7 @@ private fun SelectorTipoExcavacion(
 private fun CampoSector(valor: String, sectores: List<String>, error: String?, onCambio: (String) -> Unit) {
     var abierto by remember { mutableStateOf(false) }
     val sugeridos = sectores.filter { valor.isBlank() || it.contains(valor.trim(), ignoreCase = true) }.take(8)
+    val parecido = remember(valor, sectores) { Sectores.parecido(valor, sectores) }
     ExposedDropdownMenuBox(expanded = abierto && sugeridos.isNotEmpty(), onExpandedChange = { abierto = it }) {
         OutlinedTextField(
             value = valor,
@@ -534,6 +536,13 @@ private fun CampoSector(valor: String, sectores: List<String>, error: String?, o
             sugeridos.forEach { s ->
                 DropdownMenuItem(text = { Text(s) }, onClick = { onCambio(s); abierto = false })
             }
+        }
+    }
+    // Casi igual a uno existente: lo más probable es un error de tipeo que crearía un duplicado.
+    // Va fuera del campo: dentro, el toque lo tomaría el desplegable.
+    if (parecido != null && error == null) {
+        FilledTonalButton(onClick = { onCambio(parecido) }, modifier = Modifier.fillMaxWidth().testTag("sugerenciaSector")) {
+            Text("¿Es \"$parecido\"? Usar ese sector")
         }
     }
 }

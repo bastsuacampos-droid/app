@@ -148,6 +148,60 @@ class RepositorioExcavacionesTest {
         assertEquals(listOf(OrigenFoto.CAMARA, OrigenFoto.GALERIA), repo.borrador(id)!!.fotos.map { it.origen })
     }
 
+    private suspend fun idSector(nombre: String) = repo.sectores().first().first { it.nombre == nombre }.id
+
+    @Test
+    fun renombrarSectorYChoqueConOtroExistente() = runBlocking {
+        repo.guardar(borrador(sector = "Sectro A"))
+        repo.guardar(borrador(sector = "Sector B"))
+        repo.renombrarSector(idSector("Sectro A"), "  Sector   C ")
+        assertEquals(listOf("Sector B", "Sector C"), repo.sectores().first().map { it.nombre })
+        // Solo cambiar mayúsculas del mismo sector está permitido.
+        repo.renombrarSector(idSector("Sector C"), "SECTOR C")
+        val e = assertThrows(SectorExistente::class.java) { runBlocking { repo.renombrarSector(idSector("SECTOR C"), "sector b") } }
+        assertEquals("Sector B", e.otro.nombre)
+    }
+
+    @Test
+    fun unirSectoresMueveExcavacionesYRenumeraLasQueChocan() = runBlocking {
+        // Destino: Norte CH-CO con N° 1 y 2.
+        repo.guardar(borrador(sector = "Sector A"))
+        repo.guardar(borrador(sector = "Sector A"))
+        // Duplicado: Norte CH-CO con N° 1 y 3 (el 3 no choca) y Sur con N° 1 (el destino no tiene Sur).
+        repo.guardar(borrador(sector = "Sectro A", numero = 1))
+        repo.guardar(borrador(sector = "Sectro A", numero = 3))
+        repo.guardar(borrador(sector = "Sectro A", lado = Lado.SUR))
+
+        val cambios = repo.unirSectores(idSector("Sectro A"), idSector("Sector A"))
+
+        assertEquals(listOf(Renumeracion(Lado.NORTE, Sentido.CHILLAN_CONCEPCION, 1, 4)), cambios)
+        assertEquals(listOf("Sector A"), repo.sectores().first().map { it.nombre })
+        val norte = repo.paraReporte(hoy, hoy).filter { it.lado == Lado.NORTE }.map { it.numero }.sorted()
+        assertEquals(listOf(1, 2, 3, 4), norte)
+        assertEquals(listOf(1), repo.paraReporte(hoy, hoy).filter { it.lado == Lado.SUR }.map { it.numero })
+        assertEquals(5, repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
+    }
+
+    @Test
+    fun unSectorConDiasCerradosNoSeRenombraNiSeUne() = runBlocking {
+        repo.guardar(borrador(sector = "Sectro A"))
+        repo.guardar(borrador(sector = "Sector A", fecha = hoy.plusDays(1)))
+        repo.cerrarDias(hoy, hoy, "María")
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.renombrarSector(idSector("Sectro A"), "Sector Z") } }
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.unirSectores(idSector("Sectro A"), idSector("Sector A")) } }
+        assertEquals(2, repo.sectores().first().size)
+    }
+
+    @Test
+    fun soloSeBorraUnSectorVacio() = runBlocking {
+        val id = repo.guardar(borrador(sector = "Sector A"))
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.eliminarSector(idSector("Sector A")) } }
+        repo.eliminar(id)
+        repo.eliminarSector(idSector("Sector A"))
+        assertTrue(repo.sectores().first().isEmpty())
+        assertEquals(0, repo.sectoresConConteo().first().size)
+    }
+
     @Test
     fun traeLosTiposDeTerrenoIniciales() = runBlocking {
         assertEquals(BaseDatos.TIPOS_TERRENO_INICIALES, repo.tiposTerreno().first().map { it.nombre })

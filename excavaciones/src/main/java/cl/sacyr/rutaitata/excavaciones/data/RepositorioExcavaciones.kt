@@ -2,6 +2,7 @@ package cl.sacyr.rutaitata.excavaciones.data
 
 import androidx.room.withTransaction
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.dao.SectorConConteo
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ReaperturaEntity
@@ -26,6 +27,12 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
+
+/** Otro sector ya tiene el nombre pedido. */
+class SectorExistente(val otro: SectorEntity) : IllegalArgumentException("Ya existe el sector \"${otro.nombre}\"")
+
+/** Una excavación que cambió de número al unir sectores. */
+data class Renumeracion(val lado: Lado, val sentido: Sentido, val antes: Int, val despues: Int)
 
 /** Se intentó borrar una excavación de un día cerrado. */
 class DiaCerrado(mensaje: String) : IllegalStateException(mensaje)
@@ -198,6 +205,75 @@ class RepositorioExcavaciones(
     }
 
     suspend fun desactivarTipoTerreno(id: Long) = bd.tiposTerreno().cambiarActivo(id, false)
+
+    // ------------------------------------------------------------------ sectores
+
+    fun sectoresConConteo(): Flow<List<SectorConConteo>> = bd.sectores().observarConConteo()
+
+    /**
+     * Cambia el nombre de un sector (para corregir cómo se escribió).
+     *
+     * @throws SectorExistente si otro sector ya se llama así: entonces corresponde unirlos.
+     * @throws DiaCerrado si tiene excavaciones en días cerrados (su reporte ya se emitió).
+     */
+    suspend fun renombrarSector(id: Long, nombre: String) = bd.withTransaction {
+        val limpio = nombre.trim().replace(Regex("\\s+"), " ")
+        require(limpio.isNotEmpty()) { "El nombre del sector no puede quedar vacío" }
+        bd.sectores().buscar(limpio)?.let { otro -> if (otro.id != id) throw SectorExistente(otro) }
+        exigirSinDiasCerrados(id)
+        bd.sectores().renombrar(id, limpio)
+    }
+
+    /**
+     * Une el sector [origenId] con [destinoId] (el que quedará): sus excavaciones pasan al destino
+     * con su lado y sentido. Si un número ya está usado en ese frente del destino, la excavación
+     * que se mueve toma el siguiente libre. Devuelve los cambios de número para avisarlos.
+     */
+    suspend fun unirSectores(origenId: Long, destinoId: Long): List<Renumeracion> = bd.withTransaction {
+        require(origenId != destinoId) { "Elige otro sector" }
+        exigirSinDiasCerrados(origenId)
+        val momento = ahora()
+        val cambios = mutableListOf<Renumeracion>()
+        for (frente in bd.frentes().deSector(origenId)) {
+            val destino = bd.frentes().buscar(destinoId, frente.lado, frente.sentido)
+            if (destino == null) {
+                bd.frentes().mover(frente.id, destinoId) // el destino no tenía ese lado/sentido: pasa entero
+                continue
+            }
+            val delDestino = bd.excavaciones().delFrente(destino.id).map { it.numero }.toSet()
+            val (chocan, libres) = bd.excavaciones().delFrente(frente.id).partition { it.numero in delDestino }
+            // Primero las que conservan su número; las que chocan van después del mayor.
+            val usados = (delDestino + libres.map { it.numero }).toMutableSet()
+            libres.forEach { bd.excavaciones().mover(it.id, destino.id, it.numero, momento) }
+            for (e in chocan) {
+                val numero = usados.max() + 1
+                usados += numero
+                cambios += Renumeracion(frente.lado, frente.sentido, e.numero, numero)
+                bd.excavaciones().mover(e.id, destino.id, numero, momento)
+            }
+            bd.frentes().eliminar(frente.id)
+        }
+        bd.sectores().eliminar(origenId)
+        cambios
+    }
+
+    /** Borra un sector sin excavaciones (queda, por ejemplo, después de borrar las suyas). */
+    suspend fun eliminarSector(id: Long) = bd.withTransaction {
+        bd.frentes().deSector(id).forEach { f ->
+            require(bd.excavaciones().delFrente(f.id).isEmpty()) { "El sector tiene excavaciones: únelo con otro en vez de borrarlo" }
+            bd.frentes().eliminar(f.id)
+        }
+        bd.sectores().eliminar(id)
+    }
+
+    private suspend fun exigirSinDiasCerrados(sectorId: Long) {
+        val dias = bd.sectores().diasCerrados(sectorId)
+        if (dias.isNotEmpty()) {
+            throw DiaCerrado(
+                "Tiene excavaciones en días cerrados (${dias.joinToString(", ") { Formato.fecha(it) }}). Reábrelos primero.",
+            )
+        }
+    }
 
     // ------------------------------------------------------------------ cierre de días
 

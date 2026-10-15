@@ -32,7 +32,30 @@ interface SectorDao {
 
     @Insert
     suspend fun insertar(sector: SectorEntity): Long
+
+    /** Sectores con cuántas excavaciones tienen, para administrarlos. */
+    @Query(
+        """SELECT s.id, s.nombre, COUNT(e.id) AS excavaciones FROM sectores s
+           LEFT JOIN frentes f ON f.sectorId = s.id LEFT JOIN excavaciones e ON e.frenteId = f.id
+           GROUP BY s.id ORDER BY s.nombre""",
+    )
+    fun observarConConteo(): Flow<List<SectorConConteo>>
+
+    @Query("UPDATE sectores SET nombre = :nombre WHERE id = :id")
+    suspend fun renombrar(id: Long, nombre: String)
+
+    @Query("DELETE FROM sectores WHERE id = :id")
+    suspend fun eliminar(id: Long)
+
+    /** Días cerrados en que el sector tiene excavaciones. */
+    @Query(
+        """SELECT DISTINCT e.fecha FROM excavaciones e JOIN frentes f ON f.id = e.frenteId
+           JOIN cierres_dia c ON c.fecha = e.fecha WHERE f.sectorId = :sectorId ORDER BY e.fecha""",
+    )
+    suspend fun diasCerrados(sectorId: Long): List<LocalDate>
 }
+
+data class SectorConConteo(val id: Long, val nombre: String, val excavaciones: Int)
 
 @Dao
 interface FrenteDao {
@@ -44,6 +67,15 @@ interface FrenteDao {
 
     @Insert
     suspend fun insertar(frente: FrenteEntity): Long
+
+    @Query("SELECT * FROM frentes WHERE sectorId = :sectorId")
+    suspend fun deSector(sectorId: Long): List<FrenteEntity>
+
+    @Query("UPDATE frentes SET sectorId = :sectorId WHERE id = :id")
+    suspend fun mover(id: Long, sectorId: Long)
+
+    @Query("DELETE FROM frentes WHERE id = :id")
+    suspend fun eliminar(id: Long)
 }
 
 @Dao
@@ -114,6 +146,12 @@ interface ExcavacionDao {
 
     @Query("DELETE FROM excavaciones WHERE id = :id")
     suspend fun eliminar(id: Long)
+
+    @Query("SELECT * FROM excavaciones WHERE frenteId = :frenteId ORDER BY numero")
+    suspend fun delFrente(frenteId: Long): List<ExcavacionEntity>
+
+    @Query("UPDATE excavaciones SET frenteId = :frenteId, numero = :numero, actualizadoEn = :momento WHERE id = :id")
+    suspend fun mover(id: Long, frenteId: Long, numero: Int, momento: Long)
 
     companion object {
         /** Columnas con los nombres de las propiedades de [ExcavacionDetalle]. */
