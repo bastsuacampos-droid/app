@@ -84,6 +84,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cl.sacyr.rutaitata.excavaciones.R
 import cl.sacyr.rutaitata.excavaciones.data.ArchivosFotos
 import cl.sacyr.rutaitata.excavaciones.data.ProveedorUbicacion
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.Formato
@@ -101,7 +102,12 @@ import java.time.ZoneId
  * botones grandes, teclado numérico en las medidas y "Guardar" siempre visible abajo.
  */
 @Composable
-fun PantallaFormulario(onTerminar: (String) -> Unit, onVolver: () -> Unit, onTiposTerreno: () -> Unit) {
+fun PantallaFormulario(
+    onTerminar: (String) -> Unit,
+    onVolver: () -> Unit,
+    onTiposTerreno: () -> Unit,
+    onTiposExcavacion: () -> Unit,
+) {
     val app = appExcavaciones()
     val vm = vistaModelo { a, estado ->
         FormularioViewModel(a.repositorio, a.fotos, a.ubicacion, a.preferencias, a.contentResolver, estado)
@@ -111,6 +117,7 @@ fun PantallaFormulario(onTerminar: (String) -> Unit, onVolver: () -> Unit, onTip
     val erroresGuardado by vm.erroresGuardado.collectAsStateWithLifecycle()
     val errores = erroresValidacion + erroresGuardado
     val tipos by vm.tiposTerreno.collectAsStateWithLifecycle()
+    val tiposExcavacion by vm.tiposExcavacion.collectAsStateWithLifecycle()
     val sectores by vm.sectores.collectAsStateWithLifecycle()
     val siguiente by vm.siguienteNumero.collectAsStateWithLifecycle()
     val buscandoUbicacion by vm.buscandoUbicacion.collectAsStateWithLifecycle()
@@ -213,6 +220,16 @@ fun PantallaFormulario(onTerminar: (String) -> Unit, onVolver: () -> Unit, onTip
             Modifier.fillMaxSize().padding(relleno).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            // ---------------------------------------------------------- plantilla
+            SelectorTipoExcavacion(
+                tipos = tiposExcavacion,
+                terrenos = tipos,
+                estado = estado,
+                onElegir = vm::elegirTipoExcavacion,
+                onGuardarNuevo = vm::guardarTipoExcavacion,
+                onAdministrar = onTiposExcavacion,
+            )
+
             // ---------------------------------------------------------- dónde
             Titulo("Ubicación en la obra")
             OutlinedButton(onClick = { elegirFecha = true }, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
@@ -385,6 +402,86 @@ fun PantallaFormulario(onTerminar: (String) -> Unit, onVolver: () -> Unit, onTip
 @Composable
 private fun TextoError(texto: String) {
     Text(texto, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+}
+
+/**
+ * Tipo de excavación preestablecido: llena medidas, terreno y observaciones. Se recuerda el último
+ * elegido para la próxima excavación nueva. "Guardar como tipo" crea uno con lo ya escrito.
+ */
+@Composable
+private fun SelectorTipoExcavacion(
+    tipos: List<TipoExcavacionEntity>,
+    terrenos: List<TipoTerrenoEntity>,
+    estado: EstadoFormulario,
+    onElegir: (Long?) -> Unit,
+    onGuardarNuevo: suspend (TipoExcavacionEntity) -> String?,
+    onAdministrar: () -> Unit,
+) {
+    var abierto by remember { mutableStateOf(false) }
+    var crear by rememberSaveable { mutableStateOf(false) }
+    val elegido = tipos.firstOrNull { it.id == estado.tipoExcavacionId }
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            ExposedDropdownMenuBox(expanded = abierto, onExpandedChange = { abierto = it }) {
+                OutlinedTextField(
+                    value = elegido?.nombre ?: "Ninguno (ingreso manual)",
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Tipo de excavación") },
+                    supportingText = {
+                        Text(
+                            when {
+                                elegido != null -> resumenTipo(elegido, terrenos)
+                                tipos.isEmpty() -> "Guarda las medidas que más repites como tipo y se llenarán solas"
+                                else -> "Elige un tipo para llenar las medidas"
+                            },
+                        )
+                    },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(abierto) },
+                    modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable).testTag("tipoExcavacion"),
+                )
+                ExposedDropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
+                    DropdownMenuItem(text = { Text("Ninguno (ingreso manual)") }, onClick = { onElegir(null); abierto = false })
+                    tipos.forEach { t ->
+                        DropdownMenuItem(
+                            text = {
+                                Column {
+                                    Text(t.nombre, fontWeight = FontWeight.Medium)
+                                    Text(resumenTipo(t, terrenos), style = MaterialTheme.typography.bodySmall)
+                                }
+                            },
+                            onClick = { onElegir(t.id); abierto = false },
+                        )
+                    }
+                    HorizontalDivider()
+                    DropdownMenuItem(text = { Text("+ Guardar medidas actuales como tipo…") }, onClick = { abierto = false; crear = true })
+                    DropdownMenuItem(text = { Text("Administrar tipos") }, onClick = { abierto = false; onAdministrar() })
+                }
+            }
+            if (elegido == null && tipos.isEmpty()) {
+                TextButton(onClick = { crear = true }) { Text("+ Guardar medidas actuales como tipo") }
+            }
+        }
+    }
+    if (crear) {
+        val b = estado.borrador()
+        DialogoTipoExcavacion(
+            inicial = TipoExcavacionEntity(
+                nombre = "",
+                largo = b.largo,
+                ancho = b.ancho,
+                profundidad = b.profundidad,
+                tipoTerrenoId = estado.tipoTerrenoId,
+                observaciones = null,
+            ),
+            terrenos = terrenos,
+            onGuardar = onGuardarNuevo,
+            onCerrar = { crear = false },
+        )
+    }
 }
 
 /** Sector: se escribe libre o se elige uno ya usado. */

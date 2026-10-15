@@ -9,6 +9,7 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionDetalle
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
@@ -60,6 +61,28 @@ interface TipoTerrenoDao {
 
     @Query("UPDATE tipos_terreno SET activo = :activo WHERE id = :id")
     suspend fun cambiarActivo(id: Long, activo: Boolean)
+}
+
+@Dao
+interface TipoExcavacionDao {
+    @Query("SELECT * FROM tipos_excavacion ORDER BY nombre")
+    fun observarTodos(): Flow<List<TipoExcavacionEntity>>
+
+    @Query("SELECT * FROM tipos_excavacion WHERE id = :id")
+    suspend fun porId(id: Long): TipoExcavacionEntity?
+
+    /** Sin distinguir mayúsculas (columna NOCASE). */
+    @Query("SELECT * FROM tipos_excavacion WHERE nombre = :nombre LIMIT 1")
+    suspend fun buscar(nombre: String): TipoExcavacionEntity?
+
+    @Insert
+    suspend fun insertar(tipo: TipoExcavacionEntity): Long
+
+    @Update
+    suspend fun actualizar(tipo: TipoExcavacionEntity)
+
+    @Query("DELETE FROM tipos_excavacion WHERE id = :id")
+    suspend fun eliminar(id: Long)
 }
 
 @Dao

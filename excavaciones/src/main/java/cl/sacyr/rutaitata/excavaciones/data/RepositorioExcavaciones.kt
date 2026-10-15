@@ -6,6 +6,7 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.Agrupador
 import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
@@ -181,4 +182,34 @@ class RepositorioExcavaciones(
     }
 
     suspend fun desactivarTipoTerreno(id: Long) = bd.tiposTerreno().cambiarActivo(id, false)
+
+    // ------------------------------------------------------------------ tipos de excavación
+
+    fun tiposExcavacion(): Flow<List<TipoExcavacionEntity>> = bd.tiposExcavacion().observarTodos()
+
+    suspend fun tipoExcavacion(id: Long): TipoExcavacionEntity? = bd.tiposExcavacion().porId(id)
+
+    /**
+     * Crea (id 0) o actualiza un tipo de excavación y devuelve su id.
+     *
+     * @throws IllegalArgumentException si falta el nombre, otro tipo ya lo usa o una medida no es válida.
+     */
+    suspend fun guardarTipoExcavacion(tipo: TipoExcavacionEntity): Long = bd.withTransaction {
+        val nombre = tipo.nombre.trim().replace(Regex("\\s+"), " ")
+        require(nombre.isNotEmpty()) { "Ponle un nombre al tipo de excavación" }
+        val otro = bd.tiposExcavacion().buscar(nombre)
+        require(otro == null || otro.id == tipo.id) { "Ya existe un tipo llamado \"${otro!!.nombre}\"" }
+        listOf(tipo.largo, tipo.ancho, tipo.profundidad).forEach { m ->
+            require(m == null || (m > 0 && !m.isNaN())) { "Las medidas deben ser mayores que 0 (o dejarse vacías)" }
+        }
+        val limpio = tipo.copy(nombre = nombre, observaciones = tipo.observaciones?.trim()?.takeIf { it.isNotEmpty() })
+        if (tipo.id == 0L) {
+            bd.tiposExcavacion().insertar(limpio)
+        } else {
+            bd.tiposExcavacion().actualizar(limpio)
+            tipo.id
+        }
+    }
+
+    suspend fun eliminarTipoExcavacion(id: Long) = bd.tiposExcavacion().eliminar(id)
 }

@@ -44,6 +44,7 @@ fun AppNavegacion() {
                 onAbrir = { id -> nav.navigate("formulario?id=$id") },
                 onReporte = { fecha -> nav.navigate("reporte?fecha=${fecha.toEpochDay()}") },
                 onTiposTerreno = { nav.navigate("tipos") },
+                onTiposExcavacion = { nav.navigate("tiposExcavacion") },
             )
         }
         composable(
@@ -60,6 +61,7 @@ fun AppNavegacion() {
                 },
                 onVolver = { nav.popBackStack() },
                 onTiposTerreno = { nav.navigate("tipos") },
+                onTiposExcavacion = { nav.navigate("tiposExcavacion") },
             )
         }
         composable(
@@ -73,6 +75,9 @@ fun AppNavegacion() {
         }
         composable("visor?ruta={ruta}", arguments = listOf(navArgument("ruta") { type = NavType.StringType })) { entrada ->
             PantallaVisorPdf(File(entrada.arguments?.getString("ruta").orEmpty()), onVolver = { nav.popBackStack() })
+        }
+        composable("tiposExcavacion") {
+            PantallaTiposExcavacion(onVolver = { nav.popBackStack() })
         }
         composable("tipos") {
             PantallaTiposTerreno(onVolver = { nav.popBackStack() })

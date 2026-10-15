@@ -3,6 +3,7 @@ package cl.sacyr.rutaitata.excavaciones.data
 import android.database.sqlite.SQLiteConstraintException
 import androidx.test.core.app.ApplicationProvider
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
@@ -74,6 +75,37 @@ class RepositorioExcavacionesTest {
         assertEquals(1_001L, fotos[a]!![1].tomadaEn)
         assertEquals(listOf("b1.jpg"), fotos[b]!!.map { it.archivo })
         assertEquals(setOf("a1.jpg", "a2.jpg", "b1.jpg"), repo.archivosDeFotosEnUso())
+    }
+
+    private fun tipo(nombre: String, largo: Double? = 1.0) =
+        TipoExcavacionEntity(nombre = nombre, largo = largo, ancho = 1.0, profundidad = 1.5, tipoTerrenoId = suelo, observaciones = "  Con entibado ")
+
+    @Test
+    fun tiposDeExcavacionSeCreanEditanYBorran() = runBlocking {
+        val id = repo.guardarTipoExcavacion(tipo("  Pocillo   de inspección "))
+        val guardado = repo.tipoExcavacion(id)!!
+        assertEquals("Pocillo de inspección", guardado.nombre)
+        assertEquals("Con entibado", guardado.observaciones)
+
+        // Una zanja: el largo queda para escribirlo cada vez.
+        val zanja = repo.guardarTipoExcavacion(tipo("Zanja 0,60", largo = null))
+        assertNull(repo.tipoExcavacion(zanja)!!.largo)
+        assertEquals(listOf("Pocillo de inspección", "Zanja 0,60"), repo.tiposExcavacion().first().map { it.nombre })
+
+        repo.guardarTipoExcavacion(guardado.copy(profundidad = 2.0))
+        assertEquals(2.0, repo.tipoExcavacion(id)!!.profundidad!!, 0.0)
+
+        repo.eliminarTipoExcavacion(id)
+        assertNull(repo.tipoExcavacion(id))
+    }
+
+    @Test
+    fun tipoDeExcavacionRechazaNombreRepetidoOVacioYMedidasInvalidas() = runBlocking {
+        repo.guardarTipoExcavacion(tipo("Pocillo"))
+        for (malo in listOf(tipo("POCILLO"), tipo("   "), tipo("Otro", largo = 0.0))) {
+            assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.guardarTipoExcavacion(malo) } }
+        }
+        assertEquals(1, repo.tiposExcavacion().first().size)
     }
 
     @Test

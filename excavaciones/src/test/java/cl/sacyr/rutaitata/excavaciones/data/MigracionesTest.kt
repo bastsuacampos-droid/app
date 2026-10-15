@@ -4,6 +4,8 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -43,6 +45,33 @@ class MigracionesTest {
             for (i in 0 until setup.length()) db.execSQL(setup.getString(i))
             db.datos()
             db.version = version
+        }
+    }
+
+    @Test
+    fun de2a3AgregaLosTiposDeExcavacionSinTocarLoDemas() = runBlocking {
+        val archivo = context.getDatabasePath("migracion3.db").apply { parentFile!!.mkdirs() }
+        crearVersion(2, archivo) {
+            execSQL("INSERT INTO tipos_terreno (id, nombre, orden, activo) VALUES (1, 'Roca', 1, 1)")
+            execSQL("INSERT INTO sectores (id, nombre, creadoEn) VALUES (1, 'Sector A', 0)")
+            execSQL("INSERT INTO frentes (id, sectorId, lado, sentido) VALUES (1, 1, 'S', 'CO-CH')")
+            execSQL(
+                "INSERT INTO excavaciones (id, fecha, frenteId, numero, largo, ancho, profundidad, tipoTerrenoId, creadoEn, actualizadoEn) " +
+                    "VALUES (1, 0, 1, 3, 2.0, 1.0, 1.5, 1, 0, 0)",
+            )
+            execSQL("INSERT INTO fotos (excavacionId, orden, archivo, tomadaEn) VALUES (1, 0, 'f.jpg', 99)")
+        }
+        val bd = Room.databaseBuilder(context, BaseDatos::class.java, archivo.absolutePath)
+            .addMigrations(*BaseDatos.MIGRACIONES)
+            .build()
+        try {
+            val repo = RepositorioExcavaciones(bd)
+            assertEquals(99L, repo.borrador(1)!!.fotos.single().tomadaEn)
+            assertEquals(emptyList<Any>(), repo.tiposExcavacion().first())
+            val id = repo.guardarTipoExcavacion(TipoExcavacionEntity(nombre = "Pocillo", largo = 1.0, ancho = 1.0, profundidad = 1.5, tipoTerrenoId = 1, observaciones = null))
+            assertEquals("Pocillo", repo.tipoExcavacion(id)!!.nombre)
+        } finally {
+            bd.close()
         }
     }
 

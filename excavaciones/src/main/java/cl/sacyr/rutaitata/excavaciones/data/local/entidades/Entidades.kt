@@ -67,6 +67,33 @@ data class TipoTerrenoEntity(
     @ColumnInfo(defaultValue = "1") val activo: Boolean = true,
 )
 
+/**
+ * Tipo de excavación preestablecido (plantilla): al elegirlo en el formulario llena las medidas,
+ * el terreno y las observaciones. Una medida null queda para escribirla en cada excavación (el
+ * largo de una zanja, por ejemplo). No se guarda en la excavación: solo ahorra escribir.
+ */
+@Entity(
+    tableName = "tipos_excavacion",
+    foreignKeys = [
+        ForeignKey(
+            entity = TipoTerrenoEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["tipoTerrenoId"],
+            onDelete = ForeignKey.SET_NULL,
+        ),
+    ],
+    indices = [Index(value = ["nombre"], unique = true), Index(value = ["tipoTerrenoId"])],
+)
+data class TipoExcavacionEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(collate = ColumnInfo.NOCASE) val nombre: String,
+    val largo: Double?,
+    val ancho: Double?,
+    val profundidad: Double?,
+    val tipoTerrenoId: Long?,
+    val observaciones: String?,
+)
+
 /** Nivel 4: una excavación ejecutada en terreno. */
 @Entity(
     tableName = "excavaciones",

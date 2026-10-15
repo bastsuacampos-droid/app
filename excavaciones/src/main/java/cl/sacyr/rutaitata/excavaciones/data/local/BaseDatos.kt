@@ -11,18 +11,20 @@ import cl.sacyr.rutaitata.excavaciones.data.local.dao.ExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FotoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FrenteDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.SectorDao
+import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoTerrenoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
 
 /**
  * Base local; todo lo registrado vive solo aquí (la app funciona sin señal).
  *
- * Para cambiar el esquema: subir [version], agregar una `Migration` a [MIGRACIONES] y una prueba
- * con `MigrationTestHelper`. Nunca `fallbackToDestructiveMigration`: borraría los registros de obra.
+ * Para cambiar el esquema: subir [version], agregar una `Migration` a [MIGRACIONES] y su caso en
+ * `MigracionesTest`. Nunca `fallbackToDestructiveMigration`: borraría los registros de obra.
  */
 @Database(
     entities = [
@@ -31,8 +33,9 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
         TipoTerrenoEntity::class,
         ExcavacionEntity::class,
         FotoEntity::class,
+        TipoExcavacionEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
 )
 @TypeConverters(Conversores::class)
@@ -42,6 +45,7 @@ abstract class BaseDatos : RoomDatabase() {
     abstract fun tiposTerreno(): TipoTerrenoDao
     abstract fun excavaciones(): ExcavacionDao
     abstract fun fotos(): FotoDao
+    abstract fun tiposExcavacion(): TipoExcavacionDao
 
     companion object {
         const val NOMBRE = "excavaciones.db"
@@ -65,7 +69,21 @@ abstract class BaseDatos : RoomDatabase() {
             }
         }
 
-        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2)
+        /** v2 → v3: tipos de excavación preestablecidos (plantillas del formulario). */
+        private val MIGRACION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `tipos_excavacion` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT NOT NULL COLLATE NOCASE, " +
+                        "`largo` REAL, `ancho` REAL, `profundidad` REAL, `tipoTerrenoId` INTEGER, `observaciones` TEXT, " +
+                        "FOREIGN KEY(`tipoTerrenoId`) REFERENCES `tipos_terreno`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+                )
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_tipos_excavacion_nombre` ON `tipos_excavacion` (`nombre`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_tipos_excavacion_tipoTerrenoId` ON `tipos_excavacion` (`tipoTerrenoId`)")
+            }
+        }
+
+        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2, MIGRACION_2_3)
 
         fun crear(context: Context): BaseDatos =
             Room.databaseBuilder(context, BaseDatos::class.java, NOMBRE)

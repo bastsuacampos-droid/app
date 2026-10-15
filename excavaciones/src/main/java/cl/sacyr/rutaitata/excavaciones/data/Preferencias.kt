@@ -20,6 +20,11 @@ class Preferencias(context: Context) {
         get() = prefs.getBoolean(INCLUIR_FOTOS, true)
         set(valor) = prefs.edit { putBoolean(INCLUIR_FOTOS, valor) }
 
+    /** Último tipo de excavación elegido: se aplica solo al abrir una excavación nueva. */
+    var ultimoTipoExcavacion: Long?
+        get() = prefs.getLong(TIPO_EXCAVACION, -1).takeIf { it > 0 }
+        set(id) = prefs.edit { putLong(TIPO_EXCAVACION, id ?: -1) }
+
     var ultimoFrente: UltimoFrente
         get() = UltimoFrente(
             sector = prefs.getString(SECTOR, "").orEmpty(),
@@ -41,5 +46,6 @@ class Preferencias(context: Context) {
         const val LADO = "ultimo_lado"
         const val SENTIDO = "ultimo_sentido"
         const val TIPO = "ultimo_tipo_terreno"
+        const val TIPO_EXCAVACION = "ultimo_tipo_excavacion"
     }
 }

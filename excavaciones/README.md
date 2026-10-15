@@ -11,7 +11,11 @@ charlas.
    excavaciones agrupadas por Sector → Lado → Sentido, en orden correlativo. Las que no tienen
    foto se marcan "Sin foto".
 2. **Nueva excavación** (botón naranja): abre con la fecha del dashboard y el último sector,
-   lado, sentido y tipo de terreno usados. El número es automático (el siguiente del frente) o
+   lado, sentido y tipo de terreno usados. Arriba está el **tipo de excavación**: plantillas
+   (pocillo de inspección, zanja de 0,60 m…) que llenan medidas, terreno y observaciones. Se
+   elige una vez y las siguientes excavaciones nuevas ya vienen con el último tipo usado. Una
+   medida que la plantilla deja vacía (el largo de una zanja) se escribe en cada una. "Guardar
+   medidas actuales como tipo" crea una plantilla con lo que ya está escrito. El número es automático (el siguiente del frente) o
    manual. El volumen se calcula mientras se escriben las medidas (acepta coma o punto).
    "Obtener ubicación" toma una lectura GPS; "Cámara" o "Galería" agregan hasta 3 fotos.
    "Guardar y otra" deja el formulario listo para la siguiente del mismo frente. Guardar sin
@@ -19,7 +23,7 @@ charlas.
 3. **Reporte PDF**: período (hoy, ayer, esta semana o fechas), sector o todos, responsable y
    anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
    dentro de la app), **Compartir** (WhatsApp, correo…) o **Guardar copia** donde se elija.
-4. **Tipos de terreno** (menú ⋮): agregar o quitar opciones del desplegable.
+4. **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
 
 Todo funciona sin señal; los datos y fotos quedan solo en el teléfono.
 
@@ -42,7 +46,7 @@ excavaciones/
     │   ├── RepositorioExcavaciones.kt   única puerta a los datos (Flow + suspend)
     │   ├── ArchivosFotos.kt         importa fotos (gira según EXIF, reduce a 1600 px, JPEG) y limpia huérfanas
     │   ├── ProveedorUbicacion.kt    una lectura GPS a pedido (sin Google Play Services)
-    │   ├── Preferencias.kt          responsable y último frente usado
+    │   ├── Preferencias.kt          responsable, último frente y último tipo de excavación usados
     │   └── local/
     │       ├── BaseDatos.kt         RoomDatabase, semilla de tipos de terreno, migraciones
     │       ├── Conversores.kt       LocalDate ⇄ días, Lado/Sentido ⇄ código
@@ -58,6 +62,7 @@ excavaciones/
         ├── Inicio.kt                dashboard del día
         ├── Formulario.kt / FormularioViewModel.kt   registro y edición
         ├── Reporte.kt / ReporteViewModel.kt          filtros, generación y visor PDF (PdfRenderer)
+        ├── TiposExcavacion.kt       plantillas de excavación (lista y diálogo)
         ├── TiposTerreno.kt          catálogo del desplegable
         └── Componentes.kt, Tema.kt, Navegacion.kt
 ```
@@ -72,6 +77,8 @@ sectores (id, nombre UNIQUE NOCASE)
           │                 UNIQUE(frenteId, numero)
           └── fotos (excavacionId, orden 0-2, archivo, tomadaEn)   ON DELETE CASCADE
 tipos_terreno (id, nombre UNIQUE NOCASE, orden, activo)
+tipos_excavacion (id, nombre UNIQUE NOCASE, largo?, ancho?, profundidad?, tipoTerrenoId?, observaciones?)
+   plantillas del formulario; no se enlazan con las excavaciones (borrar una no cambia nada registrado)
 ```
 
 - El **frente** (sector + lado + sentido) da la numeración correlativa: el número es único
@@ -96,7 +103,7 @@ tipos_terreno (id, nombre UNIQUE NOCASE, orden, activo)
 Subir `version` en `BaseDatos`, agregar la `Migration` a `MIGRACIONES` y compilar: Room
 escribe el JSON de la nueva versión en `schemas/`. Versionar ese JSON y agregar su caso a
 `MigracionesTest` (crea la base de la versión anterior desde su JSON y la abre con Room).
-Versión actual: 2 (v2 agregó `fotos.tomadaEn`).
+Versión actual: 3 (v2 agregó `fotos.tomadaEn`; v3, la tabla `tipos_excavacion`).
 Nunca usar `fallbackToDestructiveMigration`: borraría los registros de obra.
 
 ## Reporte PDF

@@ -102,6 +102,7 @@ fun PantallaInicio(
     onAbrir: (Long) -> Unit,
     onReporte: (LocalDate) -> Unit,
     onTiposTerreno: () -> Unit,
+    onTiposExcavacion: () -> Unit,
 ) {
     val vm = vistaModelo { app, estado -> InicioViewModel(app.repositorio, estado) }
     val fecha = LocalDate.ofEpochDay(vm.fecha.collectAsStateWithLifecycle().value)
@@ -141,6 +142,7 @@ fun PantallaInicio(
                     Box {
                         IconButton(onClick = { menu = true }) { Icon(Icons.Default.MoreVert, contentDescription = "Más opciones") }
                         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                            DropdownMenuItem(text = { Text("Tipos de excavación") }, onClick = { menu = false; onTiposExcavacion() })
                             DropdownMenuItem(text = { Text("Tipos de terreno") }, onClick = { menu = false; onTiposTerreno() })
                         }
                     }

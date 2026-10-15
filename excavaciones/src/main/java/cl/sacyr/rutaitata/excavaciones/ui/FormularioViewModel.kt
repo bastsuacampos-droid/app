@@ -11,6 +11,7 @@ import cl.sacyr.rutaitata.excavaciones.data.ProveedorUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.RepositorioExcavaciones
 import cl.sacyr.rutaitata.excavaciones.data.ResultadoUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.UltimoFrente
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
@@ -55,6 +56,8 @@ data class EstadoFormulario(
     val ancho: String = "",
     val profundidad: String = "",
     val tipoTerrenoId: Long? = null,
+    /** Tipo de excavación preestablecido con que se llenaron las medidas (null: ingreso manual). */
+    val tipoExcavacionId: Long? = null,
     val latitud: Double? = null,
     val longitud: Double? = null,
     val precision: Float? = null,
@@ -118,6 +121,7 @@ class FormularioViewModel(
     val erroresGuardado: StateFlow<Map<Campo, String>> = erroresBase
 
     val tiposTerreno = repo.tiposTerreno().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val tiposExcavacion = repo.tiposExcavacion().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val sectores = repo.sectores().map { l -> l.map { it.nombre } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
@@ -172,21 +176,55 @@ class FormularioViewModel(
                 cargado = true,
             )
         } else {
-            // Nueva: en la fecha del dashboard y en el último frente usado, para registrar en serie.
             val fecha = guardado.get<Long>("fecha")?.takeIf { it != Long.MIN_VALUE } ?: LocalDate.now().toEpochDay()
-            nuevaEn(fecha, preferencias.ultimoFrente)
+            nueva(fecha)
         }
         guardado[CLAVE] = inicial
     }
 
-    private fun nuevaEn(fecha: Long, frente: UltimoFrente) = EstadoFormulario(
-        fecha = fecha,
-        sector = frente.sector,
-        lado = frente.lado,
-        sentido = frente.sentido,
-        tipoTerrenoId = frente.tipoTerrenoId,
-        cargado = true,
-    )
+    /**
+     * Excavación nueva lista para registrar en serie: fecha del dashboard, último frente usado y,
+     * si se eligió uno antes, el último tipo de excavación con sus medidas.
+     */
+    private suspend fun nueva(fecha: Long): EstadoFormulario {
+        val frente = preferencias.ultimoFrente
+        val base = EstadoFormulario(
+            fecha = fecha,
+            sector = frente.sector,
+            lado = frente.lado,
+            sentido = frente.sentido,
+            tipoTerrenoId = frente.tipoTerrenoId,
+            cargado = true,
+        )
+        val tipo = preferencias.ultimoTipoExcavacion?.let { repo.tipoExcavacion(it) }
+        if (tipo == null) preferencias.ultimoTipoExcavacion = null // se borró: deja de recordarlo
+        return tipo?.let { base.conTipo(it) } ?: base
+    }
+
+    /** Elige un tipo de excavación (llena sus medidas) o null para ingresar todo a mano. */
+    fun elegirTipoExcavacion(id: Long?) {
+        if (id == null) {
+            actualizar { copy(tipoExcavacionId = null) }
+            return
+        }
+        viewModelScope.launch {
+            val tipo = repo.tipoExcavacion(id) ?: return@launch
+            actualizar { conTipo(tipo) }
+        }
+    }
+
+    /**
+     * Guarda un tipo de excavación nuevo (normalmente con las medidas que ya están escritas) y lo
+     * deja elegido. Devuelve el error para mostrarlo en el diálogo, o null si se guardó.
+     */
+    suspend fun guardarTipoExcavacion(tipo: TipoExcavacionEntity): String? =
+        runCatching { repo.guardarTipoExcavacion(tipo) }.fold(
+            onSuccess = { id ->
+                actualizar { conTipo(tipo.copy(id = id)) }
+                null
+            },
+            onFailure = { it.message ?: "No se pudo guardar el tipo" },
+        )
 
     fun actualizar(cambio: EstadoFormulario.() -> EstadoFormulario) {
         guardado[CLAVE] = estado.value.cambio()
@@ -287,12 +325,14 @@ class FormularioViewModel(
                 val id = repo.guardar(actual.borrador())
                 val numero = repo.borrador(id)?.numero
                 preferencias.ultimoFrente = UltimoFrente(actual.sector.trim(), actual.lado, actual.sentido, actual.tipoTerrenoId)
+                // Al editar una antigua (sin tipo) no se olvida el tipo que se viene usando.
+                if (actual.nueva || actual.tipoExcavacionId != null) preferencias.ultimoTipoExcavacion = actual.tipoExcavacionId
                 val quitadas = actual.fotosOriginales - actual.fotos.map { it.archivo }.toSet()
                 if (quitadas.isNotEmpty()) withContext(Dispatchers.IO) { archivos.eliminar(quitadas) }
 
                 val mensaje = "Excavación N° ${numero?.let(Formato::numero) ?: ""} guardada"
                 if (otra) {
-                    guardado[CLAVE] = nuevaEn(actual.fecha, preferencias.ultimoFrente)
+                    guardado[CLAVE] = nueva(actual.fecha)
                     avisar("$mensaje. Registra la siguiente.")
                 } else {
                     _eventos.send(EventoFormulario.Terminado(mensaje))
@@ -330,6 +370,19 @@ class FormularioViewModel(
     companion object {
         private const val CLAVE = "formulario"
         const val PRECISION_ACEPTABLE_M = 30f
+
+        /**
+         * Aplica un tipo de excavación: sus medidas reemplazan las escritas (una medida sin definir
+         * queda vacía para escribirla); terreno y observaciones solo si el tipo los define.
+         */
+        fun EstadoFormulario.conTipo(t: TipoExcavacionEntity) = copy(
+            tipoExcavacionId = t.id,
+            largo = t.largo?.let(::decimalEditable).orEmpty(),
+            ancho = t.ancho?.let(::decimalEditable).orEmpty(),
+            profundidad = t.profundidad?.let(::decimalEditable).orEmpty(),
+            tipoTerrenoId = t.tipoTerrenoId ?: tipoTerrenoId,
+            observaciones = t.observaciones ?: observaciones,
+        )
 
         /** 1.5 → "1,5"; 2.0 → "2" (como lo escribiría alguien). */
         fun decimalEditable(valor: Double): String =
