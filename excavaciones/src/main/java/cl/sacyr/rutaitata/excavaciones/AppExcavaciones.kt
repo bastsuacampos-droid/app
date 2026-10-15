@@ -8,6 +8,8 @@ import cl.sacyr.rutaitata.excavaciones.data.ProveedorUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.RepositorioExcavaciones
 import cl.sacyr.rutaitata.excavaciones.data.Respaldo
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.reporte.FuenteTrueType
+import cl.sacyr.rutaitata.excavaciones.reporte.FuentesPdf
 import cl.sacyr.rutaitata.excavaciones.reporte.GeneradorReportePdf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +24,10 @@ class AppExcavaciones : Application() {
     val fotos: ArchivosFotos by lazy { ArchivosFotos(File(filesDir, "fotos")) }
     val ubicacion: ProveedorUbicacion by lazy { ProveedorUbicacion(this) }
     val preferencias: Preferencias by lazy { Preferencias(this) }
-    val generadorPdf: GeneradorReportePdf by lazy { GeneradorReportePdf(File(filesDir, "reportes")) }
+    val generadorPdf: GeneradorReportePdf by lazy {
+        fun fuente(nombre: String) = FuenteTrueType(assets.open("fuentes/$nombre.ttf").use { it.readBytes() }, nombre)
+        GeneradorReportePdf(File(filesDir, "reportes"), FuentesPdf(fuente("Roboto-Regular"), fuente("Roboto-Bold")), fotos::paraReporte)
+    }
     val respaldo: Respaldo by lazy { Respaldo(baseDatos, fotos) }
     val actualizador: ActualizadorApp by lazy { ActualizadorApp(this, BuildConfig.URL_VERSIONES, BuildConfig.VERSION_NAME) }
 

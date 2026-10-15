@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -378,6 +379,7 @@ fun PantallaVisorPdf(archivo: File, onVolver: () -> Unit) {
         runCatching { PdfRenderer(ParcelFileDescriptor.open(archivo, ParcelFileDescriptor.MODE_READ_ONLY)) }.getOrNull()
     }
     val candado = remember { Mutex() }
+    var ampliada by remember { mutableStateOf<Int?>(null) }
     // Al salir, el alcance de la pantalla ya está cancelado: el cierre va en el de la app, y espera
     // a que termine la página que se esté dibujando.
     val segundoPlano = appExcavaciones().segundoPlano
@@ -428,7 +430,8 @@ fun PantallaVisorPdf(archivo: File, onVolver: () -> Unit) {
                         }
                     }
                     Box(
-                        Modifier.fillMaxWidth().aspectRatio(842f / 595f).background(androidx.compose.ui.graphics.Color.White),
+                        Modifier.fillMaxWidth().aspectRatio(842f / 595f).background(androidx.compose.ui.graphics.Color.White)
+                            .clickable(onClickLabel = "Ampliar") { ampliada = i },
                         contentAlignment = Alignment.Center,
                     ) {
                         pagina?.let { Image(it.asImageBitmap(), contentDescription = "Página ${i + 1}", modifier = Modifier.fillMaxSize()) }
@@ -436,6 +439,27 @@ fun PantallaVisorPdf(archivo: File, onVolver: () -> Unit) {
                     }
                 }
             }
+            ampliada?.let { i ->
+                // La página a mayor resolución, para ampliar las fotos del anexo.
+                val anchoAmpliado = (anchoPx * 4).coerceAtMost(ANCHO_PAGINA_AMPLIADA)
+                VisorImagen(
+                    titulo = "Página ${i + 1} de ${documento.pageCount}",
+                    pie = "Para más detalle, \"Abrir con…\" otra app de PDF",
+                    onCerrar = { ampliada = null },
+                ) {
+                    candado.withLock {
+                        documento.openPage(i).use { p ->
+                            createBitmap(anchoAmpliado, (anchoAmpliado.toFloat() * p.height / p.width).toInt()).also { bmp ->
+                                bmp.eraseColor(Color.WHITE)
+                                p.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
+
+/** Ancho en px de una página ampliada en el visor: ~37 MB en memoria, se libera al cerrarla. */
+private const val ANCHO_PAGINA_AMPLIADA = 3600

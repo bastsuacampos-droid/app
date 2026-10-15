@@ -17,12 +17,14 @@ charlas.
    medida que la plantilla deja vacía (el largo de una zanja) se escribe en cada una. "Guardar
    medidas actuales como tipo" crea una plantilla con lo que ya está escrito. El número es automático (el siguiente del frente) o
    manual. El volumen se calcula mientras se escriben las medidas (acepta coma o punto).
-   "Obtener ubicación" toma una lectura GPS; "Cámara" o "Galería" agregan hasta 3 fotos.
+   "Obtener ubicación" toma una lectura GPS; "Cámara" o "Galería" agregan hasta 3 fotos. Al
+   tocar una foto se abre a pantalla completa y se amplía con dos dedos o doble toque.
    "Guardar y otra" deja el formulario listo para la siguiente del mismo frente. Guardar sin
    foto pide confirmación: la foto es el respaldo de cómo quedó la excavación.
 3. **Reporte PDF**: período (hoy, ayer, esta semana o fechas), sector o todos, responsable y
    anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
-   dentro de la app), **Compartir** (WhatsApp, correo…) o **Guardar copia** donde se elija.
+   dentro de la app; tocar una página la amplía), **Compartir** (WhatsApp, correo…) o
+   **Guardar copia** donde se elija.
 4. **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
    **Sectores** (menú ⋮): corregir el nombre de un sector; si se cambia al de otro existente, se
    ofrece unirlos (las excavaciones pasan con su lado y sentido; si un número ya está usado, la
@@ -73,7 +75,7 @@ excavaciones/
     ├── MainActivity.kt
     ├── data/
     │   ├── RepositorioExcavaciones.kt   única puerta a los datos (Flow + suspend)
-    │   ├── ArchivosFotos.kt         importa fotos (gira según EXIF, reduce a 1600 px, JPEG) y limpia huérfanas
+    │   ├── ArchivosFotos.kt         importa fotos (gira según EXIF, reduce a 2560 px, JPEG), la versión para el PDF y limpia huérfanas
     │   ├── ProveedorUbicacion.kt    una lectura GPS a pedido (sin Google Play Services)
     │   ├── Preferencias.kt          responsable, último frente y último tipo de excavación usados
     │   └── local/
@@ -85,7 +87,9 @@ excavaciones/
     │   ├── DatosReporte.kt          entrada del reporte y nombre del archivo
     │   ├── Plano.kt                 primitivas de dibujo (texto, línea, rectángulo) y paleta
     │   ├── MaquetadorReporte.kt     maquetación pura: encabezados, tablas, saltos, totales, firmas
-    │   ├── GeneradorReportePdf.kt   pinta las páginas con android.graphics.pdf.PdfDocument
+    │   ├── GeneradorReportePdf.kt   escribe el PDF: fotos JPEG tal cual, texto con Roboto incrustada
+    │   ├── EscritorPdf.kt           objetos, flujos y tabla xref de un PDF 1.4
+    │   ├── FuenteTrueType.kt        métricas de la fuente y subconjunto con los glifos usados
     │   └── CompartirReporte.kt      FileProvider: compartir (ACTION_SEND), ver, guardar copia
     └── ui/                          Compose + ViewModel (MVVM), navegación con navigation-compose
         ├── Inicio.kt                dashboard del día
@@ -126,6 +130,8 @@ tipos_excavacion (id, nombre UNIQUE NOCASE, largo?, ancho?, profundidad?, tipoTe
 - Ubicación: `ACCESS_FINE_LOCATION`/`COARSE`, solo al tocar "Obtener ubicación".
 - Si Android cierra la app mientras la cámara está abierta, el formulario se recupera
   (`SavedStateHandle`) y la foto llega igual.
+- Resolución: la foto se guarda con lado mayor de 2560 px (≈ 5 MP, JPEG 90, ~1-2 MB), y en el
+  PDF va a 1600 px (JPEG 82, ~300-500 KB). Las tomadas antes de este cambio quedaron en 1600 px.
 
 ### Cambiar el esquema
 
@@ -147,12 +153,17 @@ cada página lleva "Página X de N".
 
 **Anexo fotográfico**: en páginas aparte, en el mismo orden de las tablas, dos excavaciones por
 página con hasta tres fotos cada una (sin deformar) y la fecha y hora en que se tomó cada foto.
-En la tabla, cada excavación dice "[2 fotos en anexo]" o "[Sin foto]" en rojo. Las fotos se
-reducen a ~115 ppp al pintarlas (`PIXELES_POR_PUNTO`): PdfDocument guarda los píxeles sin
-comprimir como JPEG, así que más resolución hace crecer mucho el archivo.
+En la tabla, cada excavación dice "[2 fotos en anexo]" o "[Sin foto]" en rojo. Cada foto va
+como JPEG de 1600 px (`ArchivosFotos.LADO_PDF`): al ampliarla en el visor se ven los detalles.
 
-`MaquetadorReporte` no depende de Android: las pruebas revisan saltos de página, márgenes y
-contenido en la JVM. `GeneradorReportePdf` solo mide el texto y pinta.
+El PDF se escribe sin `PdfDocument`: este guarda las fotos como píxeles sin compresión JPEG y,
+para no pasar de decenas de MB, había que dejarlas en ~350 px. `GeneradorReportePdf` incrusta el
+JPEG tal cual e incrusta Roboto (`assets/fuentes`, licencia Apache 2.0) solo con los glifos
+usados; mide el texto con esa misma fuente. "→" no está en Roboto: se dibuja con trazos.
+
+Todo el reporte es Kotlin puro: `MaquetadorReporteTest` revisa saltos de página, márgenes y
+contenido, y `GeneradorReportePdfTest` genera PDFs reales y revisa su estructura. Para mirar uno:
+`PDF_PRUEBA_DIR=/ruta ./gradlew :excavaciones:testDebugUnitTest --tests '*GeneradorReportePdfTest*'`.
 
 ## Publicar una versión (y actualizar los teléfonos)
 

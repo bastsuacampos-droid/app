@@ -70,7 +70,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -721,21 +720,11 @@ private fun SeccionFotos(
         }
     }
     ampliada?.let { foto ->
-        AlertDialog(
-            onDismissRequest = { ampliada = null },
-            confirmButton = { TextButton(onClick = { ampliada = null }) { Text("Cerrar") } },
-            text = {
-                Column {
-                    MiniaturaFoto(archivos, foto.archivo, lado = 1080, modifier = Modifier.fillMaxWidth().height(320.dp).clip(MaterialTheme.shapes.medium))
-                    foto.tomadaEn?.let {
-                        Text(
-                            "Tomada el ${Formato.fechaHora(LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()))}",
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(top = 8.dp),
-                        )
-                    }
-                }
-            },
-        )
+        // A resolución completa, para revisar con zoom el estado de la excavación.
+        VisorImagen(
+            titulo = "Foto ${fotos.indexOf(foto) + 1}",
+            pie = foto.tomadaEn?.let { "Tomada el ${Formato.fechaHora(LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()))}" },
+            onCerrar = { ampliada = null },
+        ) { archivos.miniatura(foto.archivo, lado = ArchivosFotos.LADO_MAXIMO) }
     }
 }

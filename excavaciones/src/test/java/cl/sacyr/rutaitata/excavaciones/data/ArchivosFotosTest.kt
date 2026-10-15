@@ -57,6 +57,20 @@ class ArchivosFotosTest {
     }
 
     @Test
+    fun paraElReporteSeReduceLaFotoGrandeYLaChicaVaTalCual() {
+        val grande = fotos.importar { jpeg(4000, 3000).inputStream() }!!
+        val reducida = fotos.paraReporte(fotos.archivo(grande.archivo).path)!!
+        val o = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        android.graphics.BitmapFactory.decodeByteArray(reducida, 0, reducida.size, o)
+        assertEquals(ArchivosFotos.LADO_PDF, maxOf(o.outWidth, o.outHeight))
+        assertEquals("image/jpeg", o.outMimeType)
+
+        val chica = jpeg(1200, 900)
+        assertTrue(chica.readBytes().contentEquals(fotos.paraReporte(chica.path)))
+        assertNull(fotos.paraReporte(File(raiz, "no-existe.jpg").path))
+    }
+
+    @Test
     fun capturaDeCamaraSinExifTomaLaHoraActualYSeBorra() {
         val captura = fotos.nuevaCaptura()
         jpeg(300, 300).copyTo(captura, overwrite = true)

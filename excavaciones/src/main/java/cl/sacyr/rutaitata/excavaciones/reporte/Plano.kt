@@ -2,7 +2,7 @@ package cl.sacyr.rutaitata.excavaciones.reporte
 
 /*
  * Primitivas de dibujo del reporte, sin dependencias de Android: MaquetadorReporte produce una lista
- * de páginas con estos trazos y GeneradorReportePdf solo los pinta en un PdfDocument. Así toda la
+ * de páginas con estos trazos y GeneradorReportePdf los escribe como PDF. Así toda la
  * maquetación (agrupación, saltos de página, totales, firmas) se prueba en la JVM.
  *
  * Coordenadas en puntos PostScript (1/72"), origen arriba a la izquierda. En Texto, y es la línea

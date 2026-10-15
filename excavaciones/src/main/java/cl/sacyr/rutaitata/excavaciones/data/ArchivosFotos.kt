@@ -11,6 +11,7 @@ import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
 import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
 import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -23,8 +24,9 @@ import java.util.UUID
  * Fotos de las excavaciones en files/fotos (privadas de la app; se respaldan con ella).
  *
  * Toda foto que entra (cámara o galería) se normaliza: se gira según su EXIF, se reduce a
- * [LADO_MAXIMO] px y se guarda como JPEG. Así ocupa ~300-600 KB en vez de varios MB, se ve
- * derecha en cualquier visor y el reporte no tiene que interpretar EXIF.
+ * [LADO_MAXIMO] px y se guarda como JPEG. Así ocupa ~1-2 MB en vez de 3-6 MB, conserva el
+ * detalle para ampliarla (grietas, entibación, fondo de la excavación), se ve derecha en cualquier
+ * visor y el reporte no tiene que interpretar EXIF.
  */
 class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemDefault()) {
 
@@ -80,7 +82,7 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         val leida = abrir()?.use { BitmapFactory.decodeStream(it, null, BitmapFactory.Options().apply { inSampleSize = muestreo }) }
             ?: return null
         val tomadaEn = fechaExif(exif) ?: fechaPorDefecto
-        val orientada = orientar(reducir(leida), exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL))
+        val orientada = orientar(reducir(leida, LADO_MAXIMO), exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL))
         val final = sello?.invoke(tomadaEn)?.let { estampar(orientada, it) } ?: orientada
 
         carpeta.mkdirs()
@@ -101,6 +103,29 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         val o = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeFile(archivo(nombre).path, o)
         return if (o.outWidth > 0 && o.outHeight > 0) o.outWidth to o.outHeight else null
+    }
+
+    /**
+     * JPEG de la foto para incrustar en el reporte, de [LADO_PDF] px como máximo: con eso se
+     * amplía en el visor y se ven los detalles, sin que un reporte con muchas fotos pese tanto que
+     * no se pueda enviar por correo. Una foto que ya es así de chica (las tomadas antes de subir la
+     * resolución) va tal cual. null si falta o no se puede leer.
+     */
+    fun paraReporte(ruta: String): ByteArray? {
+        val limites = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(ruta, limites)
+        val lado = maxOf(limites.outWidth, limites.outHeight)
+        if (limites.outWidth <= 0 || limites.outHeight <= 0) return null
+        if (lado <= LADO_PDF && limites.outMimeType == "image/jpeg") return runCatching { File(ruta).readBytes() }.getOrNull()
+        var muestreo = 1
+        while (lado / (muestreo * 2) >= LADO_PDF) muestreo *= 2
+        val leida = BitmapFactory.decodeFile(ruta, BitmapFactory.Options().apply { inSampleSize = muestreo }) ?: return null
+        val reducida = reducir(leida, LADO_PDF)
+        return try {
+            ByteArrayOutputStream().also { reducida.compress(Bitmap.CompressFormat.JPEG, CALIDAD_PDF, it) }.toByteArray()
+        } finally {
+            reducida.recycle()
+        }
     }
 
     /** Miniatura de alrededor de [lado] px para mostrar en pantalla. */
@@ -144,10 +169,10 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         return lienzo
     }
 
-    private fun reducir(b: Bitmap): Bitmap {
+    private fun reducir(b: Bitmap, maximo: Int): Bitmap {
         val lado = maxOf(b.width, b.height)
-        if (lado <= LADO_MAXIMO) return b
-        val f = LADO_MAXIMO.toFloat() / lado
+        if (lado <= maximo) return b
+        val f = maximo.toFloat() / lado
         return b.scale((b.width * f).toInt().coerceAtLeast(1), (b.height * f).toInt().coerceAtLeast(1))
             .also { if (it !== b) b.recycle() }
     }
@@ -174,8 +199,12 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
     }
 
     companion object {
-        const val LADO_MAXIMO = 1600
-        const val CALIDAD_JPEG = 85
+        /** Lado mayor de la foto guardada: 2560 px (≈ 5 MP), el detalle de una cámara común sin su peso. */
+        const val LADO_MAXIMO = 2560
+        const val CALIDAD_JPEG = 90
+        /** Lado mayor de cada foto dentro del PDF y su calidad JPEG (~300-500 KB por foto). */
+        const val LADO_PDF = 1600
+        const val CALIDAD_PDF = 82
         private const val UN_DIA_MS = 24 * 60 * 60 * 1000L
         private val FORMATO_EXIF = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss")
     }
