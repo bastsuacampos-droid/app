@@ -6,6 +6,11 @@ plugins {
     id("androidx.room")
 }
 
+// Firma de las versiones publicadas: la misma clave y los mismos secrets que la app de charlas
+// (FIRMA_KEYSTORE / FIRMA_CLAVE, ver .github/workflows/publicar-excavaciones.yml). Nunca va al repositorio.
+val firmaArchivo: String? = System.getenv("FIRMA_KEYSTORE")
+val firmaClave: String? = System.getenv("FIRMA_CLAVE")
+
 android {
     namespace = "cl.sacyr.rutaitata.excavaciones"
     compileSdk = 35
@@ -14,12 +19,36 @@ android {
         applicationId = "cl.sacyr.rutaitata.excavaciones"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1"
+        // Para publicar una versión nueva: subir ambos números, escribir novedades-version.txt
+        // y llevar el cambio a main (ver .github/workflows/publicar-excavaciones.yml).
+        versionCode = 2
+        versionName = "1.0"
+
+        // Versiones publicadas (GitHub Releases) para actualizar desde la misma app. Solo cuentan
+        // las releases con tag "excavaciones-v…": el repositorio publica también otras apps.
+        buildConfigField(
+            "String",
+            "URL_VERSIONES",
+            "\"https://api.github.com/repos/bastsuacampos-droid/app/releases?per_page=100\"",
+        )
+    }
+
+    signingConfigs {
+        create("publicacion") {
+            if (firmaArchivo != null && firmaClave != null) {
+                storeFile = file(firmaArchivo)
+                storePassword = firmaClave
+                keyAlias = System.getenv("FIRMA_ALIAS") ?: "androiddebugkey"
+                keyPassword = firmaClave
+            }
+        }
     }
 
     buildTypes {
         release {
+            if (firmaArchivo != null && firmaClave != null) {
+                signingConfig = signingConfigs.getByName("publicacion")
+            }
             // Igual que la app de charlas: sin R8, un fallo de reflexión (Room) al iniciar no se perdona en terreno.
             isMinifyEnabled = false
         }
@@ -34,6 +63,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -68,6 +98,8 @@ dependencies {
     ksp("androidx.room:room-compiler:$room")
 
     testImplementation("junit:junit:4.13.2")
+    // org.json real para las pruebas JVM (el de android.jar es un stub). Lo usa VersionesTest.
+    testImplementation("org.json:json:20240303")
     testImplementation("org.robolectric:robolectric:4.14.1")
     testImplementation("androidx.test:core-ktx:1.6.1")
     testImplementation("androidx.room:room-testing:$room")

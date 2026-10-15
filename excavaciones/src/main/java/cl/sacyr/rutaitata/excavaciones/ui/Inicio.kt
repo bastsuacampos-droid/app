@@ -23,6 +23,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,6 +48,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -57,8 +59,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import cl.sacyr.rutaitata.excavaciones.R
@@ -75,6 +79,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class InicioViewModel(repo: RepositorioExcavaciones, private val estado: SavedStateHandle) : ViewModel() {
@@ -117,6 +122,13 @@ fun PantallaInicio(
         }
     }
     var menu by remember { mutableStateOf(false) }
+    var verVersion by rememberSaveable { mutableStateOf(false) }
+    val app = appExcavaciones()
+    val scope = rememberCoroutineScope()
+    // Al abrir o volver a la app (como máximo cada 30 min) revisa si hay una versión nueva publicada.
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        if (app.buscaActualizaciones) scope.launch { app.actualizador.revisarSiCorresponde() }
+    }
     var elegirFecha by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
@@ -144,6 +156,7 @@ fun PantallaInicio(
                         DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
                             DropdownMenuItem(text = { Text("Tipos de excavación") }, onClick = { menu = false; onTiposExcavacion() })
                             DropdownMenuItem(text = { Text("Tipos de terreno") }, onClick = { menu = false; onTiposTerreno() })
+                            DropdownMenuItem(text = { Text("Versión de la app") }, onClick = { menu = false; verVersion = true })
                         }
                     }
                 },
@@ -168,6 +181,9 @@ fun PantallaInicio(
                 bottom = relleno.calculateBottomPadding() + 96.dp, // espacio para el botón flotante
             ),
         ) {
+            item {
+                Box(Modifier.padding(horizontal = 12.dp).padding(top = 8.dp)) { AvisoVersionApp(app.actualizador) }
+            }
             item { SelectorDia(fecha, onCambiar = vm::elegirFecha, onElegir = { elegirFecha = true }) }
             item { Indicadores(resumen) }
             val r = resumen
@@ -192,6 +208,26 @@ fun PantallaInicio(
         }
     }
     if (elegirFecha) DialogoFecha(fecha, onElegir = vm::elegirFecha, onCerrar = { elegirFecha = false })
+    if (verVersion) {
+        AlertDialog(
+            onDismissRequest = { verVersion = false },
+            title = { Text("Versión ${app.actualizador.versionActual}" + if (app.buscaActualizaciones) "" else " (de prueba)") },
+            text = {
+                Column {
+                    if (app.buscaActualizaciones) {
+                        ControlesActualizacion(app.actualizador)
+                    } else {
+                        Text(
+                            "Esta es una versión de prueba: no se actualiza sola. Para recibir actualizaciones, " +
+                                "instala la versión publicada (excavaciones-ruta-itata-….apk de GitHub Releases).",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { verVersion = false }) { Text("Cerrar") } },
+        )
+    }
 }
 
 @Composable

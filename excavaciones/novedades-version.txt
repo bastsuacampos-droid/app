@@ -1,0 +1,1 @@
+Primera versión publicada: registro diario de excavaciones por sector, lado y sentido, con GPS, hasta 3 fotos por excavación, tipos de excavación preestablecidos y reporte PDF con anexo fotográfico. Desde ahora la app avisa cuando hay una versión nueva y se actualiza sin perder los registros.

@@ -124,6 +124,22 @@ comprimir como JPEG, así que más resolución hace crecer mucho el archivo.
 `MaquetadorReporte` no depende de Android: las pruebas revisan saltos de página, márgenes y
 contenido en la JVM. `GeneradorReportePdf` solo mide el texto y pinta.
 
+## Publicar una versión (y actualizar los teléfonos)
+
+1. Subir `versionCode` (+1) y `versionName` en `excavaciones/build.gradle.kts`.
+2. Escribir `excavaciones/novedades-version.txt` (el aviso que verá el usuario).
+3. Llevar el cambio a `main`. `.github/workflows/publicar-excavaciones.yml` corre las pruebas,
+   compila la APK firmada, verifica la huella del certificado y crea la release
+   `excavaciones-v<versión>` con `excavaciones-ruta-itata-<versión>.apk`, sin marcarla latest.
+4. Los teléfonos con la versión publicada ven el aviso "NUEVA VERSIÓN DE LA APP" al abrirla y
+   la instalan encima, sin perder registros ni fotos (también: menú ⋮ → Versión de la app).
+
+La firma usa **la misma clave y los mismos secrets que la app de charlas**
+(`FIRMA_KEYSTORE_BASE64`, `FIRMA_CLAVE`; huella `1038edcb…f9ad3dc`). Sin esos secrets el
+workflow no publica (deja un aviso). Una APK de prueba (debug) tiene otra firma: no se
+actualiza sola ni se puede actualizar con la publicada sin desinstalar, y desinstalar borra los
+datos del teléfono. En terreno, usar siempre la publicada.
+
 ## Comandos
 
 ```bash

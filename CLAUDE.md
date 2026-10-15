@@ -89,7 +89,11 @@ excavaciones con reporte PDF. Ver `excavaciones/README.md`. Reglas:
 - Pantallas: Compose + ViewModel (`SavedStateHandle` para sobrevivir al cierre de la app con la
   cámara abierta). `FlujoRegistroTest` recorre la app con Robolectric; ahí los botones bajo la
   barra fija de "Guardar" necesitan `performScrollTo()` antes del clic.
-- `publicar-app.yml` compila solo `:app`; esta app aún no se publica.
+- `publicar-app.yml` compila solo `:app`. Excavaciones se publica con
+  `publicar-excavaciones.yml`: subir `versionCode`/`versionName` en `excavaciones/build.gradle.kts`,
+  escribir `excavaciones/novedades-version.txt` y llevar a `main`. Tags `excavaciones-v*`, APK
+  `excavaciones-ruta-itata-*.apk`, misma clave y secrets que charlas. La versión debug no busca
+  actualizaciones (otra firma).
 
 ## Convenciones
 
