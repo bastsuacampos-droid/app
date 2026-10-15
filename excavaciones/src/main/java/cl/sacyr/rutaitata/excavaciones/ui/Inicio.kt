@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -52,6 +54,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
@@ -68,6 +71,7 @@ import androidx.lifecycle.viewModelScope
 import cl.sacyr.rutaitata.excavaciones.R
 import cl.sacyr.rutaitata.excavaciones.data.RepositorioExcavaciones
 import cl.sacyr.rutaitata.excavaciones.data.ResumenDia
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionDetalle
 import cl.sacyr.rutaitata.excavaciones.dominio.Formato
 import cl.sacyr.rutaitata.excavaciones.dominio.GrupoLado
@@ -80,9 +84,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 
-class InicioViewModel(repo: RepositorioExcavaciones, private val estado: SavedStateHandle) : ViewModel() {
+class InicioViewModel(private val repo: RepositorioExcavaciones, private val estado: SavedStateHandle) : ViewModel() {
 
     /** Fecha activa del dashboard, como días desde 1970 (se conserva si Android cierra la app). */
     val fecha: StateFlow<Long> = estado.getStateFlow(CLAVE_FECHA, LocalDate.now().toEpochDay())
@@ -91,8 +98,17 @@ class InicioViewModel(repo: RepositorioExcavaciones, private val estado: SavedSt
         .flatMapLatest { repo.resumenDelDia(LocalDate.ofEpochDay(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
+    /** Cierre del día activo (reporte definitivo emitido), o null si está abierto. */
+    val cierre: StateFlow<CierreDiaEntity?> = fecha
+        .flatMapLatest { repo.cierre(LocalDate.ofEpochDay(it)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
     fun elegirFecha(nueva: LocalDate) {
         estado[CLAVE_FECHA] = nueva.toEpochDay()
+    }
+
+    fun reabrir(motivo: String) {
+        viewModelScope.launch { repo.reabrirDia(LocalDate.ofEpochDay(fecha.value), motivo) }
     }
 
     private companion object {
@@ -113,6 +129,8 @@ fun PantallaInicio(
     val vm = vistaModelo { app, estado -> InicioViewModel(app.repositorio, estado) }
     val fecha = LocalDate.ofEpochDay(vm.fecha.collectAsStateWithLifecycle().value)
     val resumen by vm.resumen.collectAsStateWithLifecycle()
+    val cierre by vm.cierre.collectAsStateWithLifecycle()
+    var reabrir by rememberSaveable { mutableStateOf(false) }
     val avisos = remember { SnackbarHostState() }
     // Mensaje que deja el formulario al volver. Se borra antes de mostrarlo (para que no se repita al
     // girar la pantalla) sin cancelar el aviso: por eso se recolecta el flujo y no se usa como clave.
@@ -169,7 +187,8 @@ fun PantallaInicio(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            // En un día cerrado no se agregan excavaciones (el aviso explica cómo reabrirlo).
+            if (cierre == null) ExtendedFloatingActionButton(
                 onClick = { onNueva(fecha) },
                 icon = { Icon(Icons.Default.Add, contentDescription = null) },
                 text = { Text("Nueva excavación") },
@@ -197,6 +216,7 @@ fun PantallaInicio(
                 }
             }
             item { SelectorDia(fecha, onCambiar = vm::elegirFecha, onElegir = { elegirFecha = true }) }
+            cierre?.let { c -> item { AvisoDiaCerrado(c, onReabrir = { reabrir = true }) } }
             item { Indicadores(resumen) }
             val r = resumen
             if (r != null && r.cantidad == 0) {
@@ -220,6 +240,9 @@ fun PantallaInicio(
         }
     }
     if (elegirFecha) DialogoFecha(fecha, onElegir = vm::elegirFecha, onCerrar = { elegirFecha = false })
+    if (reabrir) {
+        DialogoReabrir(fecha, onReabrir = { motivo -> vm.reabrir(motivo); reabrir = false }, onCerrar = { reabrir = false })
+    }
     if (verVersion) {
         AlertDialog(
             onDismissRequest = { verVersion = false },
@@ -240,6 +263,55 @@ fun PantallaInicio(
             confirmButton = { TextButton(onClick = { verVersion = false }) { Text("Cerrar") } },
         )
     }
+}
+
+@Composable
+private fun AvisoDiaCerrado(c: CierreDiaEntity, onReabrir: () -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+    ) {
+        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("Día cerrado", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(
+                    "Reporte definitivo emitido el ${Formato.fechaHora(LocalDateTime.ofInstant(Instant.ofEpochMilli(c.cerradoEn), ZoneId.systemDefault()))}" +
+                        " por ${c.responsable}. Sus excavaciones no se pueden modificar.",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            TextButton(onClick = onReabrir) { Text("Reabrir") }
+        }
+    }
+}
+
+/** Reabrir exige un motivo: queda registrado y sale en los reportes de ese día. */
+@Composable
+private fun DialogoReabrir(fecha: LocalDate, onReabrir: (String) -> Unit, onCerrar: () -> Unit) {
+    var motivo by rememberSaveable { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onCerrar,
+        title = { Text("Reabrir el ${Formato.fecha(fecha)}") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    "El reporte de ese día ya se emitió. La reapertura y su motivo quedarán anotados en los próximos reportes.",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                OutlinedTextField(
+                    value = motivo,
+                    onValueChange = { motivo = it },
+                    label = { Text("Motivo") },
+                    placeholder = { Text("Corrección de la medida de la N° 03") },
+                    minLines = 2,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+                    modifier = Modifier.fillMaxWidth().testTag("motivo"),
+                )
+            }
+        },
+        confirmButton = { TextButton(enabled = motivo.isNotBlank(), onClick = { onReabrir(motivo.trim()) }) { Text("Reabrir") } },
+        dismissButton = { TextButton(onClick = onCerrar) { Text("Cancelar") } },
+    )
 }
 
 /** Recordatorio de respaldo: los registros viven solo en el teléfono. */

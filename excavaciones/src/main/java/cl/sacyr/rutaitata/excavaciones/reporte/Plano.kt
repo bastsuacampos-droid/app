@@ -69,4 +69,5 @@ object Colores {
     const val FILA_ALTERNA = 0xFFF5F7F8.toInt()
     const val SUBTOTAL = 0xFFECEFF1.toInt()
     const val SIN_FOTO = 0xFFB3261E.toInt()
+    const val CERRADO = 0xFF2E7D32.toInt()
 }

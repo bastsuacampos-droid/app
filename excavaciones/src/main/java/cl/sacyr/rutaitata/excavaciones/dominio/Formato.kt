@@ -42,6 +42,17 @@ object Formato {
         String.format(Locale.ROOT, "%.5f, %.5f", latitud, longitud)
 
     /**
+     * Texto que se estampa al pie de una foto: "15-10-2026 10:32 · -36.61234, -72.10345", con
+     * "Galería" adelante si no viene de la cámara. Sin fecha conocida, lo dice.
+     */
+    fun selloFoto(tomadaEn: LocalDateTime?, origen: OrigenFoto, latitud: Double?, longitud: Double?): String =
+        listOfNotNull(
+            if (origen == OrigenFoto.GALERIA) "Galería" else null,
+            tomadaEn?.let(::fechaHora) ?: "Fecha desconocida",
+            if (latitud != null && longitud != null) coordenadas(latitud, longitud) else null,
+        ).joinToString(" · ")
+
+    /**
      * Lee lo que se escribe en el formulario: acepta coma o punto decimal ("1,5", "1.5") y
      * espacios. Devuelve null si no es un número.
      */

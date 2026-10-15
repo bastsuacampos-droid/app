@@ -160,4 +160,29 @@ data class FotoEntity(
     val archivo: String,
     /** Cuándo se tomó (epoch ms): EXIF de la foto o el momento de la captura. null si no se sabe. Desde la versión 2. */
     val tomadaEn: Long? = null,
+    /** Código de [OrigenFoto] ("C" cámara, "G" galería); null en fotos anteriores a la versión 4. */
+    val origen: String? = null,
+)
+
+/**
+ * Día cerrado: se emitió el reporte definitivo y sus excavaciones ya no se pueden agregar, editar
+ * ni borrar. Reabrirlo borra esta fila y deja constancia en [ReaperturaEntity].
+ */
+@Entity(tableName = "cierres_dia")
+data class CierreDiaEntity(
+    @PrimaryKey val fecha: LocalDate,
+    val cerradoEn: Long,
+    val responsable: String,
+)
+
+/** Constancia de que un día cerrado se reabrió, y por qué. Sale en los reportes de ese día. */
+@Entity(tableName = "reaperturas", indices = [Index(value = ["fecha"])])
+data class ReaperturaEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val fecha: LocalDate,
+    /** Del cierre que se deshizo. */
+    val cerradoEn: Long,
+    val responsableCierre: String,
+    val reabiertoEn: Long,
+    val motivo: String,
 )

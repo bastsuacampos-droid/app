@@ -51,7 +51,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         private const val ALTO_BANDA_SECTOR = 22f
         private const val ALTO_LADO = 22f
         private const val ALTO_SENTIDO = 17f
-        private const val ALTO_FIRMAS = 90f
+        private const val ALTO_FIRMAS = 82f
         private const val ALTO_TITULO_ANEXO = 30f
         private const val ALTO_CABECERA_FOTOS = 18f
         private const val ALTO_FOTO = 170f
@@ -147,35 +147,70 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             texto(IZQ, y + base(NORMAL), "Obra: ${datos.obra}", NORMAL)
             y += interlinea(NORMAL) + 6f
 
-            // Recuadro de datos del reporte: tres celdas con etiqueta y valor.
+            // Recuadro de datos del reporte: celdas con etiqueta, valor y (el estado) un detalle.
             val celdas = listOf(
                 (if (datos.variosDias) "PERÍODO DEL REPORTE" else "FECHA DEL REPORTE") to periodo(),
                 "SECTOR / TRAMO" to (datos.sector ?: "Todos los sectores"),
                 "RESPONSABLE / INSPECTOR DE OBRA" to datos.responsable.trim().ifEmpty { "Sin indicar" },
+                "ESTADO DEL REPORTE" to if (datos.cerrado) "CERRADO" else "BORRADOR",
             )
-            val anchos = listOf(0.25f, 0.33f, 0.42f).map { it * ANCHO_UTIL }
-            val alto = PAD + interlinea(ETIQUETA) + interlinea(DATO) + PAD
+            val anchos = listOf(0.2f, 0.25f, 0.31f, 0.24f).map { it * ANCHO_UTIL }
+            val alto = PAD + interlinea(ETIQUETA) + interlinea(DATO) + interlinea(ETIQUETA) + PAD
             var x = IZQ
             celdas.forEachIndexed { i, (etiqueta, valor) ->
                 trazos += Trazo.Rectangulo(x, y, anchos[i], alto, borde = Colores.BORDE)
                 texto(x + PAD + 2f, y + PAD + base(ETIQUETA), etiqueta, ETIQUETA)
+                val estilo = when {
+                    i < 3 -> DATO
+                    datos.cerrado -> DATO.copy(color = Colores.CERRADO)
+                    else -> DATO.copy(color = Colores.SIN_FOTO)
+                }
                 texto(
                     x + PAD + 2f,
                     y + PAD + interlinea(ETIQUETA) + base(DATO),
-                    recortar(valor, anchos[i] - 2 * PAD - 4f, DATO),
-                    DATO,
+                    recortar(valor, anchos[i] - 2 * PAD - 4f, estilo),
+                    estilo,
                 )
+                if (i == 3) {
+                    texto(
+                        x + PAD + 2f,
+                        y + PAD + interlinea(ETIQUETA) + interlinea(DATO) + base(ETIQUETA),
+                        recortar(detalleEstado(), anchos[i] - 2 * PAD - 4f, ETIQUETA),
+                        ETIQUETA,
+                    )
+                }
                 x += anchos[i]
             }
-            y += alto + 12f
+            y += alto + 6f
+
+            // Constancia de días reabiertos después de cerrados.
+            for (r in datos.reaperturas) {
+                val linea = "Reapertura: el ${Formato.fecha(r.fecha)}, cerrado el ${Formato.fechaHora(r.cerradoEn)}, " +
+                    "se reabrió el ${Formato.fechaHora(r.reabiertoEn)}. Motivo: ${r.motivo}"
+                for (parte in envolver(linea, ANCHO_UTIL, LEYENDA)) {
+                    texto(IZQ, y + base(LEYENDA), parte, LEYENDA)
+                    y += interlinea(LEYENDA)
+                }
+            }
+            y += 6f
         }
+
+        /** Cerrado: cuándo y por quién (el último cierre del período). Borrador: qué días siguen abiertos. */
+        private fun detalleEstado(): String =
+            if (datos.cerrado) {
+                datos.cierres.maxByOrNull { it.cerradoEn }?.let { "${Formato.fechaHora(it.cerradoEn)} · ${it.responsable}" }.orEmpty()
+            } else {
+                val abiertos = datos.diasAbiertos
+                "Días abiertos: " + abiertos.take(4).joinToString(", ") { Formato.fecha(it).substring(0, 5) } +
+                    if (abiertos.size > 4) "…" else ""
+            }
 
         private fun altoEncabezadoCorto() = interlinea(TITULO_CORTO) + 10f
 
         private fun encabezadoCorto() {
             y = MARGEN
             texto(IZQ, y + base(TITULO_CORTO), TITULO, TITULO_CORTO)
-            texto(DER, y + base(TITULO_CORTO), "${datos.obra} · ${periodo()}", PIE, Alineacion.DERECHA)
+            texto(DER, y + base(TITULO_CORTO), "${datos.obra} · ${periodo()}" + if (datos.cerrado) "" else " · BORRADOR", PIE, Alineacion.DERECHA)
             y += interlinea(TITULO_CORTO) + 3f
             trazos += Trazo.Linea(IZQ, y, DER, y, grosor = 0.8f, color = Colores.TEXTO)
             y += 7f
@@ -393,7 +428,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             val desglose = if (sectores.size > 1) sectores else emptyList()
             val altoRecuadro = PAD + interlinea(ETIQUETA) + interlinea(DATO) + PAD
             val altoDesglose = if (desglose.isEmpty()) 0f else 4f + desglose.size * interlinea(NORMAL)
-            asegurar(4f + altoRecuadro + altoDesglose + 14f + ALTO_FIRMAS)
+            asegurar(4f + altoRecuadro + altoDesglose + 12f + ALTO_FIRMAS)
             y += 4f
 
             // Totales: recuadro de una fila, como el del encabezado.
@@ -432,7 +467,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                     y += interlinea(NORMAL)
                 }
             }
-            y += 14f
+            y += 12f
 
             // Firmas
             val separacion = 40f
@@ -446,7 +481,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             trazos += Trazo.Rectangulo(x, y, ancho, ALTO_FIRMAS, borde = Colores.TEXTO, grosor = 0.8f)
             trazos += Trazo.Rectangulo(x, y, ancho, 18f, relleno = Colores.ENCABEZADO_TABLA, borde = Colores.TEXTO, grosor = 0.8f)
             texto(x + ancho / 2, y + 4f + base(TITULO_CORTO), cargo, TITULO_CORTO, Alineacion.CENTRO)
-            listOf("Nombre:" to 36f, "Firma:" to 62f, "Fecha:" to 82f).forEach { (etiqueta, alto) ->
+            listOf("Nombre:" to 34f, "Firma:" to 58f, "Fecha:" to 75f).forEach { (etiqueta, alto) ->
                 val bas = y + alto
                 texto(x + 10f, bas, etiqueta, NORMAL)
                 trazos += Trazo.Linea(x + 54f, bas + 1f, x + ancho - 12f, bas + 1f, color = Colores.SECUNDARIO)
@@ -518,8 +553,11 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                 val w = foto.ancho * escala
                 val h = foto.alto * escala
                 trazos += Trazo.Imagen(x + (anchoCelda - w) / 2, y + (ALTO_FOTO - h) / 2, w, h, foto.ruta)
-                val leyenda = "Foto ${i + 1} · " +
-                    (foto.tomadaEn?.let { "tomada el ${Formato.fechaHora(it)}" } ?: "fecha de captura no registrada")
+                val leyenda = listOfNotNull(
+                    "Foto ${i + 1}",
+                    foto.origen?.etiqueta,
+                    foto.tomadaEn?.let { "tomada el ${Formato.fechaHora(it)}" } ?: "fecha de captura no registrada",
+                ).joinToString(" · ")
                 texto(x + anchoCelda / 2, y + ALTO_FOTO + 3f + base(LEYENDA), recortar(leyenda, anchoCelda, LEYENDA), LEYENDA, Alineacion.CENTRO)
             }
             y += ALTO_FOTO + ALTO_LEYENDA + 12f

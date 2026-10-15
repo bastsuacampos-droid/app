@@ -42,7 +42,7 @@ class RespaldoTest {
         fun foto(nombre: String, contenido: String): FotoBorrador {
             fotos.carpeta.mkdirs()
             fotos.archivo(nombre).writeText(contenido)
-            return FotoBorrador(nombre, tomadaEn = 1234L)
+            return FotoBorrador(nombre, tomadaEn = 1234L, origen = cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto.GALERIA)
         }
     }
 
@@ -67,6 +67,9 @@ class RespaldoTest {
         val id1 = a.repo.guardar(borrador(a, "Sector A", listOf(a.foto("f1.jpg", "uno"), a.foto("f2.jpg", "dos"))))
         val id2 = a.repo.guardar(borrador(a, "Km 12", lado = Lado.SUR))
         a.repo.agregarTipoTerreno("Arcilla")
+        a.repo.cerrarDias(hoy, hoy, "María")
+        a.repo.cerrarDias(hoy.minusDays(1), hoy.minusDays(1), "Pedro")
+        a.repo.reabrirDia(hoy.minusDays(1), "Corrección")
         a.repo.guardarTipoExcavacion(TipoExcavacionEntity(nombre = "Zanja", largo = null, ancho = 0.6, profundidad = 1.2, tipoTerrenoId = null, observaciones = null))
         val zip = exportar(a)
 
@@ -85,6 +88,7 @@ class RespaldoTest {
         assertEquals(a.repo.paraReporte(hoy, hoy), b.repo.paraReporte(hoy, hoy))
         assertEquals(a.repo.tiposTerreno().first(), b.repo.tiposTerreno().first())
         assertEquals(a.repo.tiposExcavacion().first(), b.repo.tiposExcavacion().first())
+        assertEquals(a.repo.cierresYReaperturas(hoy.minusDays(5), hoy), b.repo.cierresYReaperturas(hoy.minusDays(5), hoy))
         assertEquals("uno", b.fotos.archivo("f1.jpg").readText())
         assertFalse("La foto del registro reemplazado se borra", b.fotos.archivo("vieja.jpg").exists())
         // Y la numeración sigue donde iba.

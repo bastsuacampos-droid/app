@@ -3,6 +3,8 @@ package cl.sacyr.rutaitata.excavaciones.data
 import android.graphics.Bitmap
 import androidx.exifinterface.media.ExifInterface
 import androidx.test.core.app.ApplicationProvider
+import cl.sacyr.rutaitata.excavaciones.dominio.Formato
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -63,6 +65,32 @@ class ArchivosFotosTest {
         assertFalse(captura.exists())
         // La cámara cancelada deja el archivo vacío: no es foto.
         assertNull(fotos.importarCaptura(fotos.nuevaCaptura().apply { writeBytes(ByteArray(0)) }))
+    }
+
+    @Test
+    fun estampaElSelloAlPieYGuardaElOrigen() {
+        val origen = jpeg(800, 600, fecha = "2026:10:15 10:32:05")
+        var fechaRecibida: Long? = null
+        val sello = { t: Long? ->
+            fechaRecibida = t
+            "Galería · 15-10-2026 10:32"
+        }
+        val foto = fotos.importar(OrigenFoto.GALERIA, sello = sello) { origen.inputStream() }!!
+        assertEquals(OrigenFoto.GALERIA, foto.origen)
+        assertEquals(foto.tomadaEn, fechaRecibida)
+        val bmp = android.graphics.BitmapFactory.decodeFile(fotos.archivo(foto.archivo).path)
+        assertEquals(800 to 600, bmp.width to bmp.height)
+        // La franja del sello oscurece el pie; arriba la foto queda igual.
+        val pie = bmp.getPixel(400, 595)
+        val arriba = bmp.getPixel(400, 10)
+        assertTrue(android.graphics.Color.red(pie) < android.graphics.Color.red(arriba) - 40)
+    }
+
+    @Test
+    fun selloConFechaOrigenYCoordenadas() {
+        val t = LocalDateTime.of(2026, 10, 15, 10, 32)
+        assertEquals("15-10-2026 10:32 · -36.61234, -72.10345", Formato.selloFoto(t, OrigenFoto.CAMARA, -36.61234, -72.10345))
+        assertEquals("Galería · Fecha desconocida", Formato.selloFoto(null, OrigenFoto.GALERIA, null, null))
     }
 
     @Test

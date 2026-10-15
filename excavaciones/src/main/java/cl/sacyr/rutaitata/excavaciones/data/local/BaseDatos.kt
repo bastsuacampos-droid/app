@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import cl.sacyr.rutaitata.excavaciones.data.local.dao.CierreDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.ExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FotoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FrenteDao
@@ -14,7 +15,9 @@ import cl.sacyr.rutaitata.excavaciones.data.local.dao.RespaldoDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.SectorDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.TipoTerrenoDao
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ReaperturaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
@@ -35,8 +38,10 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
         ExcavacionEntity::class,
         FotoEntity::class,
         TipoExcavacionEntity::class,
+        CierreDiaEntity::class,
+        ReaperturaEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
 )
 @TypeConverters(Conversores::class)
@@ -48,6 +53,7 @@ abstract class BaseDatos : RoomDatabase() {
     abstract fun fotos(): FotoDao
     abstract fun tiposExcavacion(): TipoExcavacionDao
     abstract fun respaldo(): RespaldoDao
+    abstract fun cierres(): CierreDao
 
     companion object {
         const val NOMBRE = "excavaciones.db"
@@ -85,7 +91,24 @@ abstract class BaseDatos : RoomDatabase() {
             }
         }
 
-        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2, MIGRACION_2_3)
+        /** v3 → v4: origen de cada foto, días cerrados y constancia de reaperturas. */
+        private val MIGRACION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE fotos ADD COLUMN origen TEXT")
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `cierres_dia` (`fecha` INTEGER NOT NULL, `cerradoEn` INTEGER NOT NULL, " +
+                        "`responsable` TEXT NOT NULL, PRIMARY KEY(`fecha`))",
+                )
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `reaperturas` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`fecha` INTEGER NOT NULL, `cerradoEn` INTEGER NOT NULL, `responsableCierre` TEXT NOT NULL, " +
+                        "`reabiertoEn` INTEGER NOT NULL, `motivo` TEXT NOT NULL)",
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_reaperturas_fecha` ON `reaperturas` (`fecha`)")
+            }
+        }
+
+        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2, MIGRACION_2_3, MIGRACION_3_4)
 
         fun crear(context: Context): BaseDatos =
             Room.databaseBuilder(context, BaseDatos::class.java, NOMBRE)

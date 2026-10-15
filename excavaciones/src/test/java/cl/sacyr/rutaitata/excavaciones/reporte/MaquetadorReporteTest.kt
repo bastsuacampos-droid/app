@@ -1,6 +1,7 @@
 package cl.sacyr.rutaitata.excavaciones.reporte
 
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
 import cl.sacyr.rutaitata.excavaciones.dominio.ejemplo
 import cl.sacyr.rutaitata.excavaciones.reporte.MaquetadorReporte.Companion.ALTO_PAGINA
@@ -185,6 +186,38 @@ class MaquetadorReporteTest {
         assertFalse(textosAnexo.any { it.startsWith("N° 02 ·") })
         assertTrue("Foto 1 · tomada el 15-10-2026 10:01" in textosAnexo)
         assertDentroDeLaPagina(paginas)
+    }
+
+    @Test
+    fun estadoCerradoOBorradorYConstanciaDeReaperturas() {
+        val lista = listOf(ejemplo(1), ejemplo(2, fecha = hoy.plusDays(1)))
+        val borrador = maquetador.maquetar(datos(lista, hasta = hoy.plusDays(1))).first().textos()
+        assertTrue("BORRADOR" in borrador)
+        assertTrue("Días abiertos: 15-10, 16-10" in borrador)
+
+        val cierre = { d: LocalDate -> CierreReporte(d, LocalDateTime.of(2026, 10, 16, 18, 0), "María González") }
+        val cerrado = maquetador.maquetar(
+            datos(lista, hasta = hoy.plusDays(1)).copy(
+                cierres = listOf(cierre(hoy), cierre(hoy.plusDays(1))),
+                reaperturas = listOf(
+                    ReaperturaReporte(hoy, LocalDateTime.of(2026, 10, 15, 18, 0), LocalDateTime.of(2026, 10, 16, 9, 12), "Corregir N° 01"),
+                ),
+            ),
+        )
+        val t = cerrado.first().textos()
+        assertTrue("CERRADO" in t)
+        assertTrue("16-10-2026 18:00 · María González" in t)
+        assertTrue(t.any { it.startsWith("Reapertura: el 15-10-2026") && it.contains("Motivo: Corregir N° 01") })
+        assertDentroDeLaPagina(cerrado)
+    }
+
+    @Test
+    fun laLeyendaDeCadaFotoDiceSiEsDeCamaraODeGaleria() {
+        val e = ejemplo(1)
+        val fotos = mapOf(e.id to listOf(foto(1).copy(origen = OrigenFoto.CAMARA), foto(2).copy(origen = OrigenFoto.GALERIA)))
+        val t = maquetador.maquetar(datos(listOf(e)).copy(incluirFotos = true, fotos = fotos)).flatMap { it.textos() }
+        assertTrue("Foto 1 · cámara · tomada el 15-10-2026 10:01" in t)
+        assertTrue("Foto 2 · galería · tomada el 15-10-2026 10:02" in t)
     }
 
     @Test

@@ -91,6 +91,7 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Formato
 import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.MAX_FOTOS
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
 import java.time.Instant
 import java.time.LocalDate
@@ -123,6 +124,7 @@ fun PantallaFormulario(
     val buscandoUbicacion by vm.buscandoUbicacion.collectAsStateWithLifecycle()
     val procesandoFoto by vm.procesandoFoto.collectAsStateWithLifecycle()
     val guardando by vm.guardando.collectAsStateWithLifecycle()
+    val cierre by vm.cierre.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val avisos = remember { SnackbarHostState() }
@@ -182,31 +184,45 @@ fun PantallaFormulario(
                 },
                 navigationIcon = { IconButton(onClick = onVolver) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver") } },
                 actions = {
-                    if (!estado.nueva) {
+                    if (!estado.nueva && cierre == null) {
                         IconButton(onClick = { confirmarEliminar = true }) { Icon(Icons.Default.Delete, contentDescription = "Eliminar excavación") }
                     }
                 },
             )
         },
         bottomBar = {
-            Surface(tonalElevation = 3.dp, shadowElevation = 6.dp) {
-                Row(
-                    Modifier.fillMaxWidth().navigationBarsPadding().imePadding().padding(horizontal = 16.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    if (estado.nueva) {
-                        OutlinedButton(
-                            onClick = { guardar(true) },
+            val c = cierre
+            if (c != null) {
+                // Día cerrado: no se puede guardar. Se explica en vez de mostrar botones que fallarían.
+                Surface(color = MaterialTheme.colorScheme.errorContainer) {
+                    Text(
+                        "Día ${Formato.fecha(c.fecha)} cerrado el ${Formato.fechaHora(LocalDateTime.ofInstant(Instant.ofEpochMilli(c.cerradoEn), ZoneId.systemDefault()))} " +
+                            "(reporte emitido). Para modificarlo, reábrelo desde el dashboard indicando el motivo.",
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp),
+                    )
+                }
+            } else {
+                Surface(tonalElevation = 3.dp, shadowElevation = 6.dp) {
+                    Row(
+                        Modifier.fillMaxWidth().navigationBarsPadding().imePadding().padding(horizontal = 16.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        if (estado.nueva) {
+                            OutlinedButton(
+                                onClick = { guardar(true) },
+                                enabled = !guardando && estado.cargado,
+                                modifier = Modifier.weight(1f).heightIn(min = 56.dp),
+                            ) { Text("Guardar y otra") }
+                        }
+                        Button(
+                            onClick = { guardar(false) },
                             enabled = !guardando && estado.cargado,
                             modifier = Modifier.weight(1f).heightIn(min = 56.dp),
-                        ) { Text("Guardar y otra") }
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                        ) { Text("Guardar", fontWeight = FontWeight.Bold) }
                     }
-                    Button(
-                        onClick = { guardar(false) },
-                        enabled = !guardando && estado.cargado,
-                        modifier = Modifier.weight(1f).heightIn(min = 56.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                    ) { Text("Guardar", fontWeight = FontWeight.Bold) }
                 }
             }
         },
@@ -644,6 +660,15 @@ private fun SeccionFotos(
                         modifier = Modifier.fillMaxSize().border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.medium),
                     ) {
                         MiniaturaFoto(archivos, foto.archivo, lado = 320, modifier = Modifier.fillMaxSize(), descripcion = "Foto ${i + 1}")
+                    }
+                    if (foto.origen == OrigenFoto.GALERIA) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+                            shape = MaterialTheme.shapes.small,
+                            modifier = Modifier.align(Alignment.BottomStart).padding(4.dp),
+                        ) {
+                            Text("Galería", style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
+                        }
                     }
                     Surface(
                         onClick = { onQuitar(foto) },

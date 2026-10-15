@@ -2,10 +2,15 @@ package cl.sacyr.rutaitata.excavaciones.data
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.Typeface
 import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
 import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -34,13 +39,20 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         return File(capturas, "${UUID.randomUUID()}.jpg")
     }
 
-    /** Procesa la foto que dejó la cámara en [captura] y la borra. null si la cámara no guardó nada. */
-    fun importarCaptura(captura: File, ahora: Long = System.currentTimeMillis()): FotoBorrador? = try {
+    /**
+     * Procesa la foto que dejó la cámara en [captura] y la borra. null si la cámara no guardó nada.
+     * [sello]: texto a estampar según la fecha de la foto (ver [importar]).
+     */
+    fun importarCaptura(
+        captura: File,
+        ahora: Long = System.currentTimeMillis(),
+        sello: ((Long?) -> String?)? = null,
+    ): FotoBorrador? = try {
         if (captura.length() == 0L) {
             null
         } else {
             // De la cámara: si el EXIF no trae la hora, es "ahora".
-            importar({ captura.inputStream() }) ?.let { it.copy(tomadaEn = it.tomadaEn ?: ahora) }
+            importar(OrigenFoto.CAMARA, fechaPorDefecto = ahora, sello = sello) { captura.inputStream() }
         }
     } finally {
         captura.delete()
@@ -48,9 +60,16 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
 
     /**
      * Copia y normaliza una foto. [abrir] debe entregar un flujo nuevo en cada llamada (se lee dos
-     * veces: EXIF e imagen). La fecha sale del EXIF; si no tiene, queda null.
+     * veces: EXIF e imagen). La fecha sale del EXIF o, si no tiene, de [fechaPorDefecto].
+     * [sello] recibe esa fecha y devuelve el texto que se estampa al pie de la foto (fecha, origen,
+     * coordenadas): así la foto lleva su respaldo aunque circule sola.
      */
-    fun importar(abrir: () -> InputStream?): FotoBorrador? {
+    fun importar(
+        origen: OrigenFoto = OrigenFoto.GALERIA,
+        fechaPorDefecto: Long? = null,
+        sello: ((Long?) -> String?)? = null,
+        abrir: () -> InputStream?,
+    ): FotoBorrador? {
         val exif = abrir()?.use { runCatching { ExifInterface(it) }.getOrNull() } ?: return null
         val limites = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         abrir()?.use { BitmapFactory.decodeStream(it, null, limites) }
@@ -60,7 +79,9 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         while (maxOf(limites.outWidth, limites.outHeight) / (muestreo * 2) >= LADO_MAXIMO) muestreo *= 2
         val leida = abrir()?.use { BitmapFactory.decodeStream(it, null, BitmapFactory.Options().apply { inSampleSize = muestreo }) }
             ?: return null
-        val final = orientar(reducir(leida), exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL))
+        val tomadaEn = fechaExif(exif) ?: fechaPorDefecto
+        val orientada = orientar(reducir(leida), exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL))
+        val final = sello?.invoke(tomadaEn)?.let { estampar(orientada, it) } ?: orientada
 
         carpeta.mkdirs()
         val destino = File(carpeta, "${UUID.randomUUID()}.jpg")
@@ -72,7 +93,7 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         } finally {
             final.recycle()
         }
-        return FotoBorrador(destino.name, tomadaEn = fechaExif(exif))
+        return FotoBorrador(destino.name, tomadaEn = tomadaEn, origen = origen)
     }
 
     /** Ancho y alto en píxeles, o null si el archivo no existe o no es una imagen. */
@@ -102,6 +123,25 @@ class ArchivosFotos(val carpeta: File, private val zona: ZoneId = ZoneId.systemD
         val limite = ahora - UN_DIA_MS
         carpeta.listFiles()?.filter { it.isFile && it.name !in enUso && it.lastModified() < limite }?.forEach { it.delete() }
         capturas.listFiles()?.filter { it.lastModified() < limite }?.forEach { it.delete() }
+    }
+
+    /** Franja oscura al pie con [texto] en blanco, proporcional al tamaño de la foto. */
+    private fun estampar(b: Bitmap, texto: String): Bitmap {
+        val lienzo = if (b.isMutable) b else b.copy(Bitmap.Config.ARGB_8888, true).also { b.recycle() }
+        val alto = maxOf(lienzo.height / 13f, 24f)
+        val canvas = Canvas(lienzo)
+        canvas.drawRect(0f, lienzo.height - alto, lienzo.width.toFloat(), lienzo.height.toFloat(), Paint().apply { color = 0x99000000.toInt() })
+        val pincel = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = alto * 0.55f
+            typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
+        }
+        // Si no cabe, se achica la letra en vez de cortar las coordenadas.
+        val disponible = lienzo.width - alto
+        val ancho = pincel.measureText(texto)
+        if (ancho > disponible) pincel.textSize *= disponible / ancho
+        canvas.drawText(texto, alto / 2, lienzo.height - alto * 0.32f, pincel)
+        return lienzo
     }
 
     private fun reducir(b: Bitmap): Bitmap {

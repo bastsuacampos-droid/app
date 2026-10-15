@@ -8,6 +8,7 @@ import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
 import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
 import kotlinx.coroutines.flow.first
@@ -106,6 +107,45 @@ class RepositorioExcavacionesTest {
             assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.guardarTipoExcavacion(malo) } }
         }
         assertEquals(1, repo.tiposExcavacion().first().size)
+    }
+
+    @Test
+    fun unDiaCerradoNoSeModificaHastaReabrirloConMotivo() = runBlocking {
+        val id = repo.guardar(borrador())
+        val otroDia = repo.guardar(borrador(fecha = hoy.plusDays(1)))
+        assertEquals(1, repo.cerrarDias(hoy, hoy, "María"))
+
+        // Ni agregar, ni editar, ni sacar del día, ni traer a él, ni borrar.
+        for (intento in listOf(
+            borrador(),
+            repo.borrador(id)!!.copy(largo = 9.0),
+            repo.borrador(id)!!.copy(fecha = hoy.plusDays(2)),
+            repo.borrador(otroDia)!!.copy(fecha = hoy),
+        )) {
+            val e = assertThrows(ExcavacionInvalida::class.java) { runBlocking { repo.guardar(intento) } }
+            assertTrue(Campo.FECHA in e.errores)
+        }
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.eliminar(id) } }
+        // Volver a cerrar no cambia el cierre original.
+        assertEquals(0, repo.cerrarDias(hoy, hoy.plusDays(1), "Otro").minus(1))
+        assertEquals("María", repo.cierre(hoy).first()!!.responsable)
+
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.reabrirDia(hoy, "  ") } }
+        repo.reabrirDia(hoy, "Corregir medida N° 01")
+        assertNull(repo.cierre(hoy).first())
+        repo.guardar(repo.borrador(id)!!.copy(largo = 9.0))
+        val (cierres, reaperturas) = repo.cierresYReaperturas(hoy, hoy.plusDays(1))
+        assertEquals(listOf(hoy.plusDays(1)), cierres.map { it.fecha })
+        assertEquals("Corregir medida N° 01", reaperturas.single().motivo)
+        assertEquals("María", reaperturas.single().responsableCierre)
+    }
+
+    @Test
+    fun guardaElOrigenDeCadaFoto() = runBlocking {
+        val id = repo.guardar(
+            borrador().copy(fotos = listOf(FotoBorrador("a.jpg", 1L, OrigenFoto.CAMARA), FotoBorrador("b.jpg", 2L, OrigenFoto.GALERIA))),
+        )
+        assertEquals(listOf(OrigenFoto.CAMARA, OrigenFoto.GALERIA), repo.borrador(id)!!.fotos.map { it.origen })
     }
 
     @Test

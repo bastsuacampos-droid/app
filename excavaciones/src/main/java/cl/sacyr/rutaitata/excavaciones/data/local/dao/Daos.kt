@@ -5,7 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ReaperturaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
@@ -147,6 +149,34 @@ interface FotoDao {
     suspend fun insertar(fotos: List<FotoEntity>)
 }
 
+@Dao
+interface CierreDao {
+    @Query("SELECT * FROM cierres_dia WHERE fecha = :fecha")
+    fun observar(fecha: LocalDate): Flow<CierreDiaEntity?>
+
+    @Query("SELECT * FROM cierres_dia WHERE fecha = :fecha")
+    suspend fun de(fecha: LocalDate): CierreDiaEntity?
+
+    @Query("SELECT * FROM cierres_dia WHERE fecha BETWEEN :desde AND :hasta ORDER BY fecha")
+    fun observarEntre(desde: LocalDate, hasta: LocalDate): Flow<List<CierreDiaEntity>>
+
+    @Query("SELECT * FROM cierres_dia WHERE fecha BETWEEN :desde AND :hasta ORDER BY fecha")
+    suspend fun entre(desde: LocalDate, hasta: LocalDate): List<CierreDiaEntity>
+
+    /** Un día ya cerrado conserva su cierre original. */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun cerrar(cierres: List<CierreDiaEntity>): List<Long>
+
+    @Query("DELETE FROM cierres_dia WHERE fecha = :fecha")
+    suspend fun borrar(fecha: LocalDate)
+
+    @Insert
+    suspend fun insertarReapertura(reapertura: ReaperturaEntity): Long
+
+    @Query("SELECT * FROM reaperturas WHERE fecha BETWEEN :desde AND :hasta ORDER BY reabiertoEn")
+    suspend fun reaperturasEntre(desde: LocalDate, hasta: LocalDate): List<ReaperturaEntity>
+}
+
 /** Lectura y reemplazo de todo el contenido, para el respaldo completo (ver Respaldo). */
 @Dao
 interface RespaldoDao {
@@ -156,9 +186,13 @@ interface RespaldoDao {
     @Query("SELECT * FROM tipos_excavacion ORDER BY id") suspend fun tiposExcavacion(): List<TipoExcavacionEntity>
     @Query("SELECT * FROM excavaciones ORDER BY id") suspend fun excavaciones(): List<ExcavacionEntity>
     @Query("SELECT * FROM fotos ORDER BY id") suspend fun fotos(): List<FotoEntity>
+    @Query("SELECT * FROM cierres_dia ORDER BY fecha") suspend fun cierres(): List<CierreDiaEntity>
+    @Query("SELECT * FROM reaperturas ORDER BY id") suspend fun reaperturas(): List<ReaperturaEntity>
 
     @Query("SELECT COUNT(*) FROM excavaciones") fun observarCantidad(): Flow<Int>
 
+    @Query("DELETE FROM reaperturas") suspend fun borrarReaperturas()
+    @Query("DELETE FROM cierres_dia") suspend fun borrarCierres()
     @Query("DELETE FROM fotos") suspend fun borrarFotos()
     @Query("DELETE FROM excavaciones") suspend fun borrarExcavaciones()
     @Query("DELETE FROM tipos_excavacion") suspend fun borrarTiposExcavacion()
@@ -172,4 +206,6 @@ interface RespaldoDao {
     @Insert suspend fun insertarTiposExcavacion(l: List<TipoExcavacionEntity>)
     @Insert suspend fun insertarExcavaciones(l: List<ExcavacionEntity>)
     @Insert suspend fun insertarFotos(l: List<FotoEntity>)
+    @Insert suspend fun insertarCierres(l: List<CierreDiaEntity>)
+    @Insert suspend fun insertarReaperturas(l: List<ReaperturaEntity>)
 }

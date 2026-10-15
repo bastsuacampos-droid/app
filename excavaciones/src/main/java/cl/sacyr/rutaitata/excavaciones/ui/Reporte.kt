@@ -34,7 +34,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -103,6 +105,8 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
     val previa by vm.previa.collectAsStateWithLifecycle()
     val generacion by vm.generacion.collectAsStateWithLifecycle()
     val planilla by vm.planilla.collectAsStateWithLifecycle()
+    val cierres by vm.cierres.collectAsStateWithLifecycle()
+    var confirmarCierre by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -207,8 +211,24 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                 }
             }
 
+            // Estado del período: definitivo si todos sus días con registros están cerrados.
+            val diasConRegistros = previa?.dias.orEmpty()
+            val cerrados = cierres.map { it.fecha }.toSet()
+            val abiertos = (diasConRegistros - cerrados).sorted()
+            if (diasConRegistros.isNotEmpty()) {
+                Text(
+                    if (abiertos.isEmpty()) {
+                        "Días cerrados: el reporte sale como CERRADO (definitivo)."
+                    } else {
+                        "El reporte sale como BORRADOR: ${abiertos.size} ${if (abiertos.size == 1) "día abierto" else "días abiertos"}."
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (abiertos.isEmpty()) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
             Button(
-                onClick = vm::generar,
+                onClick = { vm.generar() },
                 enabled = generacion != EstadoGeneracion.Generando,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
@@ -222,6 +242,14 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                     Spacer(Modifier.width(8.dp))
                     Text("Generar reporte PDF", fontWeight = FontWeight.Bold)
                 }
+            }
+
+            if (abiertos.isNotEmpty()) {
+                OutlinedButton(
+                    onClick = { confirmarCierre = true },
+                    enabled = generacion != EstadoGeneracion.Generando,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
+                ) { Text("Cerrar días y emitir reporte definitivo") }
             }
 
             when (val g = generacion) {
@@ -276,6 +304,24 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                 }
             }
         }
+    }
+
+    if (confirmarCierre) {
+        AlertDialog(
+            onDismissRequest = { confirmarCierre = false },
+            title = { Text("¿Emitir el reporte definitivo?") },
+            text = {
+                Text(
+                    "Se cerrarán los días del ${Formato.fecha(desde)} al ${Formato.fecha(hasta)} (todos los sectores). " +
+                        "Ya no se podrán agregar, editar ni borrar excavaciones de esos días; para corregir habrá que " +
+                        "reabrirlos con un motivo, que quedará anotado en los reportes.",
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { confirmarCierre = false; vm.generar(cerrarDias = true) }) { Text("Cerrar y emitir") }
+            },
+            dismissButton = { TextButton(onClick = { confirmarCierre = false }) { Text("Cancelar") } },
+        )
     }
 
     fechaAElegir?.let { cual ->

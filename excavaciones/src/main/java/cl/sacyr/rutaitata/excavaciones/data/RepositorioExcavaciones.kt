@@ -2,7 +2,9 @@ package cl.sacyr.rutaitata.excavaciones.data
 
 import androidx.room.withTransaction
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ReaperturaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
@@ -13,7 +15,9 @@ import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionDetalle
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
+import cl.sacyr.rutaitata.excavaciones.dominio.Formato
 import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
 import cl.sacyr.rutaitata.excavaciones.dominio.GrupoSector
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
@@ -22,6 +26,9 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
+
+/** Se intentó borrar una excavación de un día cerrado. */
+class DiaCerrado(mensaje: String) : IllegalStateException(mensaje)
 
 /** Lo que muestra el dashboard para una fecha. */
 data class ResumenDia(val fecha: LocalDate, val sectores: List<GrupoSector>, val excavaciones: List<ExcavacionDetalle>) {
@@ -84,7 +91,7 @@ class RepositorioExcavaciones(
             longitud = e.longitud,
             precisionGps = e.precisionGps,
             observaciones = e.observaciones,
-            fotos = bd.fotos().de(id).map { FotoBorrador(it.archivo, it.tomadaEn) },
+            fotos = bd.fotos().de(id).map { FotoBorrador(it.archivo, it.tomadaEn, OrigenFoto.desdeCodigo(it.origen)) },
         )
     }
 
@@ -119,6 +126,10 @@ class RepositorioExcavaciones(
                 bd.excavaciones().porId(borrador.id) ?: error("La excavación ${borrador.id} ya no existe")
             } else {
                 null
+            }
+            // Ni agregar a un día cerrado, ni sacar o cambiar una excavación de uno.
+            for (fecha in setOfNotNull(borrador.fecha, anterior?.fecha)) {
+                if (bd.cierres().de(fecha) != null) throw ExcavacionInvalida(mapOf(Campo.FECHA to mensajeCerrado(fecha)))
             }
             val numero = when {
                 borrador.numero != null -> borrador.numero
@@ -155,7 +166,9 @@ class RepositorioExcavaciones(
             }
             bd.fotos().eliminarDe(id)
             bd.fotos().insertar(
-                borrador.fotos.mapIndexed { i, f -> FotoEntity(excavacionId = id, orden = i, archivo = f.archivo, tomadaEn = f.tomadaEn) },
+                borrador.fotos.mapIndexed { i, f ->
+                    FotoEntity(excavacionId = id, orden = i, archivo = f.archivo, tomadaEn = f.tomadaEn, origen = f.origen?.codigo)
+                },
             )
             id
         }
@@ -163,6 +176,9 @@ class RepositorioExcavaciones(
 
     /** Borra la excavación y sus registros de fotos; devuelve los archivos que quedaron sin uso para borrarlos. */
     suspend fun eliminar(id: Long): List<String> = bd.withTransaction {
+        bd.excavaciones().porId(id)?.let { e ->
+            if (bd.cierres().de(e.fecha) != null) throw DiaCerrado(mensajeCerrado(e.fecha))
+        }
         val archivos = bd.fotos().de(id).map { it.archivo }
         bd.excavaciones().eliminar(id)
         archivos
@@ -182,6 +198,46 @@ class RepositorioExcavaciones(
     }
 
     suspend fun desactivarTipoTerreno(id: Long) = bd.tiposTerreno().cambiarActivo(id, false)
+
+    // ------------------------------------------------------------------ cierre de días
+
+    fun cierre(fecha: LocalDate): Flow<CierreDiaEntity?> = bd.cierres().observar(fecha)
+
+    fun cierresEntre(desde: LocalDate, hasta: LocalDate): Flow<List<CierreDiaEntity>> =
+        bd.cierres().observarEntre(minOf(desde, hasta), maxOf(desde, hasta))
+
+    /**
+     * Cierra los días del período (al emitir el reporte definitivo): sus excavaciones quedan
+     * fijas. Los días ya cerrados conservan su cierre original. Devuelve cuántos se cerraron.
+     */
+    suspend fun cerrarDias(desde: LocalDate, hasta: LocalDate, responsable: String): Int {
+        val momento = ahora()
+        val quien = responsable.trim().ifEmpty { "Sin indicar" }
+        val dias = generateSequence(minOf(desde, hasta)) { it.plusDays(1) }.takeWhile { !it.isAfter(maxOf(desde, hasta)) }
+        return bd.cierres().cerrar(dias.map { CierreDiaEntity(it, momento, quien) }.toList()).count { it != -1L }
+    }
+
+    /** Reabre un día cerrado para corregirlo; el motivo queda registrado y sale en sus reportes. */
+    suspend fun reabrirDia(fecha: LocalDate, motivo: String) = bd.withTransaction {
+        require(motivo.isNotBlank()) { "Escribe el motivo para reabrir el día" }
+        val cierre = bd.cierres().de(fecha) ?: return@withTransaction
+        bd.cierres().borrar(fecha)
+        bd.cierres().insertarReapertura(
+            ReaperturaEntity(
+                fecha = fecha,
+                cerradoEn = cierre.cerradoEn,
+                responsableCierre = cierre.responsable,
+                reabiertoEn = ahora(),
+                motivo = motivo.trim(),
+            ),
+        )
+    }
+
+    suspend fun cierresYReaperturas(desde: LocalDate, hasta: LocalDate): Pair<List<CierreDiaEntity>, List<ReaperturaEntity>> =
+        bd.cierres().entre(desde, hasta) to bd.cierres().reaperturasEntre(desde, hasta)
+
+    private fun mensajeCerrado(fecha: LocalDate) =
+        "El día ${Formato.fecha(fecha)} está cerrado (reporte emitido). Reábrelo desde el dashboard para modificarlo."
 
     // ------------------------------------------------------------------ tipos de excavación
 

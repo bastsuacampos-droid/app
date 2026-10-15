@@ -31,6 +31,16 @@ charlas.
 
 Todo funciona sin señal; los datos y fotos quedan solo en el teléfono, por eso el respaldo.
 
+### Cierre de días e integridad del registro
+
+- **Cerrar días y emitir reporte definitivo** (pantalla de reporte): cierra los días del período
+  (todos los sectores). En un día cerrado no se puede agregar, editar, mover ni borrar
+  excavaciones; el repositorio lo impide, no solo la interfaz. El PDF dice **CERRADO** (cuándo y
+  quién) o **BORRADOR** (qué días siguen abiertos).
+- **Reabrir** (dashboard) exige un motivo; queda en `reaperturas` y sale en los reportes del día.
+- Cada foto guarda su **origen** (cámara o galería) y lleva **estampados** fecha y hora y, si ya
+  se habían obtenido, las coordenadas. El anexo dice "cámara" o "galería" en cada leyenda.
+
 ### Respaldo
 
 - `Respaldo.kt`: ZIP con `respaldo.json` (todas las tablas, formato lógico versionado con
@@ -117,7 +127,8 @@ tipos_excavacion (id, nombre UNIQUE NOCASE, largo?, ancho?, profundidad?, tipoTe
 Subir `version` en `BaseDatos`, agregar la `Migration` a `MIGRACIONES` y compilar: Room
 escribe el JSON de la nueva versión en `schemas/`. Versionar ese JSON y agregar su caso a
 `MigracionesTest` (crea la base de la versión anterior desde su JSON y la abre con Room).
-Versión actual: 3 (v2 agregó `fotos.tomadaEn`; v3, la tabla `tipos_excavacion`).
+Versión actual: 4 (v2 agregó `fotos.tomadaEn`; v3, la tabla `tipos_excavacion`; v4, `fotos.origen`,
+`cierres_dia` y `reaperturas`).
 Nunca usar `fallbackToDestructiveMigration`: borraría los registros de obra.
 
 ## Reporte PDF

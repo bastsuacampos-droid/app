@@ -11,7 +11,12 @@ import cl.sacyr.rutaitata.excavaciones.data.ProveedorUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.RepositorioExcavaciones
 import cl.sacyr.rutaitata.excavaciones.data.ResultadoUbicacion
 import cl.sacyr.rutaitata.excavaciones.data.UltimoFrente
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
@@ -27,7 +32,9 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -65,6 +72,8 @@ data class EstadoFormulario(
     val fotos: List<FotoBorrador> = emptyList(),
     /** Fotos que tenía al abrirlo: las que se quiten se borran al guardar. */
     val fotosOriginales: List<String> = emptyList(),
+    /** Fecha con que se abrió una excavación guardada: si ese día se cierra, tampoco se puede sacar de él. */
+    val fechaOriginal: Long? = null,
     /** Archivo que la app de cámara está escribiendo. */
     val capturaPendiente: String? = null,
     val cargado: Boolean = false,
@@ -126,6 +135,21 @@ class FormularioViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     /** Número que tendría si se deja automático (null mientras falte sector, lado o sentido). */
+    /** Cierre que impide guardar: del día elegido o, al editar, del día original. null si se puede. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val cierre: StateFlow<CierreDiaEntity?> = estado
+        .map { it.fecha to it.fechaOriginal }
+        .distinctUntilChanged()
+        .flatMapLatest { (fecha, original) ->
+            val actual = repo.cierre(LocalDate.ofEpochDay(fecha))
+            if (original == null || original == fecha) {
+                actual
+            } else {
+                combine(actual, repo.cierre(LocalDate.ofEpochDay(original))) { a, o -> o ?: a }
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val siguienteNumero: StateFlow<Int?> = estado
         .map { Triple(it.sector.trim(), it.lado, it.sentido) }
@@ -173,6 +197,7 @@ class FormularioViewModel(
                 observaciones = b.observaciones.orEmpty(),
                 fotos = b.fotos,
                 fotosOriginales = b.fotos.map { it.archivo },
+                fechaOriginal = b.fecha.toEpochDay(),
                 cargado = true,
             )
         } else {
@@ -275,11 +300,24 @@ class FormularioViewModel(
         actualizar { copy(capturaPendiente = null) }
         importarFoto {
             val captura = File(ruta)
-            if (ok) archivos.importarCaptura(captura) else null.also { captura.delete() }
+            if (ok) archivos.importarCaptura(captura, sello = sello(OrigenFoto.CAMARA)) else null.also { captura.delete() }
         }
     }
 
-    fun fotoDeGaleria(uri: Uri) = importarFoto { archivos.importar { contenido.openInputStream(uri) } }
+    fun fotoDeGaleria(uri: Uri) = importarFoto {
+        archivos.importar(OrigenFoto.GALERIA, sello = sello(OrigenFoto.GALERIA)) { contenido.openInputStream(uri) }
+    }
+
+    /** Lo que se estampa en la foto, con las coordenadas que ya tenga el formulario. */
+    private fun sello(origen: OrigenFoto): (Long?) -> String = { tomadaEn ->
+        val e = estado.value
+        Formato.selloFoto(
+            tomadaEn?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()) },
+            origen,
+            e.latitud,
+            e.longitud,
+        )
+    }
 
     private fun importarFoto(importar: () -> FotoBorrador?) {
         viewModelScope.launch {
@@ -351,9 +389,12 @@ class FormularioViewModel(
         val id = estado.value.id
         if (id == 0L) return
         viewModelScope.launch {
-            val archivosFotos = repo.eliminar(id)
-            withContext(Dispatchers.IO) { archivos.eliminar(archivosFotos) }
-            _eventos.send(EventoFormulario.Terminado("Excavación eliminada"))
+            runCatching { repo.eliminar(id) }
+                .onSuccess { archivosFotos ->
+                    withContext(Dispatchers.IO) { archivos.eliminar(archivosFotos) }
+                    _eventos.send(EventoFormulario.Terminado("Excavación eliminada"))
+                }
+                .onFailure { avisar(it.message ?: "No se pudo eliminar") }
         }
     }
 

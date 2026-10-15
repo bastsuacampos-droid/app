@@ -2,7 +2,9 @@ package cl.sacyr.rutaitata.excavaciones.data
 
 import androidx.room.withTransaction
 import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.ReaperturaEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FotoEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.FrenteEntity
 import cl.sacyr.rutaitata.excavaciones.data.local.entidades.SectorEntity
@@ -53,6 +55,8 @@ class Respaldo(private val bd: BaseDatos, private val fotos: ArchivosFotos) {
                 .put("tiposExcavacion", JSONArray(r.tiposExcavacion().map(::tipoExcavacionAJson)))
                 .put("excavaciones", JSONArray(r.excavaciones().map(::excavacionAJson)))
                 .put("fotos", JSONArray(r.fotos().map(::fotoAJson)))
+                .put("cierres", JSONArray(r.cierres().map(::cierreAJson)))
+                .put("reaperturas", JSONArray(r.reaperturas().map(::reaperturaAJson)))
         }
         val zip = ZipOutputStream(salida)
         zip.putNextEntry(ZipEntry(JSON))
@@ -97,13 +101,17 @@ class Respaldo(private val bd: BaseDatos, private val fotos: ArchivosFotos) {
             val tiposExc = json.lista("tiposExcavacion", ::tipoExcavacionDeJson)
             val excavaciones = json.lista("excavaciones", ::excavacionDeJson)
             val registrosFotos = json.lista("fotos", ::fotoDeJson)
+            val cierres = json.lista("cierres", ::cierreDeJson)
+            val reaperturas = json.lista("reaperturas", ::reaperturaDeJson)
 
             val r = bd.respaldo()
             bd.withTransaction {
+                r.borrarReaperturas(); r.borrarCierres()
                 r.borrarFotos(); r.borrarExcavaciones(); r.borrarTiposExcavacion()
                 r.borrarFrentes(); r.borrarSectores(); r.borrarTiposTerreno()
                 r.insertarTiposTerreno(tipos); r.insertarSectores(sectores); r.insertarFrentes(frentes)
                 r.insertarTiposExcavacion(tiposExc); r.insertarExcavaciones(excavaciones); r.insertarFotos(registrosFotos)
+                r.insertarCierres(cierres); r.insertarReaperturas(reaperturas)
             }
             // La base ya cambió: las fotos pasan a su lugar y se borran las que ya no usa nadie.
             temporal.listFiles()?.forEach { it.copyTo(fotos.archivo(it.name), overwrite = true) }
@@ -213,8 +221,23 @@ class Respaldo(private val bd: BaseDatos, private val fotos: ArchivosFotos) {
 
         private fun fotoAJson(f: FotoEntity) = JSONObject()
             .put("id", f.id).put("excavacionId", f.excavacionId).put("orden", f.orden).put("archivo", f.archivo)
-            .ponerOpcional("tomadaEn", f.tomadaEn)
-        private fun fotoDeJson(o: JSONObject) =
-            FotoEntity(o.getLong("id"), o.getLong("excavacionId"), o.getInt("orden"), o.getString("archivo"), o.largo("tomadaEn"))
+            .ponerOpcional("tomadaEn", f.tomadaEn).ponerOpcional("origen", f.origen)
+        private fun fotoDeJson(o: JSONObject) = FotoEntity(
+            o.getLong("id"), o.getLong("excavacionId"), o.getInt("orden"), o.getString("archivo"), o.largo("tomadaEn"),
+            if (o.has("origen")) o.texto("origen") else null,
+        )
+
+        private fun cierreAJson(c: CierreDiaEntity) = JSONObject()
+            .put("fecha", c.fecha.toEpochDay()).put("cerradoEn", c.cerradoEn).put("responsable", c.responsable)
+        private fun cierreDeJson(o: JSONObject) =
+            CierreDiaEntity(LocalDate.ofEpochDay(o.getLong("fecha")), o.getLong("cerradoEn"), o.getString("responsable"))
+
+        private fun reaperturaAJson(r: ReaperturaEntity) = JSONObject()
+            .put("id", r.id).put("fecha", r.fecha.toEpochDay()).put("cerradoEn", r.cerradoEn)
+            .put("responsableCierre", r.responsableCierre).put("reabiertoEn", r.reabiertoEn).put("motivo", r.motivo)
+        private fun reaperturaDeJson(o: JSONObject) = ReaperturaEntity(
+            o.getLong("id"), LocalDate.ofEpochDay(o.getLong("fecha")), o.getLong("cerradoEn"), o.getString("responsableCierre"),
+            o.getLong("reabiertoEn"), o.getString("motivo"),
+        )
     }
 }

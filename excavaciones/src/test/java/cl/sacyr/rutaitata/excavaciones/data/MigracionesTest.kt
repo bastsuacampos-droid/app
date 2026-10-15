@@ -49,6 +49,37 @@ class MigracionesTest {
     }
 
     @Test
+    fun de3a4AgregaOrigenDeFotosYCierresDeDia() = runBlocking {
+        val archivo = context.getDatabasePath("migracion4.db").apply { parentFile!!.mkdirs() }
+        crearVersion(3, archivo) {
+            execSQL("INSERT INTO tipos_terreno (id, nombre, orden, activo) VALUES (1, 'Roca', 1, 1)")
+            execSQL("INSERT INTO sectores (id, nombre, creadoEn) VALUES (1, 'Sector A', 0)")
+            execSQL("INSERT INTO frentes (id, sectorId, lado, sentido) VALUES (1, 1, 'N', 'CH-CO')")
+            execSQL(
+                "INSERT INTO excavaciones (id, fecha, frenteId, numero, largo, ancho, profundidad, tipoTerrenoId, creadoEn, actualizadoEn) " +
+                    "VALUES (1, 100, 1, 1, 2.0, 1.0, 1.5, 1, 0, 0)",
+            )
+            execSQL("INSERT INTO fotos (excavacionId, orden, archivo, tomadaEn) VALUES (1, 0, 'f.jpg', 5)")
+            execSQL("INSERT INTO tipos_excavacion (nombre, largo, ancho, profundidad) VALUES ('Pocillo', 1.0, 1.0, 1.5)")
+        }
+        val bd = Room.databaseBuilder(context, BaseDatos::class.java, archivo.absolutePath)
+            .addMigrations(*BaseDatos.MIGRACIONES)
+            .build()
+        try {
+            val repo = RepositorioExcavaciones(bd)
+            val foto = repo.borrador(1)!!.fotos.single()
+            assertNull(foto.origen)
+            assertEquals(5L, foto.tomadaEn)
+            assertEquals("Pocillo", repo.tiposExcavacion().first().single().nombre)
+            val dia = LocalDate.ofEpochDay(100)
+            assertEquals(1, repo.cerrarDias(dia, dia, "Jefe"))
+            assertEquals("Jefe", repo.cierre(dia).first()!!.responsable)
+        } finally {
+            bd.close()
+        }
+    }
+
+    @Test
     fun de2a3AgregaLosTiposDeExcavacionSinTocarLoDemas() = runBlocking {
         val archivo = context.getDatabasePath("migracion3.db").apply { parentFile!!.mkdirs() }
         crearVersion(2, archivo) {

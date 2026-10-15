@@ -6,8 +6,18 @@ import java.time.LocalDate
 /** Máximo de fotos por excavación. */
 const val MAX_FOTOS = 3
 
+/** De dónde vino una foto. El [codigo] se guarda en la base: no cambiarlo. */
+enum class OrigenFoto(val codigo: String, val etiqueta: String) {
+    CAMARA("C", "cámara"),
+    GALERIA("G", "galería");
+
+    companion object {
+        fun desdeCodigo(codigo: String?): OrigenFoto? = entries.firstOrNull { it.codigo == codigo }
+    }
+}
+
 /** Una foto ya guardada en files/fotos/[archivo]. [tomadaEn] en epoch ms, si se conoce. */
-data class FotoBorrador(val archivo: String, val tomadaEn: Long? = null) : Serializable
+data class FotoBorrador(val archivo: String, val tomadaEn: Long? = null, val origen: OrigenFoto? = null) : Serializable
 
 /**
  * Lo que el formulario entrega para guardar (registro nuevo si [id] es 0). Los campos son
@@ -37,7 +47,7 @@ data class BorradorExcavacion(
         get() = if (largo != null && ancho != null && profundidad != null) Volumen.de(largo, ancho, profundidad) else null
 }
 
-enum class Campo { SECTOR, LADO, SENTIDO, NUMERO, LARGO, ANCHO, PROFUNDIDAD, TIPO_TERRENO, UBICACION, FOTOS }
+enum class Campo { FECHA, SECTOR, LADO, SENTIDO, NUMERO, LARGO, ANCHO, PROFUNDIDAD, TIPO_TERRENO, UBICACION, FOTOS }
 
 class ExcavacionInvalida(val errores: Map<Campo, String>) :
     IllegalArgumentException(errores.values.joinToString("; "))

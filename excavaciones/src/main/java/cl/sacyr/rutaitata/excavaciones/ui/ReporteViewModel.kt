@@ -6,7 +6,11 @@ import androidx.lifecycle.viewModelScope
 import cl.sacyr.rutaitata.excavaciones.AppExcavaciones
 import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
 import cl.sacyr.rutaitata.excavaciones.reporte.DatosReporte
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.CierreDiaEntity
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
+import cl.sacyr.rutaitata.excavaciones.reporte.CierreReporte
 import cl.sacyr.rutaitata.excavaciones.reporte.FotoReporte
+import cl.sacyr.rutaitata.excavaciones.reporte.ReaperturaReporte
 import cl.sacyr.rutaitata.excavaciones.reporte.Planilla
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,7 +30,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 /** Lo que entraría al reporte con los filtros actuales. */
-data class Previa(val excavaciones: Int, val volumen: Double, val fotos: Int, val sinFoto: Int)
+data class Previa(val excavaciones: Int, val volumen: Double, val fotos: Int, val sinFoto: Int, val dias: Set<LocalDate> = emptySet())
 
 sealed interface EstadoGeneracion {
     data object Inactivo : EstadoGeneracion
@@ -53,9 +58,15 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
     val previa: StateFlow<Previa?> = combine(desde, hasta, sectorId) { d, h, s -> Triple(d, h, s) }
         .mapLatest { (d, h, s) ->
             val lista = repo.paraReporte(LocalDate.ofEpochDay(d), LocalDate.ofEpochDay(h), s.takeIf { it > 0 })
-            Previa(lista.size, Volumen.total(lista), lista.sumOf { it.fotos }, lista.count { it.fotos == 0 })
+            Previa(lista.size, Volumen.total(lista), lista.sumOf { it.fotos }, lista.count { it.fotos == 0 }, lista.map { it.fecha }.toSet())
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+
+    /** Días cerrados del período elegido. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val cierres: StateFlow<List<CierreDiaEntity>> = combine(desde, hasta) { d, h -> d to h }
+        .flatMapLatest { (d, h) -> repo.cierresEntre(LocalDate.ofEpochDay(d), LocalDate.ofEpochDay(h)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     private val _generacion = MutableStateFlow<EstadoGeneracion>(EstadoGeneracion.Inactivo)
     val generacion: StateFlow<EstadoGeneracion> = _generacion
@@ -83,7 +94,11 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
         _generacion.value = EstadoGeneracion.Inactivo
     }
 
-    fun generar() {
+    /**
+     * Genera el PDF. Con [cerrarDias], antes cierra los días del período (reporte definitivo): sus
+     * excavaciones quedan fijas y el PDF sale como CERRADO.
+     */
+    fun generar(cerrarDias: Boolean = false) {
         if (_generacion.value == EstadoGeneracion.Generando) return
         app.preferencias.responsable = responsable.value
         val d = LocalDate.ofEpochDay(desde.value)
@@ -94,6 +109,8 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
             _generacion.value = EstadoGeneracion.Generando
             _generacion.value = runCatching {
                 withContext(Dispatchers.IO) {
+                    if (cerrarDias) repo.cerrarDias(d, h, responsable.value)
+                    val (cierres, reaperturas) = repo.cierresYReaperturas(d, h)
                     val lista = repo.paraReporte(d, h, s)
                     val fotos = if (conFotos) fotosParaReporte(lista.map { it.id }) else emptyMap()
                     val datos = DatosReporte(
@@ -104,6 +121,8 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
                         excavaciones = lista,
                         incluirFotos = conFotos,
                         fotos = fotos,
+                        cierres = cierres.map { CierreReporte(it.fecha, local(it.cerradoEn), it.responsable) },
+                        reaperturas = reaperturas.map { ReaperturaReporte(it.fecha, local(it.cerradoEn), local(it.reabiertoEn), it.motivo) },
                     )
                     app.generadorPdf.generar(datos)
                 }
@@ -142,11 +161,14 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
                         ruta = app.fotos.archivo(f.archivo).path,
                         ancho = ancho,
                         alto = alto,
-                        tomadaEn = f.tomadaEn?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), zona) },
+                        tomadaEn = f.tomadaEn?.let(::local),
+                        origen = OrigenFoto.desdeCodigo(f.origen),
                     )
                 }
             }
         }
+
+    private fun local(ms: Long): LocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(ms), zona)
 
     private companion object {
         const val DESDE = "desde"
