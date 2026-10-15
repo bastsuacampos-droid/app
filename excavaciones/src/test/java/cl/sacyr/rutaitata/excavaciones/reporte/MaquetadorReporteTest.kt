@@ -153,6 +153,60 @@ class MaquetadorReporteTest {
         )
     }
 
+    private fun foto(n: Int, ancho: Int = 1600, alto: Int = 1200) =
+        FotoReporte("/fotos/$n.jpg", ancho, alto, LocalDateTime.of(2026, 10, 15, 10, n))
+
+    @Test
+    fun anexoFotograficoConLasFotosDeCadaExcavacion() {
+        val lista = listOf(ejemplo(1), ejemplo(2), ejemplo(3))
+        val fotos = mapOf(
+            lista[0].id to listOf(foto(1), foto(2, ancho = 900, alto = 1600)),
+            lista[2].id to listOf(foto(3)),
+        )
+        val paginas = maquetador.maquetar(datos(lista).copy(incluirFotos = true, fotos = fotos))
+        val todos = paginas.flatMap { it.textos() }
+
+        // La tabla dice dónde está el respaldo y marca la que no tiene.
+        assertTrue("[2 fotos en anexo]" in todos)
+        assertTrue("[1 foto en anexo]" in todos)
+        assertTrue(MaquetadorReporte.SIN_FOTO in todos)
+
+        // El anexo empieza en página aparte, después de las firmas.
+        val inicioAnexo = paginas.indexOfFirst { MaquetadorReporte.TITULO_ANEXO in it.textos() }
+        assertTrue(inicioAnexo > paginas.indexOfFirst { MaquetadorReporte.FIRMA_ITO in it.textos() })
+        val anexo = paginas.drop(inicioAnexo)
+        val imagenes = anexo.flatMap { it.trazos.filterIsInstance<Trazo.Imagen>() }
+        assertEquals(listOf("/fotos/1.jpg", "/fotos/2.jpg", "/fotos/3.jpg"), imagenes.map { it.ruta })
+        // Sin deformar: la proporción de la foto se mantiene (1600×1200 y una vertical 900×1600).
+        assertEquals(1600f / 1200f, imagenes[0].ancho / imagenes[0].alto, 0.01f)
+        assertEquals(900f / 1600f, imagenes[1].ancho / imagenes[1].alto, 0.01f)
+        val textosAnexo = anexo.flatMap { it.textos() }
+        assertTrue(textosAnexo.any { it.startsWith("N° 01 · Sector A · Lado Norte") })
+        assertFalse(textosAnexo.any { it.startsWith("N° 02 ·") })
+        assertTrue("Foto 1 · tomada el 15-10-2026 10:01" in textosAnexo)
+        assertDentroDeLaPagina(paginas)
+    }
+
+    @Test
+    fun anexoPoneDosExcavacionesPorPagina() {
+        val lista = (1..5).map { ejemplo(it) }
+        val fotos = lista.associate { it.id to (1..3).map { n -> foto(n) } }
+        val paginas = maquetador.maquetar(datos(lista).copy(incluirFotos = true, fotos = fotos))
+        val anexo = paginas.filter { p -> p.textos().any { it.startsWith(MaquetadorReporte.TITULO_ANEXO) } }
+        assertEquals(3, anexo.size)
+        assertEquals(listOf(6, 6, 3), anexo.map { p -> p.trazos.count { it is Trazo.Imagen } })
+        assertTrue(anexo[1].textos().contains(MaquetadorReporte.TITULO_ANEXO + " (continuación)"))
+        assertDentroDeLaPagina(paginas)
+    }
+
+    @Test
+    fun sinFotosIncluidasNoHayAnexo() {
+        val lista = listOf(ejemplo(1, fotos = 2))
+        val paginas = maquetador.maquetar(datos(lista).copy(fotos = mapOf(lista[0].id to listOf(foto(1)))))
+        assertTrue(paginas.none { p -> p.trazos.any { it is Trazo.Imagen } })
+        assertTrue("[2 fotos]" in paginas.single().textos())
+    }
+
     /** Nada se sale de los márgenes, y salvo el pie, nada invade la franja del pie. */
     private fun assertDentroDeLaPagina(paginas: List<Pagina>) {
         val limiteCuerpo = ALTO_PAGINA - MARGEN - 22f
@@ -172,6 +226,11 @@ class MaquetadorReporteTest {
                     is Trazo.Rectangulo ->
                         assertTrue("Rectángulo fuera del cuerpo en la página ${p.numero}: $t", t.y >= MARGEN && t.y + t.alto <= limiteCuerpo + 0.01f)
                     is Trazo.Linea -> assertTrue(t.y1 <= ALTO_PAGINA - MARGEN && t.x2 <= ANCHO_PAGINA - MARGEN)
+                    is Trazo.Imagen ->
+                        assertTrue(
+                            "Foto fuera del cuerpo en la página ${p.numero}: $t",
+                            t.x >= MARGEN && t.x + t.ancho <= ANCHO_PAGINA - MARGEN + 0.01f && t.y >= MARGEN && t.y + t.alto <= limiteCuerpo + 0.01f,
+                        )
                 }
             }
         }

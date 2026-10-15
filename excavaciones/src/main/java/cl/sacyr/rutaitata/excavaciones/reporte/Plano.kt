@@ -31,6 +31,15 @@ sealed interface Trazo {
         val color: Int = Colores.BORDE,
     ) : Trazo
 
+    /** Foto en [ruta], ya ajustada a este rectángulo con su proporción original. */
+    data class Imagen(
+        val x: Float,
+        val y: Float,
+        val ancho: Float,
+        val alto: Float,
+        val ruta: String,
+    ) : Trazo
+
     data class Rectangulo(
         val x: Float,
         val y: Float,
@@ -59,4 +68,5 @@ object Colores {
     const val ENCABEZADO_TABLA = 0xFFDDE3E8.toInt()
     const val FILA_ALTERNA = 0xFFF5F7F8.toInt()
     const val SUBTOTAL = 0xFFECEFF1.toInt()
+    const val SIN_FOTO = 0xFFB3261E.toInt()
 }

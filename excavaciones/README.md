@@ -5,8 +5,23 @@ y emitir el **Reporte Diario de Control de Excavaciones** en PDF. Es un módulo 
 repositorio (`:excavaciones`), con su propio `applicationId`; no comparte datos con la app de
 charlas.
 
-> Estado: base de datos, repositorio, agrupación y generador de PDF listos y probados.
-> Pendiente: pantallas (dashboard, formulario, reporte), captura GPS y fotos.
+## Uso en terreno
+
+1. **Dashboard**: elige el día (flechas o calendario); muestra cantidad y volumen del día y las
+   excavaciones agrupadas por Sector → Lado → Sentido, en orden correlativo. Las que no tienen
+   foto se marcan "Sin foto".
+2. **Nueva excavación** (botón naranja): abre con la fecha del dashboard y el último sector,
+   lado, sentido y tipo de terreno usados. El número es automático (el siguiente del frente) o
+   manual. El volumen se calcula mientras se escriben las medidas (acepta coma o punto).
+   "Obtener ubicación" toma una lectura GPS; "Cámara" o "Galería" agregan hasta 3 fotos.
+   "Guardar y otra" deja el formulario listo para la siguiente del mismo frente. Guardar sin
+   foto pide confirmación: la foto es el respaldo de cómo quedó la excavación.
+3. **Reporte PDF**: período (hoy, ayer, esta semana o fechas), sector o todos, responsable y
+   anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
+   dentro de la app), **Compartir** (WhatsApp, correo…) o **Guardar copia** donde se elija.
+4. **Tipos de terreno** (menú ⋮): agregar o quitar opciones del desplegable.
+
+Todo funciona sin señal; los datos y fotos quedan solo en el teléfono.
 
 ## Estructura
 
@@ -22,8 +37,12 @@ excavaciones/
     │   ├── Agrupador.kt             Sector → Lado → Sentido → Excavación, orden natural
     │   ├── BorradorExcavacion.kt    datos del formulario + ValidadorExcavacion
     │   └── Formato.kt               números, fechas y coordenadas en formato chileno
+    ├── MainActivity.kt
     ├── data/
     │   ├── RepositorioExcavaciones.kt   única puerta a los datos (Flow + suspend)
+    │   ├── ArchivosFotos.kt         importa fotos (gira según EXIF, reduce a 1600 px, JPEG) y limpia huérfanas
+    │   ├── ProveedorUbicacion.kt    una lectura GPS a pedido (sin Google Play Services)
+    │   ├── Preferencias.kt          responsable y último frente usado
     │   └── local/
     │       ├── BaseDatos.kt         RoomDatabase, semilla de tipos de terreno, migraciones
     │       ├── Conversores.kt       LocalDate ⇄ días, Lado/Sentido ⇄ código
@@ -35,7 +54,12 @@ excavaciones/
     │   ├── MaquetadorReporte.kt     maquetación pura: encabezados, tablas, saltos, totales, firmas
     │   ├── GeneradorReportePdf.kt   pinta las páginas con android.graphics.pdf.PdfDocument
     │   └── CompartirReporte.kt      FileProvider: compartir (ACTION_SEND), ver, guardar copia
-    └── ui/                          (pendiente) Compose: Dashboard, Formulario, Reporte
+    └── ui/                          Compose + ViewModel (MVVM), navegación con navigation-compose
+        ├── Inicio.kt                dashboard del día
+        ├── Formulario.kt / FormularioViewModel.kt   registro y edición
+        ├── Reporte.kt / ReporteViewModel.kt          filtros, generación y visor PDF (PdfRenderer)
+        ├── TiposTerreno.kt          catálogo del desplegable
+        └── Componentes.kt, Tema.kt, Navegacion.kt
 ```
 
 ## Modelo de datos
@@ -46,7 +70,7 @@ sectores (id, nombre UNIQUE NOCASE)
           └─< excavaciones (id, fecha, frenteId, numero, progresiva, largo, ancho, profundidad,
           │                 tipoTerrenoId, latitud, longitud, precisionGps, observaciones, …)
           │                 UNIQUE(frenteId, numero)
-          └── fotos (excavacionId, orden 0-2, archivo)   ON DELETE CASCADE
+          └── fotos (excavacionId, orden 0-2, archivo, tomadaEn)   ON DELETE CASCADE
 tipos_terreno (id, nombre UNIQUE NOCASE, orden, activo)
 ```
 
@@ -58,10 +82,21 @@ tipos_terreno (id, nombre UNIQUE NOCASE, orden, activo)
 - Lado y sentido se guardan por su `codigo`: no cambiar los códigos (sí las etiquetas).
 - Sectores, frentes y tipos de terreno en uso no se pueden borrar; los tipos se desactivan.
 
+### Fotos y permisos
+
+- Las fotos de cámara se toman con la app de cámara del teléfono (`TakePicture`) y las de
+  galería con el selector del sistema: no se piden permisos de cámara ni de almacenamiento.
+  No declarar `CAMERA` en el manifiesto: obligaría a pedirlo para usar la cámara del sistema.
+- Ubicación: `ACCESS_FINE_LOCATION`/`COARSE`, solo al tocar "Obtener ubicación".
+- Si Android cierra la app mientras la cámara está abierta, el formulario se recupera
+  (`SavedStateHandle`) y la foto llega igual.
+
 ### Cambiar el esquema
 
 Subir `version` en `BaseDatos`, agregar la `Migration` a `MIGRACIONES` y compilar: Room
-escribe el JSON de la nueva versión en `schemas/`. Versionar ese JSON y probar la migración.
+escribe el JSON de la nueva versión en `schemas/`. Versionar ese JSON y agregar su caso a
+`MigracionesTest` (crea la base de la versión anterior desde su JSON y la abre con Room).
+Versión actual: 2 (v2 agregó `fotos.tomadaEn`).
 Nunca usar `fallbackToDestructiveMigration`: borraría los registros de obra.
 
 ## Reporte PDF
@@ -73,12 +108,18 @@ abarca varios días) con subtotal. Las tablas largas siguen en la página siguie
 títulos; al final van los totales y los cuadros de firma del Jefe de Terreno y del ITO, y
 cada página lleva "Página X de N".
 
+**Anexo fotográfico**: en páginas aparte, en el mismo orden de las tablas, dos excavaciones por
+página con hasta tres fotos cada una (sin deformar) y la fecha y hora en que se tomó cada foto.
+En la tabla, cada excavación dice "[2 fotos en anexo]" o "[Sin foto]" en rojo. Las fotos se
+reducen a ~115 ppp al pintarlas (`PIXELES_POR_PUNTO`): PdfDocument guarda los píxeles sin
+comprimir como JPEG, así que más resolución hace crecer mucho el archivo.
+
 `MaquetadorReporte` no depende de Android: las pruebas revisan saltos de página, márgenes y
 contenido en la JVM. `GeneradorReportePdf` solo mide el texto y pinta.
 
 ## Comandos
 
 ```bash
-./gradlew :excavaciones:testDebugUnitTest   # pruebas (dominio, maquetación, repositorio con Robolectric)
+./gradlew :excavaciones:testDebugUnitTest   # dominio, maquetación, base y migraciones, fotos y flujo de pantallas (Robolectric)
 ./gradlew :excavaciones:assembleDebug       # excavaciones/build/outputs/apk/debug/excavaciones-debug.apk
 ```

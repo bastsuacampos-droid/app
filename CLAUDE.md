@@ -82,7 +82,13 @@ excavaciones con reporte PDF. Ver `excavaciones/README.md`. Reglas:
   de `BaseDatos` con su `Migration`; nunca migración destructiva.
 - Los `codigo` de `Lado` y `Sentido` se guardan en la base: no cambiarlos.
 - La maquetación del PDF (`MaquetadorReporte`) es Kotlin puro y se prueba en la JVM; el
-  dibujo con `PdfDocument` queda en `GeneradorReportePdf`.
+  dibujo con `PdfDocument` queda en `GeneradorReportePdf` (Robolectric no implementa
+  `PdfDocument`: ese tramo solo se prueba en un teléfono).
+- Una migración nueva lleva su caso en `MigracionesTest`.
+- Fotos por `TakePicture`/`PickVisualMedia`: no declarar el permiso `CAMERA`.
+- Pantallas: Compose + ViewModel (`SavedStateHandle` para sobrevivir al cierre de la app con la
+  cámara abierta). `FlujoRegistroTest` recorre la app con Robolectric; ahí los botones bajo la
+  barra fija de "Guardar" necesitan `performScrollTo()` antes del clic.
 - `publicar-app.yml` compila solo `:app`; esta app aún no se publica.
 
 ## Convenciones

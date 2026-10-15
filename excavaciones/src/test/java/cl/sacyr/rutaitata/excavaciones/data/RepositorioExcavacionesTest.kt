@@ -6,6 +6,7 @@ import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
 import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
+import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
 import kotlinx.coroutines.flow.first
@@ -50,6 +51,31 @@ class RepositorioExcavacionesTest {
         largo = 4.0, ancho = 1.2, profundidad = 1.5, tipoTerrenoId = suelo,
     )
 
+    private fun fotos(vararg archivos: String) = archivos.mapIndexed { i, a -> FotoBorrador(a, tomadaEn = 1_000L + i) }
+
+    @Test
+    fun elBorradorGuardadoSeRecuperaIgual() = runBlocking {
+        val original = borrador(numero = 9).copy(
+            progresiva = "Km 12+450", latitud = -36.6, longitud = -72.1, precisionGps = 4.5f,
+            observaciones = "Sin interferencias", fotos = fotos("a.jpg", "b.jpg"),
+        )
+        val id = repo.guardar(original)
+        assertEquals(original.copy(id = id), repo.borrador(id))
+        assertNull(repo.borrador(id + 100))
+    }
+
+    @Test
+    fun fotosParaElReporteAgrupadasYEnOrden() = runBlocking {
+        val a = repo.guardar(borrador().copy(fotos = fotos("a1.jpg", "a2.jpg")))
+        val b = repo.guardar(borrador().copy(fotos = fotos("b1.jpg")))
+        repo.guardar(borrador())
+        val fotos = repo.fotosDe(listOf(a, b, a))
+        assertEquals(listOf("a1.jpg", "a2.jpg"), fotos[a]!!.map { it.archivo })
+        assertEquals(1_001L, fotos[a]!![1].tomadaEn)
+        assertEquals(listOf("b1.jpg"), fotos[b]!!.map { it.archivo })
+        assertEquals(setOf("a1.jpg", "a2.jpg", "b1.jpg"), repo.archivosDeFotosEnUso())
+    }
+
     @Test
     fun traeLosTiposDeTerrenoIniciales() = runBlocking {
         assertEquals(BaseDatos.TIPOS_TERRENO_INICIALES, repo.tiposTerreno().first().map { it.nombre })
@@ -82,8 +108,8 @@ class RepositorioExcavacionesTest {
 
     @Test
     fun editarConservaElNumeroYReemplazaLasFotos() = runBlocking {
-        val id = repo.guardar(borrador().copy(fotos = listOf("a.jpg", "b.jpg")))
-        repo.guardar(borrador().copy(id = id, largo = 5.0, fotos = listOf("c.jpg")))
+        val id = repo.guardar(borrador().copy(fotos = fotos("a.jpg", "b.jpg")))
+        repo.guardar(borrador().copy(id = id, largo = 5.0, fotos = fotos("c.jpg")))
 
         val guardada = repo.excavacion(id)!!
         assertEquals(1, guardada.numero)
@@ -120,7 +146,7 @@ class RepositorioExcavacionesTest {
 
     @Test
     fun eliminarBorraLasFotosYDevuelveSusArchivos() = runBlocking {
-        val id = repo.guardar(borrador().copy(fotos = listOf("a.jpg", "b.jpg", "c.jpg")))
+        val id = repo.guardar(borrador().copy(fotos = fotos("a.jpg", "b.jpg", "c.jpg")))
         assertEquals(3, repo.paraReporte(hoy, hoy).single().fotos)
         assertEquals(listOf("a.jpg", "b.jpg", "c.jpg"), repo.eliminar(id))
         assertNull(repo.excavacion(id))

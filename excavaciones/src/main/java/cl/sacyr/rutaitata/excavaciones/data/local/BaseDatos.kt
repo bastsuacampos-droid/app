@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.ExcavacionDao
 import cl.sacyr.rutaitata.excavaciones.data.local.dao.FotoDao
@@ -31,7 +32,7 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
         ExcavacionEntity::class,
         FotoEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 @TypeConverters(Conversores::class)
@@ -57,7 +58,14 @@ abstract class BaseDatos : RoomDatabase() {
             "Relleno",
         )
 
-        private val MIGRACIONES = emptyArray<androidx.room.migration.Migration>()
+        /** v1 → v2: fecha en que se tomó cada foto (para el anexo fotográfico del reporte). */
+        private val MIGRACION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE fotos ADD COLUMN tomadaEn INTEGER")
+            }
+        }
+
+        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2)
 
         fun crear(context: Context): BaseDatos =
             Room.databaseBuilder(context, BaseDatos::class.java, NOMBRE)

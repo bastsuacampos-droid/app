@@ -24,6 +24,9 @@ interface SectorDao {
     @Query("SELECT * FROM sectores WHERE nombre = :nombre LIMIT 1")
     suspend fun buscar(nombre: String): SectorEntity?
 
+    @Query("SELECT * FROM sectores WHERE id = :id")
+    suspend fun porId(id: Long): SectorEntity?
+
     @Insert
     suspend fun insertar(sector: SectorEntity): Long
 }
@@ -32,6 +35,9 @@ interface SectorDao {
 interface FrenteDao {
     @Query("SELECT * FROM frentes WHERE sectorId = :sectorId AND lado = :lado AND sentido = :sentido LIMIT 1")
     suspend fun buscar(sectorId: Long, lado: Lado, sentido: Sentido): FrenteEntity?
+
+    @Query("SELECT * FROM frentes WHERE id = :id")
+    suspend fun porId(id: Long): FrenteEntity?
 
     @Insert
     suspend fun insertar(frente: FrenteEntity): Long
@@ -104,6 +110,12 @@ interface ExcavacionDao {
 interface FotoDao {
     @Query("SELECT * FROM fotos WHERE excavacionId = :excavacionId ORDER BY orden")
     suspend fun de(excavacionId: Long): List<FotoEntity>
+
+    @Query("SELECT * FROM fotos WHERE excavacionId IN (:excavaciones)")
+    suspend fun deVarias(excavaciones: List<Long>): List<FotoEntity>
+
+    @Query("SELECT archivo FROM fotos")
+    suspend fun archivos(): List<String>
 
     @Query("DELETE FROM fotos WHERE excavacionId = :excavacionId")
     suspend fun eliminarDe(excavacionId: Long)

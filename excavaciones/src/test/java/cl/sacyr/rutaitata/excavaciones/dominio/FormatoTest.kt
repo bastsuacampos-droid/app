@@ -59,6 +59,6 @@ class FormatoTest {
         // 150 en vez de 1,50: se avisa.
         assertTrue(Campo.PROFUNDIDAD in ValidadorExcavacion.validar(completo.copy(profundidad = 150.0)))
         assertTrue(Campo.UBICACION in ValidadorExcavacion.validar(completo.copy(latitud = -36.6)))
-        assertTrue(Campo.FOTOS in ValidadorExcavacion.validar(completo.copy(fotos = listOf("a", "b", "c", "d"))))
+        assertTrue(Campo.FOTOS in ValidadorExcavacion.validar(completo.copy(fotos = listOf("a", "b", "c", "d").map { FotoBorrador(it) })))
     }
 }

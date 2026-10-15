@@ -18,6 +18,9 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
  * - Si una tabla no cabe, sigue en la página siguiente repitiendo "Sector · Lado · Sentido
  *   (continuación)" y la fila de títulos. Un título nunca queda solo al pie de una página.
  * - Al final, totales del reporte y cuadros de firma (Jefe de Terreno e ITO), siempre juntos.
+ * - Con fotos: anexo "Registro fotográfico" en páginas aparte, dos excavaciones por página y hasta
+ *   tres fotos cada una, en el mismo orden de las tablas. En la tabla, cada excavación indica
+ *   cuántas fotos tiene en el anexo o "[Sin foto]", para que la falta de respaldo se vea.
  * - Pie con "Página X de N" en todas las páginas.
  */
 class MaquetadorReporte(private val medidor: MedidorTexto) {
@@ -33,6 +36,10 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         const val SIN_DATOS = "No hay excavaciones registradas para el período y sector seleccionados."
         const val FIRMA_JEFE = "Jefe de Terreno"
         const val FIRMA_ITO = "Inspector Técnico de Obra (ITO)"
+        const val TITULO_ANEXO = "ANEXO · REGISTRO FOTOGRÁFICO"
+        /** Con espacio duro, para que no se corte en dos líneas. */
+        const val SIN_FOTO = "[Sin\u00A0foto]"
+        const val FOTOS_POR_EXCAVACION = 3
 
         private const val IZQ = MARGEN
         private const val DER = ANCHO_PAGINA - MARGEN
@@ -45,6 +52,12 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         private const val ALTO_LADO = 22f
         private const val ALTO_SENTIDO = 17f
         private const val ALTO_FIRMAS = 90f
+        private const val ALTO_TITULO_ANEXO = 30f
+        private const val ALTO_CABECERA_FOTOS = 18f
+        private const val ALTO_FOTO = 170f
+        private const val ALTO_LEYENDA = 14f
+        private const val SEPARACION_FOTOS = 12f
+        private const val ALTO_BLOQUE_FOTOS = ALTO_CABECERA_FOTOS + 4f + ALTO_FOTO + ALTO_LEYENDA + 12f
 
         private val TITULO_GRANDE = Estilo(16f, negrita = true)
         private val TITULO_CORTO = Estilo(10f, negrita = true)
@@ -60,6 +73,9 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         private val TABLA_TITULO = Estilo(8f, negrita = true)
         private val TABLA_TOTAL = Estilo(8.5f, negrita = true)
         private val PIE = Estilo(7.5f, color = Colores.SECUNDARIO)
+        private val ANEXO = Estilo(11f, negrita = true)
+        private val LEYENDA = Estilo(7.5f, color = Colores.SECUNDARIO)
+        private val SIN_FOTO_TABLA = Estilo(8.5f, color = Colores.SIN_FOTO)
 
         /** Alto de una línea de texto y posición de su línea base desde el borde superior. */
         private fun interlinea(e: Estilo) = e.tamano * 1.25f
@@ -100,6 +116,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             }
             sectores.forEach(::sector)
             totalesYFirmas()
+            if (datos.incluirFotos) anexoFotografico(sectores)
             terminadas += trazos
             val total = terminadas.size
             return terminadas.mapIndexed { i, t -> Pagina(i + 1, t + pie(i + 1, total)) }
@@ -296,13 +313,23 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         }
 
         private fun observaciones(e: ExcavacionDetalle): String {
-            val fotos = when (e.fotos) {
-                0 -> null
-                1 -> "[1 foto]"
-                else -> "[${e.fotos} fotos]"
+            val fotos = if (datos.incluirFotos) {
+                when (val n = fotosDe(e).size) {
+                    0 -> SIN_FOTO
+                    1 -> "[1 foto en anexo]"
+                    else -> "[$n fotos en anexo]"
+                }
+            } else {
+                when (e.fotos) {
+                    0 -> null
+                    1 -> "[1 foto]"
+                    else -> "[${e.fotos} fotos]"
+                }
             }
             return listOfNotNull(e.observaciones, fotos).joinToString(" ")
         }
+
+        private fun fotosDe(e: ExcavacionDetalle) = datos.fotos[e.id].orEmpty().take(FOTOS_POR_EXCAVACION)
 
         private fun filaDeTitulos(): Fila =
             armarFila(columnas.map { it.titulo }, TABLA_TITULO, maximo = Float.MAX_VALUE)
@@ -344,7 +371,15 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                 // Títulos centrados también en vertical.
                 val desplazamiento = if (titulos) (fila.alto - 2 * PAD - fila.lineas[i].size * interlinea(estilo)) / 2 else 0f
                 fila.lineas[i].forEachIndexed { n, linea ->
-                    texto(xTexto, y + PAD + desplazamiento + n * interlinea(estilo) + base(estilo), linea, estilo, alineacion)
+                    val bas = y + PAD + desplazamiento + n * interlinea(estilo) + base(estilo)
+                    if (!titulos && alineacion == Alineacion.IZQUIERDA && linea.endsWith(SIN_FOTO)) {
+                        // La falta de foto se marca en rojo (mismo tamaño, así calza con el ajuste de líneas).
+                        val antes = linea.removeSuffix(SIN_FOTO)
+                        texto(xTexto, bas, antes, estilo)
+                        texto(xTexto + medidor.ancho(antes, estilo), bas, SIN_FOTO, SIN_FOTO_TABLA)
+                    } else {
+                        texto(xTexto, bas, linea, estilo, alineacion)
+                    }
                 }
                 x += col.ancho
             }
@@ -416,6 +451,78 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                 texto(x + 10f, bas, etiqueta, NORMAL)
                 trazos += Trazo.Linea(x + 54f, bas + 1f, x + ancho - 12f, bas + 1f, color = Colores.SECUNDARIO)
             }
+        }
+
+        // ---------------------------------------------------------------- anexo fotográfico
+
+        private fun anexoFotografico(sectores: List<GrupoSector>) {
+            val conFotos = sectores.flatMap { s -> s.lados.flatMap { l -> l.sentidos.flatMap { it.excavaciones } } }
+                .filter { fotosDe(it).isNotEmpty() }
+            if (conFotos.isEmpty()) return
+            nuevaPagina()
+            tituloAnexo(continuacion = false)
+            for (e in conFotos) {
+                if (!cabe(ALTO_BLOQUE_FOTOS)) {
+                    nuevaPagina()
+                    tituloAnexo(continuacion = true)
+                }
+                bloqueFotos(e, fotosDe(e))
+            }
+        }
+
+        private fun tituloAnexo(continuacion: Boolean) {
+            texto(IZQ, y + base(ANEXO), TITULO_ANEXO + if (continuacion) " (continuación)" else "", ANEXO)
+            if (!continuacion) {
+                texto(
+                    DER,
+                    y + base(ANEXO),
+                    "Respaldo del estado en que quedó cada excavación, en el orden de las tablas",
+                    LEYENDA,
+                    Alineacion.DERECHA,
+                )
+            }
+            y += ALTO_TITULO_ANEXO
+        }
+
+        /** Cabecera con la identificación de la excavación y una fila de hasta tres fotos con su fecha. */
+        private fun bloqueFotos(e: ExcavacionDetalle, fotos: List<FotoReporte>) {
+            trazos += Trazo.Rectangulo(IZQ, y, ANCHO_UTIL, ALTO_CABECERA_FOTOS, relleno = Colores.ENCABEZADO_TABLA)
+            val bas = y + (ALTO_CABECERA_FOTOS - TABLA_TITULO.tamano) / 2 + base(TABLA_TITULO)
+            val derecha = listOfNotNull(
+                e.progresiva,
+                Formato.fecha(e.fecha),
+                Formato.dimensiones(e.largo, e.ancho, e.profundidad) + " m",
+                Formato.volumen(e.volumen),
+            ).joinToString(" · ")
+            val anchoDerecha = medidor.ancho(derecha, LEYENDA)
+            texto(DER - PAD, bas, derecha, LEYENDA, Alineacion.DERECHA)
+            texto(
+                IZQ + PAD,
+                bas,
+                recortar(
+                    "N° ${Formato.numero(e.numero)} · ${e.sector} · ${e.lado.etiqueta} · ${e.sentido.etiqueta}",
+                    ANCHO_UTIL - anchoDerecha - 3 * PAD - 8f,
+                    TABLA_TITULO,
+                ),
+                TABLA_TITULO,
+            )
+            y += ALTO_CABECERA_FOTOS + 4f
+
+            val anchoCelda = (ANCHO_UTIL - (FOTOS_POR_EXCAVACION - 1) * SEPARACION_FOTOS) / FOTOS_POR_EXCAVACION
+            fotos.forEachIndexed { i, foto ->
+                val x = IZQ + i * (anchoCelda + SEPARACION_FOTOS)
+                trazos += Trazo.Rectangulo(x, y, anchoCelda, ALTO_FOTO, relleno = Colores.FILA_ALTERNA, borde = Colores.BORDE)
+                // Ajuste "contener": la foto entera, sin deformar, centrada en la celda.
+                val margen = 3f
+                val escala = minOf((anchoCelda - 2 * margen) / foto.ancho, (ALTO_FOTO - 2 * margen) / foto.alto)
+                val w = foto.ancho * escala
+                val h = foto.alto * escala
+                trazos += Trazo.Imagen(x + (anchoCelda - w) / 2, y + (ALTO_FOTO - h) / 2, w, h, foto.ruta)
+                val leyenda = "Foto ${i + 1} · " +
+                    (foto.tomadaEn?.let { "tomada el ${Formato.fechaHora(it)}" } ?: "fecha de captura no registrada")
+                texto(x + anchoCelda / 2, y + ALTO_FOTO + 3f + base(LEYENDA), recortar(leyenda, anchoCelda, LEYENDA), LEYENDA, Alineacion.CENTRO)
+            }
+            y += ALTO_FOTO + ALTO_LEYENDA + 12f
         }
 
         // ---------------------------------------------------------------- texto

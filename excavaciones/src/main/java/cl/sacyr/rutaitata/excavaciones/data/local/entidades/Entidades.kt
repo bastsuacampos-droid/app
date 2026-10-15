@@ -131,4 +131,6 @@ data class FotoEntity(
     /** 0, 1 o 2. */
     val orden: Int,
     val archivo: String,
+    /** Cuándo se tomó (epoch ms): EXIF de la foto o el momento de la captura. null si no se sabe. Desde la versión 2. */
+    val tomadaEn: Long? = null,
 )

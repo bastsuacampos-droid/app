@@ -1,9 +1,13 @@
 package cl.sacyr.rutaitata.excavaciones.dominio
 
+import java.io.Serializable
 import java.time.LocalDate
 
 /** Máximo de fotos por excavación. */
 const val MAX_FOTOS = 3
+
+/** Una foto ya guardada en files/fotos/[archivo]. [tomadaEn] en epoch ms, si se conoce. */
+data class FotoBorrador(val archivo: String, val tomadaEn: Long? = null) : Serializable
 
 /**
  * Lo que el formulario entrega para guardar (registro nuevo si [id] es 0). Los campos son
@@ -26,8 +30,8 @@ data class BorradorExcavacion(
     val longitud: Double? = null,
     val precisionGps: Float? = null,
     val observaciones: String? = null,
-    /** Nombres de archivo dentro de files/fotos, en el orden en que se muestran. */
-    val fotos: List<String> = emptyList(),
+    /** Fotos en el orden en que se muestran (y salen en el reporte). */
+    val fotos: List<FotoBorrador> = emptyList(),
 ) {
     val volumen: Double?
         get() = if (largo != null && ancho != null && profundidad != null) Volumen.de(largo, ancho, profundidad) else null

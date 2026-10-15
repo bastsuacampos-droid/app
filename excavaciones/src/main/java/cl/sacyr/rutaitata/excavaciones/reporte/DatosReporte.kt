@@ -5,6 +5,13 @@ import java.text.Normalizer
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+/** Una foto para el anexo: archivo ya orientado, su tamaño en píxeles y cuándo se tomó. */
+data class FotoReporte(val ruta: String, val ancho: Int, val alto: Int, val tomadaEn: LocalDateTime?) {
+    init {
+        require(ancho > 0 && alto > 0) { "Foto sin tamaño: $ruta" }
+    }
+}
+
 /** Todo lo que necesita el reporte. Las excavaciones ya vienen filtradas por fecha y sector. */
 data class DatosReporte(
     val desde: LocalDate,
@@ -16,6 +23,10 @@ data class DatosReporte(
     val obra: String = OBRA,
     val emitidoEn: LocalDateTime = LocalDateTime.now(),
     val excavaciones: List<ExcavacionDetalle>,
+    /** Si el reporte lleva el anexo fotográfico. */
+    val incluirFotos: Boolean = false,
+    /** Fotos por id de excavación, en orden (solo se usan con [incluirFotos]). */
+    val fotos: Map<Long, List<FotoReporte>> = emptyMap(),
 ) {
     init {
         require(!hasta.isBefore(desde)) { "El reporte termina ($hasta) antes de empezar ($desde)" }

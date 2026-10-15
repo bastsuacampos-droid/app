@@ -12,6 +12,7 @@ import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
 import cl.sacyr.rutaitata.excavaciones.dominio.Campo
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionDetalle
 import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
+import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
 import cl.sacyr.rutaitata.excavaciones.dominio.GrupoSector
 import cl.sacyr.rutaitata.excavaciones.dominio.Lado
 import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
@@ -50,6 +51,41 @@ class RepositorioExcavaciones(
     suspend fun excavacion(id: Long): ExcavacionEntity? = bd.excavaciones().porId(id)
 
     suspend fun fotos(excavacionId: Long): List<FotoEntity> = bd.fotos().de(excavacionId)
+
+    /** Fotos de varias excavaciones (para el reporte), por id de excavación y en orden. */
+    suspend fun fotosDe(excavaciones: Collection<Long>): Map<Long, List<FotoEntity>> =
+        excavaciones.distinct().chunked(500) // SQLite limita la cantidad de parámetros por consulta
+            .flatMap { bd.fotos().deVarias(it) }
+            .groupBy { it.excavacionId }
+            .mapValues { (_, fotos) -> fotos.sortedBy { it.orden } }
+
+    /** Archivos de fotos que usa algún registro: el resto se puede borrar. */
+    suspend fun archivosDeFotosEnUso(): Set<String> = bd.fotos().archivos().toSet()
+
+    /** La excavación como la edita el formulario, o null si ya no existe. */
+    suspend fun borrador(id: Long): BorradorExcavacion? {
+        val e = bd.excavaciones().porId(id) ?: return null
+        val frente = bd.frentes().porId(e.frenteId) ?: return null
+        val sector = bd.sectores().porId(frente.sectorId) ?: return null
+        return BorradorExcavacion(
+            id = e.id,
+            fecha = e.fecha,
+            sector = sector.nombre,
+            lado = frente.lado,
+            sentido = frente.sentido,
+            numero = e.numero,
+            progresiva = e.progresiva,
+            largo = e.largo,
+            ancho = e.ancho,
+            profundidad = e.profundidad,
+            tipoTerrenoId = e.tipoTerrenoId,
+            latitud = e.latitud,
+            longitud = e.longitud,
+            precisionGps = e.precisionGps,
+            observaciones = e.observaciones,
+            fotos = bd.fotos().de(id).map { FotoBorrador(it.archivo, it.tomadaEn) },
+        )
+    }
 
     /** Número que tendría la próxima excavación del frente; 1 si el sector o el frente aún no existen. */
     suspend fun siguienteNumero(sector: String, lado: Lado, sentido: Sentido): Int {
@@ -117,7 +153,9 @@ class RepositorioExcavaciones(
                 borrador.id
             }
             bd.fotos().eliminarDe(id)
-            bd.fotos().insertar(borrador.fotos.mapIndexed { i, archivo -> FotoEntity(excavacionId = id, orden = i, archivo = archivo) })
+            bd.fotos().insertar(
+                borrador.fotos.mapIndexed { i, f -> FotoEntity(excavacionId = id, orden = i, archivo = f.archivo, tomadaEn = f.tomadaEn) },
+            )
             id
         }
     }
