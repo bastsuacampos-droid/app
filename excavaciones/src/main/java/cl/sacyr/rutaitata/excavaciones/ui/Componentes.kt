@@ -54,6 +54,13 @@ import java.util.Locale
 private val CHILE = Locale.forLanguageTag("es-CL")
 private val FORMATO_DIA = DateTimeFormatter.ofPattern("EEEE d 'de' MMMM", CHILE)
 
+/**
+ * Letra del sistema agrandada (muchos usan 130 % o más en terreno): algunas pantallas ordenan
+ * distinto los elementos para no cortar palabras.
+ */
+@Composable
+fun letraGrande(): Boolean = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.15f
+
 /** "Jueves 15 de octubre" */
 fun diaLargo(fecha: LocalDate): String = fecha.format(FORMATO_DIA).replaceFirstChar { it.uppercase() }
 

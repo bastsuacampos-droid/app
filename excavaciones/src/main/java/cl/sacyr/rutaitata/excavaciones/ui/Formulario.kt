@@ -272,11 +272,12 @@ fun PantallaFormulario(
                 error = Campo.SENTIDO in errores,
             )
             errores[Campo.SENTIDO]?.let { TextoError(it) }
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            // Con letra grande van uno sobre otro: lado a lado, "Automático" se partía en dos líneas.
+            val campoNumero: @Composable (Modifier) -> Unit = { m ->
                 OutlinedTextField(
                     value = estado.numero,
                     onValueChange = { v -> vm.actualizar { copy(numero = v.filter(Char::isDigit).take(4)) } },
-                    label = { Text("N° excavación") },
+                    label = { Text("N°") },
                     placeholder = { Text(siguiente?.let { Formato.numero(it) } ?: "auto") },
                     supportingText = {
                         Text(
@@ -290,8 +291,10 @@ fun PantallaFormulario(
                     isError = Campo.NUMERO in errores,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
-                    modifier = Modifier.weight(0.42f).testTag("numero"),
+                    modifier = m.testTag("numero"),
                 )
+            }
+            val campoProgresiva: @Composable (Modifier) -> Unit = { m ->
                 OutlinedTextField(
                     value = estado.progresiva,
                     onValueChange = { v -> vm.actualizar { copy(progresiva = v) } },
@@ -300,17 +303,26 @@ fun PantallaFormulario(
                     supportingText = { Text("Opcional") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next),
-                    modifier = Modifier.weight(0.58f),
+                    modifier = m,
                 )
+            }
+            if (letraGrande()) {
+                campoNumero(Modifier.fillMaxWidth())
+                campoProgresiva(Modifier.fillMaxWidth())
+            } else {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    campoNumero(Modifier.weight(0.42f))
+                    campoProgresiva(Modifier.weight(0.58f))
+                }
             }
 
             // ---------------------------------------------------------- medidas
             HorizontalDivider()
-            Titulo("Dimensiones (metros)")
+            Titulo("Dimensiones en metros (prof. media)")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CampoMedida("Largo", estado.largo, errores[Campo.LARGO], Modifier.weight(1f)) { vm.actualizar { copy(largo = it) } }
                 CampoMedida("Ancho", estado.ancho, errores[Campo.ANCHO], Modifier.weight(1f)) { vm.actualizar { copy(ancho = it) } }
-                CampoMedida("Prof. media", estado.profundidad, errores[Campo.PROFUNDIDAD], Modifier.weight(1f)) {
+                CampoMedida("Prof.", estado.profundidad, errores[Campo.PROFUNDIDAD], Modifier.weight(1f)) {
                     vm.actualizar { copy(profundidad = it) }
                 }
             }

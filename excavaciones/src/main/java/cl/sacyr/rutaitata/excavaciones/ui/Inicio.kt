@@ -159,8 +159,13 @@ fun PantallaInicio(
             TopAppBar(
                 title = {
                     Column {
-                        Text("Excavaciones", fontWeight = FontWeight.Bold)
-                        Text("Ruta Itata · control diario", style = MaterialTheme.typography.labelMedium)
+                        Text("Excavaciones", fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(
+                            "Ruta Itata · control diario",
+                            style = MaterialTheme.typography.labelMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -169,10 +174,17 @@ fun PantallaInicio(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
                 actions = {
-                    TextButton(onClick = { onReporte(fecha) }) {
-                        Icon(painterResource(R.drawable.ic_reporte), contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
-                        Spacer(Modifier.width(4.dp))
-                        Text("Reporte PDF", color = MaterialTheme.colorScheme.onPrimary)
+                    if (letraGrande()) {
+                        // Con letra grande, solo el ícono: el texto dejaba sin espacio al título.
+                        IconButton(onClick = { onReporte(fecha) }) {
+                            Icon(painterResource(R.drawable.ic_reporte), contentDescription = "Reporte PDF")
+                        }
+                    } else {
+                        TextButton(onClick = { onReporte(fecha) }) {
+                            Icon(painterResource(R.drawable.ic_reporte), contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
+                            Spacer(Modifier.width(4.dp))
+                            Text("Reporte PDF", color = MaterialTheme.colorScheme.onPrimary)
+                        }
                     }
                     Box {
                         IconButton(onClick = { menu = true }) { Icon(Icons.Default.MoreVert, contentDescription = "Más opciones") }
@@ -399,7 +411,7 @@ private fun cantidad(n: Int) = if (n == 1) "1 excavación" else "$n excavaciones
 @Composable
 private fun EncabezadoSector(sector: GrupoSector) {
     Surface(color = MaterialTheme.colorScheme.primary, modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
-        Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        val nombre = @Composable { m: Modifier ->
             Text(
                 sector.nombre,
                 style = MaterialTheme.typography.titleMedium,
@@ -407,13 +419,27 @@ private fun EncabezadoSector(sector: GrupoSector) {
                 color = MaterialTheme.colorScheme.onPrimary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f),
+                modifier = m,
             )
+        }
+        val totales = @Composable {
             Text(
                 "${cantidad(sector.cantidad)} · ${Formato.volumen(sector.volumen)}",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
             )
+        }
+        // Con letra grande, los totales bajo el nombre: al lado lo cortaban ("Km 12+40…").
+        if (letraGrande()) {
+            Column(Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                nombre(Modifier)
+                totales()
+            }
+        } else {
+            Row(Modifier.padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                nombre(Modifier.weight(1f))
+                totales()
+            }
         }
     }
 }
@@ -460,12 +486,17 @@ private fun FilaExcavacion(e: ExcavacionDetalle, onClick: () -> Unit) {
                 }
             }
             Spacer(Modifier.width(12.dp))
+            // Con letra grande el volumen va bajo las medidas, para que no las parta en dos líneas.
+            val grande = letraGrande()
             Column(Modifier.weight(1f)) {
                 Text(
                     "${Formato.dimensiones(e.largo, e.ancho, e.profundidad)} m",
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                 )
+                if (grande) {
+                    Text(Formato.volumen(e.volumen), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                }
                 Text(
                     listOfNotNull(e.tipoTerreno, e.progresiva).joinToString(" · "),
                     style = MaterialTheme.typography.bodySmall,
@@ -486,7 +517,7 @@ private fun FilaExcavacion(e: ExcavacionDetalle, onClick: () -> Unit) {
                     }
                 }
             }
-            Text(Formato.volumen(e.volumen), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            if (!grande) Text(Formato.volumen(e.volumen), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         }
     }
 }

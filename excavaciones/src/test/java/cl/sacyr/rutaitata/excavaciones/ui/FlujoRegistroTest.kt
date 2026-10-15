@@ -45,7 +45,7 @@ class FlujoRegistroTest {
         compose.onNodeWithText("Chillán → Concepción").performScrollTo().performClick()
         compose.onNodeWithTag("Largo").performScrollTo().performTextInput("4")
         compose.onNodeWithTag("Ancho").performTextInput("1,2")
-        compose.onNodeWithTag("Prof. media").performTextInput("1.5")
+        compose.onNodeWithTag("Prof.").performTextInput("1.5")
         compose.onNodeWithTag("volumen").performScrollTo().assertTextEquals("7,20 m³")
         compose.onNodeWithTag("tipoTerreno").performScrollTo().performClick()
         compose.onNodeWithText("Roca").performClick()

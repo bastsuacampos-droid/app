@@ -98,7 +98,7 @@ class TiposExcavacionTest {
         abrirNueva()
         compose.onNodeWithTag("Largo").performScrollTo().performTextInput("6")
         compose.onNodeWithTag("Ancho").performTextInput("0,6")
-        compose.onNodeWithTag("Prof. media").performTextInput("1,2")
+        compose.onNodeWithTag("Prof.").performTextInput("1,2")
 
         compose.onNodeWithTag("tipoExcavacion").performScrollTo().performClick()
         compose.onNodeWithText("+ Guardar medidas actuales como tipo…").performClick()
