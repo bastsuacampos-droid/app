@@ -31,7 +31,7 @@ data class DatosReporte(
     val hasta: LocalDate = desde,
     /** Nombre del sector filtrado, o null si el reporte incluye todos. */
     val sector: String? = null,
-    /** Responsable o inspector de obra que emite el reporte. */
+    /** Quién estuvo a cargo de las excavaciones (sale en el encabezado). */
     val responsable: String,
     val obra: String = OBRA,
     val emitidoEn: LocalDateTime = LocalDateTime.now(),

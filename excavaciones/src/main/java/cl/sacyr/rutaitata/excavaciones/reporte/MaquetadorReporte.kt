@@ -17,7 +17,8 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
  *   excavaciones en orden correlativo y un subtotal.
  * - Si una tabla no cabe, sigue en la página siguiente repitiendo "Sector · Lado · Sentido
  *   (continuación)" y la fila de títulos. Un título nunca queda solo al pie de una página.
- * - Al final, totales del reporte y cuadros de firma (Jefe de Terreno e ITO), siempre juntos.
+ * - Al final, los totales del reporte. Sin cuadros de firma: es un control interno y el
+ *   encabezado ya dice quién estuvo a cargo de las excavaciones.
  * - Con fotos: anexo "Registro fotográfico" en páginas aparte, dos excavaciones por página y hasta
  *   tres fotos cada una, en el mismo orden de las tablas. En la tabla, cada excavación indica
  *   cuántas fotos tiene en el anexo o "[Sin foto]", para que la falta de respaldo se vea.
@@ -34,8 +35,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         const val MARGEN = 36f
         const val TITULO = "Reporte Diario de Control de Excavaciones"
         const val SIN_DATOS = "No hay excavaciones registradas para el período y sector seleccionados."
-        const val FIRMA_JEFE = "Jefe de Terreno"
-        const val FIRMA_ITO = "Inspector Técnico de Obra (ITO)"
+        const val A_CARGO = "A CARGO DE LAS EXCAVACIONES"
         const val TITULO_ANEXO = "ANEXO · REGISTRO FOTOGRÁFICO"
         /** Con espacio duro, para que no se corte en dos líneas. */
         const val SIN_FOTO = "[Sin\u00A0foto]"
@@ -51,7 +51,6 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         private const val ALTO_BANDA_SECTOR = 22f
         private const val ALTO_LADO = 22f
         private const val ALTO_SENTIDO = 17f
-        private const val ALTO_FIRMAS = 82f
         private const val ALTO_TITULO_ANEXO = 30f
         private const val ALTO_CABECERA_FOTOS = 18f
         private const val ALTO_FOTO = 170f
@@ -115,7 +114,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                 y += interlinea(NORMAL) + 8f
             }
             sectores.forEach(::sector)
-            totalesYFirmas()
+            totales()
             if (datos.incluirFotos) anexoFotografico(sectores)
             terminadas += trazos
             val total = terminadas.size
@@ -151,7 +150,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             val celdas = listOf(
                 (if (datos.variosDias) "PERÍODO DEL REPORTE" else "FECHA DEL REPORTE") to periodo(),
                 "SECTOR / TRAMO" to (datos.sector ?: "Todos los sectores"),
-                "RESPONSABLE / INSPECTOR DE OBRA" to datos.responsable.trim().ifEmpty { "Sin indicar" },
+                A_CARGO to datos.responsable.trim().ifEmpty { "Sin indicar" },
                 "ESTADO DEL REPORTE" to if (datos.cerrado) "CERRADO" else "BORRADOR",
             )
             val anchos = listOf(0.2f, 0.25f, 0.31f, 0.24f).map { it * ANCHO_UTIL }
@@ -423,12 +422,12 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
 
         // ---------------------------------------------------------------- cierre
 
-        private fun totalesYFirmas() {
+        private fun totales() {
             val sectores = Agrupador.agrupar(datos.excavaciones)
             val desglose = if (sectores.size > 1) sectores else emptyList()
             val altoRecuadro = PAD + interlinea(ETIQUETA) + interlinea(DATO) + PAD
             val altoDesglose = if (desglose.isEmpty()) 0f else 4f + desglose.size * interlinea(NORMAL)
-            asegurar(4f + altoRecuadro + altoDesglose + 12f + ALTO_FIRMAS)
+            asegurar(4f + altoRecuadro + altoDesglose)
             y += 4f
 
             // Totales: recuadro de una fila, como el del encabezado.
@@ -466,25 +465,6 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                     )
                     y += interlinea(NORMAL)
                 }
-            }
-            y += 12f
-
-            // Firmas
-            val separacion = 40f
-            val ancho = (ANCHO_UTIL - separacion) / 2
-            cuadroFirma(IZQ, ancho, FIRMA_JEFE)
-            cuadroFirma(IZQ + ancho + separacion, ancho, FIRMA_ITO)
-            y += ALTO_FIRMAS
-        }
-
-        private fun cuadroFirma(x: Float, ancho: Float, cargo: String) {
-            trazos += Trazo.Rectangulo(x, y, ancho, ALTO_FIRMAS, borde = Colores.TEXTO, grosor = 0.8f)
-            trazos += Trazo.Rectangulo(x, y, ancho, 18f, relleno = Colores.ENCABEZADO_TABLA, borde = Colores.TEXTO, grosor = 0.8f)
-            texto(x + ancho / 2, y + 4f + base(TITULO_CORTO), cargo, TITULO_CORTO, Alineacion.CENTRO)
-            listOf("Nombre:" to 34f, "Firma:" to 58f, "Fecha:" to 75f).forEach { (etiqueta, alto) ->
-                val bas = y + alto
-                texto(x + 10f, bas, etiqueta, NORMAL)
-                trazos += Trazo.Linea(x + 54f, bas + 1f, x + ancho - 12f, bas + 1f, color = Colores.SECUNDARIO)
             }
         }
 

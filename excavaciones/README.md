@@ -86,7 +86,7 @@ excavaciones/
     ├── reporte/
     │   ├── DatosReporte.kt          entrada del reporte y nombre del archivo
     │   ├── Plano.kt                 primitivas de dibujo (texto, línea, rectángulo) y paleta
-    │   ├── MaquetadorReporte.kt     maquetación pura: encabezados, tablas, saltos, totales, firmas
+    │   ├── MaquetadorReporte.kt     maquetación pura: encabezados, tablas, saltos y totales
     │   ├── GeneradorReportePdf.kt   escribe el PDF: fotos JPEG tal cual, texto con Roboto incrustada
     │   ├── EscritorPdf.kt           objetos, flujos y tabla xref de un PDF 1.4
     │   ├── FuenteTrueType.kt        métricas de la fuente y subconjunto con los glifos usados
@@ -148,8 +148,8 @@ A4 horizontal con encabezado (título, obra, fecha o período, sector, responsab
 una banda por sector, subtítulo por lado y una tabla por sentido (N°, progresiva/GPS,
 dimensiones L × A × P, volumen, tipo de terreno, observaciones; más la fecha si el reporte
 abarca varios días) con subtotal. Las tablas largas siguen en la página siguiente repitiendo
-títulos; al final van los totales y los cuadros de firma del Jefe de Terreno y del ITO, y
-cada página lleva "Página X de N".
+títulos; al final van los totales, y cada página lleva "Página X de N". No lleva cuadros de
+firma: es un control interno, y el encabezado dice quién estuvo a cargo de las excavaciones.
 
 **Anexo fotográfico**: en páginas aparte, en el mismo orden de las tablas, dos excavaciones por
 página con hasta tres fotos cada una (sin deformar) y la fecha y hora en que se tomó cada foto.

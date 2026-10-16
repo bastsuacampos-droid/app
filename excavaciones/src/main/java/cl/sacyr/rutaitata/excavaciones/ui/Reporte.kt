@@ -171,7 +171,7 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
             OutlinedTextField(
                 value = responsable,
                 onValueChange = vm::responsable,
-                label = { Text("Responsable / inspector de obra") },
+                label = { Text("A cargo de las excavaciones") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                 modifier = Modifier.fillMaxWidth(),

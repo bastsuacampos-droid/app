@@ -51,12 +51,13 @@ class MaquetadorReporteTest {
             "Sentido de avance: Chillán → Concepción", "Sentido de avance: Concepción → Chillán",
             "N°", "Volumen (m³)", "Tipo de terreno", "Observaciones", "01", "02", "3,00",
             "CANTIDAD TOTAL DE EXCAVACIONES", "3", "VOLUMEN ACUMULADO DEL DÍA", "9,00 m³",
-            MaquetadorReporte.FIRMA_JEFE, MaquetadorReporte.FIRMA_ITO, "Página 1 de 1",
+            MaquetadorReporte.A_CARGO, "Página 1 de 1",
         )) {
             assertTrue("Falta \"$esperado\" en $t", esperado in t)
         }
-        // Un solo día: sin columna de fecha.
+        // Un solo día: sin columna de fecha. Control interno: sin cuadros de firma.
         assertFalse("Fecha" in t)
+        assertFalse(t.any { it == "Firma:" || "Jefe de Terreno" in it || "Inspector Técnico" in it })
         assertDentroDeLaPagina(paginas)
     }
 
@@ -79,9 +80,8 @@ class MaquetadorReporteTest {
         }
         assertEquals((1..80).map { "%02d".format(it) } + (1..5).map { "%02d".format(it) }, numeros)
 
-        // Los cuadros de firma van juntos, en la última página.
-        val ultima = paginas.last().textos()
-        assertTrue(MaquetadorReporte.FIRMA_JEFE in ultima && MaquetadorReporte.FIRMA_ITO in ultima)
+        // Los totales van al final, en la última página.
+        assertTrue("CANTIDAD TOTAL DE EXCAVACIONES" in paginas.last().textos())
         assertDentroDeLaPagina(paginas)
     }
 
@@ -121,11 +121,10 @@ class MaquetadorReporteTest {
     }
 
     @Test
-    fun sinExcavacionesIgualTieneTotalesYFirmas() {
+    fun sinExcavacionesIgualTieneTotales() {
         val t = maquetador.maquetar(datos(emptyList())).single().textos()
         assertTrue(MaquetadorReporte.SIN_DATOS in t)
         assertTrue("0" in t && "0,00 m³" in t)
-        assertTrue(MaquetadorReporte.FIRMA_ITO in t)
     }
 
     @Test
@@ -172,9 +171,9 @@ class MaquetadorReporteTest {
         assertTrue("[1 foto en anexo]" in todos)
         assertTrue(MaquetadorReporte.SIN_FOTO in todos)
 
-        // El anexo empieza en página aparte, después de las firmas.
+        // El anexo empieza en página aparte, después de los totales.
         val inicioAnexo = paginas.indexOfFirst { MaquetadorReporte.TITULO_ANEXO in it.textos() }
-        assertTrue(inicioAnexo > paginas.indexOfFirst { MaquetadorReporte.FIRMA_ITO in it.textos() })
+        assertTrue(inicioAnexo > paginas.indexOfFirst { "CANTIDAD TOTAL DE EXCAVACIONES" in it.textos() })
         val anexo = paginas.drop(inicioAnexo)
         val imagenes = anexo.flatMap { it.trazos.filterIsInstance<Trazo.Imagen>() }
         assertEquals(listOf("/fotos/1.jpg", "/fotos/2.jpg", "/fotos/3.jpg"), imagenes.map { it.ruta })
