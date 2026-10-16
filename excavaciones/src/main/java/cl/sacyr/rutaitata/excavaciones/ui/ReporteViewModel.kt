@@ -51,6 +51,8 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
     val sectorId: StateFlow<Long> = guardado.getStateFlow(SECTOR, -1L)
     val responsable: StateFlow<String> = guardado.getStateFlow(RESPONSABLE, app.preferencias.responsable)
     val incluirFotos: StateFlow<Boolean> = guardado.getStateFlow(FOTOS, app.preferencias.incluirFotos)
+    /** Cerrar los días abiertos del período al generar: el reporte sale CERRADO y no BORRADOR. */
+    val cerrarAlGenerar: StateFlow<Boolean> = guardado.getStateFlow(CERRAR, app.preferencias.cerrarAlGenerar)
 
     val sectores = repo.sectores().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
@@ -92,6 +94,11 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
         guardado[FOTOS] = si
         app.preferencias.incluirFotos = si
         _generacion.value = EstadoGeneracion.Inactivo
+    }
+
+    fun cerrarAlGenerar(si: Boolean) {
+        guardado[CERRAR] = si
+        app.preferencias.cerrarAlGenerar = si
     }
 
     /**
@@ -176,5 +183,6 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
         const val SECTOR = "sector"
         const val RESPONSABLE = "responsable"
         const val FOTOS = "incluir_fotos"
+        const val CERRAR = "cerrar_al_generar"
     }
 }

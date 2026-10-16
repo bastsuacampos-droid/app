@@ -40,8 +40,9 @@ Todo funciona sin señal; los datos y fotos quedan solo en el teléfono, por eso
 
 ### Cierre de días e integridad del registro
 
-- **Cerrar días y emitir reporte definitivo** (pantalla de reporte): cierra los días del período
-  (todos los sectores). En un día cerrado no se puede agregar, editar, mover ni borrar
+- **Cerrar el día al generar** (interruptor en la pantalla de reporte, se recuerda): al tocar
+  "Cerrar y generar reporte definitivo" y confirmar, cierra los días del período (todos los
+  sectores) y el PDF sale sin BORRADOR. En un día cerrado no se puede agregar, editar, mover ni borrar
   excavaciones; el repositorio lo impide, no solo la interfaz. El PDF dice **CERRADO** (cuándo y
   quién) o **BORRADOR** (qué días siguen abiertos).
 - **Reabrir** (dashboard) exige un motivo; queda en `reaperturas` y sale en los reportes del día.

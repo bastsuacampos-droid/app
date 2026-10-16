@@ -20,6 +20,11 @@ class Preferencias(context: Context) {
         get() = prefs.getBoolean(INCLUIR_FOTOS, true)
         set(valor) = prefs.edit { putBoolean(INCLUIR_FOTOS, valor) }
 
+    /** Si al generar el reporte se cierra el día (reporte definitivo, sin BORRADOR). */
+    var cerrarAlGenerar: Boolean
+        get() = prefs.getBoolean(CERRAR_AL_GENERAR, false)
+        set(valor) = prefs.edit { putBoolean(CERRAR_AL_GENERAR, valor) }
+
     /** Cuándo se guardó el último respaldo completo (epoch ms), o null si nunca. */
     var ultimoRespaldo: Long?
         get() = prefs.getLong(ULTIMO_RESPALDO, -1).takeIf { it > 0 }
@@ -47,6 +52,7 @@ class Preferencias(context: Context) {
     private companion object {
         const val RESPONSABLE = "responsable"
         const val INCLUIR_FOTOS = "incluir_fotos"
+        const val CERRAR_AL_GENERAR = "cerrar_al_generar"
         const val SECTOR = "ultimo_sector"
         const val LADO = "ultimo_lado"
         const val SENTIDO = "ultimo_sentido"

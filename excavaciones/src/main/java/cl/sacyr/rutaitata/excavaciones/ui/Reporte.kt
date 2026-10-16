@@ -76,6 +76,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -107,6 +108,7 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
     val generacion by vm.generacion.collectAsStateWithLifecycle()
     val planilla by vm.planilla.collectAsStateWithLifecycle()
     val cierres by vm.cierres.collectAsStateWithLifecycle()
+    val cerrarAlGenerar by vm.cerrarAlGenerar.collectAsStateWithLifecycle()
     var confirmarCierre by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -188,6 +190,28 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                 Switch(checked = incluirFotos, onCheckedChange = vm::incluirFotos)
             }
 
+            // Estado del período: definitivo si todos sus días con registros están cerrados.
+            val diasConRegistros = previa?.dias.orEmpty()
+            val cerrados = cierres.map { it.fecha }.toSet()
+            val abiertos = (diasConRegistros - cerrados).sorted()
+            val cerrar = cerrarAlGenerar && abiertos.isNotEmpty()
+            if (abiertos.isNotEmpty()) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            if (abiertos.size == 1) "Cerrar el día al generar" else "Cerrar los ${abiertos.size} días al generar",
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                        Text(
+                            "El reporte sale definitivo, sin BORRADOR. Para corregir después habrá que reabrir el día con un motivo.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = cerrarAlGenerar, onCheckedChange = vm::cerrarAlGenerar, modifier = Modifier.testTag("cerrarDia"))
+                }
+            }
+
             previa?.let { p ->
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer), modifier = Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -212,24 +236,21 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                 }
             }
 
-            // Estado del período: definitivo si todos sus días con registros están cerrados.
-            val diasConRegistros = previa?.dias.orEmpty()
-            val cerrados = cierres.map { it.fecha }.toSet()
-            val abiertos = (diasConRegistros - cerrados).sorted()
             if (diasConRegistros.isNotEmpty()) {
                 Text(
-                    if (abiertos.isEmpty()) {
-                        "Días cerrados: el reporte sale como CERRADO (definitivo)."
-                    } else {
-                        "El reporte sale como BORRADOR: ${abiertos.size} ${if (abiertos.size == 1) "día abierto" else "días abiertos"}."
+                    when {
+                        abiertos.isEmpty() -> "Días cerrados: el reporte sale como CERRADO (definitivo)."
+                        cerrar -> "El reporte saldrá como CERRADO (definitivo)."
+                        else ->
+                            "El reporte sale como BORRADOR: ${abiertos.size} ${if (abiertos.size == 1) "día abierto" else "días abiertos"}."
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (abiertos.isEmpty()) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (abiertos.isEmpty() || cerrar) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
             Button(
-                onClick = { vm.generar() },
+                onClick = { if (cerrar) confirmarCierre = true else vm.generar() },
                 enabled = generacion != EstadoGeneracion.Generando,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
@@ -241,16 +262,8 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
                 } else {
                     Icon(painterResource(R.drawable.ic_reporte), contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Generar reporte PDF", fontWeight = FontWeight.Bold)
+                    Text(if (cerrar) "Cerrar y generar reporte definitivo" else "Generar reporte PDF", fontWeight = FontWeight.Bold)
                 }
-            }
-
-            if (abiertos.isNotEmpty()) {
-                OutlinedButton(
-                    onClick = { confirmarCierre = true },
-                    enabled = generacion != EstadoGeneracion.Generando,
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-                ) { Text("Cerrar días y emitir reporte definitivo") }
             }
 
             when (val g = generacion) {
@@ -313,9 +326,9 @@ fun PantallaReporte(onVolver: () -> Unit, onVisualizar: (File) -> Unit) {
             title = { Text("¿Emitir el reporte definitivo?") },
             text = {
                 Text(
-                    "Se cerrarán los días del ${Formato.fecha(desde)} al ${Formato.fecha(hasta)} (todos los sectores). " +
-                        "Ya no se podrán agregar, editar ni borrar excavaciones de esos días; para corregir habrá que " +
-                        "reabrirlos con un motivo, que quedará anotado en los reportes.",
+                    (if (desde == hasta) "Se cerrará el día ${Formato.fecha(desde)}" else "Se cerrarán los días del ${Formato.fecha(desde)} al ${Formato.fecha(hasta)}") +
+                        " (todos los sectores). Ya no se podrán agregar, editar ni borrar sus excavaciones; para " +
+                        "corregir habrá que reabrir el día con un motivo, que quedará anotado en los reportes.",
                 )
             },
             confirmButton = {
