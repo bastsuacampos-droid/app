@@ -44,7 +44,9 @@ no se versiona). La APK de publicación se firma solo si existen las variables
 - Cada charla: `id`, `codigo`, `especialidad`, `titulo`, `porQue`, `checklist` (exactamente 3
   puntos), `normativa`, `reglaOro`, `preguntaCierre`.
 - **Nunca reutilizar ni cambiar un `id`**: el historial y los planes de los teléfonos se
-  guardan por `id`. Una charla nueva usa el siguiente `id` libre de su especialidad.
+  guardan por `id`. Una charla nueva usa el siguiente `id` libre de su especialidad. Cada
+  especialidad tiene un bloque de 100 (MP 101–200, CT 201–300 … MT 901–1000); al agotarse,
+  sigue en su bloque + 1000 (Obras de Arte ya usa 1401–1500).
 - `codigo` es correlativo por especialidad (`OA-01`, `OA-02`…); una prueba lo exige. Las
   charlas se ordenan por especialidad y código.
 - Al cambiar el contenido: **subir `version`**, actualizar `fecha` y escribir `novedades`

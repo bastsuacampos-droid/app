@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 13,
-  "fecha": "2026-10-08",
-  "novedades": "10 charlas nuevas de excavación manual: entibación, entrar y salir de la zanja, perfilar junto a la excavadora, excavación abierta al final del día, compañero atrapado en un derrumbe, revisión diaria de la zanja, talud y escalonado, pasarelas para cruzar, excavar junto a la calzada y suelos de relleno o saturados (436 charlas, 45 actividades).",
+  "version": 14,
+  "fecha": "2026-10-18",
+  "novedades": "22 charlas nuevas de excavación manual: permiso de excavación, servicios descubiertos, qué hacer si se golpea un cable o se rompe una tubería, postes y árboles, raíces, trabajo de rodillas, sacar tierra de zanjas profundas, calor, pies mojados, bolones, laderas, ahoyadora, aguas servidas, arañas y avispas, pasar herramientas, ancho de la zanja, cajón de entibación, cruces de camino, pozos profundos, vigía en el borde y romper pavimento (458 charlas, 45 actividades).",
   "especialidades": [
     {
       "id": "MP",
@@ -3500,6 +3500,336 @@
       "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; especificaciones técnicas del proyecto.",
       "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
       "preguntaCierre": "¿El suelo de nuestra zanja es natural o es un relleno antiguo?"
+    },
+    {
+      "id": 498,
+      "codigo": "OA-103",
+      "especialidad": "OA",
+      "titulo": "Permiso de excavación: antes del primer palazo",
+      "porQue": "Una excavación manual parece una tarea simple, pero bajo la berma pueden pasar cables, fibra óptica, agua potable o gas, y el suelo puede no sostenerse. El permiso de excavación obliga a revisar planos, marcar servicios, definir la protección de las paredes y avisar a quien corresponda antes de que alguien clave la pala.",
+      "checklist": [
+        "Excavar solo con el permiso o la autorización del supervisor, que indique ubicación, profundidad, servicios y medidas de protección.",
+        "Revisar en terreno las marcas de servicios y la señalización antes de empezar; si algo no coincide con el permiso, detenerse y avisar.",
+        "Si la excavación cambia de lugar, de profundidad o de forma, el permiso se revisa de nuevo."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 44/2024 (gestión preventiva); Ley 16.744 Art. 68; procedimiento de excavaciones e interferencias del proyecto.",
+      "reglaOro": "Solo personal autorizado realiza tareas críticas.",
+      "preguntaCierre": "¿Qué dice el permiso de la excavación de hoy sobre los servicios enterrados?"
+    },
+    {
+      "id": 499,
+      "codigo": "OA-104",
+      "especialidad": "OA",
+      "titulo": "Servicios descubiertos: sostener cañerías y cables expuestos",
+      "porQue": "Al excavar bajo o junto a una cañería o un ducto, el servicio queda colgando sin la tierra que lo sostenía. Con su propio peso, o si alguien se apoya o se para encima, puede romperse una unión, cortarse un cable o soltarse una tubería sobre quien trabaja abajo.",
+      "checklist": [
+        "Sostener el servicio descubierto con tablones, cuerdas o soportes según indique el supervisor o el dueño del servicio.",
+        "Nadie se para, se sienta ni apoya herramientas sobre cañerías, cables o ductos expuestos.",
+        "Proteger el servicio con tablas o mangas mientras se trabaja cerca, e informar cualquier golpe aunque no se vea daño."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); normativa eléctrica y de gas SEC; Ley 16.744 Art. 68; plan de interferencias del proyecto.",
+      "reglaOro": "Antes de excavar, saber qué hay abajo.",
+      "preguntaCierre": "¿Cómo dejamos sostenida la cañería que quedó a la vista ayer?"
+    },
+    {
+      "id": 500,
+      "codigo": "OA-105",
+      "especialidad": "OA",
+      "titulo": "Si golpeas un cable eléctrico: aléjate y no lo toques",
+      "porQue": "Un golpe de pala o chuzo sobre un cable enterrado puede producir un arco eléctrico, quemaduras graves o electrocución. Aunque no pase nada en el momento, el cable dañado sigue energizado y puede electrocutar a quien lo toque después o a quien esté parado en el barro de la zanja.",
+      "checklist": [
+        "Soltar la herramienta si es seguro hacerlo, salir de la zanja y alejar a todos del lugar.",
+        "No tocar el cable, la herramienta ni a una persona que esté en contacto con ellos; avisar al supervisor para que contacte a la empresa eléctrica.",
+        "Nadie vuelve a entrar hasta que la empresa dueña del cable confirme que está desenergizado y reparado."
+      ],
+      "normativa": "Normativa eléctrica SEC (NSEG 5 E.n.71); Ley 16.744 Art. 68; plan de emergencias y de interferencias del proyecto.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "Si tu chuzo toca un cable, ¿qué es lo primero que haces?"
+    },
+    {
+      "id": 1401,
+      "codigo": "OA-106",
+      "especialidad": "OA",
+      "titulo": "Si rompes una tubería: gas, agua o alcantarillado",
+      "porQue": "Una tubería rota durante la excavación puede llenar la zanja de agua en minutos, ablandar las paredes y provocar un derrumbe, o liberar gas que se inflama con una chispa o desplaza el aire. Las aguas servidas, además, traen bacterias que enferman.",
+      "checklist": [
+        "Gas (olor fuerte o silbido): salir de inmediato, alejar a todos, apagar motores, no encender nada y avisar al 132 y a la empresa de gas.",
+        "Agua: salir de la zanja, avisar al supervisor para cortar el paso y no volver a entrar hasta revisar las paredes.",
+        "Alcantarillado: salir, evitar el contacto con el agua y lavarse bien; avisar a la empresa sanitaria."
+      ],
+      "normativa": "Normativa SEC de redes de gas; NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Si no es seguro, no se hace: cualquier persona puede detener el trabajo.",
+      "preguntaCierre": "¿Qué hacemos si sentimos olor a gas en la zanja?"
+    },
+    {
+      "id": 1402,
+      "codigo": "OA-107",
+      "especialidad": "OA",
+      "titulo": "Excavar al pie de un poste o de un árbol",
+      "porQue": "La tierra que se saca junto a un poste o un árbol es la que lo mantiene en pie. Al socavar su base, el poste con cables o el árbol pueden inclinarse o caer sobre la cuadrilla o sobre la ruta, y un poste eléctrico que cae arrastra sus conductores.",
+      "checklist": [
+        "Antes de excavar junto a un poste o un árbol, el supervisor define la distancia y si se necesita sostenerlo o avisar a su dueño.",
+        "No socavar por debajo de la base; excavar por tramos cortos y rellenar pronto.",
+        "Si el poste o el árbol se inclina o cruje, salir de inmediato y alejar a todos."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); normativa eléctrica SEC (NSEG 5 E.n.71); Ley 16.744 Art. 68.",
+      "reglaOro": "Respetar las distancias a líneas energizadas.",
+      "preguntaCierre": "¿Hay postes o árboles junto a la zanja de hoy y quién los revisó?"
+    },
+    {
+      "id": 1403,
+      "codigo": "OA-108",
+      "especialidad": "OA",
+      "titulo": "Raíces y tocones: hacha y machete dentro de la zanja",
+      "porQue": "Las raíces gruesas obligan a cortar con hacha, machete o sierra dentro de un espacio estrecho. El hacha rebota en la raíz o en una piedra, el machete se escapa hacia la pierna y un tocón que se suelta de golpe puede golpear a quien tira de él.",
+      "checklist": [
+        "Cortar raíces solo con herramienta afilada y en buen estado, con espacio libre alrededor y el compañero lejos del golpe.",
+        "Usar guantes, lentes y polainas o protección de piernas al usar hacha o machete.",
+        "Tocones grandes se sacan con apoyo de equipo o en tramos, nunca tirando con el cuerpo ni con la espalda."
+      ],
+      "normativa": "DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga).",
+      "reglaOro": "Herramienta en buen estado y con sus protecciones.",
+      "preguntaCierre": "¿Dónde se ubica el compañero mientras cortas una raíz con hacha?"
+    },
+    {
+      "id": 1404,
+      "codigo": "OA-109",
+      "especialidad": "OA",
+      "titulo": "Trabajar de rodillas o agachado en la zanja",
+      "porQue": "Perfilar el fondo, nivelar la cama de tubos o limpiar alrededor de un servicio obliga a pasar horas de rodillas o agachado. Las rodillas, la espalda baja y los tobillos se dañan de a poco, y el dolor aparece cuando la lesión ya está instalada.",
+      "checklist": [
+        "Usar rodilleras o una tabla para apoyarse en el fondo, sobre todo si hay piedras o barro.",
+        "Cambiar de postura y estirarse cada cierto tiempo; alternar el trabajo de rodillas con otras tareas.",
+        "Informar dolores de rodilla o espalda que no se van; consultar a tiempo evita una lesión mayor."
+      ],
+      "normativa": "DS 594 Art. 53 (elementos de protección personal); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿Cuánto rato seguido pasamos de rodillas en el fondo de la zanja?"
+    },
+    {
+      "id": 1405,
+      "codigo": "OA-110",
+      "especialidad": "OA",
+      "titulo": "Sacar la tierra de una zanja profunda: baldes, cuerdas y banquetas",
+      "porQue": "Cuando la zanja es más honda que la altura del hombro, lanzar la tierra con la pala hacia arriba exige un esfuerzo enorme y la tierra vuelve a caer sobre quien está abajo. Subir baldes llenos a pulso daña la espalda y los hombros.",
+      "checklist": [
+        "Hacer banquetas intermedias o pasar el material en etapas, en vez de lanzarlo por sobre la cabeza.",
+        "Usar baldes a media carga con cuerda, roldana o equipo; quien está abajo se aparta mientras sube el balde.",
+        "Si la profundidad es mucha para sacar a mano, pedir apoyo de equipo en lugar de forzar."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Cómo sacamos hoy la tierra del tramo más profundo?"
+    },
+    {
+      "id": 1406,
+      "codigo": "OA-111",
+      "especialidad": "OA",
+      "titulo": "Calor en el fondo de la zanja",
+      "porQue": "En verano, el fondo de una zanja puede ser más caluroso que la superficie: no corre aire, el sol se refleja en las paredes y el esfuerzo de excavar a mano es intenso. La deshidratación y el golpe de calor aparecen rápido y, dentro de una zanja, es más difícil sacar a quien se desmaya.",
+      "checklist": [
+        "Agua fresca en el borde de la zanja y pausas a la sombra fuera de la excavación.",
+        "Dejar las tareas más pesadas para las horas más frescas y rotar a quien trabaja en el fondo.",
+        "Vigilarse entre compañeros: mareo, dolor de cabeza o confusión obligan a salir y avisar."
+      ],
+      "normativa": "DS 594 (exposición ocupacional al calor y agua potable); Ley 20.096 (radiación UV); Ley 16.744 Art. 68.",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿Dónde está el agua y la sombra para quienes trabajan en la zanja hoy?"
+    },
+    {
+      "id": 1407,
+      "codigo": "OA-112",
+      "especialidad": "OA",
+      "titulo": "Pies mojados todo el día: botas, calcetines y frío",
+      "porQue": "En las excavaciones con barro o agua, los pies pasan el día mojados. Con frío, eso enfría todo el cuerpo, produce hongos, ampollas y lesiones de la piel, y un pie entumido resbala y pierde equilibrio en el fondo de la zanja.",
+      "checklist": [
+        "Usar botas de agua con puntera de seguridad cuando la excavación tiene agua o barro.",
+        "Llevar calcetines de repuesto y cambiarse en la colación si están mojados.",
+        "Achicar el agua antes de entrar y avisar si alguien siente los pies entumidos o adormecidos."
+      ],
+      "normativa": "DS 594 Art. 53 (elementos de protección personal); Ley 16.744 Art. 68.",
+      "reglaOro": "Usar el EPP correcto para cada tarea.",
+      "preguntaCierre": "¿Quién trae hoy calcetines de repuesto para el frente con barro?"
+    },
+    {
+      "id": 1408,
+      "codigo": "OA-113",
+      "especialidad": "OA",
+      "titulo": "Bolones y piedras grandes: sacarlas sin aplastarse",
+      "porQue": "Al excavar aparecen bolones que no se pueden romper ni sacar con la pala. Levantarlos a pulso desde el fondo daña la espalda, y al moverlos con barreta pueden rodar sobre un pie, aplastar los dedos contra la pared o caer de vuelta a la zanja desde el borde.",
+      "checklist": [
+        "Evaluar el peso antes de moverlo; sobre el límite de carga manual, se usa equipo o se rompe primero.",
+        "Moverlos con barreta y entre dos, con los pies y las manos fuera de la línea de giro.",
+        "Dejar los bolones lejos del borde y calzados para que no rueden de vuelta a la zanja."
+      ],
+      "normativa": "Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga: máximo 25 kg); NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.",
+      "reglaOro": "Planificar la tarea: si pesa, se usa ayuda mecánica.",
+      "preguntaCierre": "¿Qué hacemos con el bolón que no podemos levantar entre dos?"
+    },
+    {
+      "id": 1409,
+      "codigo": "OA-114",
+      "especialidad": "OA",
+      "titulo": "Excavar en ladera: lo que está arriba rueda hacia ti",
+      "porQue": "En cortes y laderas, la excavación manual queda bajo un talud con piedras sueltas, raíces y material que puede rodar con la vibración, la lluvia o el paso de otra persona arriba. Quien excava abajo no ve lo que se suelta sobre él.",
+      "checklist": [
+        "Revisar y sanear la ladera sobre la zona de trabajo antes de empezar.",
+        "Nadie trabaja arriba y abajo en la misma línea vertical al mismo tiempo.",
+        "Afirmarse en una base estable, con el material excavado depositado hacia el lado que no carga a quien trabaja abajo."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594; Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Quién revisó la ladera sobre la excavación de hoy?"
+    },
+    {
+      "id": 1410,
+      "codigo": "OA-115",
+      "especialidad": "OA",
+      "titulo": "Ahoyadora a motor: el torque que tuerce las muñecas",
+      "porQue": "La ahoyadora a motor acelera mucho la excavación de hoyos para postes y cercos, pero cuando la broca se traba en una raíz o una piedra, el motor hace girar las manillas con fuerza y puede fracturar muñecas, golpear el estómago o lanzar al operador. También tiene partes que giran y atrapan la ropa.",
+      "checklist": [
+        "Operar entre dos personas cuando el equipo lo exige, con las manillas bien tomadas y el cuerpo fuera del giro.",
+        "Bajar la broca de a poco y soltar el acelerador si se traba; nunca liberar una broca trabada con el motor andando.",
+        "Ropa ajustada, sin cordones sueltos; lentes, protección auditiva y guantes. Revisar servicios enterrados antes de perforar."
+      ],
+      "normativa": "DS 594 (ruido, vibraciones y Art. 53); Ley 16.744 Art. 68; manual del fabricante del equipo.",
+      "reglaOro": "Herramienta en buen estado y con sus protecciones.",
+      "preguntaCierre": "¿Qué haces si la broca de la ahoyadora se traba en una raíz?"
+    },
+    {
+      "id": 1411,
+      "codigo": "OA-116",
+      "especialidad": "OA",
+      "titulo": "Aguas servidas en la excavación: riesgo biológico",
+      "porQue": "Junto a colectores, fosas o descargas de casas, el agua y el barro de la excavación pueden tener aguas servidas. Traen bacterias y virus que causan diarrea, hepatitis, infecciones de la piel y leptospirosis, y entran por la boca, por heridas o al comer con las manos sucias.",
+      "checklist": [
+        "Si hay olor o aspecto de aguas servidas, detener y avisar al supervisor; no trabajar sin las medidas definidas.",
+        "Guantes impermeables, botas y cubrir las heridas; no tocarse la cara con los guantes sucios.",
+        "Lavarse bien las manos antes de comer, fumar o tomar agua, y lavar la ropa y las botas contaminadas."
+      ],
+      "normativa": "DS 594 (condiciones sanitarias, servicios higiénicos y Art. 53 sobre EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿Dónde nos lavamos las manos si la excavación de hoy tiene aguas servidas?"
+    },
+    {
+      "id": 1412,
+      "codigo": "OA-117",
+      "especialidad": "OA",
+      "titulo": "Arañas, avispas y roedores al remover tierra y piedras",
+      "porQue": "Al remover piedras, tablones acopiados o raíces aparecen arañas de rincón, nidos de avispas chaqueta amarilla bajo tierra y roedores. Una picadura de araña de rincón puede ser grave, un nido de avispas atacado obliga a salir corriendo de la zanja, y las madrigueras de roedores pueden transmitir hantavirus.",
+      "checklist": [
+        "Revisar el área y mover piedras y tablones con herramienta, no con la mano desnuda; sacudir guantes y ropa.",
+        "Si aparece un nido de avispas, alejarse con calma y avisar; no taparlo ni golpearlo.",
+        "No barrer ni levantar polvo en madrigueras o fecas de roedores; avisar al supervisor para aplicar el procedimiento."
+      ],
+      "normativa": "Ley 16.744 Art. 68; DS 594 (condiciones sanitarias); orientaciones del Ministerio de Salud sobre hantavirus.",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿Quién de la cuadrilla es alérgico a las picaduras y dónde está su tratamiento?"
+    },
+    {
+      "id": 1413,
+      "codigo": "OA-118",
+      "especialidad": "OA",
+      "titulo": "Pasar herramientas a la zanja: nunca lanzarlas",
+      "porQue": "Lanzar una pala o un chuzo a la zanja, o dejarlo en el borde, es una causa frecuente de golpes y cortes. La herramienta rebota, se resbala del borde o cae sobre la cabeza o la espalda de quien está abajo.",
+      "checklist": [
+        "Las herramientas se pasan de mano en mano o se bajan con cuerda, avisando antes.",
+        "Nada de herramientas ni materiales en el borde de la zanja; se dejan alejadas y acostadas.",
+        "Casco puesto para quien trabaja dentro, aunque la zanja sea poco profunda."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.",
+      "reglaOro": "Nunca ubicarse bajo cargas o materiales que puedan caer.",
+      "preguntaCierre": "¿Dónde dejamos las herramientas cuando no se están usando en la zanja?"
+    },
+    {
+      "id": 1414,
+      "codigo": "OA-119",
+      "especialidad": "OA",
+      "titulo": "Ancho de la zanja: espacio para trabajar y para salir",
+      "porQue": "Una zanja muy angosta obliga a trabajar torcido, impide usar bien la pala y deja a dos personas muy juntas, golpeándose. En una emergencia, no hay espacio para salir rápido ni para que alguien entre a ayudar.",
+      "checklist": [
+        "Excavar con el ancho que define el proyecto para el tubo y para que se pueda trabajar y compactar con seguridad.",
+        "Si la zanja es angosta, trabaja una sola persona por tramo y el resto apoya desde afuera.",
+        "Mantener el fondo y la salida despejados de materiales, tubos y herramientas."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); especificaciones técnicas del proyecto; Ley 16.744 Art. 68.",
+      "reglaOro": "Planificar la tarea: cada persona sabe qué hace y dónde está.",
+      "preguntaCierre": "¿La zanja de hoy tiene el ancho para trabajar y salir sin chocarnos?"
+    },
+    {
+      "id": 1415,
+      "codigo": "OA-120",
+      "especialidad": "OA",
+      "titulo": "Cajón de entibación: trabajar siempre dentro",
+      "porQue": "El cajón o caja de entibación metálica protege solo el tramo que cubre. Quien se adelanta a perfilar fuera del cajón, o se queda en el tramo ya excavado detrás, está en una zanja sin protección. Además, el cajón se mueve con la excavadora y nadie debe estar dentro en ese momento.",
+      "checklist": [
+        "Trabajar solo dentro del largo protegido por el cajón; nunca adelantarse ni quedarse atrás.",
+        "Nadie dentro del cajón mientras la excavadora lo levanta, lo arrastra o lo baja.",
+        "Revisar que el cajón esté bien apoyado y que el espacio entre cajón y pared no deje que la tierra caiga sobre quien trabaja."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); manual del fabricante del sistema de entibación; Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "¿Hasta dónde llega hoy la protección del cajón?"
+    },
+    {
+      "id": 1416,
+      "codigo": "OA-121",
+      "especialidad": "OA",
+      "titulo": "Cruce de camino o acceso: excavar por mitades",
+      "porQue": "Para pasar un tubo bajo un camino secundario o el acceso a un predio, la zanja corta el paso de vehículos y vecinos. Si se excava todo de una vez, alguien va a intentar pasar igual, o la zanja queda abierta toda la noche en medio del camino.",
+      "checklist": [
+        "Planificar el cruce por mitades, dejando siempre un paso habilitado y señalizado.",
+        "Avisar a los vecinos antes y coordinar el horario de cierre con el supervisor y el control de tránsito.",
+        "Al terminar cada mitad, rellenar o tapar con planchas resistentes y fijas antes de abrir la otra."
+      ],
+      "normativa": "Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6; NCh 349 (seguridad en excavación).",
+      "reglaOro": "La zona de obras protege también a quien pasa por ella.",
+      "preguntaCierre": "¿Por dónde pasan hoy los vecinos mientras cruzamos su acceso?"
+    },
+    {
+      "id": 1417,
+      "codigo": "OA-122",
+      "especialidad": "OA",
+      "titulo": "Pozos profundos y estrechos: el aire también puede faltar",
+      "porQue": "Un pozo hondo y angosto, una cámara o una excavación cerca de un colector puede acumular gases o quedarse sin oxígeno, sobre todo si hay una motobomba o un generador cerca. No se huele ni se ve: la persona se marea, se desmaya y quien baja a ayudarla cae igual.",
+      "checklist": [
+        "Antes de bajar a un pozo profundo o una cámara, el supervisor define si se trata como espacio confinado y si se mide la atmósfera.",
+        "Motobombas, generadores y vehículos lejos del borde y con el escape hacia afuera.",
+        "Si alguien se marea o se desmaya dentro, no bajar a rescatarlo sin protección: dar la alarma y aplicar el plan de rescate."
+      ],
+      "normativa": "DS 594 (límites permisibles de gases); NCh 349 (seguridad en excavación); procedimiento de espacios confinados del proyecto.",
+      "reglaOro": "Todo frente de trabajo con plan de emergencia conocido por todos.",
+      "preguntaCierre": "¿Qué pozo de nuestro frente podría quedarse sin aire?"
+    },
+    {
+      "id": 1418,
+      "codigo": "OA-123",
+      "especialidad": "OA",
+      "titulo": "Vigía en el borde: nadie excava solo dentro de la zanja",
+      "porQue": "Quien trabaja dentro de una zanja no ve lo que pasa arriba: una máquina que se acerca, un camión que retrocede, material que se desliza o un compañero que lo llama. Si hay un derrumbe o se siente mal, nadie se entera si está solo.",
+      "checklist": [
+        "Siempre hay una persona en el borde mientras alguien trabaja dentro de una zanja.",
+        "El vigía avisa si se acerca maquinaria, si hay grietas en el borde o si cambia el clima, y sabe cómo dar la alarma.",
+        "El vigía no se distrae con otras tareas ni con el celular; si se va, el que está dentro sale."
+      ],
+      "normativa": "NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de emergencias del proyecto.",
+      "reglaOro": "Cuídate y cuida a tu compañero.",
+      "preguntaCierre": "¿Quién es hoy el vigía de la zanja y cómo da la alarma?"
+    },
+    {
+      "id": 1419,
+      "codigo": "OA-124",
+      "especialidad": "OA",
+      "titulo": "Romper el pavimento antes de excavar a mano",
+      "porQue": "Muchas excavaciones manuales comienzan cortando o rompiendo pavimento, una solera o un radier. La cortadora y el martillo demoledor generan polvo con sílice, ruido y vibración, y justo bajo el pavimento suelen pasar cables y tuberías poco profundos.",
+      "checklist": [
+        "Marcar el área y revisar servicios antes de cortar; cortar con agua para bajar el polvo.",
+        "Usar lentes, protección auditiva, respirador y calzado de seguridad; rotar a quien usa el martillo.",
+        "Al romper, no clavar el martillo a fondo: retirar el pavimento por partes y seguir a mano con pala bajo la capa."
+      ],
+      "normativa": "PLANESI (sílice); Protocolo PREXOR; DS 594 (vibraciones y EPP); Manual de Señalización de Tránsito, Cap. 5.",
+      "reglaOro": "Antes de excavar, saber qué hay abajo.",
+      "preguntaCierre": "¿Qué podría haber justo bajo el pavimento que vamos a romper?"
     },
     {
       "id": 5,
