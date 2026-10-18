@@ -44,9 +44,15 @@ no se versiona). La APK de publicación se firma solo si existen las variables
 - Cada charla: `id`, `codigo`, `especialidad`, `titulo`, `porQue`, `checklist` (exactamente 3
   puntos), `normativa`, `reglaOro`, `preguntaCierre`.
 - **Nunca reutilizar ni cambiar un `id`**: el historial y los planes de los teléfonos se
-  guardan por `id`. Una charla nueva usa el siguiente `id` libre de su especialidad.
-- `codigo` es correlativo por especialidad (`OA-01`, `OA-02`…); una prueba lo exige. Las
-  charlas se ordenan por especialidad y código.
+  guardan por `id`. Una charla nueva usa el siguiente `id` libre de su especialidad. Cada
+  especialidad tiene un bloque de 100 (MP 101–200, CT 201–300 … MT 901–1000); al agotarse,
+  sigue en su bloque + 1000 (Obras de Arte ya usa 1401–1500). Excavación Manual (EM) usa
+  1001–1100 para sus charlas nuevas; las que se trasladaron desde Obras de Arte conservan su
+  `id` original.
+- `codigo` es creciente y sin repetir por especialidad (`OA-01`, `OA-02`…); una prueba lo
+  exige. **Un código no se reutiliza**: una charla nueva toma el número siguiente al mayor de
+  su especialidad, aunque haya saltos (en Obras de Arte faltan OA-48 a OA-59 y OA-93 en
+  adelante, que pasaron a EM-01 a EM-44). Las charlas se ordenan por especialidad y número.
 - Al cambiar el contenido: **subir `version`**, actualizar `fecha` y escribir `novedades`
   (es el aviso que ve el capataz). Sin subir la versión, los teléfonos no lo descargan.
 - Títulos únicos. Mínimo 25 charlas por especialidad.
