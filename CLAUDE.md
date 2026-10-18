@@ -51,8 +51,8 @@ no se versiona). La APK de publicación se firma solo si existen las variables
   `id` original.
 - `codigo` es creciente y sin repetir por especialidad (`OA-01`, `OA-02`…); una prueba lo
   exige. **Un código no se reutiliza**: una charla nueva toma el número siguiente al mayor de
-  su especialidad, aunque haya saltos (en Obras de Arte faltan OA-48 a OA-59 y OA-93 en
-  adelante, que pasaron a EM-01 a EM-44). Las charlas se ordenan por especialidad y número.
+  su especialidad, aunque haya saltos (en Obras de Arte faltan OA-01, OA-48 a OA-59 y OA-93
+  en adelante, que pasaron a EM-45 y EM-01 a EM-44). Las charlas se ordenan por especialidad y número.
 - Al cambiar el contenido: **subir `version`**, actualizar `fecha` y escribir `novedades`
   (es el aviso que ve el capataz). Sin subir la versión, los teléfonos no lo descargan.
 - Títulos únicos. Mínimo 25 charlas por especialidad.

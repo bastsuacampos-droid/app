@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 14** · 2026-10-18 — Nueva especialidad Excavación Manual con 44 charlas: las de excavación manual que estaban en Obras de Arte (OA-48 a OA-59 y OA-93 en adelante) pasan a llamarse EM-01 a EM-44, sin perder el historial ni los planes. Incluye 22 charlas nuevas: permiso de excavación, servicios descubiertos, qué hacer si se golpea un cable o se rompe una tubería, postes y árboles, raíces, trabajo de rodillas, zanjas profundas, calor, pies mojados, bolones, laderas, ahoyadora, aguas servidas, arañas y avispas, ancho de la zanja, cajón de entibación, cruces de camino, pozos profundos, vigía en el borde y romper pavimento (458 charlas, 10 especialidades).
+**Versión 15** · 2026-10-18 — La charla "Zanjas y excavaciones: la tierra no avisa" pasa de Obras de Arte a Excavación Manual: antes OA-01, ahora EM-45. El historial y los planes se mantienen. Excavación Manual queda con 45 charlas.
 
 ## Índice por especialidad
 
@@ -143,9 +143,8 @@
 - **AS-34** Planta asfáltica: tolvas, secador y estanques calientes
 - **AS-35** Pavimentar de noche: luz, visibilidad y cansancio
 
-### Obras de Arte / Manuales (80)
+### Obras de Arte / Manuales (79)
 
-- **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
 - **OA-03** Enfierradura, moldajes y hormigón: cortes, golpes y quemaduras químicas
 - **OA-04** Herramientas eléctricas y de corte: el esmeril no perdona
@@ -226,7 +225,7 @@
 - **OA-91** Gatas hidráulicas: nunca bajo una carga sin calzas
 - **OA-92** Paraderos y refugios peatonales: obra chica junto al tránsito
 
-### Excavación Manual (44)
+### Excavación Manual (45)
 
 - **EM-01** Excavación manual junto a cables y tuberías: destapar con cuidado
 - **EM-02** Palear sin lesionarse: técnica, ritmo y rotación
@@ -272,6 +271,7 @@
 - **EM-42** Pozos profundos y estrechos: el aire también puede faltar
 - **EM-43** Vigía en el borde: nadie excava solo dentro de la zanja
 - **EM-44** Romper el pavimento antes de excavar a mano
+- **EM-45** Zanjas y excavaciones: la tierra no avisa
 
 ### Riesgos Transversales / Clima (81)
 
@@ -500,7 +500,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 | Actividad | Charlas recomendadas |
 |---|---|
-| Excavación de zanjas | MP-13, OA-01, EM-10, EM-43, OA-40, EM-05 |
+| Excavación de zanjas | EM-45, MP-13, EM-10, EM-43, OA-40, EM-05 |
 | Excavación manual | EM-03, EM-01, OA-14, EM-08, EM-09, EM-12 |
 | Instalación de tubos y alcantarillas | OA-37, MP-05, OA-06, OA-31, OA-38, EM-29 |
 | Terraplén y rellenos | MT-03, MP-04, MP-21, MT-02, MT-18, MT-34 |
@@ -553,7 +553,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | 1 | Lunes | MP-01 | Maquinaria Pesada | Si no te veo, no existes: zona de exclusión alrededor de la maquinaria |
 | 1 | Martes | CT-01 | Control de Tránsito / Paleteros | Paletero: tu posición te protege… o te expone |
 | 1 | Miércoles | AS-01 | Cuadrillas de Asfalto | Asfalto caliente: 150 °C que no perdonan |
-| 1 | Jueves | OA-01 | Obras de Arte / Manuales | Zanjas y excavaciones: la tierra no avisa |
+| 1 | Jueves | EM-45 | Excavación Manual | Zanjas y excavaciones: la tierra no avisa |
 | 1 | Viernes | RT-01 | Riesgos Transversales / Clima | Lluvia, barro y neblina: el clima del sur cambia las reglas |
 | 1 | Sábado | MP-02 | Maquinaria Pesada | Check pre-uso: 10 minutos que salvan el día |
 | 2 | Lunes | CT-02 | Control de Tránsito / Paleteros | Instalar y retirar el desvío: el momento más expuesto |
@@ -2759,23 +2759,6 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 ## Obras de Arte / Manuales
 
-### OA-01 · Zanjas y excavaciones: la tierra no avisa
-
-**El porqué (mensaje clave):** Un metro cúbico de tierra pesa cerca de 1.600 kilos, lo mismo que una camioneta. Cuando la pared de una zanja se viene abajo no hay tiempo para correr, y te puede atrapar hasta el pecho aunque la zanja parezca baja. Con las lluvias del sur el suelo saturado se vuelve aún más inestable. Por eso nadie baja a una excavación que no haya sido revisada ese mismo día.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Excavación revisada por una persona competente al inicio del turno y después de cada lluvia: talud o entibación según profundidad y tipo de suelo definidos en el procedimiento.
-2. [ ] Material excavado y maquinaria alejados del borde a la distancia que fija el procedimiento; borde demarcado con barrera y señalización.
-3. [ ] Acceso y salida seguros con escala que sobresalga del borde; nadie dentro de la zanja mientras la excavadora trabaja sobre ella.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
-- Normativa: NCh 349 (Construcción – Disposiciones de seguridad en excavación); DS 594 (condiciones de seguridad); Ley 16.744 Art. 68.
-
-**Pregunta de cierre:** Después de la lluvia de anoche, ¿quién revisa la zanja antes de que alguien baje?
-
 ### OA-02 · Manejo manual de carga: tu espalda no tiene repuesto
 
 **El porqué (mensaje clave):** Tubos, soleras, sacos de cemento y moldajes: levantamos peso todo el día. La lesión de espalda no llega de un día para otro; se acumula con cada levantamiento mal hecho, hasta que una mañana no te puedes agachar. La ley fija un máximo de 25 kilos por persona, pero lo más seguro es usar ayuda mecánica siempre que se pueda.
@@ -4868,6 +4851,23 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: PLANESI (sílice); Protocolo PREXOR; DS 594 (vibraciones y EPP); Manual de Señalización de Tránsito, Cap. 5.
 
 **Pregunta de cierre:** ¿Qué podría haber justo bajo el pavimento que vamos a romper?
+
+### EM-45 · Zanjas y excavaciones: la tierra no avisa
+
+**El porqué (mensaje clave):** Un metro cúbico de tierra pesa cerca de 1.600 kilos, lo mismo que una camioneta. Cuando la pared de una zanja se viene abajo no hay tiempo para correr, y te puede atrapar hasta el pecho aunque la zanja parezca baja. Con las lluvias del sur el suelo saturado se vuelve aún más inestable. Por eso nadie baja a una excavación que no haya sido revisada ese mismo día.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Excavación revisada por una persona competente al inicio del turno y después de cada lluvia: talud o entibación según profundidad y tipo de suelo definidos en el procedimiento.
+2. [ ] Material excavado y maquinaria alejados del borde a la distancia que fija el procedimiento; borde demarcado con barrera y señalización.
+3. [ ] Acceso y salida seguros con escala que sobresalga del borde; nadie dentro de la zanja mientras la excavadora trabaja sobre ella.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
+- Normativa: NCh 349 (Construcción – Disposiciones de seguridad en excavación); DS 594 (condiciones de seguridad); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** Después de la lluvia de anoche, ¿quién revisa la zanja antes de que alguien baje?
 
 ## Riesgos Transversales / Clima
 

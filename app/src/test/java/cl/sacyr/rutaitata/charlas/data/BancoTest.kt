@@ -40,16 +40,16 @@ class BancoTest {
             charlas.forEach { assertTrue("Código ${it.codigo}", Regex("${esp.id}-\\d{2,}").matches(it.codigo)) }
             val numeros = charlas.map { it.numero }
             assertEquals("${esp.nombre}: códigos desordenados o repetidos", numeros.distinct().sorted(), numeros)
-            assertEquals("${esp.nombre} debe partir en 01", 1, numeros.first())
         }
     }
 
     @Test
     fun excavacionManualConservaLosIdsDeLasCharlasTrasladadas() {
-        // OA-48 pasó a EM-01 y OA-124 a EM-44: los teléfonos guardan el historial por id.
+        // OA-48 pasó a EM-01, OA-124 a EM-44 y OA-01 a EM-45: los teléfonos guardan el historial por id.
         assertEquals("EM-01", banco.charla(443)?.codigo)
         assertEquals("EM-44", banco.charla(1419)?.codigo)
-        assertTrue(banco.charlas.none { it.codigo == "OA-48" || it.codigo == "OA-124" })
+        assertEquals("EM-45", banco.charla(4)?.codigo)
+        assertTrue(banco.charlas.none { it.codigo in setOf("OA-01", "OA-48", "OA-124") })
     }
 
     @Test
@@ -66,10 +66,12 @@ class BancoTest {
         for (semana in 1..4) for (dia in 1..6) {
             assertNotNull("Falta semana $semana día $dia", banco.charla(semana, dia))
         }
-        // Plan sugerido original: cada semana cubre las 5 especialidades base.
+        // Plan sugerido original: cada semana cubre las 5 especialidades base. Obras de Arte cuenta
+        // también como Excavación Manual, que se separó de ella (la zanja de la semana 1 es EM-45).
         val base = setOf("MP", "CT", "AS", "OA", "RT")
         banco.plan.groupBy { it.semana }.forEach { (semana, entradas) ->
-            val especialidades = entradas.mapNotNull { banco.charla(it.charlaId)?.especialidadId }.toSet()
+            val especialidades = entradas.mapNotNull { banco.charla(it.charlaId)?.especialidadId }
+                .map { if (it == "EM") "OA" else it }.toSet()
             assertEquals("Semana $semana", base, especialidades)
         }
     }
@@ -77,7 +79,7 @@ class BancoTest {
     @Test
     fun elBancoIncluidoEsValidoYTieneVersion() {
         assertEquals(emptyList<String>(), BancoParser.validar(banco))
-        assertTrue(banco.version >= 14)
+        assertTrue(banco.version >= 15)
         assertTrue(banco.actividades.size >= 45)
     }
 
