@@ -21,7 +21,7 @@ class BancoTest {
     @Test
     fun incluyeLasEspecialidadesDeObrasCiviles() {
         val nombres = banco.especialidades.map { it.nombre }
-        listOf("Carpintería", "Enfierradura", "Hormigonado", "Movimiento de Tierra").forEach {
+        listOf("Carpintería", "Enfierradura", "Hormigonado", "Movimiento de Tierra", "Excavación Manual").forEach {
             assertTrue("Falta $it", it in nombres)
         }
     }
@@ -33,11 +33,23 @@ class BancoTest {
     }
 
     @Test
-    fun codigosCorrelativosPorEspecialidad() {
+    fun codigosDeCadaEspecialidadSonCrecientesYSinRepetir() {
+        // Puede haber saltos: el código de una charla trasladada a otra especialidad no se reutiliza.
         banco.especialidades.forEach { esp ->
-            val codigos = banco.charlasDe(esp.id).map { it.codigo }
-            assertEquals(List(codigos.size) { "${esp.id}-%02d".format(it + 1) }, codigos)
+            val charlas = banco.charlasDe(esp.id)
+            charlas.forEach { assertTrue("Código ${it.codigo}", Regex("${esp.id}-\\d{2,}").matches(it.codigo)) }
+            val numeros = charlas.map { it.numero }
+            assertEquals("${esp.nombre}: códigos desordenados o repetidos", numeros.distinct().sorted(), numeros)
+            assertEquals("${esp.nombre} debe partir en 01", 1, numeros.first())
         }
+    }
+
+    @Test
+    fun excavacionManualConservaLosIdsDeLasCharlasTrasladadas() {
+        // OA-48 pasó a EM-01 y OA-124 a EM-44: los teléfonos guardan el historial por id.
+        assertEquals("EM-01", banco.charla(443)?.codigo)
+        assertEquals("EM-44", banco.charla(1419)?.codigo)
+        assertTrue(banco.charlas.none { it.codigo == "OA-48" || it.codigo == "OA-124" })
     }
 
     @Test

@@ -6,11 +6,11 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 
 ## Qué incluye
 
-- **458 charlas** en 9 especialidades, con al menos 25 cada una: Maquinaria
+- **458 charlas** en 10 especialidades, con al menos 25 cada una: Maquinaria
   Pesada (MP), Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
-  Obras de Arte / Manuales (OA), Riesgos Transversales / Clima (RT),
-  Carpintería (CA), Enfierradura (EN), Hormigonado (HO) y Movimiento de
-  Tierra (MT). Cada una tiene un código (por ejemplo `CA-07`).
+  Obras de Arte / Manuales (OA), Excavación Manual (EM), Riesgos Transversales /
+  Clima (RT), Carpintería (CA), Enfierradura (EN), Hormigonado (HO) y Movimiento
+  de Tierra (MT). Cada una tiene un código (por ejemplo `CA-07`).
 - Cada charla trae: **título**, **el porqué** (mensaje clave), **3 puntos de
   control** marcables en terreno, **respaldo estándar** (Regla de Oro y
   normativa chilena) y una **pregunta de cierre** para la cuadrilla.

@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 14** · 2026-10-18 — 22 charlas nuevas de excavación manual: permiso de excavación, servicios descubiertos, qué hacer si se golpea un cable o se rompe una tubería, postes y árboles, raíces, trabajo de rodillas, sacar tierra de zanjas profundas, calor, pies mojados, bolones, laderas, ahoyadora, aguas servidas, arañas y avispas, pasar herramientas, ancho de la zanja, cajón de entibación, cruces de camino, pozos profundos, vigía en el borde y romper pavimento (458 charlas, 45 actividades).
+**Versión 14** · 2026-10-18 — Nueva especialidad Excavación Manual con 44 charlas: las de excavación manual que estaban en Obras de Arte (OA-48 a OA-59 y OA-93 en adelante) pasan a llamarse EM-01 a EM-44, sin perder el historial ni los planes. Incluye 22 charlas nuevas: permiso de excavación, servicios descubiertos, qué hacer si se golpea un cable o se rompe una tubería, postes y árboles, raíces, trabajo de rodillas, zanjas profundas, calor, pies mojados, bolones, laderas, ahoyadora, aguas servidas, arañas y avispas, ancho de la zanja, cajón de entibación, cruces de camino, pozos profundos, vigía en el borde y romper pavimento (458 charlas, 10 especialidades).
 
 ## Índice por especialidad
 
@@ -143,7 +143,7 @@
 - **AS-34** Planta asfáltica: tolvas, secador y estanques calientes
 - **AS-35** Pavimentar de noche: luz, visibilidad y cansancio
 
-### Obras de Arte / Manuales (124)
+### Obras de Arte / Manuales (80)
 
 - **OA-01** Zanjas y excavaciones: la tierra no avisa
 - **OA-02** Manejo manual de carga: tu espalda no tiene repuesto
@@ -192,18 +192,6 @@
 - **OA-45** Extensiones y cables en terreno: electricidad con barro y agua
 - **OA-46** Limpieza de cunetas y fosos con la ruta abierta
 - **OA-47** Geotextil y tuberías de drenaje: rollos pesados y zanjas angostas
-- **OA-48** Excavación manual junto a cables y tuberías: destapar con cuidado
-- **OA-49** Palear sin lesionarse: técnica, ritmo y rotación
-- **OA-50** Calicatas y pozos de inspección: hoyos que parecen chicos
-- **OA-51** Hoyos para postes y fundaciones pequeñas en la berma
-- **OA-52** El material excavado: dónde dejarlo para que no vuelva a la zanja
-- **OA-53** Excavar junto a estructuras existentes: no socavar lo que sostiene
-- **OA-54** Agua en la excavación manual: barro que ablanda las paredes
-- **OA-55** Terreno duro y roca: chuzo, picota y martillo sin lesionarse
-- **OA-56** Excavar en pareja: la distancia que evita el golpe al compañero
-- **OA-57** La zanja 'poco profunda' también atrapa
-- **OA-58** Hallazgos durante la excavación: detener, proteger y avisar
-- **OA-59** Relleno y compactación manual con pisón
 - **OA-60** Soldadora al arco: cables, pinza y masa en buen estado
 - **OA-61** Radiación del arco: los ojos del soldador y de los que miran
 - **OA-62** El equipo del soldador: careta, coleto y ropa que no se derrite
@@ -237,38 +225,53 @@
 - **OA-90** Pintura anticorrosiva y solventes en estructuras metálicas
 - **OA-91** Gatas hidráulicas: nunca bajo una carga sin calzas
 - **OA-92** Paraderos y refugios peatonales: obra chica junto al tránsito
-- **OA-93** Entibación: se instala antes de entrar y se retira desde afuera
-- **OA-94** Entrar y salir de la zanja: escala, no paredes ni baldes
-- **OA-95** Perfilar a mano junto a la excavadora
-- **OA-96** Excavación abierta al final del día: cerrarla y señalizarla
-- **OA-97** Compañero atrapado en un derrumbe: qué hacer y qué no
-- **OA-98** Revisar la zanja cada día: grietas, agua y vibraciones
-- **OA-99** Talud y escalonado: darle a la pared la inclinación que necesita
-- **OA-100** Cruzar la zanja: pasarelas, no saltos
-- **OA-101** Excavar a mano junto a la calzada con tránsito
-- **OA-102** Suelos de relleno, arena y barro: los más traicioneros
-- **OA-103** Permiso de excavación: antes del primer palazo
-- **OA-104** Servicios descubiertos: sostener cañerías y cables expuestos
-- **OA-105** Si golpeas un cable eléctrico: aléjate y no lo toques
-- **OA-106** Si rompes una tubería: gas, agua o alcantarillado
-- **OA-107** Excavar al pie de un poste o de un árbol
-- **OA-108** Raíces y tocones: hacha y machete dentro de la zanja
-- **OA-109** Trabajar de rodillas o agachado en la zanja
-- **OA-110** Sacar la tierra de una zanja profunda: baldes, cuerdas y banquetas
-- **OA-111** Calor en el fondo de la zanja
-- **OA-112** Pies mojados todo el día: botas, calcetines y frío
-- **OA-113** Bolones y piedras grandes: sacarlas sin aplastarse
-- **OA-114** Excavar en ladera: lo que está arriba rueda hacia ti
-- **OA-115** Ahoyadora a motor: el torque que tuerce las muñecas
-- **OA-116** Aguas servidas en la excavación: riesgo biológico
-- **OA-117** Arañas, avispas y roedores al remover tierra y piedras
-- **OA-118** Pasar herramientas a la zanja: nunca lanzarlas
-- **OA-119** Ancho de la zanja: espacio para trabajar y para salir
-- **OA-120** Cajón de entibación: trabajar siempre dentro
-- **OA-121** Cruce de camino o acceso: excavar por mitades
-- **OA-122** Pozos profundos y estrechos: el aire también puede faltar
-- **OA-123** Vigía en el borde: nadie excava solo dentro de la zanja
-- **OA-124** Romper el pavimento antes de excavar a mano
+
+### Excavación Manual (44)
+
+- **EM-01** Excavación manual junto a cables y tuberías: destapar con cuidado
+- **EM-02** Palear sin lesionarse: técnica, ritmo y rotación
+- **EM-03** Calicatas y pozos de inspección: hoyos que parecen chicos
+- **EM-04** Hoyos para postes y fundaciones pequeñas en la berma
+- **EM-05** El material excavado: dónde dejarlo para que no vuelva a la zanja
+- **EM-06** Excavar junto a estructuras existentes: no socavar lo que sostiene
+- **EM-07** Agua en la excavación manual: barro que ablanda las paredes
+- **EM-08** Terreno duro y roca: chuzo, picota y martillo sin lesionarse
+- **EM-09** Excavar en pareja: la distancia que evita el golpe al compañero
+- **EM-10** La zanja 'poco profunda' también atrapa
+- **EM-11** Hallazgos durante la excavación: detener, proteger y avisar
+- **EM-12** Relleno y compactación manual con pisón
+- **EM-13** Entibación: se instala antes de entrar y se retira desde afuera
+- **EM-14** Entrar y salir de la zanja: escala, no paredes ni baldes
+- **EM-15** Perfilar a mano junto a la excavadora
+- **EM-16** Excavación abierta al final del día: cerrarla y señalizarla
+- **EM-17** Compañero atrapado en un derrumbe: qué hacer y qué no
+- **EM-18** Revisar la zanja cada día: grietas, agua y vibraciones
+- **EM-19** Talud y escalonado: darle a la pared la inclinación que necesita
+- **EM-20** Cruzar la zanja: pasarelas, no saltos
+- **EM-21** Excavar a mano junto a la calzada con tránsito
+- **EM-22** Suelos de relleno, arena y barro: los más traicioneros
+- **EM-23** Permiso de excavación: antes del primer palazo
+- **EM-24** Servicios descubiertos: sostener cañerías y cables expuestos
+- **EM-25** Si golpeas un cable eléctrico: aléjate y no lo toques
+- **EM-26** Si rompes una tubería: gas, agua o alcantarillado
+- **EM-27** Excavar al pie de un poste o de un árbol
+- **EM-28** Raíces y tocones: hacha y machete dentro de la zanja
+- **EM-29** Trabajar de rodillas o agachado en la zanja
+- **EM-30** Sacar la tierra de una zanja profunda: baldes, cuerdas y banquetas
+- **EM-31** Calor en el fondo de la zanja
+- **EM-32** Pies mojados todo el día: botas, calcetines y frío
+- **EM-33** Bolones y piedras grandes: sacarlas sin aplastarse
+- **EM-34** Excavar en ladera: lo que está arriba rueda hacia ti
+- **EM-35** Ahoyadora a motor: el torque que tuerce las muñecas
+- **EM-36** Aguas servidas en la excavación: riesgo biológico
+- **EM-37** Arañas, avispas y roedores al remover tierra y piedras
+- **EM-38** Pasar herramientas a la zanja: nunca lanzarlas
+- **EM-39** Ancho de la zanja: espacio para trabajar y para salir
+- **EM-40** Cajón de entibación: trabajar siempre dentro
+- **EM-41** Cruce de camino o acceso: excavar por mitades
+- **EM-42** Pozos profundos y estrechos: el aire también puede faltar
+- **EM-43** Vigía en el borde: nadie excava solo dentro de la zanja
+- **EM-44** Romper el pavimento antes de excavar a mano
 
 ### Riesgos Transversales / Clima (81)
 
@@ -497,9 +500,9 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 | Actividad | Charlas recomendadas |
 |---|---|
-| Excavación de zanjas | MP-13, OA-01, OA-40, OA-57, OA-123, MT-36 |
-| Excavación manual | OA-50, OA-14, OA-48, OA-55, OA-56, OA-59 |
-| Instalación de tubos y alcantarillas | OA-37, MP-05, OA-06, OA-31, OA-38, OA-109 |
+| Excavación de zanjas | MP-13, OA-01, EM-10, EM-43, OA-40, EM-05 |
+| Excavación manual | EM-03, EM-01, OA-14, EM-08, EM-09, EM-12 |
+| Instalación de tubos y alcantarillas | OA-37, MP-05, OA-06, OA-31, OA-38, EM-29 |
 | Terraplén y rellenos | MT-03, MP-04, MP-21, MT-02, MT-18, MT-34 |
 | Corte de talud y roca | MT-29, MT-30, MT-01, MT-12, MT-31, MT-36 |
 | Tránsito de camiones y caminos internos | CT-04, CT-29, MT-06, CT-30, MP-04, MP-22 |
@@ -521,9 +524,9 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Defensas camineras y barreras | OA-12, OA-27, OA-28, OA-26, CT-27, CT-09 |
 | Mantención y combustible de equipos | MP-31, MP-09, MP-29, MP-02, MP-10, MP-30 |
 | Traslado de maquinaria | MP-11, MP-26, MP-27, MP-28, MP-23, CT-28 |
-| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-69, OA-81, OA-106 |
+| Cámaras y espacios confinados | OA-19, OA-29, OA-30, OA-69, OA-81, OA-16 |
 | Lluvia, frío, viento o neblina | RT-01, RT-30, HO-17, RT-05, RT-32, RT-31 |
-| Calor y sol | AS-20, RT-03, RT-33, RT-34, OA-111, AS-09 |
+| Calor y sol | AS-20, RT-03, RT-33, RT-34, EM-31, AS-09 |
 | Ingreso de personal nuevo o subcontratistas | RT-18, RT-22, RT-26, RT-27, RT-29, RT-28 |
 | Topografía y replanteo | MT-09, MT-32, MT-36, MT-08, MT-33, CT-20 |
 | Base y subbase granular | MT-34, MT-02, MP-21, MT-35, MT-18, AS-27 |
@@ -3555,210 +3558,6 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cuánto pesa el rollo de geotextil de hoy y cómo lo vamos a mover?
 
-### OA-48 · Excavación manual junto a cables y tuberías: destapar con cuidado
-
-**El porqué (mensaje clave):** Cuando hay servicios enterrados (cables eléctricos, fibra, agua o gas), la máquina se detiene a cierta distancia y el resto se excava a mano para ubicarlos sin dañarlos. Pero un golpe de chuzo o de pala sobre un cable energizado puede electrocutar a quien lo da. Excavar a mano no significa excavar sin riesgo: se hace con método.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Trazado de los servicios marcado en terreno y conocido por la cuadrilla antes de empezar; profundidad aproximada informada.
-2. [ ] Cerca del servicio, usar pala (no chuzo ni picota) y excavar con golpes suaves desde el costado, nunca clavando la herramienta hacia abajo sobre la marca.
-3. [ ] Al aparecer la cinta de advertencia, el ducto o el cable: detener, avisar al supervisor y no seguir hasta que se confirme qué es y si está energizado.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Ninguna excavación sin verificar interferencias.
-- Normativa: Normativa eléctrica y de gas SEC; NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de interferencias del proyecto.
-
-**Pregunta de cierre:** ¿Qué servicio pasa bajo el tramo que excavamos hoy a mano y con qué herramienta nos acercamos?
-
-### OA-49 · Palear sin lesionarse: técnica, ritmo y rotación
-
-**El porqué (mensaje clave):** Una jornada de excavación manual son cientos de paladas. Cada pala con tierra mojada puede pesar varios kilos y, si se lanza girando la espalda o con los brazos estirados, el daño se acumula en la zona lumbar y en los hombros. Las lesiones de espalda son la principal causa de días perdidos en este trabajo.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Pala del largo adecuado a la altura del trabajador y con mango en buen estado; cargar la pala a medias si el material está mojado.
-2. [ ] Técnica: pies separados, flectar las rodillas, la pala cerca del cuerpo y girar con los pies, no con la cintura; no lanzar el material lejos ni por sobre el hombro.
-3. [ ] Ritmo parejo, pausas y rotación de tareas entre excavar, palear y retirar material.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Cuidar el cuerpo es parte de la tarea.
-- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); Guía Técnica para la Evaluación y Control de Riesgos asociados al Manejo o Manipulación Manual de Carga; Ley 16.744 Art. 68.
-
-**Pregunta de cierre:** Muéstrame cómo giras con la pala llena sin torcer la espalda.
-
-### OA-50 · Calicatas y pozos de inspección: hoyos que parecen chicos
-
-**El porqué (mensaje clave):** Las calicatas para revisar el suelo o ubicar servicios suelen hacerse a mano y parecen pequeñas. Pero un pozo de un metro y medio, con paredes verticales y tierra suelta, puede derrumbarse sobre quien está agachado adentro. Y cuando se deja abierto, es una trampa para personas, animales y vehículos.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Antes de profundizar, definir hasta dónde se puede excavar sin talud ni entibación según el procedimiento y el tipo de suelo; no superar ese límite.
-2. [ ] Nunca trabajar agachado o acostado dentro de un pozo profundo sin protección; muestras y mediciones desde el borde cuando sea posible.
-3. [ ] Pozo cercado y señalizado mientras esté abierto, y tapado o rellenado al terminar.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Ninguna abertura en el suelo sin protección.
-- Normativa: NCh 349 (seguridad en excavación); DS 594 (protección de aberturas); Ley 16.744 Art. 68.
-
-**Pregunta de cierre:** ¿Qué profundidad tendrá la calicata de hoy y cómo la dejamos al irnos?
-
-### OA-51 · Hoyos para postes y fundaciones pequeñas en la berma
-
-**El porqué (mensaje clave):** Para postes de señales, defensas o cercos se excavan hoyos angostos y profundos, muchas veces en la berma junto al tránsito. El trabajador queda agachado, con la cabeza a la altura de los vehículos que pasan, y el hoyo abierto queda en el camino de quien se baje de un auto o camine por la orilla.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Faena protegida con la señalización de faena móvil o desvío según el plano, y trabajadores de frente al tránsito.
-2. [ ] Usar herramientas de mango largo (pala hoyadora, barreno manual) para no meter el cuerpo en el hoyo; material excavado lejos de la calzada.
-3. [ ] Hoyos tapados, cercados o rellenados apenas se instala el poste; nunca dejarlos abiertos de noche.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Ningún trabajo en la vía sin señalización, por corto que sea.
-- Normativa: Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594.
-
-**Pregunta de cierre:** ¿Cuántos hoyos quedarán hoy abiertos en la berma y cómo los protegemos?
-
-### OA-52 · El material excavado: dónde dejarlo para que no vuelva a la zanja
-
-**El porqué (mensaje clave):** La tierra que sacamos a mano la dejamos casi siempre al lado, en el borde. Ese montón carga el borde de la excavación, puede deslizarse de vuelta sobre quien trabaja adentro y tapa la vista del borde. Si queda en la calzada o en un acceso, se convierte en obstáculo para terceros.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Material acopiado a la distancia del borde que define el procedimiento, en un solo lado y con una altura que no lo haga inestable.
-2. [ ] Piedras y bolones retirados del borde para que no rueden hacia adentro.
-3. [ ] Nada de material sobre la calzada, accesos de vecinos ni cunetas; retiro programado si no se usará para el relleno.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Nunca ubicarse bajo cargas o materiales que puedan caer.
-- Normativa: NCh 349 (seguridad en excavación); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.
-
-**Pregunta de cierre:** ¿A qué distancia del borde quedó ayer la tierra que sacamos?
-
-### OA-53 · Excavar junto a estructuras existentes: no socavar lo que sostiene
-
-**El porqué (mensaje clave):** Al excavar a mano junto a muros, cabezales de alcantarillas, postes o bordes de pavimento existentes, es fácil sacar tierra por debajo de su base. La estructura pierde apoyo y puede inclinarse o caer sobre quien está excavando. El peligro no está en la tierra, sino en lo que está encima.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Revisar qué estructura hay junto a la excavación y hasta dónde llega su fundación antes de empezar.
-2. [ ] No excavar bajo el nivel de la base de una estructura sin la indicación del responsable técnico (apuntalamiento o excavación por tramos).
-3. [ ] Ante grietas, inclinación o asentamientos en la estructura: salir de la excavación y avisar.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Ante la duda, el trabajo se detiene.
-- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis.
-
-**Pregunta de cierre:** ¿Qué estructura está hoy junto a la excavación y hasta dónde llega su base?
-
-### OA-54 · Agua en la excavación manual: barro que ablanda las paredes
-
-**El porqué (mensaje clave):** Cuando aparece agua de napa o de lluvia, la excavación se llena de barro, las paredes se ablandan y las botas se hunden. El suelo saturado puede derrumbarse aunque la excavación sea poco profunda, y trabajar con barro hasta las rodillas aumenta el esfuerzo y el riesgo de caídas.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Si aparece agua, detener la excavación y evaluar con el supervisor: agotamiento, talud o entibación antes de seguir.
-2. [ ] Bombas eléctricas con protección diferencial y motobombas fuera de la excavación.
-3. [ ] Botas de agua y ropa impermeable; no trabajar solo dentro de una excavación con agua.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.
-- Normativa: NCh 349; DS 8/2019 (instalaciones eléctricas); DS 594 (Art. 53 sobre EPP); Código del Trabajo Art. 184 bis.
-
-**Pregunta de cierre:** Si mañana aparece agua en el pozo, ¿quién decide si seguimos?
-
-### OA-55 · Terreno duro y roca: chuzo, picota y martillo sin lesionarse
-
-**El porqué (mensaje clave):** Cuando el terreno es duro o aparece roca, la excavación manual se hace con chuzo, picota o martillo eléctrico. Cada golpe puede lanzar fragmentos a los ojos, rebotar la herramienta hacia las piernas o lastimar las muñecas. Con el martillo se suman la vibración, el ruido y el polvo.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Lentes de seguridad siempre; con martillo, además protección auditiva y respiratoria y humedecer el material.
-2. [ ] Herramienta con mango firme y cabeza bien fija; pies separados y fuera de la trayectoria del golpe.
-3. [ ] Rotar al trabajador en el martillo y no forzar: si el terreno no cede, pedir apoyo de equipo.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Herramientas en buen estado y usadas para su fin.
-- Normativa: DS 594 (ruido, vibraciones, sílice y Art. 53); Protocolo PREXOR; PLANESI.
-
-**Pregunta de cierre:** ¿Quién usa hoy el chuzo y a qué distancia debe estar el compañero?
-
-### OA-56 · Excavar en pareja: la distancia que evita el golpe al compañero
-
-**El porqué (mensaje clave):** Cuando dos o más personas excavan a mano en el mismo pozo o zanja, el chuzo, la picota o la pala de uno pasa muy cerca del otro. Un golpe en la cabeza, en la mano o en el pie del compañero es un accidente frecuente en excavaciones estrechas, sobre todo cuando ambos están concentrados en su parte.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Distancia mínima entre trabajadores igual o mayor al largo de la herramienta más el brazo; en espacios estrechos, trabajar por turnos.
-2. [ ] Avisar antes de levantar el chuzo o la picota y mirar dónde está el compañero.
-3. [ ] Casco con barbiquejo y calzado de seguridad con puntera para quienes están dentro.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Planificar la tarea: cada persona sabe qué hace y dónde está.
-- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).
-
-**Pregunta de cierre:** ¿Cuántas personas caben trabajando seguras en el pozo de hoy?
-
-### OA-57 · La zanja 'poco profunda' también atrapa
-
-**El porqué (mensaje clave):** Muchas zanjas manuales empiezan bajas y se van profundizando de a poco, sin que nadie se detenga a revisar cuándo pasaron el límite seguro. Un derrumbe que te cubre hasta la cintura ya puede impedirte respirar o salir, y los rescatistas improvisados pueden provocar un segundo derrumbe.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Medir la profundidad durante la excavación y detenerse al llegar al límite definido para trabajar sin talud ni entibación.
-2. [ ] Al superar ese límite: talud o entibación antes de que alguien vuelva a entrar.
-3. [ ] Si ocurre un derrumbe con alguien atrapado: activar la emergencia de inmediato y no entrar sin asegurar las paredes.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
-- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de emergencias del proyecto.
-
-**Pregunta de cierre:** ¿Hasta qué profundidad podemos excavar hoy sin protección y quién lo controla?
-
-### OA-58 · Hallazgos durante la excavación: detener, proteger y avisar
-
-**El porqué (mensaje clave):** Al excavar a mano pueden aparecer objetos inesperados: restos arqueológicos, huesos, cerámica, tambores enterrados, residuos con olor extraño o tuberías antiguas. Seguir excavando puede destruir un patrimonio protegido por ley, liberar sustancias peligrosas o romper un servicio desconocido.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Ante cualquier hallazgo: detener la excavación en ese punto, no mover ni retirar nada y demarcar el área.
-2. [ ] Avisar de inmediato al supervisor, quien informa al área ambiental o patrimonial del proyecto.
-3. [ ] No tocar residuos desconocidos ni olerlos de cerca; alejarse si hay olores fuertes o líquidos.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Ante la duda, el trabajo se detiene.
-- Normativa: Ley 17.288 de Monumentos Nacionales (hallazgos arqueológicos); DS 148/2003 (residuos peligrosos); compromisos ambientales del proyecto.
-
-**Pregunta de cierre:** Si mañana aparece un hueso o una vasija al excavar, ¿qué es lo primero que haces?
-
-### OA-59 · Relleno y compactación manual con pisón
-
-**El porqué (mensaje clave):** Después de excavar a mano, el relleno también suele hacerse a mano, por capas y apisonando con pisón manual o vibropisón. Es un trabajo repetitivo, con golpes que cargan los hombros y la espalda, muchas veces dentro de la misma zanja y con material que se descarga desde arriba.
-
-**Puntos de control (checklist de terreno):**
-
-1. [ ] Relleno por capas delgadas según lo indicado; pisón en buen estado y del peso adecuado.
-2. [ ] Postura erguida al apisonar, sin levantar el pisón más de lo necesario; rotación y pausas.
-3. [ ] Nadie dentro de la zanja mientras se descarga material desde el borde o con equipo.
-
-**Respaldo estándar:**
-
-- Regla de Oro: Planificar la tarea para reducir el esfuerzo.
-- Normativa: Código del Trabajo Arts. 211-F a 211-J; DS 594 (vibraciones y Art. 53); NCh 349.
-
-**Pregunta de cierre:** ¿Cómo nos vamos a turnar hoy para apisonar el relleno?
-
 ### OA-60 · Soldadora al arco: cables, pinza y masa en buen estado
 
 **El porqué (mensaje clave):** La soldadora al arco trabaja con corriente suficiente para electrocutar, sobre todo cuando el soldador está mojado, sudado o apoyado en metal. Un cable con la aislación rota, una pinza porta electrodo dañada o una masa mal conectada hacen que la corriente busque otro camino, y ese camino puede ser el cuerpo.
@@ -4320,7 +4119,213 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Dónde espera hoy el bus la gente del paradero que estamos interviniendo?
 
-### OA-93 · Entibación: se instala antes de entrar y se retira desde afuera
+## Excavación Manual
+
+### EM-01 · Excavación manual junto a cables y tuberías: destapar con cuidado
+
+**El porqué (mensaje clave):** Cuando hay servicios enterrados (cables eléctricos, fibra, agua o gas), la máquina se detiene a cierta distancia y el resto se excava a mano para ubicarlos sin dañarlos. Pero un golpe de chuzo o de pala sobre un cable energizado puede electrocutar a quien lo da. Excavar a mano no significa excavar sin riesgo: se hace con método.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Trazado de los servicios marcado en terreno y conocido por la cuadrilla antes de empezar; profundidad aproximada informada.
+2. [ ] Cerca del servicio, usar pala (no chuzo ni picota) y excavar con golpes suaves desde el costado, nunca clavando la herramienta hacia abajo sobre la marca.
+3. [ ] Al aparecer la cinta de advertencia, el ducto o el cable: detener, avisar al supervisor y no seguir hasta que se confirme qué es y si está energizado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ninguna excavación sin verificar interferencias.
+- Normativa: Normativa eléctrica y de gas SEC; NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de interferencias del proyecto.
+
+**Pregunta de cierre:** ¿Qué servicio pasa bajo el tramo que excavamos hoy a mano y con qué herramienta nos acercamos?
+
+### EM-02 · Palear sin lesionarse: técnica, ritmo y rotación
+
+**El porqué (mensaje clave):** Una jornada de excavación manual son cientos de paladas. Cada pala con tierra mojada puede pesar varios kilos y, si se lanza girando la espalda o con los brazos estirados, el daño se acumula en la zona lumbar y en los hombros. Las lesiones de espalda son la principal causa de días perdidos en este trabajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Pala del largo adecuado a la altura del trabajador y con mango en buen estado; cargar la pala a medias si el material está mojado.
+2. [ ] Técnica: pies separados, flectar las rodillas, la pala cerca del cuerpo y girar con los pies, no con la cintura; no lanzar el material lejos ni por sobre el hombro.
+3. [ ] Ritmo parejo, pausas y rotación de tareas entre excavar, palear y retirar material.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuidar el cuerpo es parte de la tarea.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); Guía Técnica para la Evaluación y Control de Riesgos asociados al Manejo o Manipulación Manual de Carga; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** Muéstrame cómo giras con la pala llena sin torcer la espalda.
+
+### EM-03 · Calicatas y pozos de inspección: hoyos que parecen chicos
+
+**El porqué (mensaje clave):** Las calicatas para revisar el suelo o ubicar servicios suelen hacerse a mano y parecen pequeñas. Pero un pozo de un metro y medio, con paredes verticales y tierra suelta, puede derrumbarse sobre quien está agachado adentro. Y cuando se deja abierto, es una trampa para personas, animales y vehículos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de profundizar, definir hasta dónde se puede excavar sin talud ni entibación según el procedimiento y el tipo de suelo; no superar ese límite.
+2. [ ] Nunca trabajar agachado o acostado dentro de un pozo profundo sin protección; muestras y mediciones desde el borde cuando sea posible.
+3. [ ] Pozo cercado y señalizado mientras esté abierto, y tapado o rellenado al terminar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ninguna abertura en el suelo sin protección.
+- Normativa: NCh 349 (seguridad en excavación); DS 594 (protección de aberturas); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué profundidad tendrá la calicata de hoy y cómo la dejamos al irnos?
+
+### EM-04 · Hoyos para postes y fundaciones pequeñas en la berma
+
+**El porqué (mensaje clave):** Para postes de señales, defensas o cercos se excavan hoyos angostos y profundos, muchas veces en la berma junto al tránsito. El trabajador queda agachado, con la cabeza a la altura de los vehículos que pasan, y el hoyo abierto queda en el camino de quien se baje de un auto o camine por la orilla.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Faena protegida con la señalización de faena móvil o desvío según el plano, y trabajadores de frente al tránsito.
+2. [ ] Usar herramientas de mango largo (pala hoyadora, barreno manual) para no meter el cuerpo en el hoyo; material excavado lejos de la calzada.
+3. [ ] Hoyos tapados, cercados o rellenados apenas se instala el poste; nunca dejarlos abiertos de noche.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ningún trabajo en la vía sin señalización, por corto que sea.
+- Normativa: Manual de Señalización de Tránsito (MTT), Cap. 5; Manual de Carreteras MOP, Vol. 6; DS 594.
+
+**Pregunta de cierre:** ¿Cuántos hoyos quedarán hoy abiertos en la berma y cómo los protegemos?
+
+### EM-05 · El material excavado: dónde dejarlo para que no vuelva a la zanja
+
+**El porqué (mensaje clave):** La tierra que sacamos a mano la dejamos casi siempre al lado, en el borde. Ese montón carga el borde de la excavación, puede deslizarse de vuelta sobre quien trabaja adentro y tapa la vista del borde. Si queda en la calzada o en un acceso, se convierte en obstáculo para terceros.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Material acopiado a la distancia del borde que define el procedimiento, en un solo lado y con una altura que no lo haga inestable.
+2. [ ] Piedras y bolones retirados del borde para que no rueden hacia adentro.
+3. [ ] Nada de material sobre la calzada, accesos de vecinos ni cunetas; retiro programado si no se usará para el relleno.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse bajo cargas o materiales que puedan caer.
+- Normativa: NCh 349 (seguridad en excavación); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿A qué distancia del borde quedó ayer la tierra que sacamos?
+
+### EM-06 · Excavar junto a estructuras existentes: no socavar lo que sostiene
+
+**El porqué (mensaje clave):** Al excavar a mano junto a muros, cabezales de alcantarillas, postes o bordes de pavimento existentes, es fácil sacar tierra por debajo de su base. La estructura pierde apoyo y puede inclinarse o caer sobre quien está excavando. El peligro no está en la tierra, sino en lo que está encima.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar qué estructura hay junto a la excavación y hasta dónde llega su fundación antes de empezar.
+2. [ ] No excavar bajo el nivel de la base de una estructura sin la indicación del responsable técnico (apuntalamiento o excavación por tramos).
+3. [ ] Ante grietas, inclinación o asentamientos en la estructura: salir de la excavación y avisar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ante la duda, el trabajo se detiene.
+- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; Código del Trabajo Art. 184 bis.
+
+**Pregunta de cierre:** ¿Qué estructura está hoy junto a la excavación y hasta dónde llega su base?
+
+### EM-07 · Agua en la excavación manual: barro que ablanda las paredes
+
+**El porqué (mensaje clave):** Cuando aparece agua de napa o de lluvia, la excavación se llena de barro, las paredes se ablandan y las botas se hunden. El suelo saturado puede derrumbarse aunque la excavación sea poco profunda, y trabajar con barro hasta las rodillas aumenta el esfuerzo y el riesgo de caídas.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Si aparece agua, detener la excavación y evaluar con el supervisor: agotamiento, talud o entibación antes de seguir.
+2. [ ] Bombas eléctricas con protección diferencial y motobombas fuera de la excavación.
+3. [ ] Botas de agua y ropa impermeable; no trabajar solo dentro de una excavación con agua.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Si las condiciones cambian: se detiene, se re-evalúa y recién ahí se continúa.
+- Normativa: NCh 349; DS 8/2019 (instalaciones eléctricas); DS 594 (Art. 53 sobre EPP); Código del Trabajo Art. 184 bis.
+
+**Pregunta de cierre:** Si mañana aparece agua en el pozo, ¿quién decide si seguimos?
+
+### EM-08 · Terreno duro y roca: chuzo, picota y martillo sin lesionarse
+
+**El porqué (mensaje clave):** Cuando el terreno es duro o aparece roca, la excavación manual se hace con chuzo, picota o martillo eléctrico. Cada golpe puede lanzar fragmentos a los ojos, rebotar la herramienta hacia las piernas o lastimar las muñecas. Con el martillo se suman la vibración, el ruido y el polvo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Lentes de seguridad siempre; con martillo, además protección auditiva y respiratoria y humedecer el material.
+2. [ ] Herramienta con mango firme y cabeza bien fija; pies separados y fuera de la trayectoria del golpe.
+3. [ ] Rotar al trabajador en el martillo y no forzar: si el terreno no cede, pedir apoyo de equipo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramientas en buen estado y usadas para su fin.
+- Normativa: DS 594 (ruido, vibraciones, sílice y Art. 53); Protocolo PREXOR; PLANESI.
+
+**Pregunta de cierre:** ¿Quién usa hoy el chuzo y a qué distancia debe estar el compañero?
+
+### EM-09 · Excavar en pareja: la distancia que evita el golpe al compañero
+
+**El porqué (mensaje clave):** Cuando dos o más personas excavan a mano en el mismo pozo o zanja, el chuzo, la picota o la pala de uno pasa muy cerca del otro. Un golpe en la cabeza, en la mano o en el pie del compañero es un accidente frecuente en excavaciones estrechas, sobre todo cuando ambos están concentrados en su parte.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Distancia mínima entre trabajadores igual o mayor al largo de la herramienta más el brazo; en espacios estrechos, trabajar por turnos.
+2. [ ] Avisar antes de levantar el chuzo o la picota y mirar dónde está el compañero.
+3. [ ] Casco con barbiquejo y calzado de seguridad con puntera para quienes están dentro.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Planificar la tarea: cada persona sabe qué hace y dónde está.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).
+
+**Pregunta de cierre:** ¿Cuántas personas caben trabajando seguras en el pozo de hoy?
+
+### EM-10 · La zanja 'poco profunda' también atrapa
+
+**El porqué (mensaje clave):** Muchas zanjas manuales empiezan bajas y se van profundizando de a poco, sin que nadie se detenga a revisar cuándo pasaron el límite seguro. Un derrumbe que te cubre hasta la cintura ya puede impedirte respirar o salir, y los rescatistas improvisados pueden provocar un segundo derrumbe.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Medir la profundidad durante la excavación y detenerse al llegar al límite definido para trabajar sin talud ni entibación.
+2. [ ] Al superar ese límite: talud o entibación antes de que alguien vuelva a entrar.
+3. [ ] Si ocurre un derrumbe con alguien atrapado: activar la emergencia de inmediato y no entrar sin asegurar las paredes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
+- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Hasta qué profundidad podemos excavar hoy sin protección y quién lo controla?
+
+### EM-11 · Hallazgos durante la excavación: detener, proteger y avisar
+
+**El porqué (mensaje clave):** Al excavar a mano pueden aparecer objetos inesperados: restos arqueológicos, huesos, cerámica, tambores enterrados, residuos con olor extraño o tuberías antiguas. Seguir excavando puede destruir un patrimonio protegido por ley, liberar sustancias peligrosas o romper un servicio desconocido.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Ante cualquier hallazgo: detener la excavación en ese punto, no mover ni retirar nada y demarcar el área.
+2. [ ] Avisar de inmediato al supervisor, quien informa al área ambiental o patrimonial del proyecto.
+3. [ ] No tocar residuos desconocidos ni olerlos de cerca; alejarse si hay olores fuertes o líquidos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Ante la duda, el trabajo se detiene.
+- Normativa: Ley 17.288 de Monumentos Nacionales (hallazgos arqueológicos); DS 148/2003 (residuos peligrosos); compromisos ambientales del proyecto.
+
+**Pregunta de cierre:** Si mañana aparece un hueso o una vasija al excavar, ¿qué es lo primero que haces?
+
+### EM-12 · Relleno y compactación manual con pisón
+
+**El porqué (mensaje clave):** Después de excavar a mano, el relleno también suele hacerse a mano, por capas y apisonando con pisón manual o vibropisón. Es un trabajo repetitivo, con golpes que cargan los hombros y la espalda, muchas veces dentro de la misma zanja y con material que se descarga desde arriba.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Relleno por capas delgadas según lo indicado; pisón en buen estado y del peso adecuado.
+2. [ ] Postura erguida al apisonar, sin levantar el pisón más de lo necesario; rotación y pausas.
+3. [ ] Nadie dentro de la zanja mientras se descarga material desde el borde o con equipo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Planificar la tarea para reducir el esfuerzo.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J; DS 594 (vibraciones y Art. 53); NCh 349.
+
+**Pregunta de cierre:** ¿Cómo nos vamos a turnar hoy para apisonar el relleno?
+
+### EM-13 · Entibación: se instala antes de entrar y se retira desde afuera
 
 **El porqué (mensaje clave):** La entibación (paneles, tablones y codales) sostiene las paredes de la zanja, pero solo protege si está puesta antes de que alguien baje. Muchos derrumbes ocurren al instalarla desde adentro, al sacar un codal para pasar un tubo o al retirarla al final, cuando la zanja se considera 'terminada'.
 
@@ -4337,7 +4342,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién autoriza sacar un codal y qué se pone en su lugar?
 
-### OA-94 · Entrar y salir de la zanja: escala, no paredes ni baldes
+### EM-14 · Entrar y salir de la zanja: escala, no paredes ni baldes
 
 **El porqué (mensaje clave):** Salir de una zanja trepando por la pared o colgándose del balde de la excavadora derrumba el borde y causa caídas. En una emergencia, si la escala está lejos, los segundos que tardas en llegar a ella pueden ser los que faltan.
 
@@ -4354,7 +4359,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cuántos pasos hay desde donde trabajas hasta la escala más cercana?
 
-### OA-95 · Perfilar a mano junto a la excavadora
+### EM-15 · Perfilar a mano junto a la excavadora
 
 **El porqué (mensaje clave):** Es común que la excavadora haga el grueso y un trabajador perfile el fondo o los bordes a mano. Ese trabajador queda en el radio de giro del balde, bajo la carga y dentro de los puntos ciegos del operador, en el peor lugar de la obra.
 
@@ -4371,7 +4376,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué señal da el operador para que puedas bajar a perfilar?
 
-### OA-96 · Excavación abierta al final del día: cerrarla y señalizarla
+### EM-16 · Excavación abierta al final del día: cerrarla y señalizarla
 
 **El porqué (mensaje clave):** Una zanja o pozo que queda abierto de noche es una trampa para vecinos, niños, animales, ciclistas y para el mismo turno al día siguiente. Con lluvia se llena de agua y no se ve su profundidad.
 
@@ -4388,7 +4393,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué excavación del frente queda abierta esta noche y cómo la protegemos?
 
-### OA-97 · Compañero atrapado en un derrumbe: qué hacer y qué no
+### EM-17 · Compañero atrapado en un derrumbe: qué hacer y qué no
 
 **El porqué (mensaje clave):** Cuando alguien queda atrapado, el instinto es saltar a sacarlo con las manos o con la máquina. Así suele ocurrir el segundo derrumbe, que atrapa también al rescatista, y la excavadora puede herir a quien está bajo la tierra.
 
@@ -4405,7 +4410,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** Si se derrumba la zanja con alguien adentro, ¿qué es lo primero que hacemos y qué no hacemos?
 
-### OA-98 · Revisar la zanja cada día: grietas, agua y vibraciones
+### EM-18 · Revisar la zanja cada día: grietas, agua y vibraciones
 
 **El porqué (mensaje clave):** Las paredes cambian de un día para otro: la lluvia, una helada, el paso de camiones o una filtración las debilitan sin que se note a simple vista. Las grietas paralelas al borde, la tierra que se desprende o el agua que aflora avisan antes del derrumbe.
 
@@ -4422,7 +4427,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué señal en la pared te haría salir de inmediato de la zanja?
 
-### OA-99 · Talud y escalonado: darle a la pared la inclinación que necesita
+### EM-19 · Talud y escalonado: darle a la pared la inclinación que necesita
 
 **El porqué (mensaje clave):** Cuando no se entiba, la pared de la excavación debe tener la inclinación o los escalones que el tipo de suelo necesita. Una pared vertical en suelo blando se sostiene un rato y luego cae entera. Ahorrar espacio cortando vertical es la causa más común de derrumbe.
 
@@ -4439,7 +4444,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué talud corresponde al suelo de la zanja de hoy?
 
-### OA-100 · Cruzar la zanja: pasarelas, no saltos
+### EM-20 · Cruzar la zanja: pasarelas, no saltos
 
 **El porqué (mensaje clave):** Para llegar al otro lado de una zanja se tienden tablones sueltos o se salta. El borde cede con el peso, el tablón se corre y la caída es al fondo de la excavación, a veces sobre tubos, fierros o herramientas.
 
@@ -4456,7 +4461,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Por dónde cruzan hoy los vecinos la zanja frente a su acceso?
 
-### OA-101 · Excavar a mano junto a la calzada con tránsito
+### EM-21 · Excavar a mano junto a la calzada con tránsito
 
 **El porqué (mensaje clave):** Las excavaciones manuales en la berma, para cunetas, postes, cámaras o tuberías, ponen al trabajador agachado y de espaldas al tránsito. La vibración de los camiones afecta el borde de la excavación, y el material excavado puede invadir la pista.
 
@@ -4473,7 +4478,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién vigila el tránsito mientras excavamos agachados en la berma?
 
-### OA-102 · Suelos de relleno, arena y barro: los más traicioneros
+### EM-22 · Suelos de relleno, arena y barro: los más traicioneros
 
 **El porqué (mensaje clave):** No todos los suelos se comportan igual. Los rellenos antiguos, la arena seca o saturada y el barro de las lluvias se desmoronan con facilidad, aunque la zanja sea poco profunda. Donde ya se excavó antes (tuberías, cables o alcantarillas antiguas), el suelo está suelto.
 
@@ -4490,7 +4495,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿El suelo de nuestra zanja es natural o es un relleno antiguo?
 
-### OA-103 · Permiso de excavación: antes del primer palazo
+### EM-23 · Permiso de excavación: antes del primer palazo
 
 **El porqué (mensaje clave):** Una excavación manual parece una tarea simple, pero bajo la berma pueden pasar cables, fibra óptica, agua potable o gas, y el suelo puede no sostenerse. El permiso de excavación obliga a revisar planos, marcar servicios, definir la protección de las paredes y avisar a quien corresponda antes de que alguien clave la pala.
 
@@ -4507,7 +4512,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué dice el permiso de la excavación de hoy sobre los servicios enterrados?
 
-### OA-104 · Servicios descubiertos: sostener cañerías y cables expuestos
+### EM-24 · Servicios descubiertos: sostener cañerías y cables expuestos
 
 **El porqué (mensaje clave):** Al excavar bajo o junto a una cañería o un ducto, el servicio queda colgando sin la tierra que lo sostenía. Con su propio peso, o si alguien se apoya o se para encima, puede romperse una unión, cortarse un cable o soltarse una tubería sobre quien trabaja abajo.
 
@@ -4524,7 +4529,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cómo dejamos sostenida la cañería que quedó a la vista ayer?
 
-### OA-105 · Si golpeas un cable eléctrico: aléjate y no lo toques
+### EM-25 · Si golpeas un cable eléctrico: aléjate y no lo toques
 
 **El porqué (mensaje clave):** Un golpe de pala o chuzo sobre un cable enterrado puede producir un arco eléctrico, quemaduras graves o electrocución. Aunque no pase nada en el momento, el cable dañado sigue energizado y puede electrocutar a quien lo toque después o a quien esté parado en el barro de la zanja.
 
@@ -4541,7 +4546,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** Si tu chuzo toca un cable, ¿qué es lo primero que haces?
 
-### OA-106 · Si rompes una tubería: gas, agua o alcantarillado
+### EM-26 · Si rompes una tubería: gas, agua o alcantarillado
 
 **El porqué (mensaje clave):** Una tubería rota durante la excavación puede llenar la zanja de agua en minutos, ablandar las paredes y provocar un derrumbe, o liberar gas que se inflama con una chispa o desplaza el aire. Las aguas servidas, además, traen bacterias que enferman.
 
@@ -4558,7 +4563,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué hacemos si sentimos olor a gas en la zanja?
 
-### OA-107 · Excavar al pie de un poste o de un árbol
+### EM-27 · Excavar al pie de un poste o de un árbol
 
 **El porqué (mensaje clave):** La tierra que se saca junto a un poste o un árbol es la que lo mantiene en pie. Al socavar su base, el poste con cables o el árbol pueden inclinarse o caer sobre la cuadrilla o sobre la ruta, y un poste eléctrico que cae arrastra sus conductores.
 
@@ -4575,7 +4580,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Hay postes o árboles junto a la zanja de hoy y quién los revisó?
 
-### OA-108 · Raíces y tocones: hacha y machete dentro de la zanja
+### EM-28 · Raíces y tocones: hacha y machete dentro de la zanja
 
 **El porqué (mensaje clave):** Las raíces gruesas obligan a cortar con hacha, machete o sierra dentro de un espacio estrecho. El hacha rebota en la raíz o en una piedra, el machete se escapa hacia la pierna y un tocón que se suelta de golpe puede golpear a quien tira de él.
 
@@ -4592,7 +4597,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Dónde se ubica el compañero mientras cortas una raíz con hacha?
 
-### OA-109 · Trabajar de rodillas o agachado en la zanja
+### EM-29 · Trabajar de rodillas o agachado en la zanja
 
 **El porqué (mensaje clave):** Perfilar el fondo, nivelar la cama de tubos o limpiar alrededor de un servicio obliga a pasar horas de rodillas o agachado. Las rodillas, la espalda baja y los tobillos se dañan de a poco, y el dolor aparece cuando la lesión ya está instalada.
 
@@ -4609,7 +4614,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cuánto rato seguido pasamos de rodillas en el fondo de la zanja?
 
-### OA-110 · Sacar la tierra de una zanja profunda: baldes, cuerdas y banquetas
+### EM-30 · Sacar la tierra de una zanja profunda: baldes, cuerdas y banquetas
 
 **El porqué (mensaje clave):** Cuando la zanja es más honda que la altura del hombro, lanzar la tierra con la pala hacia arriba exige un esfuerzo enorme y la tierra vuelve a caer sobre quien está abajo. Subir baldes llenos a pulso daña la espalda y los hombros.
 
@@ -4626,7 +4631,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Cómo sacamos hoy la tierra del tramo más profundo?
 
-### OA-111 · Calor en el fondo de la zanja
+### EM-31 · Calor en el fondo de la zanja
 
 **El porqué (mensaje clave):** En verano, el fondo de una zanja puede ser más caluroso que la superficie: no corre aire, el sol se refleja en las paredes y el esfuerzo de excavar a mano es intenso. La deshidratación y el golpe de calor aparecen rápido y, dentro de una zanja, es más difícil sacar a quien se desmaya.
 
@@ -4643,7 +4648,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Dónde está el agua y la sombra para quienes trabajan en la zanja hoy?
 
-### OA-112 · Pies mojados todo el día: botas, calcetines y frío
+### EM-32 · Pies mojados todo el día: botas, calcetines y frío
 
 **El porqué (mensaje clave):** En las excavaciones con barro o agua, los pies pasan el día mojados. Con frío, eso enfría todo el cuerpo, produce hongos, ampollas y lesiones de la piel, y un pie entumido resbala y pierde equilibrio en el fondo de la zanja.
 
@@ -4660,7 +4665,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién trae hoy calcetines de repuesto para el frente con barro?
 
-### OA-113 · Bolones y piedras grandes: sacarlas sin aplastarse
+### EM-33 · Bolones y piedras grandes: sacarlas sin aplastarse
 
 **El porqué (mensaje clave):** Al excavar aparecen bolones que no se pueden romper ni sacar con la pala. Levantarlos a pulso desde el fondo daña la espalda, y al moverlos con barreta pueden rodar sobre un pie, aplastar los dedos contra la pared o caer de vuelta a la zanja desde el borde.
 
@@ -4677,7 +4682,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué hacemos con el bolón que no podemos levantar entre dos?
 
-### OA-114 · Excavar en ladera: lo que está arriba rueda hacia ti
+### EM-34 · Excavar en ladera: lo que está arriba rueda hacia ti
 
 **El porqué (mensaje clave):** En cortes y laderas, la excavación manual queda bajo un talud con piedras sueltas, raíces y material que puede rodar con la vibración, la lluvia o el paso de otra persona arriba. Quien excava abajo no ve lo que se suelta sobre él.
 
@@ -4694,7 +4699,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién revisó la ladera sobre la excavación de hoy?
 
-### OA-115 · Ahoyadora a motor: el torque que tuerce las muñecas
+### EM-35 · Ahoyadora a motor: el torque que tuerce las muñecas
 
 **El porqué (mensaje clave):** La ahoyadora a motor acelera mucho la excavación de hoyos para postes y cercos, pero cuando la broca se traba en una raíz o una piedra, el motor hace girar las manillas con fuerza y puede fracturar muñecas, golpear el estómago o lanzar al operador. También tiene partes que giran y atrapan la ropa.
 
@@ -4711,7 +4716,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué haces si la broca de la ahoyadora se traba en una raíz?
 
-### OA-116 · Aguas servidas en la excavación: riesgo biológico
+### EM-36 · Aguas servidas en la excavación: riesgo biológico
 
 **El porqué (mensaje clave):** Junto a colectores, fosas o descargas de casas, el agua y el barro de la excavación pueden tener aguas servidas. Traen bacterias y virus que causan diarrea, hepatitis, infecciones de la piel y leptospirosis, y entran por la boca, por heridas o al comer con las manos sucias.
 
@@ -4728,7 +4733,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Dónde nos lavamos las manos si la excavación de hoy tiene aguas servidas?
 
-### OA-117 · Arañas, avispas y roedores al remover tierra y piedras
+### EM-37 · Arañas, avispas y roedores al remover tierra y piedras
 
 **El porqué (mensaje clave):** Al remover piedras, tablones acopiados o raíces aparecen arañas de rincón, nidos de avispas chaqueta amarilla bajo tierra y roedores. Una picadura de araña de rincón puede ser grave, un nido de avispas atacado obliga a salir corriendo de la zanja, y las madrigueras de roedores pueden transmitir hantavirus.
 
@@ -4745,7 +4750,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién de la cuadrilla es alérgico a las picaduras y dónde está su tratamiento?
 
-### OA-118 · Pasar herramientas a la zanja: nunca lanzarlas
+### EM-38 · Pasar herramientas a la zanja: nunca lanzarlas
 
 **El porqué (mensaje clave):** Lanzar una pala o un chuzo a la zanja, o dejarlo en el borde, es una causa frecuente de golpes y cortes. La herramienta rebota, se resbala del borde o cae sobre la cabeza o la espalda de quien está abajo.
 
@@ -4762,7 +4767,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Dónde dejamos las herramientas cuando no se están usando en la zanja?
 
-### OA-119 · Ancho de la zanja: espacio para trabajar y para salir
+### EM-39 · Ancho de la zanja: espacio para trabajar y para salir
 
 **El porqué (mensaje clave):** Una zanja muy angosta obliga a trabajar torcido, impide usar bien la pala y deja a dos personas muy juntas, golpeándose. En una emergencia, no hay espacio para salir rápido ni para que alguien entre a ayudar.
 
@@ -4779,7 +4784,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿La zanja de hoy tiene el ancho para trabajar y salir sin chocarnos?
 
-### OA-120 · Cajón de entibación: trabajar siempre dentro
+### EM-40 · Cajón de entibación: trabajar siempre dentro
 
 **El porqué (mensaje clave):** El cajón o caja de entibación metálica protege solo el tramo que cubre. Quien se adelanta a perfilar fuera del cajón, o se queda en el tramo ya excavado detrás, está en una zanja sin protección. Además, el cajón se mueve con la excavadora y nadie debe estar dentro en ese momento.
 
@@ -4796,7 +4801,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Hasta dónde llega hoy la protección del cajón?
 
-### OA-121 · Cruce de camino o acceso: excavar por mitades
+### EM-41 · Cruce de camino o acceso: excavar por mitades
 
 **El porqué (mensaje clave):** Para pasar un tubo bajo un camino secundario o el acceso a un predio, la zanja corta el paso de vehículos y vecinos. Si se excava todo de una vez, alguien va a intentar pasar igual, o la zanja queda abierta toda la noche en medio del camino.
 
@@ -4813,7 +4818,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Por dónde pasan hoy los vecinos mientras cruzamos su acceso?
 
-### OA-122 · Pozos profundos y estrechos: el aire también puede faltar
+### EM-42 · Pozos profundos y estrechos: el aire también puede faltar
 
 **El porqué (mensaje clave):** Un pozo hondo y angosto, una cámara o una excavación cerca de un colector puede acumular gases o quedarse sin oxígeno, sobre todo si hay una motobomba o un generador cerca. No se huele ni se ve: la persona se marea, se desmaya y quien baja a ayudarla cae igual.
 
@@ -4830,7 +4835,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Qué pozo de nuestro frente podría quedarse sin aire?
 
-### OA-123 · Vigía en el borde: nadie excava solo dentro de la zanja
+### EM-43 · Vigía en el borde: nadie excava solo dentro de la zanja
 
 **El porqué (mensaje clave):** Quien trabaja dentro de una zanja no ve lo que pasa arriba: una máquina que se acerca, un camión que retrocede, material que se desliza o un compañero que lo llama. Si hay un derrumbe o se siente mal, nadie se entera si está solo.
 
@@ -4847,7 +4852,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 **Pregunta de cierre:** ¿Quién es hoy el vigía de la zanja y cómo da la alarma?
 
-### OA-124 · Romper el pavimento antes de excavar a mano
+### EM-44 · Romper el pavimento antes de excavar a mano
 
 **El porqué (mensaje clave):** Muchas excavaciones manuales comienzan cortando o rompiendo pavimento, una solera o un radier. La cortadora y el martillo demoledor generan polvo con sílice, ruido y vibración, y justo bajo el pavimento suelen pasar cables y tuberías poco profundos.
 
