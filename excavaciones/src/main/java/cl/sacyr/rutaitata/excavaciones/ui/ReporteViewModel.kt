@@ -60,7 +60,7 @@ class ReporteViewModel(private val app: AppExcavaciones, private val guardado: S
     val previa: StateFlow<Previa?> = combine(desde, hasta, sectorId) { d, h, s -> Triple(d, h, s) }
         .mapLatest { (d, h, s) ->
             val lista = repo.paraReporte(LocalDate.ofEpochDay(d), LocalDate.ofEpochDay(h), s.takeIf { it > 0 })
-            Previa(lista.size, Volumen.total(lista), lista.sumOf { it.fotos }, lista.count { it.fotos == 0 }, lista.map { it.fecha }.toSet())
+            Previa(lista.size, Volumen.total(lista), lista.sumOf { it.fotos }, lista.groupBy { it.grupo?.let { g -> "g$g" } ?: "e${it.id}" }.values.count { r -> r.all { it.fotos == 0 } }, lista.map { it.fecha }.toSet())
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 

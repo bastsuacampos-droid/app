@@ -137,6 +137,11 @@ data class ExcavacionEntity(
     val observaciones: String?,
     val creadoEn: Long,
     val actualizadoEn: Long,
+    /**
+     * Excavaciones adyacentes del mismo día y frente que en el reporte van en una sola fila:
+     * comparten este valor (el id de la primera que se agrupó). null: no está agrupada.
+     */
+    val grupo: Long? = null,
 )
 
 /** Hasta 3 fotos por excavación; el archivo vive en files/fotos/[archivo]. */

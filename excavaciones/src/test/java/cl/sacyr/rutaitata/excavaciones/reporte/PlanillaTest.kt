@@ -26,6 +26,15 @@ class PlanillaTest {
     }
 
     @Test
+    fun lasAgrupadasDicenConCualesVan() {
+        val lineas = Planilla.csv(listOf(ejemplo(1).copy(grupo = 5), ejemplo(2).copy(grupo = 5), ejemplo(3)))
+            .split("\r\n").filter { it.isNotEmpty() }
+        assertTrue(lineas[1].endsWith(";01 + 02"))
+        assertTrue(lineas[2].endsWith(";01 + 02"))
+        assertTrue(lineas[3].endsWith(";"))
+    }
+
+    @Test
     fun nombreDelArchivo() {
         val d = LocalDate.of(2026, 10, 1)
         assertEquals("Excavaciones_2026-10-01.csv", Planilla.nombreArchivo(d, d))

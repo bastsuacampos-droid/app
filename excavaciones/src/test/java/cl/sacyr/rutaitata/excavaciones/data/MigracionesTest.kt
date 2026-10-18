@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -45,6 +46,36 @@ class MigracionesTest {
             for (i in 0 until setup.length()) db.execSQL(setup.getString(i))
             db.datos()
             db.version = version
+        }
+    }
+
+    @Test
+    fun de4a5AgregaElGrupoDeExcavacionesAdyacentes() = runBlocking {
+        val archivo = context.getDatabasePath("migracion5.db").apply { parentFile!!.mkdirs() }
+        crearVersion(4, archivo) {
+            execSQL("INSERT INTO tipos_terreno (id, nombre, orden, activo) VALUES (1, 'Roca', 1, 1)")
+            execSQL("INSERT INTO sectores (id, nombre, creadoEn) VALUES (1, 'Sector A', 0)")
+            execSQL("INSERT INTO frentes (id, sectorId, lado, sentido) VALUES (1, 1, 'N', 'CH-CO')")
+            for (n in 1..2) {
+                execSQL(
+                    "INSERT INTO excavaciones (id, fecha, frenteId, numero, largo, ancho, profundidad, tipoTerrenoId, creadoEn, actualizadoEn) " +
+                        "VALUES ($n, 100, 1, $n, 2.0, 1.0, 1.5, 1, 0, 0)",
+                )
+            }
+            execSQL("INSERT INTO cierres_dia (fecha, cerradoEn, responsable) VALUES (99, 0, 'Jefe')")
+        }
+        val bd = Room.databaseBuilder(context, BaseDatos::class.java, archivo.absolutePath)
+            .addMigrations(*BaseDatos.MIGRACIONES)
+            .build()
+        try {
+            val repo = RepositorioExcavaciones(bd)
+            val dia = LocalDate.ofEpochDay(100)
+            assertTrue(repo.paraReporte(dia, dia, null).all { it.grupo == null })
+            assertEquals("Jefe", repo.cierre(LocalDate.ofEpochDay(99)).first()!!.responsable)
+            repo.agrupar(listOf(1L, 2L))
+            assertEquals(1, repo.paraReporte(dia, dia, null).map { it.grupo }.distinct().filterNotNull().size)
+        } finally {
+            bd.close()
         }
     }
 

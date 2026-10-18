@@ -92,6 +92,22 @@ class GeneradorReportePdfTest {
     }
 
     @Test
+    fun adyacentesAgrupadasConSusFotosJuntas() {
+        val lista = listOf(
+            ejemplo(1, observaciones = "Matriz de agua potable").copy(grupo = 3),
+            ejemplo(2, largo = 2.5).copy(grupo = 3),
+            ejemplo(3),
+        )
+        val fotos = mapOf(
+            lista[0].id to listOf(FotoReporte(jpeg(1600, 1200, 4).path, 1600, 1200, null)),
+            lista[1].id to listOf(FotoReporte(jpeg(1600, 1200, 5).path, 1600, 1200, null)),
+        )
+        val pdf = generar(datos(fotos, lista)).archivo.readBytes()
+        assertEquals(2, Regex("/Filter /DCTDecode").findAll(String(pdf, Charsets.ISO_8859_1)).count())
+        verificarReferencias(pdf)
+    }
+
+    @Test
     fun fotoQueFaltaQuedaMarcadaYElReporteIgualSale() {
         val lista = listOf(ejemplo(1))
         val fotos = mapOf(lista[0].id to listOf(FotoReporte(File(carpeta.root, "no-existe.jpg").path, 1600, 1200, null)))

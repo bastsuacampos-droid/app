@@ -9,7 +9,8 @@ import java.util.Locale
 /**
  * Planilla de excavaciones para la oficina técnica, en CSV que Excel en español abre directo:
  * separador ";", coma decimal y BOM UTF-8 (sin él, Excel muestra mal las tildes). Una fila por
- * excavación, en el mismo orden que el reporte. Números sin separador de miles, para que Excel
+ * excavación, en el mismo orden que el reporte; las adyacentes agrupadas dicen con cuáles en
+ * "Grupo" ("03 + 04"). Números sin separador de miles, para que Excel
  * los tome como números y se puedan sumar.
  */
 object Planilla {
@@ -19,7 +20,7 @@ object Planilla {
 
     val COLUMNAS = listOf(
         "Fecha", "Sector", "Lado", "Sentido", "N°", "Progresiva", "Largo (m)", "Ancho (m)", "Profundidad (m)",
-        "Volumen (m³)", "Tipo de terreno", "Latitud", "Longitud", "Fotos", "Observaciones",
+        "Volumen (m³)", "Tipo de terreno", "Latitud", "Longitud", "Fotos", "Observaciones", "Grupo",
     )
 
     fun csv(excavaciones: List<ExcavacionDetalle>): String = buildString {
@@ -27,6 +28,8 @@ object Planilla {
         linea(COLUMNAS)
         val ordenadas = Agrupador.agrupar(excavaciones)
             .flatMap { s -> s.lados.flatMap { l -> l.sentidos.flatMap { it.excavaciones } } }
+        val grupos = ordenadas.filter { it.grupo != null }.groupBy { it.grupo }
+            .mapValues { (_, miembros) -> miembros.joinToString(" + ") { Formato.numero(it.numero) } }
         for (e in ordenadas) {
             linea(
                 listOf(
@@ -45,6 +48,7 @@ object Planilla {
                     e.longitud?.let { coordenada(it) }.orEmpty(),
                     e.fotos.toString(),
                     e.observaciones.orEmpty(),
+                    grupos[e.grupo].orEmpty(),
                 ),
             )
         }

@@ -25,6 +25,8 @@ data class ExcavacionDetalle(
     val longitud: Double?,
     val observaciones: String?,
     val fotos: Int,
+    /** Clave del grupo de excavaciones adyacentes (una sola fila en el reporte), o null. */
+    val grupo: Long? = null,
 ) {
     val volumen: Double get() = Volumen.de(largo, ancho, profundidad)
 }

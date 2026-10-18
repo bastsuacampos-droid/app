@@ -14,7 +14,8 @@ import cl.sacyr.rutaitata.excavaciones.dominio.Volumen
  * - Encabezado formal (título, obra, fecha del reporte, sector, responsable, emisión). Las páginas
  *   siguientes llevan un encabezado corto.
  * - Por cada Sector una banda, por cada Lado un subtítulo y por cada Sentido una tabla con sus
- *   excavaciones en orden correlativo y un subtotal.
+ *   excavaciones en orden correlativo y un subtotal. Las adyacentes agrupadas van en una sola
+ *   fila ("03 + 04"): una línea de medidas por excavación y el volumen sumado.
  * - Si una tabla no cabe, sigue en la página siguiente repitiendo "Sector · Lado · Sentido
  *   (continuación)" y la fila de títulos. Un título nunca queda solo al pie de una página.
  * - Al final, los totales del reporte. Sin cuadros de firma: es un control interno y el
@@ -56,7 +57,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         private const val ALTO_FOTO = 170f
         private const val ALTO_LEYENDA = 14f
         private const val SEPARACION_FOTOS = 12f
-        private const val ALTO_BLOQUE_FOTOS = ALTO_CABECERA_FOTOS + 4f + ALTO_FOTO + ALTO_LEYENDA + 12f
+        private const val ALTO_FILA_FOTOS = ALTO_FOTO + ALTO_LEYENDA + 12f
 
         private val TITULO_GRANDE = Estilo(16f, negrita = true)
         private val TITULO_CORTO = Estilo(10f, negrita = true)
@@ -85,8 +86,21 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         val titulo: String,
         val ancho: Float,
         val alineacion: Alineacion,
-        val valor: (ExcavacionDetalle) -> String,
+        val valor: (Registro) -> String,
     )
+
+    /**
+     * Una fila de la tabla y un bloque del anexo: una excavación o varias adyacentes agrupadas
+     * (mismo día y frente), en orden correlativo.
+     */
+    private class Registro(val miembros: List<ExcavacionDetalle>) {
+        val primera get() = miembros.first()
+        val volumen get() = Volumen.total(miembros)
+        val agrupado get() = miembros.size > 1
+
+        /** "03", o "03 + 04" con [separador] entre números. */
+        fun numeros(separador: String = " + ") = miembros.joinToString(separador) { Formato.numero(it.numero) }
+    }
 
     /** Una fila ya dividida en líneas por columna. */
     private class Fila(val lineas: List<List<String>>, val alto: Float)
@@ -247,7 +261,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             primeroDelSector: Boolean,
             primeroDelLado: Boolean,
         ) {
-            val filas = sentido.excavaciones.map(::fila)
+            val filas = registros(sentido.excavaciones).map(::fila)
             val altoTitulos = (if (primeroDelSector) ALTO_BANDA_SECTOR else 0f) +
                 (if (primeroDelLado) ALTO_LADO else 0f) + ALTO_SENTIDO + encabezadoTabla.alto
             // Los títulos van con al menos su primera fila (y el subtotal, si es la única).
@@ -328,48 +342,60 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
 
         private fun columnas(): List<Columna> {
             val fijas = buildList {
-                add(Columna("N°", 34f, Alineacion.CENTRO) { Formato.numero(it.numero) })
-                if (datos.variosDias) add(Columna("Fecha", 58f, Alineacion.CENTRO) { Formato.fecha(it.fecha) })
+                // Agrupadas, un número por línea ("03", "+ 04"): así no se cortan.
+                add(Columna("N°", 34f, Alineacion.CENTRO) { it.numeros(separador = "\n+ ") })
+                if (datos.variosDias) add(Columna("Fecha", 58f, Alineacion.CENTRO) { Formato.fecha(it.primera.fecha) })
                 add(Columna("Progresiva / Ubicación GPS", 140f, Alineacion.IZQUIERDA, ::ubicacion))
-                add(Columna("Dimensiones L × A × P (m)", 124f, Alineacion.CENTRO) {
-                    Formato.dimensiones(it.largo, it.ancho, it.profundidad)
+                add(Columna("Dimensiones L × A × P (m)", 124f, Alineacion.CENTRO) { r ->
+                    r.miembros.joinToString("\n") { Formato.dimensiones(it.largo, it.ancho, it.profundidad) }
                 })
                 add(Columna(COL_VOLUMEN, 66f, Alineacion.DERECHA) { Formato.decimal(it.volumen) })
-                add(Columna("Tipo de terreno", 96f, Alineacion.IZQUIERDA) { it.tipoTerreno ?: "—" })
+                add(Columna("Tipo de terreno", 96f, Alineacion.IZQUIERDA) { r ->
+                    r.miembros.mapNotNull { it.tipoTerreno }.distinct().joinToString(", ").ifEmpty { "—" }
+                })
             }
             val resto = ANCHO_UTIL - fijas.sumOf { it.ancho.toDouble() }.toFloat()
             return fijas + Columna("Observaciones", resto, Alineacion.IZQUIERDA) { observaciones(it) }
         }
 
-        private fun ubicacion(e: ExcavacionDetalle): String {
-            val gps = if (e.latitud != null && e.longitud != null) Formato.coordenadas(e.latitud, e.longitud) else null
-            return listOfNotNull(e.progresiva, gps).joinToString("\n").ifEmpty { "—" }
+        /** Progresivas distintas y las coordenadas de la primera que las tenga. */
+        private fun ubicacion(r: Registro): String {
+            val gps = r.miembros.firstOrNull { it.latitud != null && it.longitud != null }?.let { Formato.coordenadas(it.latitud!!, it.longitud!!) }
+            return (r.miembros.mapNotNull { it.progresiva }.distinct() + listOfNotNull(gps)).joinToString("\n").ifEmpty { "—" }
         }
 
-        private fun observaciones(e: ExcavacionDetalle): String {
+        private fun observaciones(r: Registro): String {
+            val adyacentes = if (r.agrupado) "Excavaciones adyacentes." else null
             val fotos = if (datos.incluirFotos) {
-                when (val n = fotosDe(e).size) {
+                when (val n = fotosDe(r).size) {
                     0 -> SIN_FOTO
                     1 -> "[1 foto en anexo]"
                     else -> "[$n fotos en anexo]"
                 }
             } else {
-                when (e.fotos) {
+                when (val n = r.miembros.sumOf { it.fotos }) {
                     0 -> null
                     1 -> "[1 foto]"
-                    else -> "[${e.fotos} fotos]"
+                    else -> "[$n fotos]"
                 }
             }
-            return listOfNotNull(e.observaciones, fotos).joinToString(" ")
+            return (listOfNotNull(adyacentes) + r.miembros.mapNotNull { it.observaciones }.distinct() + listOfNotNull(fotos)).joinToString(" ")
         }
 
         private fun fotosDe(e: ExcavacionDetalle) = datos.fotos[e.id].orEmpty().take(FOTOS_POR_EXCAVACION)
 
+        /** Fotos del registro con la excavación de cada una (para la leyenda si está agrupado). */
+        private fun fotosDe(r: Registro) = r.miembros.flatMap { e -> fotosDe(e).map { e to it } }
+
+        /** Las excavaciones de una tabla como filas: las agrupadas juntas, en la posición de la primera. */
+        private fun registros(lista: List<ExcavacionDetalle>): List<Registro> =
+            lista.groupBy { e -> e.grupo?.let { "g$it" } ?: "e${e.id}" }.values.map(::Registro)
+
         private fun filaDeTitulos(): Fila =
             armarFila(columnas.map { it.titulo }, TABLA_TITULO, maximo = Float.MAX_VALUE)
 
-        private fun fila(e: ExcavacionDetalle): Fila =
-            armarFila(columnas.map { it.valor(e) }, TABLA, maximo = altoMaximoFila)
+        private fun fila(r: Registro): Fila =
+            armarFila(columnas.map { it.valor(r) }, TABLA, maximo = altoMaximoFila)
 
         private fun armarFila(valores: List<String>, estilo: Estilo, maximo: Float): Fila {
             val maxLineas = ((maximo - 2 * PAD) / interlinea(estilo)).toInt().coerceAtLeast(1)
@@ -471,17 +497,19 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
         // ---------------------------------------------------------------- anexo fotográfico
 
         private fun anexoFotografico(sectores: List<GrupoSector>) {
-            val conFotos = sectores.flatMap { s -> s.lados.flatMap { l -> l.sentidos.flatMap { it.excavaciones } } }
+            val conFotos = sectores.flatMap { s -> s.lados.flatMap { l -> l.sentidos.flatMap { registros(it.excavaciones) } } }
                 .filter { fotosDe(it).isNotEmpty() }
             if (conFotos.isEmpty()) return
             nuevaPagina()
             tituloAnexo(continuacion = false)
-            for (e in conFotos) {
-                if (!cabe(ALTO_BLOQUE_FOTOS)) {
+            for (r in conFotos) {
+                // Agrupadas pueden tener más de tres fotos: van en varias filas del mismo bloque.
+                val filasFotos = fotosDe(r).chunked(FOTOS_POR_EXCAVACION)
+                if (!cabe(ALTO_CABECERA_FOTOS + 4f + filasFotos.size * ALTO_FILA_FOTOS)) {
                     nuevaPagina()
                     tituloAnexo(continuacion = true)
                 }
-                bloqueFotos(e, fotosDe(e))
+                bloqueFotos(r, filasFotos)
             }
         }
 
@@ -499,15 +527,16 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             y += ALTO_TITULO_ANEXO
         }
 
-        /** Cabecera con la identificación de la excavación y una fila de hasta tres fotos con su fecha. */
-        private fun bloqueFotos(e: ExcavacionDetalle, fotos: List<FotoReporte>) {
+        /** Cabecera con la identificación de la excavación y filas de hasta tres fotos con su fecha. */
+        private fun bloqueFotos(r: Registro, filasFotos: List<List<Pair<ExcavacionDetalle, FotoReporte>>>) {
+            val e = r.primera
             trazos += Trazo.Rectangulo(IZQ, y, ANCHO_UTIL, ALTO_CABECERA_FOTOS, relleno = Colores.ENCABEZADO_TABLA)
             val bas = y + (ALTO_CABECERA_FOTOS - TABLA_TITULO.tamano) / 2 + base(TABLA_TITULO)
             val derecha = listOfNotNull(
-                e.progresiva,
+                r.miembros.mapNotNull { it.progresiva }.distinct().joinToString(" / ").ifEmpty { null },
                 Formato.fecha(e.fecha),
-                Formato.dimensiones(e.largo, e.ancho, e.profundidad) + " m",
-                Formato.volumen(e.volumen),
+                if (r.agrupado) "${r.miembros.size} adyacentes" else Formato.dimensiones(e.largo, e.ancho, e.profundidad) + " m",
+                Formato.volumen(r.volumen),
             ).joinToString(" · ")
             val anchoDerecha = medidor.ancho(derecha, LEYENDA)
             texto(DER - PAD, bas, derecha, LEYENDA, Alineacion.DERECHA)
@@ -515,7 +544,7 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
                 IZQ + PAD,
                 bas,
                 recortar(
-                    "N° ${Formato.numero(e.numero)} · ${e.sector} · ${e.lado.etiqueta} · ${e.sentido.etiqueta}",
+                    "N° ${r.numeros()} · ${e.sector} · ${e.lado.etiqueta} · ${e.sentido.etiqueta}",
                     ANCHO_UTIL - anchoDerecha - 3 * PAD - 8f,
                     TABLA_TITULO,
                 ),
@@ -524,23 +553,29 @@ class MaquetadorReporte(private val medidor: MedidorTexto) {
             y += ALTO_CABECERA_FOTOS + 4f
 
             val anchoCelda = (ANCHO_UTIL - (FOTOS_POR_EXCAVACION - 1) * SEPARACION_FOTOS) / FOTOS_POR_EXCAVACION
-            fotos.forEachIndexed { i, foto ->
-                val x = IZQ + i * (anchoCelda + SEPARACION_FOTOS)
-                trazos += Trazo.Rectangulo(x, y, anchoCelda, ALTO_FOTO, relleno = Colores.FILA_ALTERNA, borde = Colores.BORDE)
-                // Ajuste "contener": la foto entera, sin deformar, centrada en la celda.
-                val margen = 3f
-                val escala = minOf((anchoCelda - 2 * margen) / foto.ancho, (ALTO_FOTO - 2 * margen) / foto.alto)
-                val w = foto.ancho * escala
-                val h = foto.alto * escala
-                trazos += Trazo.Imagen(x + (anchoCelda - w) / 2, y + (ALTO_FOTO - h) / 2, w, h, foto.ruta)
-                val leyenda = listOfNotNull(
-                    "Foto ${i + 1}",
-                    foto.origen?.etiqueta,
-                    foto.tomadaEn?.let { "tomada el ${Formato.fechaHora(it)}" } ?: "fecha de captura no registrada",
-                ).joinToString(" · ")
-                texto(x + anchoCelda / 2, y + ALTO_FOTO + 3f + base(LEYENDA), recortar(leyenda, anchoCelda, LEYENDA), LEYENDA, Alineacion.CENTRO)
+            var n = 0
+            for (fila in filasFotos) {
+                fila.forEachIndexed { i, (deExcavacion, foto) ->
+                    n++
+                    val x = IZQ + i * (anchoCelda + SEPARACION_FOTOS)
+                    trazos += Trazo.Rectangulo(x, y, anchoCelda, ALTO_FOTO, relleno = Colores.FILA_ALTERNA, borde = Colores.BORDE)
+                    // Ajuste "contener": la foto entera, sin deformar, centrada en la celda.
+                    val margen = 3f
+                    val escala = minOf((anchoCelda - 2 * margen) / foto.ancho, (ALTO_FOTO - 2 * margen) / foto.alto)
+                    val w = foto.ancho * escala
+                    val h = foto.alto * escala
+                    trazos += Trazo.Imagen(x + (anchoCelda - w) / 2, y + (ALTO_FOTO - h) / 2, w, h, foto.ruta)
+                    val leyenda = listOfNotNull(
+                        "Foto $n",
+                        // Agrupadas: de qué excavación es cada foto.
+                        if (r.agrupado) "N° ${Formato.numero(deExcavacion.numero)}" else null,
+                        foto.origen?.etiqueta,
+                        foto.tomadaEn?.let { "tomada el ${Formato.fechaHora(it)}" } ?: "fecha de captura no registrada",
+                    ).joinToString(" · ")
+                    texto(x + anchoCelda / 2, y + ALTO_FOTO + 3f + base(LEYENDA), recortar(leyenda, anchoCelda, LEYENDA), LEYENDA, Alineacion.CENTRO)
+                }
+                y += ALTO_FILA_FOTOS
             }
-            y += ALTO_FOTO + ALTO_LEYENDA + 12f
         }
 
         // ---------------------------------------------------------------- texto

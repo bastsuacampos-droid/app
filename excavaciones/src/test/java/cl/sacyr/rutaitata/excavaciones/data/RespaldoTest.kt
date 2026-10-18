@@ -66,6 +66,9 @@ class RespaldoTest {
         val a = Telefono("a")
         val id1 = a.repo.guardar(borrador(a, "Sector A", listOf(a.foto("f1.jpg", "uno"), a.foto("f2.jpg", "dos"))))
         val id2 = a.repo.guardar(borrador(a, "Km 12", lado = Lado.SUR))
+        // Una adyacente agrupada con la primera: el grupo viaja en el respaldo.
+        val id3 = a.repo.guardar(borrador(a, "Sector A"))
+        a.repo.agrupar(listOf(id1, id3))
         a.repo.agregarTipoTerreno("Arcilla")
         a.repo.cerrarDias(hoy, hoy, "María")
         a.repo.cerrarDias(hoy.minusDays(1), hoy.minusDays(1), "Pedro")
@@ -77,7 +80,7 @@ class RespaldoTest {
         val b = Telefono("b")
         b.repo.guardar(borrador(b, "Otro", listOf(b.foto("vieja.jpg", "x"))))
         val resumen = b.respaldo.leerResumen(ByteArrayInputStream(zip))
-        assertEquals(2, resumen.excavaciones)
+        assertEquals(3, resumen.excavaciones)
         assertEquals(2, resumen.fotos)
         assertEquals(hoy, resumen.desde)
 
@@ -86,13 +89,14 @@ class RespaldoTest {
         assertEquals(a.repo.borrador(id1), b.repo.borrador(id1))
         assertEquals(a.repo.borrador(id2), b.repo.borrador(id2))
         assertEquals(a.repo.paraReporte(hoy, hoy), b.repo.paraReporte(hoy, hoy))
+        assertTrue(b.repo.paraReporte(hoy, hoy).filter { it.id in setOf(id1, id3) }.map { it.grupo }.distinct().single() != null)
         assertEquals(a.repo.tiposTerreno().first(), b.repo.tiposTerreno().first())
         assertEquals(a.repo.tiposExcavacion().first(), b.repo.tiposExcavacion().first())
         assertEquals(a.repo.cierresYReaperturas(hoy.minusDays(5), hoy), b.repo.cierresYReaperturas(hoy.minusDays(5), hoy))
         assertEquals("uno", b.fotos.archivo("f1.jpg").readText())
         assertFalse("La foto del registro reemplazado se borra", b.fotos.archivo("vieja.jpg").exists())
         // Y la numeración sigue donde iba.
-        assertEquals(2, b.repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
+        assertEquals(3, b.repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
     }
 
     @Test

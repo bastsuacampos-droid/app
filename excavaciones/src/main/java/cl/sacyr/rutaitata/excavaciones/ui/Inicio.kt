@@ -4,6 +4,12 @@ package cl.sacyr.rutaitata.excavaciones.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.semantics.Role
+import androidx.compose.material3.Checkbox
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -154,6 +160,8 @@ fun PantallaInicio(
         if (app.buscaActualizaciones) scope.launch { app.actualizador.revisarSiCorresponde() }
     }
     var elegirFecha by rememberSaveable { mutableStateOf(false) }
+    /** Tabla (sector-lado-sentido) cuyas excavaciones se están agrupando. */
+    var agrupando by rememberSaveable { mutableStateOf<String?>(null) }
 
     Scaffold(
         topBar = {
@@ -246,14 +254,51 @@ fun PantallaInicio(
                 sector.lados.forEach { lado ->
                     item(key = "s${sector.sectorId}-${lado.lado.codigo}") { EncabezadoLado(lado) }
                     lado.sentidos.forEach { sentido ->
-                        item(key = "s${sector.sectorId}-${lado.lado.codigo}-${sentido.sentido.codigo}") { EncabezadoSentido(sentido) }
-                        items(sentido.excavaciones, key = { it.id }) { FilaExcavacion(it, onClick = { onAbrir(it.id) }) }
+                        val clave = "s${sector.sectorId}-${lado.lado.codigo}-${sentido.sentido.codigo}"
+                        // Agrupar adyacentes: solo con dos o más en la tabla y con el día abierto.
+                        val puedeAgrupar = cierre == null && sentido.excavaciones.size >= 2
+                        item(key = clave) { EncabezadoSentido(sentido, onAgrupar = if (puedeAgrupar) ({ agrupando = clave }) else null) }
+                        val companeras = companerasDeGrupo(sentido.excavaciones)
+                        items(sentido.excavaciones, key = { it.id }) {
+                            FilaExcavacion(it, agrupadaCon = companeras[it.id], onClick = { onAbrir(it.id) })
+                        }
                     }
                 }
             }
         }
     }
     if (elegirFecha) DialogoFecha(fecha, onElegir = vm::elegirFecha, onCerrar = { elegirFecha = false })
+    agrupando?.let { clave ->
+        val sentido = resumen?.sectores?.flatMap { s -> s.lados.flatMap { l -> l.sentidos.map { "s${s.sectorId}-${l.lado.codigo}-${it.sentido.codigo}" to it } } }
+            ?.firstOrNull { it.first == clave }?.second
+        if (sentido == null) {
+            agrupando = null
+        } else {
+            DialogoAgrupar(
+                sentido,
+                onAgrupar = { ids ->
+                    agrupando = null
+                    scope.launch {
+                        runCatching { app.repositorio.agrupar(ids) }
+                            .onSuccess {
+                                val numeros = sentido.excavaciones.filter { it.id in ids }.joinToString(" + ") { Formato.numero(it.numero) }
+                                avisos.showSnackbar("N° $numeros saldrán en una sola fila del reporte")
+                            }
+                            .onFailure { avisos.showSnackbar(it.message ?: "No se pudieron agrupar") }
+                    }
+                },
+                onSeparar = { ids ->
+                    agrupando = null
+                    scope.launch {
+                        runCatching { app.repositorio.separar(ids) }
+                            .onSuccess { avisos.showSnackbar("Separadas: cada una sale en su fila") }
+                            .onFailure { avisos.showSnackbar(it.message ?: "No se pudieron separar") }
+                    }
+                },
+                onCerrar = { agrupando = null },
+            )
+        }
+    }
     if (reabrir) {
         DialogoReabrir(fecha, onReabrir = { motivo -> vm.reabrir(motivo); reabrir = false }, onCerrar = { reabrir = false })
     }
@@ -460,17 +505,92 @@ private fun EncabezadoLado(lado: GrupoLado) {
 }
 
 @Composable
-private fun EncabezadoSentido(sentido: GrupoSentido) {
-    Text(
-        "Sentido ${sentido.sentido.etiqueta}",
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.secondary,
-        modifier = Modifier.padding(start = 16.dp, top = 6.dp, bottom = 2.dp),
+private fun EncabezadoSentido(sentido: GrupoSentido, onAgrupar: (() -> Unit)?) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 2.dp)) {
+        Text(
+            "Sentido ${sentido.sentido.etiqueta}",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.weight(1f).padding(vertical = 4.dp),
+        )
+        if (onAgrupar != null) {
+            TextButton(onClick = onAgrupar, modifier = Modifier.testTag("agrupar")) { Text("Agrupar adyacentes") }
+        }
+    }
+}
+
+/** Para cada excavación agrupada, los números de las otras de su grupo ("04", "04 + 05"). */
+private fun companerasDeGrupo(excavaciones: List<ExcavacionDetalle>): Map<Long, String> {
+    val grupos = excavaciones.filter { it.grupo != null }.groupBy { it.grupo }
+    return excavaciones.filter { it.grupo != null }.associate { e ->
+        e.id to grupos.getValue(e.grupo).filter { it.id != e.id }.joinToString(" + ") { Formato.numero(it.numero) }
+    }
+}
+
+/**
+ * Elegir excavaciones adyacentes de una misma tabla para que el reporte las muestre en una sola
+ * fila, o separar las que ya estaban agrupadas.
+ */
+@Composable
+private fun DialogoAgrupar(
+    sentido: GrupoSentido,
+    onAgrupar: (List<Long>) -> Unit,
+    onSeparar: (List<Long>) -> Unit,
+    onCerrar: () -> Unit,
+) {
+    var elegidas by rememberSaveable { mutableStateOf(listOf<Long>()) }
+    val companeras = companerasDeGrupo(sentido.excavaciones)
+    val hayAgrupadas = sentido.excavaciones.any { it.id in elegidas && it.grupo != null }
+    AlertDialog(
+        onDismissRequest = onCerrar,
+        title = { Text("Agrupar adyacentes") },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                Text(
+                    "Las elegidas salen en el reporte en una sola fila (\"03 + 04\"), con el volumen sumado y sus fotos " +
+                        "juntas. En el registro siguen separadas.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+                sentido.excavaciones.forEach { e ->
+                    val marcada = e.id in elegidas
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).toggleable(
+                            value = marcada,
+                            role = Role.Checkbox,
+                            onValueChange = { elegidas = if (it) elegidas + e.id else elegidas - e.id },
+                        ),
+                    ) {
+                        Checkbox(checked = marcada, onCheckedChange = null)
+                        Spacer(Modifier.width(8.dp))
+                        Column {
+                            Text(
+                                "N° ${Formato.numero(e.numero)} · ${Formato.dimensiones(e.largo, e.ancho, e.profundidad)} m",
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                            companeras[e.id]?.let {
+                                Text("Agrupada con N° $it", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.tertiary)
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onAgrupar(elegidas) }, enabled = elegidas.size >= 2) { Text("Agrupar") }
+        },
+        dismissButton = {
+            Row {
+                if (hayAgrupadas) TextButton(onClick = { onSeparar(elegidas) }) { Text("Separar") }
+                TextButton(onClick = onCerrar) { Text("Cancelar") }
+            }
+        },
     )
 }
 
 @Composable
-private fun FilaExcavacion(e: ExcavacionDetalle, onClick: () -> Unit) {
+private fun FilaExcavacion(e: ExcavacionDetalle, agrupadaCon: String?, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
@@ -517,6 +637,14 @@ private fun FilaExcavacion(e: ExcavacionDetalle, onClick: () -> Unit) {
                         Spacer(Modifier.width(12.dp))
                         Icon(Icons.Default.LocationOn, contentDescription = "Con ubicación GPS", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
+                }
+                agrupadaCon?.let {
+                    Text(
+                        "Agrupada con N° $it",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(top = 2.dp),
+                    )
                 }
             }
             if (!grande) Text(Formato.volumen(e.volumen), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)

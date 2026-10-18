@@ -41,7 +41,7 @@ import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoTerrenoEntity
         CierreDiaEntity::class,
         ReaperturaEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
 )
 @TypeConverters(Conversores::class)
@@ -108,7 +108,14 @@ abstract class BaseDatos : RoomDatabase() {
             }
         }
 
-        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2, MIGRACION_2_3, MIGRACION_3_4)
+        /** v5: excavaciones adyacentes agrupadas en una fila del reporte. */
+        private val MIGRACION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE excavaciones ADD COLUMN grupo INTEGER")
+            }
+        }
+
+        internal val MIGRACIONES: Array<Migration> = arrayOf(MIGRACION_1_2, MIGRACION_2_3, MIGRACION_3_4, MIGRACION_4_5)
 
         fun crear(context: Context): BaseDatos =
             Room.databaseBuilder(context, BaseDatos::class.java, NOMBRE)

@@ -55,6 +55,64 @@ class RepositorioExcavacionesTest {
 
     private fun fotos(vararg archivos: String) = archivos.mapIndexed { i, a -> FotoBorrador(a, tomadaEn = 1_000L + i) }
 
+    /** Grupo de cada excavación de hoy, por id. */
+    private suspend fun grupos() = repo.paraReporte(hoy, hoy, null).associate { it.id to it.grupo }
+
+    @Test
+    fun agruparAdyacentesDelMismoDiaYFrente() = runBlocking {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        val c = repo.guardar(borrador())
+        val otroFrente = repo.guardar(borrador(lado = Lado.SUR))
+        val otroDia = repo.guardar(borrador(fecha = hoy.plusDays(1)))
+
+        repo.agrupar(listOf(a, b))
+        val g = grupos()
+        assertTrue(g[a] != null && g[a] == g[b])
+        assertNull(g[c])
+
+        // Solo del mismo día y frente, y al menos dos.
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(a, otroFrente)) } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(a, otroDia)) } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(c)) } }
+
+        // Pasar la 2 a un grupo con la 3 deja sola a la 1: ya no está agrupada.
+        repo.agrupar(listOf(b, c))
+        val g2 = grupos()
+        assertNull(g2[a])
+        assertTrue(g2[b] != null && g2[b] == g2[c])
+
+        // Separar una de un grupo de dos deshace el grupo.
+        repo.separar(listOf(c))
+        assertTrue(grupos().values.all { it == null })
+    }
+
+    @Test
+    fun editarFueraDelFrenteOBorrarDeshaceElGrupo() = runBlocking {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        val c = repo.guardar(borrador())
+        repo.agrupar(listOf(a, b, c))
+
+        // Editar sin cambiar día ni frente conserva el grupo.
+        repo.guardar(repo.borrador(a)!!.copy(observaciones = "Revisada"))
+        assertEquals(1, grupos().values.filterNotNull().distinct().size)
+
+        // Cambiarla de sentido la saca; borrar otra deja una sola: sin grupo.
+        repo.guardar(repo.borrador(a)!!.copy(sentido = Sentido.CONCEPCION_CHILLAN))
+        assertNull(repo.paraReporte(hoy, hoy, null).first { it.id == a }.grupo)
+        repo.eliminar(c)
+        assertTrue(repo.paraReporte(hoy, hoy, null).all { it.grupo == null })
+    }
+
+    @Test
+    fun noSeAgrupaEnUnDiaCerrado() = runBlocking<Unit> {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        repo.cerrarDias(hoy, hoy, "Jefe")
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.agrupar(listOf(a, b)) } }
+    }
+
     @Test
     fun elBorradorGuardadoSeRecuperaIgual() = runBlocking {
         val original = borrador(numero = 9).copy(

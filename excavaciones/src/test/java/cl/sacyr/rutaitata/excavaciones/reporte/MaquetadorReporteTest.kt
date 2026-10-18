@@ -188,6 +188,35 @@ class MaquetadorReporteTest {
     }
 
     @Test
+    fun adyacentesAgrupadasVanEnUnaFilaYUnBloqueDeFotos() {
+        val lista = listOf(ejemplo(1).copy(grupo = 7), ejemplo(2, largo = 3.0).copy(grupo = 7), ejemplo(3))
+        val fotos = mapOf(
+            lista[0].id to listOf(foto(1), foto(2)),
+            lista[1].id to listOf(foto(3), foto(4)),
+        )
+        val paginas = maquetador.maquetar(datos(lista).copy(incluirFotos = true, fotos = fotos))
+        val t = paginas.first().textos()
+
+        // Una fila: los dos números, una línea de medidas por excavación y el volumen sumado.
+        assertTrue("01" in t && "+ 02" in t)
+        assertTrue("2,00 × 1,00 × 1,50" in t && "3,00 × 1,00 × 1,50" in t)
+        assertTrue("7,50" in t)
+        assertTrue(t.any { it.startsWith("Excavaciones adyacentes.") && it.contains("[4 fotos en anexo]") })
+        // La 3 sigue sola; los totales cuentan las tres excavaciones.
+        assertTrue("03" in t && "3,00" in t)
+        assertTrue("3" in t && "10,50 m³" in t)
+
+        // Anexo: un bloque para el grupo, con las cuatro fotos (dos filas) y de qué excavación es cada una.
+        val anexo = paginas.flatMap { it.textos() }
+        assertTrue(anexo.any { it.startsWith("N° 01 + 02 · Sector A") })
+        assertTrue(anexo.any { it.startsWith("Foto 4 · N° 02") })
+        val imagenes = paginas.flatMap { it.trazos.filterIsInstance<Trazo.Imagen>() }
+        assertEquals(listOf("/fotos/1.jpg", "/fotos/2.jpg", "/fotos/3.jpg", "/fotos/4.jpg"), imagenes.map { it.ruta })
+        assertTrue("La cuarta foto va en una segunda fila", imagenes[3].y > imagenes[0].y)
+        assertDentroDeLaPagina(paginas)
+    }
+
+    @Test
     fun estadoCerradoOBorradorYConstanciaDeReaperturas() {
         val lista = listOf(ejemplo(1), ejemplo(2, fecha = hoy.plusDays(1)))
         val borrador = maquetador.maquetar(datos(lista, hasta = hoy.plusDays(1))).first().textos()

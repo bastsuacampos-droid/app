@@ -201,6 +201,7 @@ class Respaldo(private val bd: BaseDatos, private val fotos: ArchivosFotos) {
             .ponerOpcional("precisionGps", e.precisionGps?.toDouble())
             .ponerOpcional("observaciones", e.observaciones)
             .put("creadoEn", e.creadoEn).put("actualizadoEn", e.actualizadoEn)
+            .ponerOpcional("grupo", e.grupo)
         private fun excavacionDeJson(o: JSONObject) = ExcavacionEntity(
             id = o.getLong("id"),
             fecha = LocalDate.ofEpochDay(o.getLong("fecha")),
@@ -217,6 +218,8 @@ class Respaldo(private val bd: BaseDatos, private val fotos: ArchivosFotos) {
             observaciones = o.texto("observaciones"),
             creadoEn = o.getLong("creadoEn"),
             actualizadoEn = o.getLong("actualizadoEn"),
+            // Respaldos anteriores a la v5 no lo traen: sin agrupar.
+            grupo = o.largo("grupo"),
         )
 
         private fun fotoAJson(f: FotoEntity) = JSONObject()

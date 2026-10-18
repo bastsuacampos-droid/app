@@ -147,6 +147,19 @@ interface ExcavacionDao {
     @Query("DELETE FROM excavaciones WHERE id = :id")
     suspend fun eliminar(id: Long)
 
+    @Query("SELECT * FROM excavaciones WHERE id IN (:ids)")
+    suspend fun porIds(ids: List<Long>): List<ExcavacionEntity>
+
+    @Query("SELECT * FROM excavaciones WHERE grupo = :grupo")
+    suspend fun delGrupo(grupo: Long): List<ExcavacionEntity>
+
+    /** Clave libre para un grupo nuevo de excavaciones adyacentes. */
+    @Query("SELECT COALESCE(MAX(grupo), 0) + 1 FROM excavaciones")
+    suspend fun nuevoGrupo(): Long
+
+    @Query("UPDATE excavaciones SET grupo = :grupo, actualizadoEn = :momento WHERE id IN (:ids)")
+    suspend fun ponerGrupo(ids: List<Long>, grupo: Long?, momento: Long)
+
     @Query("SELECT * FROM excavaciones WHERE frenteId = :frenteId ORDER BY numero")
     suspend fun delFrente(frenteId: Long): List<ExcavacionEntity>
 
@@ -159,7 +172,7 @@ interface ExcavacionDao {
             SELECT e.id, e.fecha, s.id AS sectorId, s.nombre AS sector, f.lado, f.sentido, e.numero,
                    e.progresiva, e.largo, e.ancho, e.profundidad, t.nombre AS tipoTerreno,
                    e.latitud, e.longitud, e.observaciones,
-                   (SELECT COUNT(*) FROM fotos ft WHERE ft.excavacionId = e.id) AS fotos
+                   (SELECT COUNT(*) FROM fotos ft WHERE ft.excavacionId = e.id) AS fotos, e.grupo
             FROM excavaciones e
             JOIN frentes f ON f.id = e.frenteId
             JOIN sectores s ON s.id = f.sectorId

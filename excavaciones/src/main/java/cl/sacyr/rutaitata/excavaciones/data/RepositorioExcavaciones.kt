@@ -164,11 +164,14 @@ class RepositorioExcavaciones(
                 observaciones = borrador.observaciones?.trim()?.takeIf { it.isNotEmpty() },
                 creadoEn = anterior?.creadoEn ?: momento,
                 actualizadoEn = momento,
+                // Si cambió de día o de frente ya no es adyacente a su grupo: sale de él.
+                grupo = anterior?.grupo?.takeIf { anterior.fecha == borrador.fecha && anterior.frenteId == frenteId },
             )
             val id = if (anterior == null) {
                 bd.excavaciones().insertar(entidad)
             } else {
                 bd.excavaciones().actualizar(entidad)
+                anterior.grupo?.takeIf { entidad.grupo == null }?.let { limpiarGrupo(it) }
                 borrador.id
             }
             bd.fotos().eliminarDe(id)
@@ -187,8 +190,47 @@ class RepositorioExcavaciones(
             if (bd.cierres().de(e.fecha) != null) throw DiaCerrado(mensajeCerrado(e.fecha))
         }
         val archivos = bd.fotos().de(id).map { it.archivo }
+        val grupo = bd.excavaciones().porId(id)?.grupo
         bd.excavaciones().eliminar(id)
+        grupo?.let { limpiarGrupo(it) }
         archivos
+    }
+
+    // ------------------------------------------------------------------ excavaciones adyacentes
+
+    /**
+     * Agrupa excavaciones adyacentes: en el reporte salen en una sola fila ("N° 03 + 04") con el
+     * volumen sumado y sus fotos juntas; en el registro siguen siendo excavaciones separadas. Deben
+     * ser del mismo día, sector, lado y sentido. Si alguna estaba en otro grupo, sale de él.
+     *
+     * @throws IllegalArgumentException con menos de dos o de distinto día o frente.
+     * @throws DiaCerrado si el día ya está cerrado.
+     */
+    suspend fun agrupar(ids: Collection<Long>) = bd.withTransaction {
+        val lista = bd.excavaciones().porIds(ids.distinct())
+        require(lista.size >= 2) { "Elige al menos dos excavaciones para agrupar" }
+        require(lista.map { it.fecha to it.frenteId }.distinct().size == 1) {
+            "Solo se agrupan excavaciones del mismo día, sector, lado y sentido"
+        }
+        val fecha = lista.first().fecha
+        if (bd.cierres().de(fecha) != null) throw DiaCerrado(mensajeCerrado(fecha))
+        val anteriores = lista.mapNotNull { it.grupo }.toSet()
+        bd.excavaciones().ponerGrupo(lista.map { it.id }, bd.excavaciones().nuevoGrupo(), ahora())
+        anteriores.forEach { limpiarGrupo(it) }
+    }
+
+    /** Saca las excavaciones de su grupo: vuelven a salir cada una en su fila. */
+    suspend fun separar(ids: Collection<Long>) = bd.withTransaction {
+        val lista = bd.excavaciones().porIds(ids.distinct()).filter { it.grupo != null }
+        lista.map { it.fecha }.distinct().forEach { if (bd.cierres().de(it) != null) throw DiaCerrado(mensajeCerrado(it)) }
+        bd.excavaciones().ponerGrupo(lista.map { it.id }, null, ahora())
+        lista.mapNotNull { it.grupo }.toSet().forEach { limpiarGrupo(it) }
+    }
+
+    /** Un grupo que quedó con una sola excavación deja de serlo. */
+    private suspend fun limpiarGrupo(grupo: Long) {
+        val miembros = bd.excavaciones().delGrupo(grupo)
+        if (miembros.size == 1) bd.excavaciones().ponerGrupo(miembros.map { it.id }, null, ahora())
     }
 
     /** Agrega un tipo de terreno al final del menú. Si ya existe (aunque esté desactivado) lo reactiva. */

@@ -25,7 +25,12 @@ charlas.
    anexo fotográfico (se puede desactivar para un PDF liviano). Luego **Visualizar** (visor
    dentro de la app; tocar una página la amplía), **Compartir** (WhatsApp, correo…) o
    **Guardar copia** donde se elija.
-4. **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
+4. **Agrupar adyacentes** (dashboard, en cada sentido con dos o más excavaciones): las elegidas
+   salen en el reporte en una sola fila ("03 + 04"), una línea de medidas por excavación, el
+   volumen sumado y sus fotos en un mismo bloque del anexo; la planilla CSV dice el grupo. En el
+   registro siguen separadas y los totales las cuentan a todas. Solo del mismo día, sector, lado
+   y sentido; si una cambia de día o frente, o se borra, sale del grupo.
+   **Tipos de excavación** y **Tipos de terreno** (menú ⋮): crear, editar o borrar.
    **Sectores** (menú ⋮): corregir el nombre de un sector; si se cambia al de otro existente, se
    ofrece unirlos (las excavaciones pasan con su lado y sentido; si un número ya está usado, la
    que se mueve toma el siguiente libre y se avisa). Un sector vacío se puede borrar. Al
@@ -139,8 +144,8 @@ tipos_excavacion (id, nombre UNIQUE NOCASE, largo?, ancho?, profundidad?, tipoTe
 Subir `version` en `BaseDatos`, agregar la `Migration` a `MIGRACIONES` y compilar: Room
 escribe el JSON de la nueva versión en `schemas/`. Versionar ese JSON y agregar su caso a
 `MigracionesTest` (crea la base de la versión anterior desde su JSON y la abre con Room).
-Versión actual: 4 (v2 agregó `fotos.tomadaEn`; v3, la tabla `tipos_excavacion`; v4, `fotos.origen`,
-`cierres_dia` y `reaperturas`).
+Versión actual: 5 (v2 agregó `fotos.tomadaEn`; v3, la tabla `tipos_excavacion`; v4, `fotos.origen`,
+`cierres_dia` y `reaperturas`; v5, `excavaciones.grupo`).
 Nunca usar `fallbackToDestructiveMigration`: borraría los registros de obra.
 
 ## Reporte PDF
