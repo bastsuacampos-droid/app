@@ -1,0 +1,358 @@
+package cl.sacyr.rutaitata.excavaciones.data
+
+import android.database.sqlite.SQLiteConstraintException
+import androidx.test.core.app.ApplicationProvider
+import cl.sacyr.rutaitata.excavaciones.data.local.BaseDatos
+import cl.sacyr.rutaitata.excavaciones.data.local.entidades.TipoExcavacionEntity
+import cl.sacyr.rutaitata.excavaciones.dominio.BorradorExcavacion
+import cl.sacyr.rutaitata.excavaciones.dominio.Campo
+import cl.sacyr.rutaitata.excavaciones.dominio.ExcavacionInvalida
+import cl.sacyr.rutaitata.excavaciones.dominio.FotoBorrador
+import cl.sacyr.rutaitata.excavaciones.dominio.OrigenFoto
+import cl.sacyr.rutaitata.excavaciones.dominio.Lado
+import cl.sacyr.rutaitata.excavaciones.dominio.Sentido
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import java.time.LocalDate
+
+@RunWith(RobolectricTestRunner::class)
+class RepositorioExcavacionesTest {
+
+    private lateinit var bd: BaseDatos
+    private lateinit var repo: RepositorioExcavaciones
+    private val hoy = LocalDate.of(2026, 10, 15)
+    private var suelo = 0L
+
+    @Before
+    fun abrir() = runBlocking {
+        bd = BaseDatos.enMemoria(ApplicationProvider.getApplicationContext())
+        repo = RepositorioExcavaciones(bd) { 1_000L }
+        suelo = repo.tiposTerreno().first().first().id
+    }
+
+    @After
+    fun cerrar() = bd.close()
+
+    private fun borrador(
+        sector: String = "Sector A",
+        lado: Lado = Lado.NORTE,
+        sentido: Sentido = Sentido.CHILLAN_CONCEPCION,
+        numero: Int? = null,
+        fecha: LocalDate = hoy,
+    ) = BorradorExcavacion(
+        fecha = fecha, sector = sector, lado = lado, sentido = sentido, numero = numero,
+        largo = 4.0, ancho = 1.2, profundidad = 1.5, tipoTerrenoId = suelo,
+    )
+
+    private fun fotos(vararg archivos: String) = archivos.mapIndexed { i, a -> FotoBorrador(a, tomadaEn = 1_000L + i) }
+
+    /** Grupo de cada excavación de hoy, por id. */
+    private suspend fun grupos() = repo.paraReporte(hoy, hoy, null).associate { it.id to it.grupo }
+
+    @Test
+    fun agruparAdyacentesDelMismoDiaYFrente() = runBlocking {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        val c = repo.guardar(borrador())
+        val otroFrente = repo.guardar(borrador(lado = Lado.SUR))
+        val otroDia = repo.guardar(borrador(fecha = hoy.plusDays(1)))
+
+        repo.agrupar(listOf(a, b))
+        val g = grupos()
+        assertTrue(g[a] != null && g[a] == g[b])
+        assertNull(g[c])
+
+        // Solo del mismo día y frente, y al menos dos.
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(a, otroFrente)) } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(a, otroDia)) } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.agrupar(listOf(c)) } }
+
+        // Pasar la 2 a un grupo con la 3 deja sola a la 1: ya no está agrupada.
+        repo.agrupar(listOf(b, c))
+        val g2 = grupos()
+        assertNull(g2[a])
+        assertTrue(g2[b] != null && g2[b] == g2[c])
+
+        // Separar una de un grupo de dos deshace el grupo.
+        repo.separar(listOf(c))
+        assertTrue(grupos().values.all { it == null })
+    }
+
+    @Test
+    fun editarFueraDelFrenteOBorrarDeshaceElGrupo() = runBlocking {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        val c = repo.guardar(borrador())
+        repo.agrupar(listOf(a, b, c))
+
+        // Editar sin cambiar día ni frente conserva el grupo.
+        repo.guardar(repo.borrador(a)!!.copy(observaciones = "Revisada"))
+        assertEquals(1, grupos().values.filterNotNull().distinct().size)
+
+        // Cambiarla de sentido la saca; borrar otra deja una sola: sin grupo.
+        repo.guardar(repo.borrador(a)!!.copy(sentido = Sentido.CONCEPCION_CHILLAN))
+        assertNull(repo.paraReporte(hoy, hoy, null).first { it.id == a }.grupo)
+        repo.eliminar(c)
+        assertTrue(repo.paraReporte(hoy, hoy, null).all { it.grupo == null })
+    }
+
+    @Test
+    fun noSeAgrupaEnUnDiaCerrado() = runBlocking<Unit> {
+        val a = repo.guardar(borrador())
+        val b = repo.guardar(borrador())
+        repo.cerrarDias(hoy, hoy, "Jefe")
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.agrupar(listOf(a, b)) } }
+    }
+
+    @Test
+    fun elBorradorGuardadoSeRecuperaIgual() = runBlocking {
+        val original = borrador(numero = 9).copy(
+            progresiva = "Km 12+450", latitud = -36.6, longitud = -72.1, precisionGps = 4.5f,
+            observaciones = "Sin interferencias", fotos = fotos("a.jpg", "b.jpg"),
+        )
+        val id = repo.guardar(original)
+        assertEquals(original.copy(id = id), repo.borrador(id))
+        assertNull(repo.borrador(id + 100))
+    }
+
+    @Test
+    fun fotosParaElReporteAgrupadasYEnOrden() = runBlocking {
+        val a = repo.guardar(borrador().copy(fotos = fotos("a1.jpg", "a2.jpg")))
+        val b = repo.guardar(borrador().copy(fotos = fotos("b1.jpg")))
+        repo.guardar(borrador())
+        val fotos = repo.fotosDe(listOf(a, b, a))
+        assertEquals(listOf("a1.jpg", "a2.jpg"), fotos[a]!!.map { it.archivo })
+        assertEquals(1_001L, fotos[a]!![1].tomadaEn)
+        assertEquals(listOf("b1.jpg"), fotos[b]!!.map { it.archivo })
+        assertEquals(setOf("a1.jpg", "a2.jpg", "b1.jpg"), repo.archivosDeFotosEnUso())
+    }
+
+    private fun tipo(nombre: String, largo: Double? = 1.0) =
+        TipoExcavacionEntity(nombre = nombre, largo = largo, ancho = 1.0, profundidad = 1.5, tipoTerrenoId = suelo, observaciones = "  Con entibado ")
+
+    @Test
+    fun tiposDeExcavacionSeCreanEditanYBorran() = runBlocking {
+        val id = repo.guardarTipoExcavacion(tipo("  Pocillo   de inspección "))
+        val guardado = repo.tipoExcavacion(id)!!
+        assertEquals("Pocillo de inspección", guardado.nombre)
+        assertEquals("Con entibado", guardado.observaciones)
+
+        // Una zanja: el largo queda para escribirlo cada vez.
+        val zanja = repo.guardarTipoExcavacion(tipo("Zanja 0,60", largo = null))
+        assertNull(repo.tipoExcavacion(zanja)!!.largo)
+        assertEquals(listOf("Pocillo de inspección", "Zanja 0,60"), repo.tiposExcavacion().first().map { it.nombre })
+
+        repo.guardarTipoExcavacion(guardado.copy(profundidad = 2.0))
+        assertEquals(2.0, repo.tipoExcavacion(id)!!.profundidad!!, 0.0)
+
+        repo.eliminarTipoExcavacion(id)
+        assertNull(repo.tipoExcavacion(id))
+    }
+
+    @Test
+    fun tipoDeExcavacionRechazaNombreRepetidoOVacioYMedidasInvalidas() = runBlocking {
+        repo.guardarTipoExcavacion(tipo("Pocillo"))
+        for (malo in listOf(tipo("POCILLO"), tipo("   "), tipo("Otro", largo = 0.0))) {
+            assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.guardarTipoExcavacion(malo) } }
+        }
+        assertEquals(1, repo.tiposExcavacion().first().size)
+    }
+
+    @Test
+    fun unDiaCerradoNoSeModificaHastaReabrirloConMotivo() = runBlocking {
+        val id = repo.guardar(borrador())
+        val otroDia = repo.guardar(borrador(fecha = hoy.plusDays(1)))
+        assertEquals(1, repo.cerrarDias(hoy, hoy, "María"))
+
+        // Ni agregar, ni editar, ni sacar del día, ni traer a él, ni borrar.
+        for (intento in listOf(
+            borrador(),
+            repo.borrador(id)!!.copy(largo = 9.0),
+            repo.borrador(id)!!.copy(fecha = hoy.plusDays(2)),
+            repo.borrador(otroDia)!!.copy(fecha = hoy),
+        )) {
+            val e = assertThrows(ExcavacionInvalida::class.java) { runBlocking { repo.guardar(intento) } }
+            assertTrue(Campo.FECHA in e.errores)
+        }
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.eliminar(id) } }
+        // Volver a cerrar no cambia el cierre original.
+        assertEquals(0, repo.cerrarDias(hoy, hoy.plusDays(1), "Otro").minus(1))
+        assertEquals("María", repo.cierre(hoy).first()!!.responsable)
+
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.reabrirDia(hoy, "  ") } }
+        repo.reabrirDia(hoy, "Corregir medida N° 01")
+        assertNull(repo.cierre(hoy).first())
+        repo.guardar(repo.borrador(id)!!.copy(largo = 9.0))
+        val (cierres, reaperturas) = repo.cierresYReaperturas(hoy, hoy.plusDays(1))
+        assertEquals(listOf(hoy.plusDays(1)), cierres.map { it.fecha })
+        assertEquals("Corregir medida N° 01", reaperturas.single().motivo)
+        assertEquals("María", reaperturas.single().responsableCierre)
+    }
+
+    @Test
+    fun guardaElOrigenDeCadaFoto() = runBlocking {
+        val id = repo.guardar(
+            borrador().copy(fotos = listOf(FotoBorrador("a.jpg", 1L, OrigenFoto.CAMARA), FotoBorrador("b.jpg", 2L, OrigenFoto.GALERIA))),
+        )
+        assertEquals(listOf(OrigenFoto.CAMARA, OrigenFoto.GALERIA), repo.borrador(id)!!.fotos.map { it.origen })
+    }
+
+    private suspend fun idSector(nombre: String) = repo.sectores().first().first { it.nombre == nombre }.id
+
+    @Test
+    fun renombrarSectorYChoqueConOtroExistente() = runBlocking {
+        repo.guardar(borrador(sector = "Sectro A"))
+        repo.guardar(borrador(sector = "Sector B"))
+        repo.renombrarSector(idSector("Sectro A"), "  Sector   C ")
+        assertEquals(listOf("Sector B", "Sector C"), repo.sectores().first().map { it.nombre })
+        // Solo cambiar mayúsculas del mismo sector está permitido.
+        repo.renombrarSector(idSector("Sector C"), "SECTOR C")
+        val e = assertThrows(SectorExistente::class.java) { runBlocking { repo.renombrarSector(idSector("SECTOR C"), "sector b") } }
+        assertEquals("Sector B", e.otro.nombre)
+    }
+
+    @Test
+    fun unirSectoresMueveExcavacionesYRenumeraLasQueChocan() = runBlocking {
+        // Destino: Norte CH-CO con N° 1 y 2.
+        repo.guardar(borrador(sector = "Sector A"))
+        repo.guardar(borrador(sector = "Sector A"))
+        // Duplicado: Norte CH-CO con N° 1 y 3 (el 3 no choca) y Sur con N° 1 (el destino no tiene Sur).
+        repo.guardar(borrador(sector = "Sectro A", numero = 1))
+        repo.guardar(borrador(sector = "Sectro A", numero = 3))
+        repo.guardar(borrador(sector = "Sectro A", lado = Lado.SUR))
+
+        val cambios = repo.unirSectores(idSector("Sectro A"), idSector("Sector A"))
+
+        assertEquals(listOf(Renumeracion(Lado.NORTE, Sentido.CHILLAN_CONCEPCION, 1, 4)), cambios)
+        assertEquals(listOf("Sector A"), repo.sectores().first().map { it.nombre })
+        val norte = repo.paraReporte(hoy, hoy).filter { it.lado == Lado.NORTE }.map { it.numero }.sorted()
+        assertEquals(listOf(1, 2, 3, 4), norte)
+        assertEquals(listOf(1), repo.paraReporte(hoy, hoy).filter { it.lado == Lado.SUR }.map { it.numero })
+        assertEquals(5, repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
+    }
+
+    @Test
+    fun unSectorConDiasCerradosNoSeRenombraNiSeUne() = runBlocking {
+        repo.guardar(borrador(sector = "Sectro A"))
+        repo.guardar(borrador(sector = "Sector A", fecha = hoy.plusDays(1)))
+        repo.cerrarDias(hoy, hoy, "María")
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.renombrarSector(idSector("Sectro A"), "Sector Z") } }
+        assertThrows(DiaCerrado::class.java) { runBlocking { repo.unirSectores(idSector("Sectro A"), idSector("Sector A")) } }
+        assertEquals(2, repo.sectores().first().size)
+    }
+
+    @Test
+    fun soloSeBorraUnSectorVacio() = runBlocking {
+        val id = repo.guardar(borrador(sector = "Sector A"))
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { repo.eliminarSector(idSector("Sector A")) } }
+        repo.eliminar(id)
+        repo.eliminarSector(idSector("Sector A"))
+        assertTrue(repo.sectores().first().isEmpty())
+        assertEquals(0, repo.sectoresConConteo().first().size)
+    }
+
+    @Test
+    fun traeLosTiposDeTerrenoIniciales() = runBlocking {
+        assertEquals(BaseDatos.TIPOS_TERRENO_INICIALES, repo.tiposTerreno().first().map { it.nombre })
+    }
+
+    @Test
+    fun numeraCorrelativoPorSectorLadoYSentido() = runBlocking {
+        repo.guardar(borrador())
+        repo.guardar(borrador())
+        repo.guardar(borrador(sentido = Sentido.CONCEPCION_CHILLAN))
+        // Mismo sector escrito distinto: es el mismo frente; y la numeración sigue al día siguiente.
+        repo.guardar(borrador(sector = "  sector   a ", fecha = hoy.plusDays(1)))
+
+        assertEquals(4, repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
+        assertEquals(2, repo.siguienteNumero("Sector A", Lado.NORTE, Sentido.CONCEPCION_CHILLAN))
+        assertEquals(1, repo.siguienteNumero("Sector A", Lado.SUR, Sentido.CHILLAN_CONCEPCION))
+        assertEquals(1, repo.siguienteNumero("Sector Z", Lado.NORTE, Sentido.CHILLAN_CONCEPCION))
+        assertEquals(1, repo.sectores().first().size)
+    }
+
+    @Test
+    fun noPermiteRepetirUnNumeroEnElFrente() = runBlocking {
+        repo.guardar(borrador(numero = 7))
+        val error = assertThrows(ExcavacionInvalida::class.java) { runBlocking { repo.guardar(borrador(numero = 7)) } }
+        assertTrue(Campo.NUMERO in error.errores)
+        // En otro lado sí.
+        repo.guardar(borrador(lado = Lado.SUR, numero = 7))
+        Unit
+    }
+
+    @Test
+    fun editarConservaElNumeroYReemplazaLasFotos() = runBlocking {
+        val id = repo.guardar(borrador().copy(fotos = fotos("a.jpg", "b.jpg")))
+        repo.guardar(borrador().copy(id = id, largo = 5.0, fotos = fotos("c.jpg")))
+
+        val guardada = repo.excavacion(id)!!
+        assertEquals(1, guardada.numero)
+        assertEquals(5.0, guardada.largo, 0.0)
+        assertEquals(listOf("c.jpg"), repo.fotos(id).map { it.archivo })
+    }
+
+    @Test
+    fun resumenDelDiaAgrupaYSuma() = runBlocking {
+        repo.guardar(borrador())
+        repo.guardar(borrador(lado = Lado.SUR))
+        repo.guardar(borrador(sector = "Sector B"))
+        repo.guardar(borrador(fecha = hoy.minusDays(1)))
+
+        val resumen = repo.resumenDelDia(hoy).first()
+        assertEquals(3, resumen.cantidad)
+        assertEquals(3 * 7.2, resumen.volumen, 1e-9)
+        assertEquals(listOf("Sector A", "Sector B"), resumen.sectores.map { it.nombre })
+        assertEquals(listOf(Lado.NORTE, Lado.SUR), resumen.sectores[0].lados.map { it.lado })
+        assertEquals("Suelo Tipo I", resumen.excavaciones.first().tipoTerreno)
+    }
+
+    @Test
+    fun reporteFiltraPorRangoYSector() = runBlocking {
+        repo.guardar(borrador(fecha = hoy.minusDays(3)))
+        repo.guardar(borrador(fecha = hoy))
+        repo.guardar(borrador(sector = "Sector B", fecha = hoy))
+        val sectorB = repo.sectores().first().first { it.nombre == "Sector B" }.id
+
+        assertEquals(2, repo.paraReporte(hoy, hoy).size)
+        assertEquals(3, repo.paraReporte(hoy, hoy.minusDays(5)).size)
+        assertEquals(listOf("Sector B"), repo.paraReporte(hoy, hoy, sectorB).map { it.sector })
+    }
+
+    @Test
+    fun eliminarBorraLasFotosYDevuelveSusArchivos() = runBlocking {
+        val id = repo.guardar(borrador().copy(fotos = fotos("a.jpg", "b.jpg", "c.jpg")))
+        assertEquals(3, repo.paraReporte(hoy, hoy).single().fotos)
+        assertEquals(listOf("a.jpg", "b.jpg", "c.jpg"), repo.eliminar(id))
+        assertNull(repo.excavacion(id))
+        assertTrue(repo.fotos(id).isEmpty())
+    }
+
+    @Test
+    fun tiposDeTerrenoSeAgreganYDesactivan() = runBlocking {
+        val id = repo.agregarTipoTerreno("Arcilla expansiva")
+        assertEquals("Arcilla expansiva", repo.tiposTerreno().first().last().nombre)
+        repo.desactivarTipoTerreno(id)
+        assertTrue(repo.tiposTerreno().first().none { it.id == id })
+        // Escribirlo de nuevo (con otras mayúsculas) lo reactiva en vez de duplicarlo.
+        assertEquals(id, repo.agregarTipoTerreno("arcilla EXPANSIVA"))
+    }
+
+    @Test
+    fun unTipoDeTerrenoEnUsoNoSePuedeBorrar() = runBlocking {
+        repo.guardar(borrador())
+        assertThrows(SQLiteConstraintException::class.java) {
+            bd.openHelper.writableDatabase.execSQL("DELETE FROM tipos_terreno WHERE id = $suelo")
+        }
+        Unit
+    }
+}

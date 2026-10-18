@@ -80,6 +80,31 @@ Cuidados:
   responsable del proyecto. Si se pierde, los teléfonos no podrán actualizarse encima.
 - Un cambio solo de contenido no necesita versión nueva de la app.
 
+## Módulo `excavaciones` (otra app)
+
+`excavaciones/` es una app aparte (`cl.sacyr.rutaitata.excavaciones`) para el control diario de
+excavaciones con reporte PDF. Ver `excavaciones/README.md`. Reglas:
+- Room con esquema exportado en `excavaciones/schemas/`: un cambio de entidades sube la versión
+  de `BaseDatos` con su `Migration`; nunca migración destructiva.
+- Los `codigo` de `Lado` y `Sentido` se guardan en la base: no cambiarlos.
+- El PDF es Kotlin puro y se prueba completo en la JVM: `MaquetadorReporte` maqueta y
+  `GeneradorReportePdf` lo escribe sin `PdfDocument` (que guarda las fotos sin compresión JPEG),
+  con las fotos JPEG tal cual y Roboto de `assets/fuentes` incrustada en subconjunto. Un
+  carácter nuevo en textos fijos del reporte debe existir en Roboto (si no, sale "?"; "→" se
+  dibuja aparte).
+- Una migración nueva lleva su caso en `MigracionesTest`.
+- Fotos por `TakePicture`/`PickVisualMedia`: no declarar el permiso `CAMERA`.
+- Pantallas: Compose + ViewModel (`SavedStateHandle` para sobrevivir al cierre de la app con la
+  cámara abierta). `FlujoRegistroTest` recorre la app con Robolectric; ahí los botones bajo la
+  barra fija de "Guardar" necesitan `performScrollTo()` antes del clic. Con `@Config(qualifiers=…)`,
+  Robolectric nunca deja inactivo un `AlertDialog` con campos de texto (AppNotIdleException): las
+  pruebas que abren esos diálogos van con el tamaño de pantalla por defecto.
+- `publicar-app.yml` compila solo `:app`. Excavaciones se publica con
+  `publicar-excavaciones.yml`: subir `versionCode`/`versionName` en `excavaciones/build.gradle.kts`,
+  escribir `excavaciones/novedades-version.txt` y llevar a `main`. Tags `excavaciones-v*`, APK
+  `excavaciones-ruta-itata-*.apk`, misma clave y secrets que charlas. La versión debug no busca
+  actualizaciones (otra firma).
+
 ## Convenciones
 
 - Rama de trabajo, PR a `main`; el check *Validar banco de charlas* debe pasar.

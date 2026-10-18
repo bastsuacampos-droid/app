@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CharlasRutaItata"
 include(":app")
+include(":excavaciones")

@@ -1,0 +1,84 @@
+name: Publicar versión de la app de excavaciones
+
+# Cada vez que llega a main un versionName nuevo (excavaciones/build.gradle.kts), se compila la APK
+# firmada y se publica como release "excavaciones-v<versión>". La app la encuentra y ofrece instalarla.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar-excavaciones
+  cancel-in-progress: false
+
+env:
+  # Misma clave que la app de charlas (secrets FIRMA_KEYSTORE_BASE64 y FIRMA_CLAVE). Si una versión
+  # sale con otra firma, Android no deja instalarla encima y habría que desinstalar, perdiendo los
+  # registros del teléfono: por eso se verifica la huella antes de publicar.
+  HUELLA_ESPERADA: 1038edcb1b545a0d71a5b12ed29c05ef5d6752e4afe27cffee5c71692f9ad3dc
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    env:
+      FIRMA_KEYSTORE_BASE64: ${{ secrets.FIRMA_KEYSTORE_BASE64 }}
+      FIRMA_CLAVE: ${{ secrets.FIRMA_CLAVE }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versión a publicar
+        id: version
+        run: |
+          version=$(sed -n 's/^ *versionName = "\(.*\)"/\1/p' excavaciones/build.gradle.kts)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if gh release view "excavaciones-v$version" >/dev/null 2>&1; then
+            echo "La versión $version ya está publicada; no hay nada que hacer."
+            echo "publicar=false" >> "$GITHUB_OUTPUT"
+          elif [ -z "$FIRMA_KEYSTORE_BASE64" ] || [ -z "$FIRMA_CLAVE" ]; then
+            echo "::warning::Faltan los secrets FIRMA_KEYSTORE_BASE64 y FIRMA_CLAVE; no se puede firmar la versión $version de excavaciones."
+            echo "publicar=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publicar=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-java@v4
+        if: steps.version.outputs.publicar == 'true'
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        if: steps.version.outputs.publicar == 'true'
+
+      - name: Compilar APK firmada
+        if: steps.version.outputs.publicar == 'true'
+        run: |
+          echo "$FIRMA_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/firma.jks"
+          FIRMA_KEYSTORE="$RUNNER_TEMP/firma.jks" ./gradlew :excavaciones:testDebugUnitTest :excavaciones:assembleRelease
+          rm "$RUNNER_TEMP/firma.jks"
+
+      - name: Verificar la firma
+        if: steps.version.outputs.publicar == 'true'
+        run: |
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          huella=$("$apksigner" verify --print-certs excavaciones/build/outputs/apk/release/excavaciones-release.apk \
+            | sed -n 's/.*SHA-256 digest: //p' | head -1)
+          if [ "$huella" != "$HUELLA_ESPERADA" ]; then
+            echo "::error::La APK quedó firmada con otra clave ($huella). No se publica."
+            exit 1
+          fi
+
+      - name: Publicar release
+        if: steps.version.outputs.publicar == 'true'
+        run: |
+          version=${{ steps.version.outputs.version }}
+          cp excavaciones/build/outputs/apk/release/excavaciones-release.apk "excavaciones-ruta-itata-$version.apk"
+          # El repositorio también publica otras apps: tag propio y sin marcarla como "latest".
+          gh release create "excavaciones-v$version" "excavaciones-ruta-itata-$version.apk" \
+            --title "Excavaciones Ruta Itata $version" \
+            --latest=false \
+            --notes-file excavaciones/novedades-version.txt \
+            --target "$GITHUB_SHA"
