@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 15** · 2026-10-18 — La charla "Zanjas y excavaciones: la tierra no avisa" pasa de Obras de Arte a Excavación Manual: antes OA-01, ahora EM-45. El historial y los planes se mantienen. Excavación Manual queda con 45 charlas.
+**Versión 16** · 2026-10-18 — 20 charlas nuevas de Excavación Manual: herramienta para cada suelo, heladas, temblor en la zanja, rodillo y camiones junto al borde, bajar tubos, barreras en el borde, niños y curiosos, poca luz, polvo, entrega de la excavación, herramientas largas bajo líneas eléctricas, cercos de púas y eléctricos, canales de regadío, EPP del excavador, primer día, losa en voladizo, rellenar con gente dentro, veredas y electricidad con agua (Excavación Manual: 65 charlas; banco: 478).
 
 ## Índice por especialidad
 
@@ -225,7 +225,7 @@
 - **OA-91** Gatas hidráulicas: nunca bajo una carga sin calzas
 - **OA-92** Paraderos y refugios peatonales: obra chica junto al tránsito
 
-### Excavación Manual (45)
+### Excavación Manual (65)
 
 - **EM-01** Excavación manual junto a cables y tuberías: destapar con cuidado
 - **EM-02** Palear sin lesionarse: técnica, ritmo y rotación
@@ -272,6 +272,26 @@
 - **EM-43** Vigía en el borde: nadie excava solo dentro de la zanja
 - **EM-44** Romper el pavimento antes de excavar a mano
 - **EM-45** Zanjas y excavaciones: la tierra no avisa
+- **EM-46** La herramienta correcta para cada suelo
+- **EM-47** Helada en la zanja: la pared que se suelta al mediodía
+- **EM-48** Temblor con gente dentro de la zanja
+- **EM-49** Rodillo y compactadora junto a la zanja
+- **EM-50** Camiones y equipos cerca del borde: la carga que derrumba
+- **EM-51** Bajar tubos y piezas a la zanja
+- **EM-52** La cinta no es barrera: proteger el borde durante la jornada
+- **EM-53** Niños y curiosos junto a la excavación
+- **EM-54** Excavar con poca luz
+- **EM-55** Polvo al excavar en suelo seco
+- **EM-56** Entregar la excavación al siguiente turno o al día siguiente
+- **EM-57** Herramientas largas bajo líneas eléctricas
+- **EM-58** Cercos de púas y cercos eléctricos junto a la excavación
+- **EM-59** Canales de regadío junto a la zanja: el agua que llega sin aviso
+- **EM-60** El EPP del excavador manual
+- **EM-61** Primer día en la cuadrilla de excavación
+- **EM-62** Excavar bajo el pavimento: la losa que queda en voladizo
+- **EM-63** Rellenar con gente dentro: nunca
+- **EM-64** Excavar en la vereda: el paso de los peatones
+- **EM-65** Electricidad y agua en la zanja
 
 ### Riesgos Transversales / Clima (81)
 
@@ -500,9 +520,9 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 
 | Actividad | Charlas recomendadas |
 |---|---|
-| Excavación de zanjas | EM-45, MP-13, EM-10, EM-43, OA-40, EM-05 |
+| Excavación de zanjas | EM-45, MP-13, EM-10, EM-43, EM-48, OA-40 |
 | Excavación manual | EM-03, EM-01, OA-14, EM-08, EM-09, EM-12 |
-| Instalación de tubos y alcantarillas | OA-37, MP-05, OA-06, OA-31, OA-38, EM-29 |
+| Instalación de tubos y alcantarillas | OA-37, MP-05, OA-06, OA-31, OA-38, EM-51 |
 | Terraplén y rellenos | MT-03, MP-04, MP-21, MT-02, MT-18, MT-34 |
 | Corte de talud y roca | MT-29, MT-30, MT-01, MT-12, MT-31, MT-36 |
 | Tránsito de camiones y caminos internos | CT-04, CT-29, MT-06, CT-30, MP-04, MP-22 |
@@ -4868,6 +4888,346 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: NCh 349 (Construcción – Disposiciones de seguridad en excavación); DS 594 (condiciones de seguridad); Ley 16.744 Art. 68.
 
 **Pregunta de cierre:** Después de la lluvia de anoche, ¿quién revisa la zanja antes de que alguien baje?
+
+### EM-46 · La herramienta correcta para cada suelo
+
+**El porqué (mensaje clave):** Cada herramienta de excavación tiene su uso: la picota y el chuzo rompen suelo duro, la pala de punta corta y la pala cuadrada carga y perfila. Usar la pala como palanca o el chuzo donde hay servicios termina en mangos quebrados, golpes, lesiones de espalda o un cable cortado.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Elegir la herramienta según el suelo y la tarea, y tenerlas todas en el frente antes de empezar.
+2. [ ] Revisar mangos, cabezas y filos: sin astillas, fisuras, cabezas sueltas ni reparaciones con alambre o cinta.
+3. [ ] Cerca de servicios marcados, solo pala y golpes suaves; nada de chuzo, picota ni barreta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramienta en buen estado y con sus protecciones.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).
+
+**Pregunta de cierre:** ¿Qué herramienta usamos hoy cerca del cable marcado y cuál no?
+
+### EM-47 · Helada en la zanja: la pared que se suelta al mediodía
+
+**El porqué (mensaje clave):** En las mañanas de helada, el agua del suelo se congela y la pared de la zanja parece firme. Cuando sale el sol y se derrite, la tierra pierde de golpe esa unión y se desprende en bloques, justo cuando la cuadrilla ya confió en ella.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Después de una helada, revisar la zanja al inicio y otra vez cuando el sol comience a derretir el hielo.
+2. [ ] No dejarse engañar por la pared congelada: talud o entibación igual que en suelo blando.
+3. [ ] Atención a grietas, gotas de agua o tierra que cae al subir la temperatura; si aparecen, salir y avisar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
+- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; procedimiento de excavaciones del proyecto.
+
+**Pregunta de cierre:** ¿A qué hora volvemos a revisar la zanja en un día de helada?
+
+### EM-48 · Temblor con gente dentro de la zanja
+
+**El porqué (mensaje clave):** Un sismo sacude las paredes de la excavación y puede derrumbarlas aunque estén bien taludadas o entibadas. Dentro de una zanja no hay dónde protegerse: lo único seguro es salir rápido y alejarse del borde.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Al sentir un temblor, salir de inmediato por la escala más cercana y alejarse del borde y de taludes, postes y maquinaria.
+2. [ ] El vigía avisa a gritos y cuenta a la cuadrilla en el punto de encuentro.
+3. [ ] Nadie vuelve a entrar hasta que una persona competente revise paredes, entibación y servicios.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: NCh 349 (seguridad en excavación); DS 44/2024 (preparación y respuesta ante emergencias); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Por dónde salimos de la zanja si tiembla ahora?
+
+### EM-49 · Rodillo y compactadora junto a la zanja
+
+**El porqué (mensaje clave):** La vibración de un rodillo, una placa compactadora o un vibropisón trabajando cerca del borde se transmite al suelo y puede soltar la pared de la zanja. El operador del rodillo, además, no siempre ve que hay gente trabajando abajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Coordinar con el capataz: nada de compactación vibratoria cerca del borde mientras hay alguien dentro.
+2. [ ] Avisar al operador dónde está la zanja y marcar la distancia con conos o barrera.
+3. [ ] Después de compactar cerca, revisar el borde y las paredes antes de volver a entrar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Mantener distancia segura de los equipos en operación.
+- Normativa: NCh 349 (seguridad en excavación); DS 594 Art. 38; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿A qué distancia del borde puede pasar hoy el rodillo?
+
+### EM-50 · Camiones y equipos cerca del borde: la carga que derrumba
+
+**El porqué (mensaje clave):** Un camión que descarga material, una excavadora estacionada o una camioneta junto a la zanja cargan el borde con su peso y sus vibraciones. El borde se corta y cae con el vehículo o sobre quien está abajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Ningún vehículo ni equipo se estaciona ni circula junto al borde de la zanja; marcar la distancia con barrera.
+2. [ ] Descargas de material lejos del borde y con señalero; nadie dentro de la zanja mientras se descarga cerca.
+3. [ ] Si un vehículo debe acercarse, se coordina con el capataz y se revisa el borde antes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Mantener distancia segura de los equipos en operación.
+- Normativa: NCh 349 (seguridad en excavación); Ley 18.290 de Tránsito; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde se estacionan hoy los vehículos del frente de excavación?
+
+### EM-51 · Bajar tubos y piezas a la zanja
+
+**El porqué (mensaje clave):** Bajar tubos, cámaras prefabricadas o fittings a la zanja a pulso o con una cuerda improvisada termina en espaldas lesionadas, dedos aplastados contra la pared o una pieza que cae sobre quien la recibe abajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Piezas pesadas se bajan con equipo e izaje planificado; nadie abajo hasta que la pieza esté apoyada.
+2. [ ] Piezas livianas, con cuerdas en buen estado y entre dos, avisando antes; quien recibe se aparta hasta que la pieza llegue al fondo.
+3. [ ] Manos y pies fuera del espacio entre la pieza, la pared y el tubo ya instalado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca bajo cargas suspendidas.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién da la orden para bajar el tubo y dónde se ubica quien lo recibe?
+
+### EM-52 · La cinta no es barrera: proteger el borde durante la jornada
+
+**El porqué (mensaje clave):** La cinta de peligro avisa, pero no detiene a nadie. Durante el día, compañeros, operadores y terceros pasan junto a la zanja mirando otra cosa, y una caída de espaldas o de un tropezón al borde abierto termina en el fondo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Proteger los bordes con barreras rígidas, malla o barandas donde circula gente, no solo con cinta.
+2. [ ] Accesos y pasarelas bien marcados; el resto del borde, cerrado.
+3. [ ] Reponer de inmediato barreras caídas o movidas por el viento o la maquinaria.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar la señalización y las zonas restringidas.
+- Normativa: NCh 349 (seguridad en excavación); DS 594 (señalización de zonas de peligro); Manual de Señalización de Tránsito, Cap. 5.
+
+**Pregunta de cierre:** ¿Qué parte del borde de la zanja tiene hoy solo cinta?
+
+### EM-53 · Niños y curiosos junto a la excavación
+
+**El porqué (mensaje clave):** Una zanja abierta cerca de casas, escuelas o paraderos atrae a niños, perros y curiosos que se asoman al borde o juegan con la tierra y los materiales. Un niño que cae a una zanja o queda bajo un montón de tierra no sabe cómo salir.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Cerrar la excavación con barrera firme en sectores poblados, sobre todo cerca de escuelas y paraderos.
+2. [ ] Pedir con amabilidad a los curiosos que se alejen y avisar al supervisor si insisten.
+3. [ ] Revisar al terminar la jornada que no quede nadie dentro del área cerrada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: La zona de obras protege también a quien pasa por ella.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5; NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Hay escuelas o casas junto a la excavación de esta semana?
+
+### EM-54 · Excavar con poca luz
+
+**El porqué (mensaje clave):** En invierno oscurece temprano y las mañanas con neblina son oscuras. Con poca luz no se ven las grietas del borde, la escala, el cable descubierto ni el compañero que levanta la picota, y los vehículos tampoco ven a la cuadrilla.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Planificar la jornada para no excavar a oscuras; si es necesario, iluminar la zanja y su entorno.
+2. [ ] Ropa reflectante y linterna o luz frontal para quien trabaja dentro.
+3. [ ] Revisar la zanja con buena luz antes de entrar en la mañana.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Que te vean: de noche, alta visibilidad siempre.
+- Normativa: DS 594 (iluminación de lugares de trabajo); Manual de Señalización de Tránsito, Cap. 5; NCh 349 (seguridad en excavación).
+
+**Pregunta de cierre:** ¿A qué hora dejamos de excavar hoy por falta de luz?
+
+### EM-55 · Polvo al excavar en suelo seco
+
+**El porqué (mensaje clave):** En verano, el suelo seco y las capas de base o de ripio levantan polvo al picar y palear. Ese polvo puede tener sílice, irrita los ojos y la garganta, y dentro de una zanja angosta se concentra en la cara de quien excava.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Humedecer el suelo antes de picar o palear cuando se levanta polvo.
+2. [ ] Usar lentes de seguridad y mascarilla o respirador según indique prevención.
+3. [ ] Ubicarse con el viento a favor y no sacudir la ropa con aire comprimido.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: PLANESI (sílice); DS 594 (límites permisibles y Art. 53 sobre EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Con qué humedecemos hoy el suelo antes de picar?
+
+### EM-56 · Entregar la excavación al siguiente turno o al día siguiente
+
+**El porqué (mensaje clave):** Lo que sabe la cuadrilla que excavó —dónde está el cable, qué pared se desprendió, dónde hay agua— se pierde si no se cuenta. La cuadrilla que llega después confía en una zanja que no conoce.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Al terminar, informar al capataz el estado de la zanja: profundidad, protección, servicios descubiertos y problemas.
+2. [ ] Dejar marcados en terreno los servicios encontrados y las zonas que no se deben tocar.
+3. [ ] Quien recibe la excavación la revisa antes de entrar, aunque le hayan dicho que está bien.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Asegurarse de que se entendió: una instrucción no entendida no protege.
+- Normativa: NCh 349 (seguridad en excavación); DS 44/2024 (información de riesgos); procedimiento de excavaciones del proyecto.
+
+**Pregunta de cierre:** ¿Qué le contamos hoy a la cuadrilla que sigue en esta zanja?
+
+### EM-57 · Herramientas largas bajo líneas eléctricas
+
+**El porqué (mensaje clave):** Barretas, chuzos largos, tubos, fierros y miras topográficas pueden tocar o acercarse a una línea eléctrica al levantarlos o al sacarlos de la zanja. La electricidad salta a través del objeto y del cuerpo de quien lo sostiene.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar las líneas aéreas sobre la zona de excavación antes de empezar.
+2. [ ] Mover las herramientas y materiales largos en posición horizontal bajo las líneas, nunca en alto.
+3. [ ] Respetar la distancia de seguridad a las líneas; si no se puede, avisar al supervisor para coordinar con la empresa eléctrica.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar las distancias a líneas energizadas.
+- Normativa: Normativa eléctrica SEC (NSEG 5 E.n.71, distancias a líneas energizadas); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Qué herramienta del frente puede alcanzar la línea si la levantamos?
+
+### EM-58 · Cercos de púas y cercos eléctricos junto a la excavación
+
+**El porqué (mensaje clave):** En sectores rurales, muchas zanjas corren junto a cercos de alambre de púas o cercos eléctricos para el ganado. Los alambres cortan, enganchan la ropa y, si el cerco está electrificado, la descarga puede provocar una caída a la zanja.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar los cercos junto a la excavación y preguntar al dueño si alguno está electrificado; pedir que lo desconecte mientras se trabaja.
+2. [ ] Guantes de cuero y lentes al trabajar cerca de alambres; no apoyarse ni pasar entre ellos.
+3. [ ] Si la obra debe cortar o mover un cerco, hacerlo con el dueño avisado y dejarlo cerrado al terminar para que no salgan animales.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; compromisos con los propietarios del proyecto.
+
+**Pregunta de cierre:** ¿Algún cerco junto a nuestra zanja está electrificado?
+
+### EM-59 · Canales de regadío junto a la zanja: el agua que llega sin aviso
+
+**El porqué (mensaje clave):** En temporada de riego, los canales y acequias junto a la ruta llevan agua según los turnos de los regantes. Una compuerta que se abre puede inundar la zanja o filtrar agua por las paredes y ablandarlas en minutos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar canales y acequias cerca de la excavación y averiguar con el supervisor los turnos de riego.
+2. [ ] No excavar junto a un canal con agua sin evaluar la filtración y la protección de las paredes.
+3. [ ] Si aparece agua o barro por la pared del lado del canal, salir y avisar de inmediato.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.
+- Normativa: NCh 349 (seguridad en excavación); Ley 16.744 Art. 68; compromisos con usuarios de canales del proyecto.
+
+**Pregunta de cierre:** ¿Cuándo pasa agua por el canal que está junto a la zanja?
+
+### EM-60 · El EPP del excavador manual
+
+**El porqué (mensaje clave):** Quien excava a mano recibe golpes de herramienta, piedras, polvo, barro y caídas de material desde el borde. Cada elemento de protección cubre uno de esos riesgos, y basta que falte uno para que la lesión llegue por ahí.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Casco con barbiquejo, lentes de seguridad, guantes, zapatos o botas con puntera y ropa de alta visibilidad.
+2. [ ] Según la tarea: protección auditiva, mascarilla o respirador, rodilleras y botas de agua.
+3. [ ] EPP en buen estado y de la talla correcta; si está dañado, se cambia en bodega.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (elementos de protección personal); DS 18/1982 (certificación de EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué EPP falta hoy en la cuadrilla de excavación?
+
+### EM-61 · Primer día en la cuadrilla de excavación
+
+**El porqué (mensaje clave):** Excavar a mano parece no necesitar explicación, pero el trabajador nuevo no sabe dónde están los servicios, cuál es el límite de profundidad, cuándo se entiba ni cómo se sale en una emergencia. Los primeros días concentran muchos accidentes.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] El capataz explica en terreno los riesgos de la excavación, los servicios marcados y el procedimiento de emergencia.
+2. [ ] El trabajador nuevo trabaja junto a uno con experiencia y no entra solo a la zanja.
+3. [ ] Preguntar sin miedo: ¿hasta dónde puedo excavar?, ¿dónde salgo?, ¿qué hago si encuentro algo?
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie empieza una tarea sin conocer sus riesgos.
+- Normativa: DS 44/2024 (deber de informar los riesgos laborales); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Quién acompaña hoy al trabajador nuevo en la zanja?
+
+### EM-62 · Excavar bajo el pavimento: la losa que queda en voladizo
+
+**El porqué (mensaje clave):** Al excavar junto al borde del pavimento o de un radier, es tentador sacar tierra por debajo para ganar espacio. La losa queda colgando sin apoyo y se quiebra de golpe con su peso, con un vehículo que pasa o cuando alguien se apoya en ella.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] No socavar bajo el pavimento, la solera ni el radier; cortar y retirar primero lo que quedará sin apoyo.
+2. [ ] Si la losa quedó colgando, nadie trabaja debajo hasta retirarla o sostenerla.
+3. [ ] Señalizar y cerrar al tránsito el borde del pavimento debilitado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nunca ubicarse bajo cargas o materiales que puedan caer.
+- Normativa: NCh 349 (seguridad en excavación); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Hay alguna losa o solera sin apoyo en la excavación de hoy?
+
+### EM-63 · Rellenar con gente dentro: nunca
+
+**El porqué (mensaje clave):** Al rellenar una zanja con carretillas, palas o con el balde de una máquina, el material cae con fuerza y puede golpear o enterrar a quien todavía está dentro terminando un detalle, compactando o recuperando una herramienta.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Antes de rellenar, confirmar en voz alta que no queda nadie dentro del tramo.
+2. [ ] Si alguien debe compactar en el fondo, el material se baja de a poco, avisando, y desde el lado contrario a donde está.
+3. [ ] Con máquina, el relleno se hace solo con la zanja vacía y un señalero que lo controla.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Contacto visual con el operador antes de acercarse a cualquier equipo.
+- Normativa: NCh 349 (seguridad en excavación); DS 594 Art. 38; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién confirma que la zanja está vacía antes de rellenar?
+
+### EM-64 · Excavar en la vereda: el paso de los peatones
+
+**El porqué (mensaje clave):** En pueblos y sectores poblados, la excavación manual ocupa veredas y bermas por donde pasan peatones, adultos mayores, personas con coche o en silla de ruedas. Si no tienen un paso seguro, bajan a la calzada o caminan junto a la zanja.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Habilitar un paso peatonal señalizado, firme y separado de la zanja y del tránsito.
+2. [ ] Mantenerlo limpio de tierra, piedras y herramientas, y revisarlo durante el día.
+3. [ ] Ayudar a quien lo necesite a pasar, sin apurar a nadie y sin dejar la zanja sin vigía.
+
+**Respaldo estándar:**
+
+- Regla de Oro: La zona de obras protege también a quien pasa por ella.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (dispositivos para peatones en zonas de trabajo); Manual de Carreteras MOP, Vol. 6; NCh 349.
+
+**Pregunta de cierre:** ¿Por dónde pasa hoy una persona en silla de ruedas frente a nuestra excavación?
+
+### EM-65 · Electricidad y agua en la zanja
+
+**El porqué (mensaje clave):** Martillos eléctricos, bombas sumergibles, focos y extensiones se usan muchas veces dentro de una zanja con agua o barro. Un cable pelado o una conexión mojada electrifica el agua y a quien está parado en ella.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Todo equipo eléctrico conectado a un tablero con protección diferencial probada.
+2. [ ] Extensiones sin uniones parchadas, fuera del agua y colgadas o protegidas; enchufes y conexiones lejos del barro.
+3. [ ] Bombas sumergibles se conectan y desconectan desde fuera de la zanja, con el equipo desenergizado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 8/2019 y pliegos técnicos RIC (protección diferencial en instalaciones provisorias de faena); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde está la protección diferencial de la bomba que usamos hoy?
 
 ## Riesgos Transversales / Clima
 

@@ -6,7 +6,7 @@ supervisores hagan la charla de inicio de jornada (08:00) con sus cuadrillas.
 
 ## Qué incluye
 
-- **458 charlas** en 10 especialidades, con al menos 25 cada una: Maquinaria
+- **478 charlas** en 10 especialidades, con al menos 25 cada una: Maquinaria
   Pesada (MP), Control de Tránsito / Paleteros (CT), Cuadrillas de Asfalto (AS),
   Obras de Arte / Manuales (OA), Excavación Manual (EM), Riesgos Transversales /
   Clima (RT), Carpintería (CA), Enfierradura (EN), Hormigonado (HO) y Movimiento
