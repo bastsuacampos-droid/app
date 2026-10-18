@@ -1,8 +1,8 @@
 {
   "proyecto": "Mejoramiento de la Ruta Itata",
-  "version": 14,
+  "version": 15,
   "fecha": "2026-10-18",
-  "novedades": "Nueva especialidad Excavación Manual con 44 charlas: las de excavación manual que estaban en Obras de Arte (OA-48 a OA-59 y OA-93 en adelante) pasan a llamarse EM-01 a EM-44, sin perder el historial ni los planes. Incluye 22 charlas nuevas: permiso de excavación, servicios descubiertos, qué hacer si se golpea un cable o se rompe una tubería, postes y árboles, raíces, trabajo de rodillas, zanjas profundas, calor, pies mojados, bolones, laderas, ahoyadora, aguas servidas, arañas y avispas, ancho de la zanja, cajón de entibación, cruces de camino, pozos profundos, vigía en el borde y romper pavimento (458 charlas, 10 especialidades).",
+  "novedades": "La charla \"Zanjas y excavaciones: la tierra no avisa\" pasa de Obras de Arte a Excavación Manual: antes OA-01, ahora EM-45. El historial y los planes se mantienen. Excavación Manual queda con 45 charlas.",
   "especialidades": [
     {
       "id": "MP",
@@ -1977,21 +1977,6 @@
       "preguntaCierre": "¿Desde qué punto del tren de pavimentación un rodillo no ve al rastrillero de noche?"
     },
     {
-      "id": 4,
-      "codigo": "OA-01",
-      "especialidad": "OA",
-      "titulo": "Zanjas y excavaciones: la tierra no avisa",
-      "porQue": "Un metro cúbico de tierra pesa cerca de 1.600 kilos, lo mismo que una camioneta. Cuando la pared de una zanja se viene abajo no hay tiempo para correr, y te puede atrapar hasta el pecho aunque la zanja parezca baja. Con las lluvias del sur el suelo saturado se vuelve aún más inestable. Por eso nadie baja a una excavación que no haya sido revisada ese mismo día.",
-      "checklist": [
-        "Excavación revisada por una persona competente al inicio del turno y después de cada lluvia: talud o entibación según profundidad y tipo de suelo definidos en el procedimiento.",
-        "Material excavado y maquinaria alejados del borde a la distancia que fija el procedimiento; borde demarcado con barrera y señalización.",
-        "Acceso y salida seguros con escala que sobresalga del borde; nadie dentro de la zanja mientras la excavadora trabaja sobre ella."
-      ],
-      "normativa": "NCh 349 (Construcción – Disposiciones de seguridad en excavación); DS 594 (condiciones de seguridad); Ley 16.744 Art. 68.",
-      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
-      "preguntaCierre": "Después de la lluvia de anoche, ¿quién revisa la zanja antes de que alguien baje?"
-    },
-    {
       "id": 10,
       "codigo": "OA-02",
       "especialidad": "OA",
@@ -3835,6 +3820,21 @@
       "normativa": "PLANESI (sílice); Protocolo PREXOR; DS 594 (vibraciones y EPP); Manual de Señalización de Tránsito, Cap. 5.",
       "reglaOro": "Antes de excavar, saber qué hay abajo.",
       "preguntaCierre": "¿Qué podría haber justo bajo el pavimento que vamos a romper?"
+    },
+    {
+      "id": 4,
+      "codigo": "EM-45",
+      "especialidad": "EM",
+      "titulo": "Zanjas y excavaciones: la tierra no avisa",
+      "porQue": "Un metro cúbico de tierra pesa cerca de 1.600 kilos, lo mismo que una camioneta. Cuando la pared de una zanja se viene abajo no hay tiempo para correr, y te puede atrapar hasta el pecho aunque la zanja parezca baja. Con las lluvias del sur el suelo saturado se vuelve aún más inestable. Por eso nadie baja a una excavación que no haya sido revisada ese mismo día.",
+      "checklist": [
+        "Excavación revisada por una persona competente al inicio del turno y después de cada lluvia: talud o entibación según profundidad y tipo de suelo definidos en el procedimiento.",
+        "Material excavado y maquinaria alejados del borde a la distancia que fija el procedimiento; borde demarcado con barrera y señalización.",
+        "Acceso y salida seguros con escala que sobresalga del borde; nadie dentro de la zanja mientras la excavadora trabaja sobre ella."
+      ],
+      "normativa": "NCh 349 (Construcción – Disposiciones de seguridad en excavación); DS 594 (condiciones de seguridad); Ley 16.744 Art. 68.",
+      "reglaOro": "Excavaciones: nunca ingresar a una zanja sin talud o entibación verificada.",
+      "preguntaCierre": "Después de la lluvia de anoche, ¿quién revisa la zanja antes de que alguien baje?"
     },
     {
       "id": 5,
