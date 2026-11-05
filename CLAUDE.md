@@ -48,7 +48,8 @@ no se versiona). La APK de publicación se firma solo si existen las variables
   especialidad tiene un bloque de 100 (MP 101–200, CT 201–300 … MT 901–1000); al agotarse,
   sigue en su bloque + 1000 (Obras de Arte ya usa 1401–1500). Excavación Manual (EM) usa
   1001–1100 para sus charlas nuevas; las que se trasladaron desde Obras de Arte conservan su
-  `id` original.
+  `id` original. Paisajismo (PA) usa 2001–2100. Una especialidad nueva toma el siguiente
+  bloque libre desde 2101 (1101–2000 queda para los bloques + 1000 de MP a MT).
 - `codigo` es creciente y sin repetir por especialidad (`OA-01`, `OA-02`…); una prueba lo
   exige. **Un código no se reutiliza**: una charla nueva toma el número siguiente al mayor de
   su especialidad, aunque haya saltos (en Obras de Arte faltan OA-01, OA-48 a OA-59 y OA-93
