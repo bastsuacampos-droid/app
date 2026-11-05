@@ -21,7 +21,7 @@ class BancoTest {
     @Test
     fun incluyeLasEspecialidadesDeObrasCiviles() {
         val nombres = banco.especialidades.map { it.nombre }
-        listOf("Carpintería", "Enfierradura", "Hormigonado", "Movimiento de Tierra", "Excavación Manual").forEach {
+        listOf("Carpintería", "Enfierradura", "Hormigonado", "Movimiento de Tierra", "Excavación Manual", "Paisajismo").forEach {
             assertTrue("Falta $it", it in nombres)
         }
     }
@@ -79,8 +79,8 @@ class BancoTest {
     @Test
     fun elBancoIncluidoEsValidoYTieneVersion() {
         assertEquals(emptyList<String>(), BancoParser.validar(banco))
-        assertTrue(banco.version >= 16)
-        assertTrue(banco.actividades.size >= 45)
+        assertTrue(banco.version >= 17)
+        assertTrue(banco.actividades.size >= 46)
     }
 
     @Test

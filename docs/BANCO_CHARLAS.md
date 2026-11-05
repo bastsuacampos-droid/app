@@ -2,7 +2,7 @@
 
 > Archivo generado desde `app/src/main/assets/charlas.json` con `python3 tools/generar_banco_md.py`. No editar a mano.
 
-**Versión 16** · 2026-10-18 — 20 charlas nuevas de Excavación Manual: herramienta para cada suelo, heladas, temblor en la zanja, rodillo y camiones junto al borde, bajar tubos, barreras en el borde, niños y curiosos, poca luz, polvo, entrega de la excavación, herramientas largas bajo líneas eléctricas, cercos de púas y eléctricos, canales de regadío, EPP del excavador, primer día, losa en voladizo, rellenar con gente dentro, veredas y electricidad con agua (Excavación Manual: 65 charlas; banco: 478).
+**Versión 17** · 2026-11-05 — Nueva especialidad Paisajismo con 26 charlas: motoguadaña, cortadora de pasto, tractor cortacésped, poda con motosierra y en altura, árboles junto a líneas eléctricas, plantación, tutores, herbicidas, fertilizantes y compost, tierra vegetal, hidrosiembra, mantas antierosión, riego con aljibe y por goteo, bandejones y rotondas, zarzamora, residuos de poda, combustible, ruido y vibración, sopladora y más. Nueva actividad para el recomendador (504 charlas, 11 especialidades, 46 actividades).
 
 ## Índice por especialidad
 
@@ -514,6 +514,35 @@
 - **MT-39** Pendientes con camión cargado: frenos y marcha
 - **MT-40** Laboratorio de suelos en el frente: densidades y muestras
 
+### Paisajismo (26)
+
+- **PA-01** Motoguadaña junto a la ruta: el hilo lanza piedras
+- **PA-02** Cortadora de pasto a motor: la cuchilla bajo la carcasa
+- **PA-03** Tractor cortacésped y rozadora en taludes: el vuelco
+- **PA-04** Poda con motosierra: el rebote y los cortes sobre la cabeza
+- **PA-05** Poda en altura: escala, pértiga y zona de caída
+- **PA-06** Árboles junto a líneas eléctricas: esa poda no es nuestra
+- **PA-07** Plantar árboles: hoyos y plantas pesadas
+- **PA-08** Tutores y estacas: el combo y las manos
+- **PA-09** Herbicidas con bomba de espalda
+- **PA-10** Fertilizantes, compost y guano: guantes y lavado
+- **PA-11** Tierra vegetal: esparcir sin quedar bajo el camión
+- **PA-12** Hidrosiembra en taludes: manguera a presión y pendiente
+- **PA-13** Mantas antierosión y trabajo en taludes empinados
+- **PA-14** Regar plantaciones desde el aljibe con tránsito al lado
+- **PA-15** Riego por goteo: zanjas chicas, pegamento y cortes
+- **PA-16** Bandejón central y rotondas: tránsito por ambos lados
+- **PA-17** Tijeras de podar, serruchos y rastrillos
+- **PA-18** Zarzamora y plantas con espinas
+- **PA-19** Plantar agachado: espalda y rodillas
+- **PA-20** Residuos de poda y roce: no se queman
+- **PA-21** Combustible de equipos de jardinería: mezcla y recarga en frío
+- **PA-22** Ruido y vibración de los equipos de jardinería
+- **PA-23** Cargar plantas y equipos en la camioneta
+- **PA-24** Pasto alto: lo que esconde
+- **PA-25** Sopladora: lo que vuela hacia la ruta
+- **PA-26** Malla y alambre para proteger plantaciones
+
 ## Charlas recomendadas por actividad
 
 Las que la app propone primero en *¿Qué actividad harás?*.
@@ -540,7 +569,7 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Izaje de cargas | MP-05, MP-33, MP-41, MP-40, MP-38, MP-42 |
 | Soldadura, oxicorte y esmeril | OA-15, OA-72, EN-12, OA-16, OA-35, OA-62 |
 | Obras en cauces y esteros | OA-34, OA-33, OA-09, OA-32, MP-25, OA-42 |
-| Roce y despeje de faja | OA-25, MT-11, MT-26, MT-27, MT-28, OA-71 |
+| Roce y despeje de faja | OA-25, MT-11, MT-26, MT-27, MT-28, PA-20 |
 | Defensas camineras y barreras | OA-12, OA-27, OA-28, OA-26, CT-27, CT-09 |
 | Mantención y combustible de equipos | MP-31, MP-09, MP-29, MP-02, MP-10, MP-30 |
 | Traslado de maquinaria | MP-11, MP-26, MP-27, MP-28, MP-23, CT-28 |
@@ -561,10 +590,11 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 | Vecinos, escolares y terceros | CT-05, CT-34, CT-36, CT-32, CT-33, OA-41 |
 | Sustancias químicas y combustibles | RT-19, AS-21, RT-37, AS-02, AS-19, AS-14 |
 | Planificación de la tarea y gestión preventiva | RT-57, RT-22, RT-58, RT-55, RT-56, RT-59 |
-| Salud ocupacional: ruido, polvo y químicos | AS-05, AS-22, HO-20, MP-49, RT-61, RT-60 |
+| Salud ocupacional: ruido, polvo y químicos | AS-05, AS-22, HO-20, MP-49, RT-61, PA-22 |
 | Carga, descarga y acopio de materiales | MP-47, MP-43, MP-48, EN-20, MP-04, MP-14 |
 | Plantas de áridos y de asfalto | MP-52, AS-34, AS-33, AS-01, AS-04, AS-08 |
 | Demolición, picado y perforación de hormigón | HO-20, MP-49, OA-88, MT-30, OA-22, OA-87 |
+| Paisajismo y mantención de áreas verdes | PA-04, PA-06, PA-07, PA-12, PA-20, PA-21 |
 
 ## Plan sugerido (4 semanas, lunes a sábado)
 
@@ -8740,3 +8770,447 @@ Las que la app propone primero en *¿Qué actividad harás?*.
 - Normativa: DS 594; Ley 16.744 Art. 68; DS 3/1985 (protección radiológica) para el densímetro nuclear.
 
 **Pregunta de cierre:** ¿Cómo sabe el operador del rodillo dónde está el laboratorista?
+
+## Paisajismo
+
+### PA-01 · Motoguadaña junto a la ruta: el hilo lanza piedras
+
+**El porqué (mensaje clave):** La motoguadaña corta pasto en bermas, taludes y bandejones, pero el hilo o la cuchilla lanzan piedras, vidrios y trozos de metal a gran velocidad y a varios metros. Golpean los ojos del operador, a un compañero o el parabrisas de un vehículo que pasa.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Protector del cabezal puesto, careta o lentes, protección auditiva, polainas y calzado de seguridad.
+2. [ ] Nadie a menos de 15 metros del operador; detener el equipo si alguien se acerca.
+3. [ ] Revisar y limpiar el área antes de cortar, y trabajar de modo que lo que sale disparado no vaya hacia la calzada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal capacitado opera equipos de corte.
+- Normativa: DS 594 (ruido, vibraciones y Art. 53 sobre EPP); Ley 16.744 Art. 68; manual del fabricante del equipo.
+
+**Pregunta de cierre:** ¿Hacia dónde saldrán las piedras si cortamos hoy la berma de cara a la ruta?
+
+### PA-02 · Cortadora de pasto a motor: la cuchilla bajo la carcasa
+
+**El porqué (mensaje clave):** La cortadora de pasto parece inofensiva, pero su cuchilla gira a gran velocidad bajo la carcasa. Corta pies y manos cuando alguien la levanta para destrabarla, la arrastra hacia sí en una pendiente o la usa sin zapatos de seguridad.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Apagar el motor y esperar que la cuchilla se detenga antes de limpiar, destrabar o revisar; desconectar la bujía para mantención.
+2. [ ] En pendientes, cortar de forma transversal y nunca tirar de la cortadora hacia los pies.
+3. [ ] Calzado de seguridad, lentes y protección auditiva; retirar piedras, ramas y basura antes de cortar.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Bloqueo de energías antes de intervenir cualquier equipo.
+- Normativa: DS 594 Art. 38 (protección de partes móviles) y Art. 53 (EPP); Ley 16.744 Art. 68; manual del fabricante.
+
+**Pregunta de cierre:** ¿Qué hacemos antes de meter la mano bajo la cortadora trabada?
+
+### PA-03 · Tractor cortacésped y rozadora en taludes: el vuelco
+
+**El porqué (mensaje clave):** Los tractores cortacésped y las rozadoras montadas en tractor mantienen grandes superficies, pero en taludes, bordes de cuneta y terreno blando pueden volcarse hacia el lado y aplastar al operador. La rozadora, además, lanza piedras y atrapa todo lo que toca.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Respetar la pendiente máxima del fabricante; no trabajar en taludes que la superen ni junto a bordes de cuneta blandos.
+2. [ ] Usar la estructura antivuelco con el cinturón puesto; sin estructura, no se trabaja en pendiente.
+3. [ ] Nadie cerca de la rozadora en operación; detener y bajar el implemento antes de bajarse.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.
+- Normativa: DS 594 Art. 38; Ley 18.290 de Tránsito (si circula por la vía); Ley 16.744 Art. 68; manual del fabricante.
+
+**Pregunta de cierre:** ¿Qué taludes de nuestro tramo no se pueden cortar con tractor?
+
+### PA-04 · Poda con motosierra: el rebote y los cortes sobre la cabeza
+
+**El porqué (mensaje clave):** Al podar, la punta de la espada de la motosierra toca una rama y la máquina salta hacia la cara del operador. Cortar sobre la altura de los hombros o con una sola mano quita control, y la rama cortada cae sobre quien está debajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Solo operadores capacitados, con casco con visor y protector auditivo, pantalón y guantes anticorte y botas de seguridad.
+2. [ ] Nunca cortar con la punta de la espada ni por sobre la altura de los hombros; la motosierra siempre se toma con las dos manos.
+3. [ ] Zona de caída despejada y señalizada; nadie bajo la rama que se corta.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Solo personal capacitado opera equipos de corte.
+- Normativa: DS 594 (ruido, vibraciones y Art. 53 sobre EPP); Ley 16.744 Art. 68; manual del fabricante de la motosierra.
+
+**Pregunta de cierre:** ¿Qué parte de la espada provoca el rebote y cómo la evitamos?
+
+### PA-05 · Poda en altura: escala, pértiga y zona de caída
+
+**El porqué (mensaje clave):** Podar ramas altas desde una escala apoyada en el mismo árbol es una de las formas más comunes de caer: la rama cortada empuja la escala o el podador pierde el equilibrio al estirarse. Las ramas que caen golpean a quien recoge abajo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Preferir pértiga o podadora telescópica desde el suelo; si se necesita altura, usar plataforma o escala firme, nunca apoyada en la rama que se corta.
+2. [ ] Sobre 1,8 metros, protección contra caídas según el procedimiento; no estirarse fuera de la escala.
+3. [ ] Delimitar la zona de caída y no recoger ramas mientras se sigue podando arriba.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); NCh 351 (escalas portátiles); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cuáles ramas de hoy se pueden podar con pértiga desde el suelo?
+
+### PA-06 · Árboles junto a líneas eléctricas: esa poda no es nuestra
+
+**El porqué (mensaje clave):** Muchos árboles de la faja crecen bajo o junto a líneas eléctricas. Una rama que toca un conductor puede electrocutar a quien la corta o la sostiene, aunque no toque el cable directamente, y la rama mojada conduce todavía más.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Identificar los árboles cercanos a líneas antes de podar; si hay ramas cerca de un conductor, no se tocan.
+2. [ ] Esa poda la hace la empresa eléctrica o personal habilitado por ella, con la línea coordinada.
+3. [ ] Mantener herramientas, pértigas y escalas lejos de las líneas, también al trasladarlas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Respetar las distancias a líneas energizadas.
+- Normativa: Normativa eléctrica SEC (NSEG 5 E.n.71, distancias a líneas energizadas); Ley 16.744 Art. 68; Código del Trabajo Art. 184.
+
+**Pregunta de cierre:** ¿Qué árbol del tramo tiene ramas cerca de una línea y a quién avisamos?
+
+### PA-07 · Plantar árboles: hoyos y plantas pesadas
+
+**El porqué (mensaje clave):** Un árbol con su pan de tierra puede pesar mucho más de lo que parece. Levantarlo, girarlo y bajarlo al hoyo agachado daña la espalda, y los hoyos abiertos que esperan su planta son una trampa para quien camina por la berma.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Plantas pesadas entre dos o con ayuda mecánica; levantar con las piernas y sin girar la cintura.
+2. [ ] Hoyos abiertos señalizados o tapados hasta plantar; no dejarlos abiertos al terminar el día.
+3. [ ] Revisar servicios enterrados antes de hacer los hoyos en la berma o el bandejón.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Planificar la tarea: si pesa, se usa ayuda mecánica.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga: máximo 25 kg); NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cuántos hoyos quedan abiertos hoy y cómo los protegemos?
+
+### PA-08 · Tutores y estacas: el combo y las manos
+
+**El porqué (mensaje clave):** Clavar tutores y estacas con combo o mazo es una tarea repetitiva donde el golpe errado cae sobre la mano de quien sujeta la estaca. Las estacas que se astillan y los alambres de amarre también cortan.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Sujetar la estaca con un sujetador o con las manos lejos de la cabeza; nunca sujetarla mientras otro golpea sin coordinación.
+2. [ ] Combo con mango firme, golpes controlados y lentes por las astillas.
+3. [ ] Guantes para amarrar con alambre o cinta; cortar y doblar las puntas sobrantes.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramienta en buen estado y con sus protecciones.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cómo sujetamos la estaca para que el combo no caiga en la mano?
+
+### PA-09 · Herbicidas con bomba de espalda
+
+**El porqué (mensaje clave):** Los herbicidas y otros productos fitosanitarios se absorben por la piel, los ojos y al respirar la neblina de la aplicación. El viento los lleva hacia la cuadrilla, los vecinos, los cultivos y los cursos de agua, y la ropa contaminada sigue exponiendo a quien la usa.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Solo personal capacitado y con el EPP que indica la etiqueta; leer la etiqueta antes de preparar la mezcla.
+2. [ ] No aplicar con viento, cerca de canales o cultivos de vecinos, ni con gente en el área; respetar el período de reingreso.
+3. [ ] No comer, beber ni fumar mientras se aplica; lavarse y cambiarse de ropa al terminar, y lavar el equipo en el lugar definido.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: Ley 20.308 (protección de los trabajadores en el uso de productos fitosanitarios); etiqueta del producto autorizada por el SAG; DS 594.
+
+**Pregunta de cierre:** ¿Qué dice la etiqueta del herbicida sobre el EPP y el período de reingreso?
+
+### PA-10 · Fertilizantes, compost y guano: guantes y lavado
+
+**El porqué (mensaje clave):** Los fertilizantes irritan la piel y los ojos, y el compost, el guano y la tierra abonada pueden traer bacterias como la del tétanos, que entra por heridas pequeñas. El polvo de estos productos se respira al esparcirlos.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Guantes, lentes y mascarilla al manipular fertilizantes, compost o guano.
+2. [ ] Cubrir las heridas y lavarse bien las manos antes de comer o fumar.
+3. [ ] Informar cualquier herida contaminada con tierra o abono para que se evalúe la vacuna antitetánica.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 (condiciones sanitarias y Art. 53 sobre EPP); hoja de datos de seguridad del fertilizante (NCh 2245); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Quién de la cuadrilla tiene al día la vacuna antitetánica?
+
+### PA-11 · Tierra vegetal: esparcir sin quedar bajo el camión
+
+**El porqué (mensaje clave):** La tierra vegetal llega en camiones que descargan junto a la cuadrilla y se esparce con minicargador o a mano. Los atropellos ocurren cuando alguien rastrilla detrás de un camión que retrocede o junto a un equipo que gira.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Descargas con señalero y la cuadrilla fuera del área hasta que el camión se retire.
+2. [ ] Nadie rastrilla en el radio de giro del minicargador; contacto visual con el operador antes de acercarse.
+3. [ ] Esparcir en taludes desde abajo hacia arriba o con apoyo firme, sin quedar bajo el material suelto.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Contacto visual con el operador antes de acercarse a cualquier equipo.
+- Normativa: DS 594 Art. 38; Ley 18.290 de Tránsito; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde espera la cuadrilla mientras el camión descarga la tierra?
+
+### PA-12 · Hidrosiembra en taludes: manguera a presión y pendiente
+
+**El porqué (mensaje clave):** La hidrosiembra lanza una mezcla de semillas, fibras, fertilizante y adherente con una manguera a presión desde un camión. La manguera tira con fuerza, el chorro golpea, la mezcla irrita los ojos y quien la guía camina por un talud resbaladizo.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar mangueras y uniones antes de presurizar; la lanza se maneja con firmeza y entre dos si la presión lo exige.
+2. [ ] Lentes, guantes y ropa impermeable; nunca apuntar el chorro a personas ni hacia la calzada.
+3. [ ] Aplicar desde una posición estable en el talud; con pendiente fuerte, usar cuerda de apoyo o protección contra caídas.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (EPP); hoja de datos de seguridad de los aditivos (NCh 2245); NCh 1258; manual del equipo.
+
+**Pregunta de cierre:** ¿Quién controla la bomba si la manguera se escapa de las manos?
+
+### PA-13 · Mantas antierosión y trabajo en taludes empinados
+
+**El porqué (mensaje clave):** Instalar mantas, geomallas o biomantas antierosión obliga a caminar, arrodillarse y clavar grapas en taludes empinados y muchas veces húmedos. Un resbalón termina en una caída rodando por el talud, a veces hasta la cuneta o la calzada.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Evaluar la pendiente antes de subir; en taludes empinados, cuerda de vida anclada arriba y arnés.
+2. [ ] Calzado con buena suela y no trabajar en el talud con lluvia o helada.
+3. [ ] Subir los rollos y materiales por medios seguros, no cargándolos por la pendiente.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Trabajo en altura siempre con protección contra caídas.
+- Normativa: NCh 1258 (protección contra caídas); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde anclamos la cuerda de vida para trabajar en el talud de hoy?
+
+### PA-14 · Regar plantaciones desde el aljibe con tránsito al lado
+
+**El porqué (mensaje clave):** El riego de plantaciones en bermas y bandejones se hace muchas veces desde un camión aljibe detenido o avanzando lento junto al tránsito. Quien maneja la manguera camina entre el camión y los vehículos que pasan, y la manguera puede arrastrarlo o hacerlo tropezar.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Faena móvil señalizada con vehículo de protección según el Cap. 5 antes de empezar a regar.
+2. [ ] Quien riega se mantiene del lado protegido, nunca entre el camión y el tránsito ni detrás al retroceder.
+3. [ ] Comunicación acordada con el chofer para avanzar o detenerse; manguera recogida al moverse.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Tu integridad está primero: nadie enfrenta a un vehículo.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5 (faenas móviles); Manual de Carreteras MOP, Vol. 6; Ley 18.290 de Tránsito.
+
+**Pregunta de cierre:** ¿Cómo le avisamos al chofer del aljibe que se detenga?
+
+### PA-15 · Riego por goteo: zanjas chicas, pegamento y cortes
+
+**El porqué (mensaje clave):** Instalar riego por goteo parece trabajo liviano, pero incluye zanjas pequeñas junto a servicios, cortes con cuchillos y tijeras de tubería, y pegamentos para PVC con solventes que marean e inflaman.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Revisar servicios enterrados antes de abrir zanjas para tuberías de riego.
+2. [ ] Cortar con tijera corta-tubo o herramienta adecuada, alejando el cuerpo y la otra mano de la línea de corte.
+3. [ ] Pegamentos y limpiadores en lugar ventilado, lejos de fuego, y con guantes; envases cerrados.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Antes de excavar, saber qué hay abajo.
+- Normativa: Hoja de datos de seguridad del pegamento (NCh 2245); NCh 349 (seguridad en excavación); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde dejamos el pegamento de PVC mientras trabajamos?
+
+### PA-16 · Bandejón central y rotondas: tránsito por ambos lados
+
+**El porqué (mensaje clave):** En bandejones, medianas y rotondas la cuadrilla de paisajismo queda rodeada de tránsito. Cruzar a pie para buscar herramientas o plantas, o salir hacia la calzada para recoger algo, expone al trabajador a vehículos que no esperan encontrar a nadie ahí.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Señalizar ambos lados según el Cap. 5 antes de entrar al bandejón o la rotonda.
+2. [ ] Llevar todo lo necesario de una vez; nadie cruza la calzada a pie sin el tránsito detenido.
+3. [ ] Ropa de alta visibilidad y materiales dentro del área protegida, nunca en la berma de la calzada.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Tu integridad está primero: nadie enfrenta a un vehículo.
+- Normativa: Manual de Señalización de Tránsito, Cap. 5; Manual de Carreteras MOP, Vol. 6; Ley 18.290 de Tránsito.
+
+**Pregunta de cierre:** ¿Cómo entramos y salimos hoy del bandejón sin cruzar a pie?
+
+### PA-17 · Tijeras de podar, serruchos y rastrillos
+
+**El porqué (mensaje clave):** Las herramientas manuales de jardinería causan muchas lesiones pequeñas pero frecuentes: cortes con tijeras y serruchos de poda, golpes con el mango de un rastrillo pisado y tendinitis por tareas repetitivas.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Herramientas afiladas, limpias y con su seguro; cortar alejando la otra mano de la hoja.
+2. [ ] Rastrillos y azadones con los dientes hacia abajo cuando se dejan en el suelo, o mejor apoyados fuera del paso.
+3. [ ] Alternar tareas y hacer pausas en trabajos repetitivos de poda o corte.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Herramienta en buen estado y con sus protecciones.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68; DS 44/2024 (información de riesgos).
+
+**Pregunta de cierre:** ¿Dónde dejamos los rastrillos cuando no los usamos?
+
+### PA-18 · Zarzamora y plantas con espinas
+
+**El porqué (mensaje clave):** La zarzamora y otras plantas espinosas cubren cercos, cunetas y taludes de la zona. Sus espinas se clavan en manos, brazos y ojos, se rompen bajo la piel y producen infecciones; además esconden hoyos, basura y animales.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Guantes gruesos, mangas largas y lentes o careta al cortar o retirar zarzamora.
+2. [ ] Cortar desde fuera hacia adentro con herramienta de mango largo, no metiendo el cuerpo en la mata.
+3. [ ] Retirar las espinas clavadas y desinfectar; avisar si la herida se enrojece o se hincha.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Con qué herramienta cortamos hoy la zarzamora del cerco?
+
+### PA-19 · Plantar agachado: espalda y rodillas
+
+**El porqué (mensaje clave):** Plantar cientos de arbustos o cubresuelos obliga a pasar el día agachado o de rodillas. La espalda baja y las rodillas se resienten de a poco, y las molestias se vuelven lesiones si no se cambia de postura.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Usar rodilleras o un cojín para trabajar de rodillas, y herramientas de mango largo cuando se pueda.
+2. [ ] Cambiar de postura y estirarse cada cierto tiempo; rotar entre plantar, acarrear y regar.
+3. [ ] Acercar las plantas en carretilla o bandejas en vez de cargarlas una a una agachado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Cuídate y cuida a tu compañero.
+- Normativa: Código del Trabajo Arts. 211-F a 211-J (manejo manual de carga); DS 594 Art. 53; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cada cuánto rotamos hoy entre plantar y acarrear?
+
+### PA-20 · Residuos de poda y roce: no se queman
+
+**El porqué (mensaje clave):** Quemar ramas, pasto seco y residuos de poda junto a la ruta parece una solución rápida, pero un fuego que se escapa con el viento puede iniciar un incendio forestal, cortar la ruta con humo y alcanzar casas y plantaciones.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Prohibido quemar residuos vegetales en la faena; se acopian y se retiran o se chipean.
+2. [ ] Acopiar lejos de la calzada, de cercos y de fuentes de calor, sin bloquear cunetas ni accesos.
+3. [ ] Ante un fuego, dar la alarma de inmediato y usar el extintor solo si es seguro.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Todo frente de trabajo con plan de emergencia conocido por todos.
+- Normativa: Normativa de CONAF sobre uso del fuego y prevención de incendios forestales; DS 594 (prevención de incendios); plan de emergencias del proyecto.
+
+**Pregunta de cierre:** ¿Dónde acopiamos los residuos de poda de hoy y quién los retira?
+
+### PA-21 · Combustible de equipos de jardinería: mezcla y recarga en frío
+
+**El porqué (mensaje clave):** Motoguadañas, motosierras y sopladoras usan bencina o mezcla. Recargarlas con el motor caliente, fumando o junto al pasto seco puede encender el combustible derramado, y la ropa salpicada sigue siendo inflamable.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Recargar con el motor apagado y frío, en suelo despejado y lejos del pasto seco.
+2. [ ] Bidones aprobados y rotulados; mezcla preparada según el fabricante y nada de fuego ni cigarros cerca.
+3. [ ] Alejarse varios metros del lugar de recarga antes de arrancar y limpiar el combustible derramado.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Conoce el producto antes de usarlo: sin HDS no hay manipulación.
+- Normativa: DS 594 (almacenamiento de sustancias inflamables y prevención de incendios); Ley 16.744 Art. 68; manual del fabricante.
+
+**Pregunta de cierre:** ¿Dónde recargamos hoy la motoguadaña y dónde está el extintor?
+
+### PA-22 · Ruido y vibración de los equipos de jardinería
+
+**El porqué (mensaje clave):** Una jornada completa con motoguadaña, motosierra o sopladora expone los oídos a un ruido que daña sin doler, y las manos a una vibración que con los años produce dedos blancos, adormecidos y sin fuerza.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Protección auditiva todo el tiempo que el equipo está encendido.
+2. [ ] Rotar a los operadores y hacer pausas; usar arnés de hombros para repartir el peso.
+3. [ ] Avisar si los dedos se ponen blancos, se adormecen o se pierde fuerza en las manos.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: Protocolo PREXOR (ruido); DS 594 (vibraciones y Art. 53 sobre EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cuántas horas seguidas usamos hoy la motoguadaña sin rotar?
+
+### PA-23 · Cargar plantas y equipos en la camioneta
+
+**El porqué (mensaje clave):** Plantas, sacos de tierra, mangueras, bidones y equipos a motor viajan juntos en la camioneta. Sin amarras, se corren en una frenada, caen a la ruta o golpean a quien va en la cabina; el combustible derramado en la carga es un riesgo de incendio.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Carga amarrada y repartida, sin sobrepasar la capacidad de la camioneta ni la altura de la cabina.
+2. [ ] Equipos a motor fríos y con el estanque cerrado; bidones parados y amarrados.
+3. [ ] Nadie viaja en la parte de atrás junto a la carga.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Nadie viaja en implementos ni en partes de la máquina no diseñadas para personas.
+- Normativa: Ley 18.290 de Tránsito (carga y transporte de personas); DS 594; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Cómo amarramos hoy los bidones y la motoguadaña en la camioneta?
+
+### PA-24 · Pasto alto: lo que esconde
+
+**El porqué (mensaje clave):** En bermas, sitios eriazos y taludes, el pasto alto esconde hoyos, piedras, fierros, alambres, vidrios, basura y a veces jeringas o restos de animales. Se tropieza, se pisan objetos cortantes o la motoguadaña los lanza.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Recorrer el área antes de cortar y retirar o marcar lo que se encuentre.
+2. [ ] Calzado de seguridad con planta resistente y guantes para recoger basura; nunca con la mano desnuda.
+3. [ ] Jeringas o residuos peligrosos no se tocan: se marcan y se avisa al supervisor.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Orden y aseo: un frente ordenado es un frente seguro.
+- Normativa: DS 594 (condiciones sanitarias y Art. 53 sobre EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Qué encontramos la última vez que cortamos este tramo?
+
+### PA-25 · Sopladora: lo que vuela hacia la ruta
+
+**El porqué (mensaje clave):** La sopladora limpia bermas, veredas y bandejones, pero levanta polvo, piedrecillas y basura que pueden ir a los ojos de un compañero, a los peatones o a la calzada, donde distraen o golpean a los conductores.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Soplar siempre en dirección contraria a la calzada, a las personas y a las casas.
+2. [ ] Lentes, mascarilla y protección auditiva; detener la sopladora si alguien pasa cerca.
+3. [ ] Humedecer o barrer cuando hay mucho polvo, en vez de soplarlo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: La zona de obras protege también a quien pasa por ella.
+- Normativa: DS 594 (ruido y Art. 53 sobre EPP); Manual de Señalización de Tránsito, Cap. 5; Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Hacia dónde soplamos hoy en el tramo junto a la ruta?
+
+### PA-26 · Malla y alambre para proteger plantaciones
+
+**El porqué (mensaje clave):** Las plantaciones se protegen con mallas, alambres y cercos pequeños. El alambre tensado latiguea cuando se corta o se suelta, la malla tiene puntas que cortan, y los rollos se desenrollan con fuerza.
+
+**Puntos de control (checklist de terreno):**
+
+1. [ ] Guantes de cuero y lentes al manipular alambre y malla.
+2. [ ] Al cortar alambre tensado, sujetar ambos lados y ponerse fuera de la línea del alambre.
+3. [ ] Doblar las puntas sobrantes y no dejar restos de alambre en el suelo.
+
+**Respaldo estándar:**
+
+- Regla de Oro: Usar el EPP correcto para cada tarea.
+- Normativa: DS 594 Art. 53 (EPP); Ley 16.744 Art. 68.
+
+**Pregunta de cierre:** ¿Dónde nos ponemos al cortar un alambre tensado?
